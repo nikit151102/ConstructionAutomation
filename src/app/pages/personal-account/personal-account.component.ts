@@ -5,6 +5,7 @@ import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { ButtonModule } from 'primeng/button';
 import { SidebarService } from '../../components/sidebar/sidebar.service';
 import { Subscription } from 'rxjs';
+import { PersonalAccountService } from './personal-account.service';
 
 @Component({
   selector: 'app-personal-account',
@@ -17,7 +18,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   isSidebarOpen: boolean = false;
   private screenSubscription!: Subscription;
 
-  constructor(public sidebarService: SidebarService, private cdr: ChangeDetectorRef) {}
+  constructor(public sidebarService: SidebarService, private cdr: ChangeDetectorRef, public personalAccountService:PersonalAccountService) {}
 
   ngOnInit(): void {
     this.screenSubscription = this.sidebarService.isSidebarOpen$.subscribe((isOpen) => {
@@ -33,6 +34,6 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   }
 
   toggleSidebar(): void {
-    this.sidebarService.toggleSidebar();
+    this.personalAccountService.toggleSidebar();
   }
 }

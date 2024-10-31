@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { SliderModule } from 'primeng/slider';
 import { SidebarModule } from 'primeng/sidebar';
+import { PersonalAccountService } from '../../pages/personal-account/personal-account.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -59,51 +60,29 @@ menuItems: any[] = [
   isSidebarOpen: boolean = false;
   isSidebarPinned: boolean = false;
 
-  constructor(public sidebarService: SidebarService, private router: Router) {
+  constructor(public sidebarService: SidebarService, private router: Router, public personalAccountService: PersonalAccountService) {
 
   }
-
   ngOnInit(): void {
-    this.sidebarService.isSidebarOpen$.subscribe((isOpen) => {
-      this.isSidebarOpen = isOpen;
-    });
-  
-    if (window.innerWidth > 1200) {
-      this.sidebarService.toggleSidebar();
-      setTimeout(() => {
-        this.togglePinSidebar();
-      });
-    }
+    throw new Error('Method not implemented.');
   }
 
-  hideSiderBar(){
-    this.togglePinSidebar();
+ 
+  isSubMenuOpen: { [key: string]: boolean } = {};
+
+  executeCommand(commandName: string) {
+    console.log(`Executing command: ${commandName}`);
+    if (commandName === 'togglePin') {
+      this.togglePinSidebar();
+    }
+    // Реализация логики для других команд
   }
 
   togglePinSidebar() {
-    if(this.isSidebarPinned === true){
-      this.isSidebarPinned = !this.isSidebarPinned;
-      this.sidebarService.toggleSidebar();
-    }else{
-      this.isSidebarPinned = !this.isSidebarPinned;
-      const sidebar = document.querySelector('.p-component-overlay') as HTMLElement;
-      if (sidebar) {
-          sidebar.style.width = this.isSidebarPinned ? `0px` : '100%';
-          sidebar.classList.toggle('pinned', this.isSidebarPinned);
-      }
-    }
-}
-
-  executeCommand(item: string) {
-    console.log("item", item)
-    if (item === 'exit') {
-      localStorage.removeItem('YXV0aEFkbWluVG9rZW4=');
-      localStorage.removeItem('idAdmin');
-      this.router.navigate(['/'])
-    } else {
-      console.log(localStorage.getItem('YXV0aEFkbWluVG9rZW4='));
-      this.router.navigate([`/admin/${localStorage.getItem('YXV0aEFkbWluVG9rZW4=')}/${item}`]);
-    }
+    console.log('Toggling sidebar pin');
   }
 
+  toggleSubMenu(label: string) {
+    this.isSubMenuOpen[label] = !this.isSubMenuOpen[label];
+  }
 }

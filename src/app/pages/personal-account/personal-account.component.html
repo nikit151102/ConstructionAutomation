@@ -1,8 +1,8 @@
-<div class="container" [class.sidebar-open]="isSidebarOpen">
+<div class="container" [class.sidebar-open]="personalAccountService.isSidebarOpen">
 
     <div class="header ">
       <div class="btn-menu">
-        <p-button icon="pi pi-bars" [rounded]="true" [text]="true"  (click)="sidebarService.toggleSidebar()"/>
+        <p-button icon="pi pi-bars" [rounded]="true" [text]="true"  (click)="toggleSidebar()"/>
       </div>
     </div>
   
