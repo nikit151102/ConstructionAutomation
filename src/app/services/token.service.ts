@@ -12,7 +12,7 @@ export class TokenService {
   constructor() { }
 
   private hasToken(): boolean {
-    return !!localStorage.getItem('authToken');
+    return !!localStorage.getItem('YXV0aFRva2Vu');
   }
 
   getToken(): boolean {
@@ -20,12 +20,12 @@ export class TokenService {
   }
 
   setToken(token:string): void {
-    localStorage.setItem('authToken', token);
+    localStorage.setItem('YXV0aFRva2Vu', token);
     this.authTokenSubject.next(true);
   }
 
   clearToken(): void {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('YXV0aFRva2Vu');
     this.authTokenSubject.next(false);
   }
   
