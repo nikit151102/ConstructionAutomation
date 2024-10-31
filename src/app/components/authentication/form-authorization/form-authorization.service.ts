@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; 
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environment';
 
@@ -10,8 +10,13 @@ export class FormAuthorizationService {
 
   constructor(private http: HttpClient) { }
 
-  signIn(formData: { username: string; password: string }): Observable<any> {
-    return this.http.post(environment.apiUrl, formData);
+  signIn(formData: {
+    UserName: string;
+    Hash: string;
+    Email: string;
+    Password: string;
+  }): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/`, formData);
   }
-  
+
 }

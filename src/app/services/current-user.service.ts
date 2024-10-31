@@ -13,14 +13,14 @@ export class CurrentUserService {
   constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   getUserData(): Observable<any> {
-    const token = this.tokenService.getToken();
+    const token = localStorage.getItem('YXV0aFRva2Vu');;
     if (!token) {
       return throwError(() => new Error('Token not found'));
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get(environment.apiUrl, { headers }).pipe(
+    return this.http.get(`${environment.apiUrl}/`, { headers }).pipe(
       map(response => response),
       catchError(error => {
         return throwError(() => error);

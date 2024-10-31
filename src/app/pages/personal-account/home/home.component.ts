@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CompStatementComponent } from '../../../components/comp-statement/comp-statement.component';
 import { ExcelViewerComponent } from '../../../components/excel-viewer/excel-viewer.component';
+import { CurrentUserService } from '../../../services/current-user.service';
 
 @Component({
   selector: 'app-home',
@@ -11,10 +12,22 @@ import { ExcelViewerComponent } from '../../../components/excel-viewer/excel-vie
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  constructor(private router: Router){}
-  
+  constructor(private router: Router, private currentUserService: CurrentUserService) { }
+
+  currentUser = ''
+  ngOnInit(): void {
+    this.currentUserService.getUserData().subscribe({
+      next: (data) => {
+        this.currentUser = data
+      },
+      error: (error) => {
+        console.error('Ошибка при получении данных пользователя:', error);
+      }
+    });
+  }
+
   menuItems: any[] = [
     {
       label: 'Главная', icon: 'pi pi-home', command: () => this.executeCommand('home')

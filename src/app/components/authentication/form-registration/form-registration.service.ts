@@ -10,8 +10,17 @@ export class FormRegistrationService {
 
   constructor(private http: HttpClient) { }
 
-  signUn(formData: { username: string; password: string }): Observable<any> {
-    return this.http.post(environment.apiUrl, formData);
+  signUn(formData: {
+    FirstName: string;
+    LastName: string;
+    UserName: string;
+    Hash: string;
+    Email: string;
+    Password: string;
+    Roles: string[];
   }
-  
+  ): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/`, formData);
+  }
+
 }

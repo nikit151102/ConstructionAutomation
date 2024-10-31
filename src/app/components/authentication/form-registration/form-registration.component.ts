@@ -33,9 +33,20 @@ export class FormRegistrationComponent {
   
     if (this.SignUpForm.valid) {
       const formData = this.SignUpForm.value;
-      console.log('Форма отправлена:', formData);
 
-      this.registrationService.signUn(formData).subscribe({
+     const Data  = {
+        FirstName: '',
+        LastName: '',
+        Hash: '',
+        UserName:  formData.username,
+        Email: formData.email,
+        Password: formData.password, 
+        Roles: []
+      };
+
+      console.log('Форма отправлена:', Data);
+
+      this.registrationService.signUn(Data).subscribe({
         next: (response: any) => {
           console.log('Регистрация прошла успешно:', response);
 

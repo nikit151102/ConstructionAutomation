@@ -50,9 +50,17 @@ export class FormAuthorizationComponent implements OnInit {
   
     if (this.signInForm.valid) {
       const formData = this.signInForm.value;
-      console.log('Форма отправлена:', formData);
 
-      this.AuthorizationService.signIn(formData).subscribe({
+      const Data  = {
+        UserName: '',
+        Hash: '',
+        Email: formData.email,
+        Password: formData.password, 
+      };
+
+      console.log('Форма отправлена:', Data);
+
+      this.AuthorizationService.signIn(Data).subscribe({
         next: (response) => {
           console.log('Успешный вход:', response);
 
@@ -61,7 +69,7 @@ export class FormAuthorizationComponent implements OnInit {
           this.currentUserService.getUserData().subscribe({
             next: (data) => {
               console.log('Данные пользователя получены:', data);
-              this.router.navigate([`/${data.id}`]);
+              this.router.navigate([`/${data.Id}`]);
               this.signInForm.reset();
             },
             error: (error) => {

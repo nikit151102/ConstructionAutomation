@@ -48,14 +48,14 @@ export class CompStatementComponent implements OnInit {
     }
     console.log("(this.selectedFiles", selectedFiles)
 
-    this.compStatementService.uploadFiles(selectedFiles).subscribe({
-      next: (response) => {
-        console.log("Файлы отправлены успешно", response)
-      },
-      error: (error) => {
-        console.log("Ошибка отправки файлов", error)
-      }
-    });
+    // this.compStatementService.uploadFiles(selectedFiles).subscribe({
+    //   next: (response) => {
+    //     console.log("Файлы отправлены успешно", response)
+    //   },
+    //   error: (error) => {
+    //     console.log("Ошибка отправки файлов", error)
+    //   }
+    // });
   }
 
 }
