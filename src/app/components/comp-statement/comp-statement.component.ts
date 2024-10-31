@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { FileUploadModule, UploadEvent } from 'primeng/fileupload';
+import { FileSelectEvent, FileUploadModule, UploadEvent } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { CompStatementService } from './comp-statement.service';
+import { SelectedFiles } from '../../interfaces/files';
 
 @Component({
   selector: 'app-comp-statement',
@@ -10,35 +11,51 @@ import { CompStatementService } from './comp-statement.service';
   imports: [FileUploadModule, ToastModule],
   templateUrl: './comp-statement.component.html',
   styleUrl: './comp-statement.component.scss',
-  providers:[
-    MessageService 
+  providers: [
+    MessageService
   ]
 })
-export class CompStatementComponent {
+export class CompStatementComponent implements OnInit {
+
+  File1!: File;
+  File2!: File;
 
   constructor(private messageService: MessageService, private compStatementService: CompStatementService) { }
 
-  selectedFiles: File[] = [];
+  ngOnInit(): void {
+  }
 
-  onSelect(event: { files: File[] }) {
-    this.selectedFiles = [...this.selectedFiles, ...event.files];
-}
-
-
-  onUpload() {
-    if (this.selectedFiles.length !== 2) {
+  onSelect(fileKey: string, event: FileSelectEvent) {
+    const files = event.files;
+    if (files.length > 1) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'You can only upload one file at a time.' });
       return;
     }
-    console.log("(this.selectedFiles", this.selectedFiles)
+    if (fileKey === 'file1') {
+      this.File1 = files[0];
+    } else if (fileKey === 'file2') {
+      this.File2 = files[0];
+    }
+  }
 
-    // this.compStatementService.uploadFiles(this.selectedFiles).subscribe({
-    //   next: (response) => {
-    //     this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Files uploaded successfully' });
-    //   },
-    //   error: (error) => {
-    //     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to upload files' });
-    //   }
-    // });
+  onUpload() {
+    if (this.File1 == undefined || this.File2 == undefined) {
+      return;
+    }
+    const selectedFiles: SelectedFiles = {
+      File1: this.File1,
+      File2: this.File2
+    }
+    console.log("(this.selectedFiles", selectedFiles)
+
+    this.compStatementService.uploadFiles(selectedFiles).subscribe({
+      next: (response) => {
+        console.log("Файлы отправлены успешно", response)
+      },
+      error: (error) => {
+        console.log("Ошибка отправки файлов", error)
+      }
+    });
   }
 
 }
