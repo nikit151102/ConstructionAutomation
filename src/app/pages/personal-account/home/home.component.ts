@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CompStatementComponent } from '../../../components/comp-statement/comp-statement.component';
+import { ExcelViewerComponent } from '../../../components/excel-viewer/excel-viewer.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CompStatementComponent],
+  imports: [CommonModule, CompStatementComponent, ExcelViewerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
