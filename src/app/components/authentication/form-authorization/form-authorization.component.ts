@@ -65,9 +65,9 @@ export class FormAuthorizationComponent implements OnInit {
           console.log('Успешный вход:', response);
           
           this.tokenService.setToken(response.token);
-          console.log('Успешный вход:', response.token);
+          console.log('response.token:', response.token);
           this.router.navigate([`/${response.id}`]);
-          console.log('Успешный вход:', response.id);
+          console.log('response.id:', response.id);
         },
         (error) => {
           console.error('Ошибка при входе:', error);
