@@ -1,0 +1,17 @@
+services:
+
+  frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfile-frontend
+    ports:
+      - 80:80
+    volumes:
+      - /app
+      - /app/node_modules
+    networks:
+      - googleearth_my-custom-network
+  
+networks:
+  googleearth_my-custom-network:
+    external: true
