@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CompStatementComponent } from '../../../components/comp-statement/comp-statement.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CompStatementComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
