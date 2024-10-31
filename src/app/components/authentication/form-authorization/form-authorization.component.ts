@@ -52,9 +52,9 @@ export class FormAuthorizationComponent implements OnInit {
       const formData = this.signInForm.value;
 
       const Data  = {
-        UserName: '',
+        UserName: formData.username,
         Hash: '',
-        Email: formData.username,
+        Email: formData.email,
         Password: formData.password, 
       };
 
@@ -64,18 +64,18 @@ export class FormAuthorizationComponent implements OnInit {
         next: (response) => {
           console.log('Успешный вход:', response);
 
-          this.tokenService.setToken(response.token);
+          this.tokenService.setToken(response.Token);
           
-          this.currentUserService.getUserData().subscribe({
-            next: (data) => {
-              console.log('Данные пользователя получены:', data);
-              this.router.navigate([`/${data.Id}`]);
-              this.signInForm.reset();
-            },
-            error: (error) => {
-              console.error('Ошибка при получении данных пользователя:', error);
-            }
-          });
+          // this.currentUserService.getUserData().subscribe({
+          //   next: (data) => {
+          //     console.log('Данные пользователя получены:', data);
+              this.router.navigate([`/${response.Id}`]);
+          //     this.signInForm.reset();
+          //   },
+          //   error: (error) => {
+          //     console.error('Ошибка при получении данных пользователя:', error);
+          //   }
+          // });
         },
         error: (error) => {
           console.error('Ошибка при входе:', error);
