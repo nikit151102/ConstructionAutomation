@@ -1,5 +1,6 @@
 export const environment = {
-    apiUrl: 'https://uteam.top/api',
+    // apiUrl: 'https://vm-2ea5fe48.na4u.ru/api',
+    apiUrl: 'http://localhost:8080',
     userNameBot: 'Uteam_top_bot'
 };
 
