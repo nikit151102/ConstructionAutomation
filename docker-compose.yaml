@@ -10,8 +10,8 @@ services:
       - /app
       - /app/node_modules
     networks:
-      - googleearth_my-custom-network
+      - constructionAutomation
   
 networks:
-  googleearth_my-custom-network:
+  constructionAutomation:
     external: true
