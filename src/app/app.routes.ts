@@ -7,7 +7,7 @@ export const routes: Routes = [
     },
     {
         // canActivate: [AuthGuard]
-        path: ':id',  loadChildren: () => import('./pages/personal-account/personal-account.module').then(m => m.PersonalAccountModule), 
+        path: ':id',  loadChildren: () => import('./pages/personal-account/personal-account.module').then(m => m.PersonalAccountModule), canActivate: [AuthGuard]
     },
 
 ];
