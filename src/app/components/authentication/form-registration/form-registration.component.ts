@@ -46,27 +46,19 @@ export class FormRegistrationComponent {
 
       console.log('Форма отправлена:', Data);
 
-      this.registrationService.signUn(Data).subscribe({
-        next: (response: any) => {
-          console.log('Регистрация прошла успешно:', response);
-
+      this.registrationService.signUn(Data).subscribe(
+        (response) => {
+          console.log('Успешная регистрация:', response);
+          
           this.tokenService.setToken(response.token);
-          this.currentUserService.getUserData().subscribe({
-            next: (data) => {
-              console.log('Данные пользователя получены:', data);
-              this.router.navigate([`/${data.id}`]);
-              this.SignUpForm.reset(); 
-            },
-            error: (error) => {
-              console.error('Ошибка при получении данных пользователя:', error);
-            }
-          });
+          console.log('response.token:', response.token);
+          this.router.navigate([`/${response.id}`]);
+          console.log('response.id:', response.id);
         },
-        error: (error: any) => {
+        (error) => {
           console.error('Ошибка при регистрации:', error);
         }
-      });
-  
+      );
     } else {
       console.log('Форма недействительна');
       this.handleFormErrors();
