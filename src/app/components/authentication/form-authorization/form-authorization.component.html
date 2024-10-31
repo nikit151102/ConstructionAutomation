@@ -1,0 +1,30 @@
+<div class="container">
+  <form [formGroup]="signInForm" (ngSubmit)="onSignIn()" novalidate>
+    <h1>Вход</h1>
+    <div class="inputGroup">
+      <p-floatLabel>
+        <input pInputText id="username" formControlName="username" autocomplete="new-username" />
+        <label for="username">Имя пользователя</label>
+        <div *ngIf="signInForm.get('username')?.touched && signInForm.get('username')?.invalid" class="error">
+          <small *ngIf="signInForm.get('username')?.errors?.['required']">Имя пользователя обязательно.</small>
+        </div>
+      </p-floatLabel>
+
+      <p-floatLabel>
+        <p-password formControlName="password" [feedback]="false" [toggleMask]="true"
+          autocomplete="new-password"></p-password>
+        <label for="password">Пароль</label>
+        <div *ngIf="signInForm.get('password')?.touched && signInForm.get('password')?.invalid" class="error">
+          <small *ngIf="signInForm.get('password')?.errors?.['required']">Пароль обязателен.</small>
+          <small *ngIf="signInForm.get('password')?.errors?.['minlength']">Пароль должен содержать не менее 6
+            символов.</small>
+        </div>
+      </p-floatLabel>
+    </div>
+    <app-custom-button [backgroundColor]="'#28a745'" [hoverColor]="'#218838'" [textColor]="'#ffffff'"
+      (buttonClick)="onSignIn()">
+      Войти
+    </app-custom-button>
+  </form>
+
+</div>

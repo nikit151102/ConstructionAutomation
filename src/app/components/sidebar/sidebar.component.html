@@ -1,0 +1,7 @@
+<p-sidebar 
+  [(visible)]="isSidebarOpen" 
+  (onHide)="hideSiderBar()" 
+  [ngClass]="{'pinned': isSidebarPinned}">
+  <h3>Меню</h3>
+  <p-panelMenu [model]="menuItems" styleClass="w-full md:w-20rem"></p-panelMenu>
+</p-sidebar>

@@ -1,0 +1,21 @@
+:host ::ng-deep .p-sidebar-left {
+    max-width: 250px;
+    height: calc(100% - 40px);
+    margin: 20px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 24px -9px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0px 0px 24px -9px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 0px 24px -9px rgba(34, 60, 80, 0.2);
+}
+
+.pinned {
+    position: fixed;
+    width: auto !important;
+    height: 100%;
+}
+
+:host ::ng-deep .p-panelmenu .p-panelmenu-header .p-panelmenu-header-content .p-panelmenu-header-action {
+    color: #6b7280;
+    padding: 1.25rem;
+    background: #fff;
+}

@@ -1,0 +1,83 @@
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { CustomButtonComponent } from '../../../ui-kit/custom-button/custom-button.component';
+import { FormRegistrationService } from './form-registration.service';
+import { Router } from '@angular/router';
+import { TokenService } from '../../../services/token.service';
+import { CurrentUserService } from '../../../services/current-user.service';
+
+@Component({
+  selector: 'app-form-registration',
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputTextModule, FloatLabelModule, PasswordModule, CustomButtonComponent],
+  templateUrl: './form-registration.component.html',
+  styleUrls: ['./form-registration.component.scss']
+})
+export class FormRegistrationComponent {
+  SignUpForm: FormGroup;
+
+  constructor(private fb: FormBuilder, private registrationService: FormRegistrationService,  private router: Router, private tokenService: TokenService, private currentUserService: CurrentUserService) {
+    this.SignUpForm = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]], 
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+  }
+  onSignUp() {
+
+    this.SignUpForm.markAllAsTouched();
+  
+    if (this.SignUpForm.valid) {
+      const formData = this.SignUpForm.value;
+      console.log('Форма отправлена:', formData);
+
+      this.registrationService.signUn(formData).subscribe({
+        next: (response: any) => {
+          console.log('Регистрация прошла успешно:', response);
+
+          this.tokenService.setToken(response.token);
+          this.currentUserService.getUserData().subscribe({
+            next: (data) => {
+              console.log('Данные пользователя получены:', data);
+              this.router.navigate([`/${data.id}`]);
+              this.SignUpForm.reset(); 
+            },
+            error: (error) => {
+              console.error('Ошибка при получении данных пользователя:', error);
+            }
+          });
+        },
+        error: (error: any) => {
+          console.error('Ошибка при регистрации:', error);
+        }
+      });
+  
+    } else {
+      console.log('Форма недействительна');
+      this.handleFormErrors();
+    }
+  }
+  
+  private handleFormErrors() {
+    Object.keys(this.SignUpForm.controls).forEach(controlName => {
+      const control = this.SignUpForm.get(controlName);
+      if (control && control.invalid) {
+        const errors = control.errors;
+        if (errors?.['required']) {
+          console.log(`${controlName} обязателен`);
+        }
+        if (errors?.['minlength']) {
+          console.log(`${controlName} должен содержать минимум ${errors['minlength'].requiredLength} символов`);
+        }
+        if (errors?.['email']) {
+          console.log(`${controlName} должен быть корректным email-адресом`);
+        }
+      }
+    });
+  }
+  
+}

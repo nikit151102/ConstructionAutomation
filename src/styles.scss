@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+:root {
+    --color-white: #fff;
+    --color-light-gray: #e6e7e9;
+    --color-gray: #a8acb7;
+    --color-red: #0b1326;
+  
+    --gradient-light: linear-gradient(135deg, var(--color-white), var(--color-light-gray));
+    --gradient-dark: linear-gradient(135deg, var(--color-gray), var(--color-light-gray));
+    --gradient-accent: linear-gradient(135deg, var(--color-red), var(--color-gray));
+    --gradient-warm: linear-gradient(135deg, var(--color-light-gray), var(--color-red));
+ 
+     /* Основные цвета градиента */
+     --gradient-start: #38A2D7; /* Начальный цвет градиента */
+     --gradient-end: #561139;   /* Конечный цвет градиента */
+ 
+     /* Оттенки для кнопок и фона */
+     --button-bg: #38A2D7; /* Цвет фона кнопок */
+     --button-bg-hover: #3295C6; /* Цвет фона кнопки при наведении */
+     --button-border: #561139; /* Цвет границы кнопок */
+     --button-border-hover: #4B0E2B; /* Цвет границы при наведении */
+ 
+     /* Цвета текста и фона */
+     --text-color: #FFFFFF; /* Цвет текста на кнопках */
+     --background-color: #F8F9FA; /* Цвет фона сайта */
+     --card-bg: #FFFFFF; /* Цвет фона карточек */
+     --card-border: #E0E0E0; /* Цвет границы карточек */
+ 
+     /* Дополнительные оттенки для использования */
+     --accent-color: #C92A48; /* Дополнительный акцентный цвет */
+     --dark-accent: #3A0A20; /* Темный акцентный цвет */
+}

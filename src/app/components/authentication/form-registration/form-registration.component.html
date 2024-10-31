@@ -1,0 +1,41 @@
+  <div class="container">
+    <form [formGroup]="SignUpForm" novalidate>
+      <h1>Регистрация</h1>
+      <div class="inputGroup">
+        <p-floatLabel>
+          <input pInputText id="username" formControlName="username" autocomplete="new-username" />
+          <label for="username">Имя пользователя</label>
+          <div *ngIf="SignUpForm.get('username')?.touched && SignUpForm.get('username')?.invalid" class="error">
+            <small *ngIf="SignUpForm.get('username')?.errors?.['required']">Имя пользователя обязательно.</small>
+          </div>
+        </p-floatLabel>
+        <p-floatLabel>
+          <input pInputText id="email" formControlName="email" autocomplete="new-email" />
+          <label for="email">Электронная почта</label>
+          <div *ngIf="SignUpForm.get('email')?.touched && SignUpForm.get('email')?.invalid" class="error">
+            <small *ngIf="SignUpForm.get('email')?.errors?.['required']">Электронная почта обязательна.</small>
+            <small *ngIf="SignUpForm.get('email')?.errors?.['email']">Некорректный формат электронной почты.</small>
+          </div>
+        </p-floatLabel>
+        <p-floatLabel>
+          <p-password formControlName="password" [feedback]="false" [toggleMask]="true"
+            autocomplete="new-password"></p-password>
+          <label for="password">Пароль</label>
+          <div *ngIf="SignUpForm.get('password')?.touched && SignUpForm.get('password')?.invalid" class="error">
+            <small *ngIf="SignUpForm.get('password')?.errors?.['required']">Пароль обязателен.</small>
+            <small *ngIf="SignUpForm.get('password')?.errors?.['minlength']">Пароль должен содержать не менее 6
+              символов.</small>
+          </div>
+        </p-floatLabel>
+      </div>
+      <app-custom-button 
+      [backgroundColor]="'#28a745'" 
+      [hoverColor]="'#218838'" 
+      [textColor]="'#ffffff'" 
+      (buttonClick)="onSignUp()">
+      Зарегистрироваться
+    </app-custom-button>
+  
+    </form>
+  
+  </div>
