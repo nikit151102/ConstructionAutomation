@@ -20,7 +20,7 @@ export class FormRegistrationService {
     Roles: string[];
   }
   ): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/`, formData);
+    return this.http.post(`${environment.apiUrl}/auth/register`, formData);
   }
 
 }
