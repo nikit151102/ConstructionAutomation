@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { CompStatementComponent } from '../../../components/comp-statement/comp-statement.component';
 import { ExcelViewerComponent } from '../../../components/excel-viewer/excel-viewer.component';
 import { CurrentUserService } from '../../../services/current-user.service';
+import { PdfViewerComponent } from '../../../components/pdf-viewer/pdf-viewer.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CompStatementComponent, ExcelViewerComponent],
+  imports: [CommonModule, CompStatementComponent, ExcelViewerComponent, PdfViewerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

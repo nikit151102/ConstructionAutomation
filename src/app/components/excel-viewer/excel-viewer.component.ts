@@ -70,7 +70,10 @@ export class ExcelViewerComponent {
           const nonEmptyCount = row.filter(cell => cell !== null && cell !== undefined).length;
           return Math.max(max, nonEmptyCount);
         }, 0);
+      }else{
+        maxRowLength = maxRowLength +1
       }
+
       console.log("maxRowLength",maxRowLength)
       this.excelData = filteredData.map(row =>
         Array.from({ length: maxRowLength }, (_, i) => ({

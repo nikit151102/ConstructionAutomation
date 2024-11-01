@@ -1,0 +1,22 @@
+<div style=" display: flex;
+flex-direction: column;
+align-items: center;">
+    <input type="file" (change)="onFileChange($event)" accept=".pdf" />
+    <div class="pdf-container" style="position: relative;">
+        <canvas #pdfCanvas></canvas>
+        <div class="button-container">
+            <button (click)="prevPage()">Назад</button>
+            <button (click)="nextPage()">Следующая</button>
+        </div>    
+        <img *ngIf="stampImage" [src]="stampImage" (mousedown)="startDrag($event)" [style.position]="'absolute'"
+            [style.left.px]="stampPosition.x" [style.top.px]="stampPosition.y" [style.width.px]="stampSize.width"
+            [style.height.px]="stampSize.height" [style.cursor]="'move'" />
+    
+        <div *ngIf="stampImage" (mousedown)="startResize($event)" [style.cursor]="'nwse-resize'" [style.width.px]="10"
+            [style.height.px]="10" [style.backgroundColor]="'red'" [style.position]="'absolute'"
+            [style.left.px]="stampPosition.x + stampSize.width - 5" [style.top.px]="stampPosition.y + stampSize.height - 5">
+        </div>
+    
+        <input type="file" (change)="onImageChange($event)" accept="image/*" />
+        <button (click)="saveDocument()">Сохранить документ</button>
+</div>
