@@ -9,16 +9,15 @@
   </div>
 
   <p-table *ngIf="excelData.length" [value]="excelData">
-    <!-- <ng-template pTemplate="header">
-      <tr>
-        <th *ngFor="let header of excelData[0]">{{ header.value }}</th>
-      </tr>
-    </ng-template> -->
     <ng-template pTemplate="body" let-row>
       <tr>
-        <td *ngFor="let cell of row" [attr.colspan]="cell.colspan || null" [attr.rowspan]="cell.rowspan || null">
-          {{ cell.value }}
-        </td>
+        <ng-container *ngFor="let cell of row">
+          <td *ngIf="cell" 
+              [attr.colspan]="cell.colspan" 
+              [attr.rowspan]="cell.rowspan">
+            {{ cell.value }}
+          </td>
+        </ng-container>
       </tr>
     </ng-template>
   </p-table>

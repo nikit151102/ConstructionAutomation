@@ -1,5 +1,5 @@
-export interface ExcelCell {
-    value: string | number | null;
-    colspan?: number;
-    rowspan?: number;
-  }
+export type ExcelCell = {
+  value: any;
+  colspan?: number;
+  rowspan?: number;
+} | null;
