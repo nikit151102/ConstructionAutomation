@@ -53,7 +53,7 @@ menuItems: any[] = [
     label: 'Закрепить меню', icon: 'pi pi-pin', command: () => this.togglePinSidebar() 
   },
   {
-    label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit')
+    label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.exitCommand('exit')
   }
 ];
 
@@ -75,6 +75,13 @@ menuItems: any[] = [
       this.togglePinSidebar();
     }
     // Реализация логики для других команд
+  }
+
+  exitCommand(commandName: string) {
+    if (commandName === 'exit') {
+      localStorage.removeItem('YXV0aFRva2Vu');
+      this.router.navigate([`/login`]);
+    }
   }
 
   togglePinSidebar() {
