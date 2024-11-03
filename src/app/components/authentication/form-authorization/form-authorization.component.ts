@@ -10,11 +10,12 @@ import { FormAuthorizationService } from './form-authorization.service';
 import { Router } from '@angular/router';
 import { TokenService } from '../../../services/token.service';
 import { CurrentUserService } from '../../../services/current-user.service';
+import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
 
 @Component({
   selector: 'app-form-authorization',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputTextModule, FloatLabelModule, PasswordModule, CustomButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputTextModule, FloatLabelModule, PasswordModule, CustomButtonComponent, PopUpEntryComponent],
   templateUrl: './form-authorization.component.html',
   styleUrls: ['./form-authorization.component.scss']
 })
