@@ -26,14 +26,14 @@ export class AuthGuard implements CanActivate {
       'Authorization': `Bearer ${token}`
     });
 
-    // return this.http.get<any>(`${environment.apiUrl}/users/currentUser`, { headers }).pipe(
-    //   map(() => true), 
-    //   catchError(() => {
-    //     this.tokenService.clearToken()
-    //     this.router.navigate(['/']); 
-    //     return of(false); 
-    //   })
-    // );
+    return this.http.get<any>(`${environment.apiUrl}/api/User`, { headers }).pipe(
+      map(() => true), 
+      catchError(() => {
+        this.tokenService.clearToken()
+        this.router.navigate(['/']); 
+        return of(false); 
+      })
+    );
     return of(true)
   }
 }

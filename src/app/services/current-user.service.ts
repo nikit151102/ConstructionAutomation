@@ -20,7 +20,7 @@ export class CurrentUserService {
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get(`${environment.apiUrl}/`, { headers }).pipe(
+    return this.http.get(`${environment.apiUrl}/api/User`, { headers }).pipe(
       map(response => response),
       catchError(error => {
         return throwError(() => error);
