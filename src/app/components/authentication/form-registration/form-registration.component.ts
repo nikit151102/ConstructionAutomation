@@ -34,15 +34,26 @@ export class FormRegistrationComponent {
     if (this.SignUpForm.valid) {
       const formData = this.SignUpForm.value;
 
-     const Data  = {
-        FirstName: '',
+    //  const Data  = {
+    //     FirstName: '',
+    //     LastName: '',
+    //     Hash: '',
+    //     UserName:  formData.username,
+    //     Email: formData.email,
+    //     Password: formData.password, 
+    //     Roles: []
+    //   };
+
+      const Data  = {
+     FirstName: '',
         LastName: '',
-        Hash: '',
-        UserName:  formData.username,
-        Email: formData.email,
-        Password: formData.password, 
+        Hash: 'f45vfd7r98tfr8f4749v98g45',
+        UserName:  'Nikit',
+        Email: '',
+        Password: '', 
         Roles: []
       };
+      
 
       console.log('Форма отправлена:', Data);
 
