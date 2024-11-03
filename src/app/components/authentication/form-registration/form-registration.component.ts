@@ -9,11 +9,12 @@ import { FormRegistrationService } from './form-registration.service';
 import { Router } from '@angular/router';
 import { TokenService } from '../../../services/token.service';
 import { CurrentUserService } from '../../../services/current-user.service';
+import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
 
 @Component({
   selector: 'app-form-registration',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputTextModule, FloatLabelModule, PasswordModule, CustomButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputTextModule, FloatLabelModule, PasswordModule, CustomButtonComponent, PopUpEntryComponent],
   templateUrl: './form-registration.component.html',
   styleUrls: ['./form-registration.component.scss']
 })

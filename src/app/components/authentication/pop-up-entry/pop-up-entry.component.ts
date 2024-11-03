@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, OnInit, Input } from '@angular/core';
 import { PopUpEntryService } from './pop-up-entry.service';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { TokenService } from '../../../services/token.service';
 import { environment } from '../../../../environment';
 import { FormAuthorizationService } from '../form-authorization/form-authorization.service';
+import { FormRegistrationService } from '../form-registration/form-registration.service';
 
 @Component({
   selector: 'app-pop-up-entry',
@@ -25,10 +26,11 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
     private tokenService: TokenService,
     private http: HttpClient,
     private router: Router,
-    private formAuthorizationService:FormAuthorizationService
+    private formAuthorizationService: FormAuthorizationService,
+    private formRegistrationService: FormRegistrationService
   ) { }
 
- 
+  @Input() type: string = ''
 
   telegramWidgetLoaded: boolean = false;
   userAuthenticated: boolean = false;
@@ -75,22 +77,40 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
     (window as any).onTelegramAuth = undefined;
     this.telegramWidgetLoaded = false;
   }
-  
+
   onTelegramAuth(user: any) {
+    let Data;
 
-    const Data  = {
-      UserName: user.username,
-      Hash: user.hash,
-      Email: '',
-      Password: '', 
-    };
+    if (this.type == 'authorization') {
+      Data = {
+        UserName: user.username,
+        Hash: user.hash,
+        Email: '',
+        Password: '',
+      };
+      this.formAuthorizationService.signIn(Data).subscribe((response: any) => {
+        console.log('Успешный вход:', response);
+        this.tokenService.setToken(response.token);
+        this.userAuthenticated = true;
+      });
+    } else {
+      Data = {
+        FirstName: '',
+        LastName: '',
+        Hash: user.hash,
+        UserName: user.username,
+        Email: '',
+        Password: '',
+        Roles: []
+      };
+      this.formRegistrationService.signUn(Data).subscribe((response: any) => {
+        console.log('Успешная регистрация:', response);
+        this.tokenService.setToken(response.token);
+        this.userAuthenticated = true;
+      });
+    }
 
-    this.formAuthorizationService.signIn(Data).subscribe((response: any) => {
-      console.log('Успешный вход:', response);
-      this.tokenService.setToken(response.token);
-      this.userAuthenticated = true;
-    });
-    this.closePopUp()
+
   }
 
 
@@ -115,9 +135,9 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
 
 
   closePopUp() {
-      this.popUpEntryService.visible = false; 
-      this.telegramWidgetLoaded = false; 
-      this.removeTelegramWidget(); 
+    this.popUpEntryService.visible = false;
+    this.telegramWidgetLoaded = false;
+    this.removeTelegramWidget();
   }
 
   clearCookies() {
