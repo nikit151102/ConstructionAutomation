@@ -1,5 +1,5 @@
 export const environment = {
-    apiUrl: 'http://vm-2ea5fe48.na4u.ru:5000',
+    apiUrl: 'http://vm-c86b4df8.na4u.ru:5000',
     // apiUrl: 'http://localhost:5182',
     userNameBot: 'etgrrisTESTING_bot'
 };
