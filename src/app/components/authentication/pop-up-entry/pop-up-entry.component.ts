@@ -89,7 +89,6 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
       console.log('Успешный вход:', response);
       this.tokenService.setToken(response.token);
       this.userAuthenticated = true;
-      this.login_user()
     });
     this.closePopUp()
   }
@@ -104,7 +103,6 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
         console.log('User data:', data.token);
         this.popUpEntryService.userVisible = true;
         this.popUpEntryService.visible = false;
-        this.login_user()
       },
       (error) => {
         console.error('Error fetching user data:', error);
@@ -113,58 +111,6 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
 
   }
 
-  login_user() {
-    this.popUpEntryService.visible = false;
-    const token = this.tokenService.getToken();
-    this.popUpEntryService.getUser().subscribe(
-      (data) => {
-        const firstNameValid = typeof data.firstName === 'string' && data.firstName.trim() !== '';
-        const lastNameValid = typeof data.lastName === 'string' && data.lastName.trim() !== '';
-        const genderValid = typeof data.gender === 'string' && data.gender.trim() !== '';
-        const ageValid = typeof data.age === 'number' && data.age > 0;
-        const cityOfResidenceValid = typeof data.cityOfResidence !== null;
-        const emailValid = typeof data.email === 'string' && data.email.trim() !== '';
-        
-        // if (!firstNameValid) {
-        //   console.error('Invalid first name:', data.firstName);
-        // }
-        // if (!lastNameValid) {
-        //   console.error('Invalid last name:', data.lastName);
-        // }
-        // if (!genderValid) {
-        //   console.error('Invalid gender:', data.gender);
-        // }
-        // if (!ageValid) {
-        //   console.error('Invalid age:', data.age);
-        // }
-        // if (!cityOfResidenceValid) {
-        //   console.error('Invalid city of residence:', data.cityOfResidence);
-        // }
-        // if (!emailValid) {
-        //   console.error('Invalid email:', data.email);
-        // }
-
-        const isDataValid = firstNameValid && lastNameValid && genderValid && ageValid && cityOfResidenceValid && emailValid;
-        
-        // true -> b326b5062b2f0e69046810717534cb09
-
-        if(!isDataValid)
-        {
-          localStorage.setItem('fullAccess', 'we26b502b2fe32e69046810717534b32d');
-        }else{
-          localStorage.setItem('fullAccess', 'b326b5062b2f0e69046810717534cb09' );
-        }
-        localStorage.setItem('Linkken', data.imageLink);
-        localStorage.setItem('userNickname', data.nickname);
-        this.popUpEntryService.userVisible = true;
-        this.popUpEntryService.visible = false;
-        this.closePopUp()
-      },
-      (error) => {
-      }
-    );
-    this.closePopUp()
-  }
 
 
 
