@@ -4,5 +4,7 @@ export interface SelectedFiles {
     contractorName: string;
     statementDate: string;
     system: string;
+    NameFile1: string;
+    NameFile2: string;
 }
 

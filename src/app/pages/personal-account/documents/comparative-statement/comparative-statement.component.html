@@ -18,12 +18,21 @@
         <div class="p-field">
             <p-toast></p-toast>
             <p-fileUpload mode="basic" chooseLabel="Локальная смета" chooseIcon="pi pi-upload" name="file1"
-                accept=".pdf, .xls, .xlsx" maxFileSize="10000000" [multiple]="false" (onSelect)="onSelect('file1', $event)" />
+                accept=".xls, .xlsx" maxFileSize="10000000" [multiple]="false" (onSelect)="onSelect('file1', $event)" />
+
+                <p-dropdown *ngIf="sheetNamesFile1.length > 0"
+                    [options]="sheetNamesFile1"
+                    [(ngModel)]="selectedSheetFile1"
+                    placeholder="Выберите лист"></p-dropdown>
         </div>
         <div class="p-field">
             <p-toast></p-toast>
             <p-fileUpload mode="basic" chooseLabel="КС-2" chooseIcon="pi pi-upload" name="file2"
-                accept=".pdf, .xls, .xlsx" maxFileSize="10000000" [multiple]="false" (onSelect)="onSelect('file2', $event)" />
+                accept=".xls, .xlsx" maxFileSize="10000000" [multiple]="false" (onSelect)="onSelect('file2', $event)" />
+                <p-dropdown *ngIf="sheetNamesFile2.length > 0"
+                    [options]="sheetNamesFile2"
+                    [(ngModel)]="selectedSheetFile2"
+                    placeholder="Выберите лист"></p-dropdown>
         </div>
 
         <button (click)="onUpload()" [disabled]="!form.valid || !File1 || !File2">Отправить</button>
