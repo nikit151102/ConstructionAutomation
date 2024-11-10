@@ -8,12 +8,13 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import * as XLSX from 'xlsx';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-comparative-statement',
   standalone: true,
-  imports: [FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule],
+  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule],
   templateUrl: './comparative-statement.component.html',
   styleUrl: './comparative-statement.component.scss',
   providers: [
@@ -28,8 +29,6 @@ export class ComparativeStatementComponent implements OnInit {
   File2!: File;
   sheetNamesFile1: string[] = [];
   sheetNamesFile2: string[] = [];
-  selectedSheetFile1!: string;
-  selectedSheetFile2!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +40,9 @@ export class ComparativeStatementComponent implements OnInit {
     this.form = this.fb.group({
       contractorName: ['', Validators.required],
       statementDate: [new Date(), Validators.required],
-      system: ['', Validators.required]
+      system: ['', Validators.required],
+      planFileListName: ['', Validators.required],
+      summaryFileListName: ['', Validators.required],
     });
   }
 
@@ -53,8 +54,10 @@ export class ComparativeStatementComponent implements OnInit {
     }
     if (fileKey === 'file1') {
       this.File1 = files[0];
+      this.extractSheetNames(this.File1, 'file1');
     } else if (fileKey === 'file2') {
       this.File2 = files[0];
+      this.extractSheetNames(this.File2, 'file2');
     }
   }
 
@@ -81,13 +84,11 @@ export class ComparativeStatementComponent implements OnInit {
     const selectedFiles: SelectedFiles = {
       planFile: this.File1,
       summaryFile: this.File2,
-      planFileListName: "",
-      summaryFileListName: "",
+      planFileListName: this.form.get('planFileListName')?.value,
+      summaryFileListName: this.form.get('summaryFileListName')?.value, 
       contractorName: this.form.get('contractorName')?.value,
       statementDate: this.form.get('statementDate')?.value,
       system: this.form.get('system')?.value,
-      NameFile1: this.selectedSheetFile1,
-      NameFile2: this.selectedSheetFile2
     };
 
     console.log(selectedFiles);
