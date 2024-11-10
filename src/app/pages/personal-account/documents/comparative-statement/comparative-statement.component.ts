@@ -81,19 +81,17 @@ export class ComparativeStatementComponent implements OnInit {
       return;
     }
 
-    const selectedFiles: SelectedFiles = {
-      planFile: this.File1,
-      summaryFile: this.File2,
-      planFileListName: this.form.get('planFileListName')?.value,
-      summaryFileListName: this.form.get('summaryFileListName')?.value, 
-      contractorName: this.form.get('contractorName')?.value,
-      statementDate: this.form.get('statementDate')?.value,
-      system: this.form.get('system')?.value,
-    };
 
-    console.log(selectedFiles);
+    const formData = new FormData();
+    formData.append('planFile', this.File1);
+    formData.append('summaryFile', this.File2);
+    formData.append('planFileListName', this.form.get('planFileListName')?.value);
+    formData.append('summaryFileListName', this.form.get('summaryFileListName')?.value);
+    formData.append('contractorName', this.form.get('contractorName')?.value);
+    formData.append('statementDate', this.form.get('statementDate')?.value);
+    formData.append('system', this.form.get('system')?.value);
 
-    this.comparativeStatementService.uploadFiles(selectedFiles).subscribe({
+    this.comparativeStatementService.uploadFiles(formData).subscribe({
       next: (response) => console.log("Data successfully", response),
       error: (error) => console.log("Error sending Data", error)
     });
