@@ -1,6 +1,8 @@
 export interface SelectedFiles {
-    File1: File;
-    File2: File;
+    planFile: File;
+    summaryFile: File;
+    planFileListName: string;
+    summaryFileListName: string;
     contractorName: string;
     statementDate: string;
     system: string;

@@ -79,8 +79,10 @@ export class ComparativeStatementComponent implements OnInit {
     }
 
     const selectedFiles: SelectedFiles = {
-      File1: this.File1,
-      File2: this.File2,
+      planFile: this.File1,
+      summaryFile: this.File2,
+      planFileListName: "",
+      summaryFileListName: "",
       contractorName: this.form.get('contractorName')?.value,
       statementDate: this.form.get('statementDate')?.value,
       system: this.form.get('system')?.value,
