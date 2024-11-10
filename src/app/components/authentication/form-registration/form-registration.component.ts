@@ -62,10 +62,10 @@ export class FormRegistrationComponent {
         (response) => {
           console.log('Успешная регистрация:', response);
           
-          this.tokenService.setToken(response.token);
-          console.log('response.token:', response.token);
-          this.router.navigate([`/${response.id}`]);
-          console.log('response.id:', response.id);
+          this.tokenService.setToken(response.data.token);
+          console.log('response.token:', response.data.token);
+          this.router.navigate([`/${response.data.id}`]);
+          console.log('response.id:', response.data.id);
         },
         (error) => {
           console.error('Ошибка при регистрации:', error);

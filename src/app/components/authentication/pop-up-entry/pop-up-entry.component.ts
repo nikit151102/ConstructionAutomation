@@ -90,8 +90,12 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
       };
       this.formAuthorizationService.signIn(Data).subscribe((response: any) => {
         console.log('Успешный вход:', response);
-        this.tokenService.setToken(response.token);
+        this.tokenService.setToken(response.data.token);
         this.userAuthenticated = true;
+        this.tokenService.setToken(response.data.token);
+        console.log('response.token:', response.data.token);
+        this.router.navigate([`/${response.data.id}`]);
+        console.log('response.id:', response.data.id);
       });
     } else {
       Data = {
@@ -105,8 +109,12 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
       };
       this.formRegistrationService.signUn(Data).subscribe((response: any) => {
         console.log('Успешная регистрация:', response);
-        this.tokenService.setToken(response.token);
+        this.tokenService.setToken(response.data.token);
         this.userAuthenticated = true;
+        this.tokenService.setToken(response.data.token);
+        console.log('response.token:', response.data.token);
+        this.router.navigate([`/${response.data.id}`]);
+        console.log('response.id:', response.data.id);
       });
     }
 
