@@ -52,18 +52,18 @@ export class FormAuthorizationComponent implements OnInit {
     if (this.signInForm.valid) {
       const formData = this.signInForm.value;
 
-      // const Data  = {
-      //   UserName: formData.username,
-      //   Hash: '',
-      //   Email: formData.username,
-      //   Password: formData.password, 
-      // };
       const Data  = {
-          UserName: 'nikit',
-          Hash: '6greg9rgf5gfdgfd8fgre9t4trf7grefr34',
-          Email: '',
-          Password: '', 
-        };
+        UserName: formData.username,
+        Hash: '',
+        Email: formData.username,
+        Password: formData.password, 
+      };
+      // const Data  = {
+      //     UserName: 'nikit',
+      //     Hash: '6greg9rgf5gfdgfd8fgre9t4trf7grefr34',
+      //     Email: '',
+      //     Password: '', 
+      //   };
         
       console.log('Форма отправлена:', Data);
       
