@@ -21,12 +21,14 @@
         </div>
       </p-floatLabel>
     </div>
-    <app-custom-button [backgroundColor]="'#28a745'" [hoverColor]="'#218838'" [textColor]="'#ffffff'"
+    <div style="display: flex; gap: 10px;">
+      <app-custom-button [backgroundColor]="'#28a745'" [hoverColor]="'#218838'" [textColor]="'#ffffff'"
       (buttonClick)="onSignIn()">
       Войти
     </app-custom-button>
-
     <app-pop-up-entry  [type]="'authorization'"></app-pop-up-entry>
+    </div>
+   
   </form>
 
 </div>

@@ -65,10 +65,9 @@
 }
 
 .popup-login-link {
-    border-radius: 30px;
-    padding: 16px;
-    background: #84dd2c;
-    width: 374px;
+    border-radius: 15px;
+    padding: 4.5px 30px;
+    background: #0088cc;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,7 +80,7 @@
 }
 
 .popup-login-link:hover{
-    background: #5A4BB8;
+
 }
 
 @media (max-width: 987px) {
