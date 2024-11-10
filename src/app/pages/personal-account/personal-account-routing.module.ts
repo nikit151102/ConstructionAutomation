@@ -19,6 +19,10 @@ const routes: Routes = [
       {
         path: 'profile', 
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) 
+      },
+      {
+        path: 'comparativeStatement', 
+        loadChildren: () => import('./documents/comparative-statement/comparative-statement.module').then(m => m.ComparativeStatementModule) 
       }
     ]
   },

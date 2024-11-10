@@ -33,9 +33,17 @@ ul {
   &.close {
     width: 88px;
 
+    ul {
+      width: 40px;
+    }
+
     .text {
       display: none;
       transition: display 0.3s ease
+    }
+
+    .submenu {
+      display: none;
     }
   }
 
@@ -100,6 +108,10 @@ ul {
               }
             }
           }
+        }
+
+        .submenu {
+          margin-left: 20px;
         }
       }
     }

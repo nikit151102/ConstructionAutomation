@@ -28,10 +28,10 @@ export class SidebarComponent {
       label: 'Инструменты', icon: 'pi pi-users',
       items: [
         {
-          label: 'Подкатегория 1', icon: 'pi pi-wrench', command: () => this.executeCommand('tool1')
+          label: 'Cопоставительная ведомость', icon: '', command: () => this.executeCommand('comparativeStatement')
         },
         {
-          label: 'Подкатегория 2', icon: 'pi pi-briefcase', command: () => this.executeCommand('tool2')
+          label: 'Подкатегория 2', icon: '', command: () => this.executeCommand('tool2')
         }
       ]
     },
@@ -39,7 +39,7 @@ export class SidebarComponent {
       label: 'Документы', icon: 'pi pi-file',
       items: [
         {
-          label: 'Подкатегория 1', icon: 'pi pi-folder', command: () => this.executeCommand('doc1')
+          label: 'Сопоставительная ведомость', icon: 'pi pi-folder', command: () => this.executeCommand('doc1')
         },
         {
           label: 'Подкатегория 2', icon: 'pi pi-file-pdf', command: () => this.executeCommand('doc2')

@@ -2,13 +2,14 @@
   <div class="menu-bar">
     <div class="menu">
       <ul class="menu-links">
-        <li class="nav-link" *ngFor="let item of menuItems; let i = index">
-          <a (click)="item.items ? toggleSubmenu(i) : item.command()">
-            <i class="bx" [ngClass]="item.icon"></i>
-            <span class="text nav-text">{{ item.label }}</span>
-            <i *ngIf="item.items" class="bx" [ngClass]="submenuState[i] ? 'bx-chevron-up' : 'bx-chevron-down'"></i>
-          </a>
-
+        <ng-container *ngFor="let item of menuItems; let i = index">
+          <li class="nav-link">
+            <a (click)="item.items ? toggleSubmenu(i) : item.command()">
+              <i class="bx" [ngClass]="item.icon"></i>
+              <span class="text nav-text">{{ item.label }}</span>
+              <i *ngIf="item.items" class="bx" [ngClass]="submenuState[i] ? 'bx-chevron-up' : 'bx-chevron-down'"></i>
+            </a>
+          </li>
           <ul *ngIf="item.items && submenuState[i]" class="submenu">
             <li *ngFor="let subItem of item.items">
               <a (click)="subItem.command()">
@@ -17,7 +18,7 @@
               </a>
             </li>
           </ul>
-        </li>
+        </ng-container>
       </ul>
     </div>
   </div>
@@ -44,6 +45,6 @@
 
 </nav>
 
-<section class="home">
+<!-- <section class="home">
   <div class="text">Dashboard Sidebar</div>
-</section>
+</section> -->

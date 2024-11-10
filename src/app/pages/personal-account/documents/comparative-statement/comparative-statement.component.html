@@ -1,0 +1,31 @@
+<div class="card flex justify-content-center">
+    <form [formGroup]="form">
+        <div class="p-field">
+            <label for="contractorName">Наименование подрядной организации</label>
+            <input id="contractorName" type="text" pInputText formControlName="contractorName" />
+        </div>
+
+        <div class="p-field">
+            <label for="statementDate">Дата составления</label>
+            <p-calendar id="statementDate" formControlName="statementDate" dateFormat="yy-mm-dd"></p-calendar>
+        </div>
+
+        <div class="p-field">
+            <label for="system">Система</label>
+            <input id="system" type="text" pInputText formControlName="system" />
+        </div>
+
+        <div class="p-field">
+            <p-toast></p-toast>
+            <p-fileUpload mode="basic" chooseLabel="Локальная смета" chooseIcon="pi pi-upload" name="file1"
+                accept=".pdf, .xls, .xlsx" maxFileSize="10000000" [multiple]="false" (onSelect)="onSelect('file1', $event)" />
+        </div>
+        <div class="p-field">
+            <p-toast></p-toast>
+            <p-fileUpload mode="basic" chooseLabel="КС-2" chooseIcon="pi pi-upload" name="file2"
+                accept=".pdf, .xls, .xlsx" maxFileSize="10000000" [multiple]="false" (onSelect)="onSelect('file2', $event)" />
+        </div>
+
+        <button (click)="onUpload()" [disabled]="!form.valid || !File1 || !File2">Отправить</button>
+    </form>
+</div>
