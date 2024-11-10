@@ -12,7 +12,6 @@ export class ComparativeStatementService {
   constructor(private http: HttpClient) {}
 
   uploadFiles(files: SelectedFiles): Observable<any> {
-
     return this.http.post(environment.apiUrl, files, {
       headers: new HttpHeaders({
         'Accept': 'application/json'

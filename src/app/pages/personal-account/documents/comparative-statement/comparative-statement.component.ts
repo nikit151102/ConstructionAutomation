@@ -67,9 +67,9 @@ export class ComparativeStatementComponent implements OnInit {
     
     console.log( selectedFiles);
 
-    // this.comparativeStatementService.uploadFiles(selectedFiles).subscribe({
-    //   next: (response) => console.log("Files sent successfully", response),
-    //   error: (error) => console.log("Error sending files", error)
-    // });
+    this.comparativeStatementService.uploadFiles(selectedFiles).subscribe({
+      next: (response) => console.log("Data successfully", response),
+      error: (error) => console.log("Error sending Data", error)
+    });
   }
 }
