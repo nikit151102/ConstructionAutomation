@@ -35,5 +35,6 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
 
   toggleSidebar(): void {
     this.personalAccountService.toggleSidebar();
+    this.sidebarService.toggleSidebar();
   }
 }

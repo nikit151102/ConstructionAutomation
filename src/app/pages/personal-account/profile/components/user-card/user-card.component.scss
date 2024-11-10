@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #e1e7ed;
+    text-align: center;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #33363b;
+}
+
+p {
+    font-size: 14px;
+    color: #868d9b;
+}
+
+.card {
+    height: auto;
+    border-radius: 15px;
+    background-color: #ffffff;
+    margin: 0 auto;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.15);
+
+    @media (max-width: 1024px) {
+        width: auto;
+    }
+
+    .card_profile_img {
+        width: 120px;
+        height: 120px;
+        background-color: #868d9b;
+        background: url("https://sh71-ryazan-r62.gosweb.gosuslugi.ru/netcat_files/9/67/1649232769_58_vsegda_pomnim_com_p_pustoe_litso_foto_76.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        border: 2px solid #ffffff;
+        border-radius: 120px;
+        margin: 0 auto;
+        margin-top: -60px;
+    }
+
+    .card_background_img {
+        width: 100%;
+        height: 180px;
+        border-radius: 15px;
+        background-color: #e1e7ed;
+        background: url("https://i.pinimg.com/originals/65/31/3f/65313fe63371b3c4350fdbb0fa0e60c7.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .user_details {
+        p {
+            margin-bottom: 20px;
+            margin-top: -5px;
+        }
+
+        h3 {
+            margin-top: 10px;
+        }
+    }
+
+    .card_count {
+        padding: 30px;
+        border-top: 1px solid #dde1e7;
+
+        .count {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+
+            p {
+                margin-top: -10px;
+            }
+        }
+
+        .btn {
+            padding: 16px;
+            width: 100%;
+            border: none;
+            outline: none;
+            border-radius: 4px;
+            background-color: #24c5a1;
+            color: #ffffff;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+    }
+}

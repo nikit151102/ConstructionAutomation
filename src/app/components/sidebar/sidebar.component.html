@@ -1,20 +1,49 @@
-<div class="sidebar" [class.open]="personalAccountService.isSidebarOpen" [class.collapsed]="!personalAccountService.isSidebarOpen">
-  <h3 *ngIf="personalAccountService.isSidebarOpen">Меню</h3>
-  <div class="sidebar-menu">
-    <ul>
-      <li *ngFor="let item of menuItems">
-        <div (click)="item.items ? toggleSubMenu(item.label) : item.command()">
-          <i [ngClass]="item.icon"></i>
-          <span class="menu-text">{{ item.label }}</span>
-        </div>
+<nav class="sidebar" [ngClass]="{ 'close': sidebarService.isSidebarClosed }">
+  <div class="menu-bar">
+    <div class="menu">
+      <ul class="menu-links">
+        <li class="nav-link" *ngFor="let item of menuItems; let i = index">
+          <a (click)="item.items ? toggleSubmenu(i) : item.command()">
+            <i class="bx" [ngClass]="item.icon"></i>
+            <span class="text nav-text">{{ item.label }}</span>
+            <i *ngIf="item.items" class="bx" [ngClass]="submenuState[i] ? 'bx-chevron-up' : 'bx-chevron-down'"></i>
+          </a>
 
-        <ul *ngIf="item.items && isSubMenuOpen[item.label]">
-          <li *ngFor="let subItem of item.items" (click)="subItem.command()">
-            <i [ngClass]="subItem.icon"></i>
-            <span class="menu-text">{{ subItem.label }}</span>
-          </li>
-        </ul>
-      </li>
-    </ul>
+          <ul *ngIf="item.items && submenuState[i]" class="submenu">
+            <li *ngFor="let subItem of item.items">
+              <a (click)="subItem.command()">
+                <i class="bx" [ngClass]="subItem.icon"></i>
+                <span class="text nav-text">{{ subItem.label }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
+
+  <div class="bottom-content">
+    <li class="logout">
+      <a>
+        <i class="bx bx-log-out icon"></i>
+        <span class="text nav-text">Logout</span>
+      </a>
+    </li>
+
+    <li class="mode">
+      <div class="sun-moon">
+        <i class="bx bx-moon icon moon"></i>
+        <i class="bx bx-sun icon sun"></i>
+      </div>
+      <span class="mode-text text">{{ darkMode ? 'Light mode' : 'Dark mode' }}</span>
+      <div class="toggle-switch" (click)="toggleMode()">
+        <span class="switch"></span>
+      </div>
+    </li>
+  </div>
+
+</nav>
+
+<section class="home">
+  <div class="text">Dashboard Sidebar</div>
+</section>

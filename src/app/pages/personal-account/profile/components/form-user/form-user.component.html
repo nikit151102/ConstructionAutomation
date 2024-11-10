@@ -1,0 +1,65 @@
+<form [formGroup]="userProfileForm" (ngSubmit)="onSubmit()">
+    <div class="p-field">
+        <label for="avatar">Аватарка</label>
+
+        <div *ngIf="avatarPreviewUrl; else uploadButton" class="avatar-container">
+            <img [src]="avatarPreviewUrl" alt="Avatar" class="avatar-preview" />
+            <button pButton type="button" label="Удалить" icon="pi pi-times" (click)="removeAvatar()"></button>
+        </div>
+
+        <ng-template #uploadButton>
+            <label class="upload-button">
+                <span>Добавить/Изменить</span>
+                <input type="file" (change)="onAvatarUpload($event)" accept="image/*" hidden />
+            </label>
+        </ng-template>
+
+        <!-- <p-message *ngIf="formControls['avatar'].errors?.['required'] && formControls['avatar'].touched"
+            severity="error" text="Аватарка обязательна"></p-message> -->
+    </div>
+
+    <div class="fields-container">
+        <div class="flex flex-column gap-2">
+            <label for="firstName">Имя</label>
+            <input pInputText id="firstName" formControlName="firstName" />
+            <p-message *ngIf="formControls['firstName'].errors?.['required'] && formControls['firstName'].touched"
+                severity="error" text="Поле 'Имя' обязательно для заполнения"></p-message>
+            <p-message *ngIf="formControls['firstName'].errors?.['minlength'] && formControls['firstName'].touched"
+                severity="error" text="Имя должно содержать не менее 2 символов"></p-message>
+        </div>
+
+        <div class="flex flex-column gap-2">
+            <label for="lastName">Фамилия</label>
+            <input pInputText id="lastName" formControlName="lastName" />
+            <p-message *ngIf="formControls['lastName'].errors?.['required'] && formControls['lastName'].touched"
+                severity="error" text="Поле 'Фамилия' обязательно для заполнения"></p-message>
+            <p-message *ngIf="formControls['lastName'].errors?.['minlength'] && formControls['lastName'].touched"
+                severity="error" text="Фамилия должна содержать не менее 2 символов"></p-message>
+        </div>
+
+        <div class="flex flex-column gap-2">
+            <label for="patronymic">Отчество</label>
+            <input pInputText id="patronymic" formControlName="patronymic" />
+        </div>
+
+        <div class="flex flex-column gap-2">
+            <label for="email">Почта</label>
+            <input pInputText id="email" formControlName="email" />
+            <p-message *ngIf="formControls['email'].errors?.['required'] && formControls['email'].touched"
+                severity="error" text="Поле 'Почта' обязательно для заполнения."></p-message>
+            <p-message *ngIf="formControls['email'].errors?.['email'] && formControls['email'].touched" severity="error"
+                text="Некорректный формат почты"></p-message>
+
+        </div>
+
+        <div class="flex flex-column gap-2">
+            <label for="tgUserName">Телеграм</label>
+            <input pInputText id="tgUserName" formControlName="tgUserName" (input)="onTgUserNameInput()" />
+            <p-message *ngIf="formControls['tgUserName'].errors?.['required'] && formControls['tgUserName'].touched"
+              severity="error" text="Поле Телеграм обязательно для заполнения."></p-message>
+          </div>
+          
+
+    </div>
+    <button pButton type="submit" label="Отправить"></button>
+</form>

@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+
+    > div:first-child {
+        flex: 0 0 30%;
+        padding: 10px;
+    }
+
+    > div:last-child {
+        flex: 1;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        gap: 1.5rem;
+
+        > div:first-child {
+            flex: 0 0 100%; 
+            padding: 10px;
+        }
+
+        > div:last-child {
+            flex: 0 0 100%; 
+            padding: 10px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        > div:first-child {
+            flex: 0 0 100%; 
+            padding: 8px;
+        }
+
+        > div:last-child {
+            flex: 0 0 100%; 
+            padding: 8px;
+        }
+    }
+}

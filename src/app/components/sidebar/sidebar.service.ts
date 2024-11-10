@@ -15,6 +15,7 @@ export class SidebarService {
   width_slide = 78; // Default width for desktop
   isSidebarClosed: boolean = true;
 
+
   constructor() {
     // Initialize screen width check
     this.checkScreenWidth();

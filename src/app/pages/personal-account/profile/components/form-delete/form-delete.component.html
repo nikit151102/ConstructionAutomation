@@ -1,0 +1,15 @@
+<div class="account-delete-container">
+    <h2>Удалить аккаунт</h2>
+    
+    <form [formGroup]="deleteForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>
+          <input type="checkbox" formControlName="confirm" />
+          Я подтверждаю удаление аккаунта
+        </label>
+      </div>
+      
+      <button type="submit" [disabled]="deleteForm.invalid">Удалить аккаунт</button>
+    </form>
+  </div>
+  
