@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
 
   currentUser = ''
   ngOnInit(): void {
-    throw new Error('error log');
     this.currentUserService.getUserData().subscribe({
       next: (data) => {
         this.currentUser = data
