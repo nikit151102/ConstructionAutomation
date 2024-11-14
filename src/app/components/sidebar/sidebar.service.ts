@@ -12,9 +12,10 @@ export class SidebarService {
   private isMobileScreen = new BehaviorSubject<boolean>(false);
   isMobileScreen$ = this.isMobileScreen.asObservable(); // Exported for subscription
 
-  width_slide = 78; // Default width for desktop
+  width_slide = 256; // Default width for desktop
   isSidebarClosed: boolean = true;
 
+  fixedSlidebar: boolean = false;
 
   constructor() {
     // Initialize screen width check

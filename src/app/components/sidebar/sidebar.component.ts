@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { SidebarService } from './sidebar.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PanelMenuModule } from 'primeng/panelmenu';
-import { SliderModule } from 'primeng/slider';
 import { SidebarModule } from 'primeng/sidebar';
 import { PersonalAccountService } from '../../pages/personal-account/personal-account.service';
 
@@ -15,57 +14,92 @@ import { PersonalAccountService } from '../../pages/personal-account/personal-ac
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
-export class SidebarComponent {
-
+export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   menuItems: any[] = [
+    { label: 'Главная', icon: 'pi pi-home', command: () => this.executeCommand('home') },
+    { label: 'Профиль', icon: 'pi pi-user', command: () => this.executeCommand('profile') },
     {
-      label: 'Главная', icon: 'pi pi-home', command: () => this.executeCommand('/home')
-    },
-    {
-      label: 'Профиль', icon: 'pi pi-cog', command: () => this.executeCommand('/profile')
-    },
-    {
-      label: 'Инструменты', icon: 'pi pi-users',
-      items: [
-        {
-          label: 'Cопоставительная ведомость', icon: '', command: () => this.executeCommand('comparativeStatement')
-        },
-        {
-          label: 'Подкатегория 2', icon: '', command: () => this.executeCommand('tool2')
-        }
+      label: 'Инструменты', icon: 'pi pi-wrench', items: [
+        { label: 'Cопоставительная ведомость', command: 'comparativeStatement' },
+        { label: 'Подкатегория 2', command: 'tool2' }
       ]
     },
     {
-      label: 'Документы', icon: 'pi pi-file',
-      items: [
-        {
-          label: 'Сопоставительная ведомость', icon: 'pi pi-folder', command: () => this.executeCommand('doc1')
-        },
-        {
-          label: 'Подкатегория 2', icon: 'pi pi-file-pdf', command: () => this.executeCommand('doc2')
-        }
+      label: 'Документы', icon: 'pi pi-file', items: [
+        { label: 'Сопоставительная ведомость', command: 'doc1' },
+        { label: 'Подкатегория 2', command: 'doc2' }
       ]
     },
-    {
-      label: 'Настройки', icon: 'pi pi-book', command: () => this.executeCommand('specialties')
-    },
-    {
-      label: 'Закрепить меню', icon: 'pi pi-pin', command: () => this.togglePinSidebar()
-    },
-    {
-      label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.exitCommand('exit')
-    }
+    { label: 'Настройки', icon: 'pi pi-cog', command: () => this.executeCommand('settings') },
+    { label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit') }
   ];
 
-  constructor(public sidebarService: SidebarService, private router: Router, private activatedRoute: ActivatedRoute, public personalAccountService: PersonalAccountService) {
+  isSidebarOpen = false;
+  isMobileScreen = false;
+  darkMode = false;
+  submenuState: boolean[] = [];
+  private subscriptions: Subscription[] = [];
+
+  constructor(
+    public sidebarService: SidebarService,
+    private router: Router,
+    private personalAccountService: PersonalAccountService,
+    private activatedRoute: ActivatedRoute
+  ) { }
+
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.sidebarService.isSidebarOpen$.subscribe(state => {
+        this.isSidebarOpen = state;
+        this.updateSidebarStyles();
+      }),
+      this.sidebarService.isMobileScreen$.subscribe(isMobile => {
+        this.isMobileScreen = isMobile;
+      })
+    );
+  }
+
+  ngAfterViewInit(): void {
+    const navToggle = document.getElementById('nav-toggle') as HTMLInputElement;
+    if (navToggle && !navToggle.checked) {
+      this.updateSidebarStyles();
+    }
+  }
+
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  updateSidebarStyles(): void {
+    const styles = this.isSidebarOpen ? { opacity: '1', pointerEvents: 'auto' } : { opacity: '0', pointerEvents: 'none' };
+    this.applyStyles('#nav-content .nav-button span, #nav-footer #nav-footer-titlebox, #nav-header #nav-title', styles);
+    document.querySelectorAll('#nav-bar a').forEach((el: any) => {
+      el.style.width = this.isSidebarOpen ? 'auto' : '35px';
+    });
+
+    this.applyStyles('#nav-content', { width: 'auto' });
+    if (styles.opacity === '0') {
+      this.applyStyles('#nav-header', { width: 'auto' });
+    }
 
   }
 
-  ngOnInit(): void { }
+  applyStyles(selector: string, styles: { [key: string]: string }): void {
+    document.querySelectorAll(selector).forEach((el: any) => {
+      Object.assign(el.style, styles);
+    });
+  }
 
-  executeCommand(commandName: string) {
-    if (commandName === 'togglePin') {
-      this.togglePinSidebar();
+  toggleSidebar(): void {
+    this.sidebarService.toggleSidebar();
+    this.personalAccountService.toggleSidebar();
+  }
+
+  executeCommand(commandName: string): void {
+    if (commandName === 'exit') {
+      localStorage.removeItem('YXV0aFRva2Vu');
+      this.router.navigate(['/login']);
     } else {
       this.activatedRoute.paramMap.subscribe(params => {
         const id = params.get('id');
@@ -76,31 +110,19 @@ export class SidebarComponent {
     }
   }
 
-  exitCommand(commandName: string) {
-    if (commandName === 'exit') {
-      localStorage.removeItem('YXV0aFRva2Vu');
-      this.router.navigate([`/login`]);
+  toggleFixedSidebar() {
+    if (this.sidebarService.fixedSlidebar) {
+      this.sidebarService.toggleSidebar();
+      this.personalAccountService.toggleSidebar();
     }
+    this.sidebarService.fixedSlidebar = !this.sidebarService.fixedSlidebar;
   }
 
-  togglePinSidebar() {
-  }
-
-
-  darkMode = false;
-
-
-  expandSidebar() {
-    this.sidebarService.isSidebarClosed = false;
-  }
-
-  toggleMode() {
+  toggleMode(): void {
     this.darkMode = !this.darkMode;
   }
 
-  submenuState: boolean[] = [];
-
-  toggleSubmenu(index: number) {
+  toggleSubmenu(index: number): void {
     this.submenuState[index] = !this.submenuState[index];
   }
 

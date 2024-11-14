@@ -1,50 +1,49 @@
-<nav class="sidebar" [ngClass]="{ 'close': sidebarService.isSidebarClosed }">
-  <div class="menu-bar">
-    <div class="menu">
-      <ul class="menu-links">
-        <ng-container *ngFor="let item of menuItems; let i = index">
-          <li class="nav-link">
-            <a (click)="item.items ? toggleSubmenu(i) : item.command()">
-              <i class="bx" [ngClass]="item.icon"></i>
-              <span class="text nav-text">{{ item.label }}</span>
-              <i *ngIf="item.items" class="bx" [ngClass]="submenuState[i] ? 'bx-chevron-up' : 'bx-chevron-down'"></i>
-            </a>
-          </li>
-          <ul *ngIf="item.items && submenuState[i]" class="submenu">
-            <li *ngFor="let subItem of item.items">
-              <a (click)="subItem.command()">
-                <i class="bx" [ngClass]="subItem.icon"></i>
-                <span class="text nav-text">{{ subItem.label }}</span>
-              </a>
-            </li>
-          </ul>
-        </ng-container>
+<div id="nav-bar" [class.sidebar-open]="isSidebarOpen" [class.sidebar-closed]="!isSidebarOpen && !sidebarService.fixedSlidebar" >
+  <input type="checkbox" id="nav-toggle"  (change)="toggleSidebar()">
+  <div id="nav-header">
+    <a href="https://codepen.io" target="_blank" id="nav-title">
+      Меню
+    </a>
+    <label for="nav-fixed" *ngIf="isSidebarOpen" style="    position: absolute;
+    right: 0;
+    width: 5rem;">
+      <span class="pi" [ngClass]="sidebarService.fixedSlidebar ? 'pi-lock' : 'pi-lock-open'" (click)="toggleFixedSidebar()"></span>
+    </label>
+    
+    <label for="nav-toggle">
+      <span class="pi pi-chevron-left"></span>
+    </label>
+    <hr>
+  </div>
+  <div id="nav-content" [class.mobile]="isMobileScreen">
+    <ng-container *ngFor="let item of menuItems; let i = index">
+      <li class="nav-button" (click)="item.items ? toggleSubmenu(i) : item.command()">
+        <a>
+          <i class="bx" [ngClass]="item.icon"></i>
+          <span class="text nav-text">{{ item.label }}</span>
+          <i *ngIf="item.items" class="bx" [ngClass]="submenuState[i] ? 'bx-chevron-up' : 'bx-chevron-down'"></i>
+        </a>
+      </li>
+      <ul class="submenu" *ngIf="isSidebarOpen">
+        <li class="sub-button"  *ngFor="let subItem of item.items">
+          <a (click)="subItem.command()">
+            <i class="bx" [ngClass]="subItem.icon"></i>
+            <span class="text nav-text">{{ subItem.label }}</span>
+          </a>
+        </li>
       </ul>
+      <hr>
+    </ng-container>
+  </div>
+  <div id="nav-footer">
+    <div id="nav-footer-heading">
+      <div id="nav-footer-avatar">
+        <img src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547">
+      </div>
+      <div id="nav-footer-titlebox">
+        <a href="" target="_blank" id="nav-footer-title">uahnbu</a>
+        <span id="nav-footer-subtitle">Admin</span>
+      </div>
     </div>
   </div>
-
-  <div class="bottom-content">
-    <li class="logout">
-      <a>
-        <i class="bx bx-log-out icon"></i>
-        <span class="text nav-text">Logout</span>
-      </a>
-    </li>
-
-    <li class="mode">
-      <div class="sun-moon">
-        <i class="bx bx-moon icon moon"></i>
-        <i class="bx bx-sun icon sun"></i>
-      </div>
-      <span class="mode-text text">{{ darkMode ? 'Light mode' : 'Dark mode' }}</span>
-      <div class="toggle-switch" (click)="toggleMode()">
-        <span class="switch"></span>
-      </div>
-    </li>
-  </div>
-
-</nav>
-
-<!-- <section class="home">
-  <div class="text">Dashboard Sidebar</div>
-</section> -->
+</div>
