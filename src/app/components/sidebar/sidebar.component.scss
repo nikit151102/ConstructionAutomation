@@ -186,7 +186,18 @@ label[for="nav-toggle"] {
 
 }
 
+.no-hover {
+  pointer-events: none; 
+  cursor: default; 
+  background-color: transparent !important; 
+}
 
+.no-hover:hover {
+  background-color: transparent !important;
+  color: $navbar-light-secondary;
+  transform: none;
+  opacity: 1; 
+}
 
 .submenu {
   display: flex;

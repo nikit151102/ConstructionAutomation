@@ -17,7 +17,7 @@
   </div>
   <div id="nav-content" [class.mobile]="isMobileScreen">
     <ng-container *ngFor="let item of menuItems; let i = index">
-      <li class="nav-button" (click)="item.items ? toggleSubmenu(i) : item.command()">
+      <li class="nav-button" [ngClass]="{ 'no-hover': item.items }" (click)="item.items ? $event.preventDefault() : item.command()" >
         <a>
           <i class="bx" [ngClass]="item.icon"></i>
           <span class="text nav-text">{{ item.label }}</span>

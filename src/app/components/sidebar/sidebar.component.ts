@@ -92,6 +92,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   toggleSidebar(): void {
+    if (this.sidebarService.fixedSlidebar) {
+      this.sidebarService.fixedSlidebar = false;
+    }
     this.sidebarService.toggleSidebar();
     this.personalAccountService.toggleSidebar();
   }
