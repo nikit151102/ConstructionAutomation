@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { ButtonModule } from 'primeng/button';
@@ -16,6 +16,7 @@ import { PersonalAccountService } from './personal-account.service';
 })
 export class PersonalAccountComponent implements OnInit, OnDestroy {
   isSidebarOpen: boolean = false;
+  isSmallScreen = false;
   private screenSubscription!: Subscription;
 
   constructor(public sidebarService: SidebarService, private cdr: ChangeDetectorRef, public personalAccountService:PersonalAccountService) {}
@@ -23,8 +24,9 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.screenSubscription = this.sidebarService.isSidebarOpen$.subscribe((isOpen) => {
       this.isSidebarOpen = isOpen;
-      this.cdr.detectChanges(); // Явно вызываем обновление
+      this.cdr.detectChanges(); 
     });
+    this.checkScreenSize(); 
   }
 
   ngOnDestroy(): void {
@@ -36,5 +38,14 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   toggleSidebar(): void {
     this.personalAccountService.toggleSidebar();
     this.sidebarService.toggleSidebar();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.checkScreenSize(); 
+  }
+
+  private checkScreenSize(): void {
+    this.isSmallScreen = window.innerWidth < 768;
   }
 }

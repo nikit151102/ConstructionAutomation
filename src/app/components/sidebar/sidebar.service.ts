@@ -27,7 +27,7 @@ export class SidebarService {
   private checkScreenWidth() {
     const isMobile = window.innerWidth <= 768;
     this.isMobileScreen.next(isMobile);
-    this.width_slide = isMobile ? 0 : 78;
+    this.width_slide = isMobile ? 0 : 80;
   }
 
   toggleSidebar() {
