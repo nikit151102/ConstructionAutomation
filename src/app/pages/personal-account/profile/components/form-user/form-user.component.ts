@@ -6,6 +6,9 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
+import { CurrentUserService } from '../../../../../services/current-user.service';
+import { UserData, UserUpdateRequest } from '../../../../../interfaces/user';
+import { FormUserService } from './form-user.service';
 
 @Component({
   selector: 'app-form-user',
@@ -22,10 +25,11 @@ import { MessagesModule } from 'primeng/messages';
   styleUrl: './form-user.component.scss'
 })
 export class FormUserComponent implements OnInit {
+
   userProfileForm!: FormGroup;
   avatarPreviewUrl: string | null = null;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, public currentUserService: CurrentUserService, private formUserService: FormUserService) { }
 
   ngOnInit(): void {
     this.userProfileForm = this.fb.group({
@@ -36,6 +40,27 @@ export class FormUserComponent implements OnInit {
       tgUserName: ['@', [Validators.required]],
       avatar: [null],
     });
+
+    if (!this.currentUserService.currentUser) {
+      this.currentUserService.getUserData();
+      this.currentUserService.UserData().subscribe({
+        next: (userData) => this.fillForm(userData.data),
+        error: (error) => console.error('Ошибка при получении данных пользователя:', error)
+      });
+    } else {
+      this.fillForm(this.currentUserService.currentUser);
+    }
+
+  }
+
+  fillForm(userData: UserData): void {
+    this.userProfileForm.patchValue({
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      patronymic: userData.patronymic,
+      email: userData.email,
+      tgUserName: userData.userName ? `@${userData.userName}` : '@',
+    });
   }
 
   onTgUserNameInput() {
@@ -44,7 +69,7 @@ export class FormUserComponent implements OnInit {
       tgUserNameControl.setValue('@' + tgUserNameControl.value);
     }
   }
-  
+
   onAvatarUpload(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
@@ -59,15 +84,53 @@ export class FormUserComponent implements OnInit {
     this.userProfileForm.get('avatar')?.markAsTouched();
   }
 
-  onSubmit() {
-    if (this.userProfileForm.valid) {
-      console.log(this.userProfileForm.value);
-    } else {
-      this.userProfileForm.markAllAsTouched();
+  updateUser() {
+    if (!this.currentUserService.currentUser.id) {
+      console.error("User ID is missing");
+      return;
     }
+
+    const userUpdateRequest: UserUpdateRequest = {
+      id: this.currentUserService.currentUser.id,
+      firstName: this.userProfileForm.value.firstName,
+      lastName: this.userProfileForm.value.lastName,
+      patronymic: this.userProfileForm.value.patronymic,
+      email: this.userProfileForm.value.email,
+      userName: this.userProfileForm.value.tgUserName.replace('@', ''),
+      roleIds: this.getRoleIds()
+    };
+
+    // Нужно подправить
+    this.formUserService.updateUserData(userUpdateRequest).subscribe((data: any) => {
+      this.currentUserService.UserData().subscribe({
+        next: (data) => {
+          this.currentUserService.currentUser = data.data;
+        },
+        error: (error) => {
+          console.error('Ошибка при получении данных пользователя:', error);
+        }
+      });
+    })
+  }
+
+  getRoleIds(): string[] {
+    if (!this.currentUserService.currentUser) {
+      console.error('Пользователь не найден');
+      return [];
+    }
+    return this.currentUserService.currentUser.roles.map(role => role.id);
   }
 
   get formControls() {
     return this.userProfileForm.controls;
+  }
+
+  onSubmit() {
+    if (this.userProfileForm.valid) {
+      this.updateUser();
+    } else {
+      this.userProfileForm.markAllAsTouched();
+
+    }
   }
 }

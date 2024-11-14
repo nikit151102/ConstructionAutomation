@@ -1,6 +1,6 @@
 <div class="menu-container">
     <div class="right-container">
-        {{currentUser}}
+      
     </div>
     <div class="left-container">
         <div class="container-cards">
@@ -12,7 +12,7 @@
 
         <div *ngFor="let item of menuItems">
             <ng-container *ngIf="item.items">
-                <h3>{{ item.label }}</h3> <!-- Group title -->
+                <h3>{{ item.label }}</h3> 
                 <div class="tile-group">
                     <div class="tile" *ngFor="let subItem of item.items" (click)="subItem.command()">
                         <i class="{{ subItem.icon }}"></i>

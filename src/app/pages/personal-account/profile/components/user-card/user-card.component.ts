@@ -1,12 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CurrentUserService } from '../../../../../services/current-user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-card',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './user-card.component.html',
   styleUrl: './user-card.component.scss'
 })
-export class UserCardComponent {
+export class UserCardComponent implements OnInit{
+
+  constructor(public currentUserService: CurrentUserService) { }
+  
+  ngOnInit(): void {
+    if (!this.currentUserService.currentUser) {
+      this.currentUserService.getUserData();
+    }
+  }
 
 }

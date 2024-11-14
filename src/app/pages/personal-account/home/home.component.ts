@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ExcelViewerComponent } from '../../../components/excel-viewer/excel-viewer.component';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { PdfViewerComponent } from '../../../components/pdf-viewer/pdf-viewer.component';
+import { User } from '../../../interfaces/user';
 
 @Component({
   selector: 'app-home',
@@ -14,18 +15,12 @@ import { PdfViewerComponent } from '../../../components/pdf-viewer/pdf-viewer.co
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, private currentUserService: CurrentUserService) { }
+  constructor(private router: Router, public currentUserService: CurrentUserService) { }
 
-  currentUser = ''
   ngOnInit(): void {
-    this.currentUserService.getUserData().subscribe({
-      next: (data) => {
-        this.currentUser = data
-      },
-      error: (error) => {
-        console.error('Ошибка при получении данных пользователя:', error);
-      }
-    });
+    if (!this.currentUserService.currentUser) {
+      this.currentUserService.getUserData();
+    }
   }
 
   menuItems: any[] = [

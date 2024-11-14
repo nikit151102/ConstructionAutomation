@@ -58,23 +58,13 @@ export class FormAuthorizationComponent implements OnInit {
         Email: formData.username,
         Password: formData.password, 
       };
-      // const Data  = {
-      //     UserName: 'nikit',
-      //     Hash: '6greg9rgf5gfdgfd8fgre9t4trf7grefr34',
-      //     Email: '',
-      //     Password: '', 
-      //   };
-        
-      console.log('Форма отправлена:', Data);
       
       this.AuthorizationService.signIn(Data).subscribe(
         (response) => {
           if(response.data){
-            console.log('Успешный вход:', response);
             this.tokenService.setToken(response.data.token);
-            console.log('response.token:', response.data.token);
             this.router.navigate([`/${response.data.id}`]);
-            console.log('response.id:', response.data.id);
+            localStorage.setItem('idUser', response.data.id);
           }
           
         },

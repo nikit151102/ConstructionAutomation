@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { FormUserComponent } from './components/form-user/form-user.component';
 import { FormDeleteComponent } from './components/form-delete/form-delete.component';
+import { CurrentUserService } from '../../../services/current-user.service';
 
 @Component({
   selector: 'app-profile',
@@ -12,8 +13,13 @@ import { FormDeleteComponent } from './components/form-delete/form-delete.compon
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
+
+  constructor(public currentUserService: CurrentUserService) { }
+
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    if (!this.currentUserService.currentUser) {
+      this.currentUserService.getUserData();
+    }
   }
 
 

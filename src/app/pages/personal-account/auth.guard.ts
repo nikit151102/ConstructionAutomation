@@ -21,19 +21,19 @@ export class AuthGuard implements CanActivate {
       return of(false);
     }
 
-    // Создание заголовков с токеном
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
-    // return this.http.get<any>(`${environment.apiUrl}/api/User`, { headers }).pipe(
-    //   map(() => true), 
-    //   catchError(() => {
-    //     this.tokenService.clearToken()
-    //     this.router.navigate(['/']); 
-    //     return of(false); 
-    //   })
-    // );
+    
+    const idUser = localStorage.getItem('idUser');
+    return this.http.get<any>(`${environment.apiUrl}/api/User/${idUser}`, { headers }).pipe(
+      map(() => true), 
+      catchError(() => {
+        this.tokenService.clearToken()
+        this.router.navigate(['/']); 
+        return of(false); 
+      })
+    );
     return of(true)
   }
 }
