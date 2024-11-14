@@ -30,19 +30,19 @@
             <i class="bx" [ngClass]="subItem.icon"></i>
             <span class="text nav-text">{{ subItem.label }}</span>
           </a>
-        </li>
+        </li> 
       </ul>
       <hr>
     </ng-container>
   </div>
   <div id="nav-footer">
-    <div id="nav-footer-heading">
+
+    <div id="nav-footer-heading" (click)="executeCommand('profile')">
       <div id="nav-footer-avatar">
         <img src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547">
       </div>
       <div id="nav-footer-titlebox">
-        <a href="" target="_blank" id="nav-footer-title">uahnbu</a>
-        <span id="nav-footer-subtitle">Admin</span>
+        <a *ngIf="currentUserService.currentUser" target="_blank" id="nav-footer-title" style=" font-size: 12px;">{{currentUserService.currentUser.lastName}} {{currentUserService.currentUser.firstName}} {{currentUserService.currentUser.patronymic}}</a>
       </div>
     </div>
   </div>

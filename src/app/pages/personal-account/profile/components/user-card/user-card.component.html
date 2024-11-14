@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card_background_img"></div>
     <div class="card_profile_img"></div>
-    <div class="user_details">
+    <div class="user_details" *ngIf="currentUserService.currentUser">
         <h3>{{currentUserService.currentUser.lastName}} {{currentUserService.currentUser.firstName}}
             {{currentUserService.currentUser.patronymic}}
         </h3>

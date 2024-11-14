@@ -12,7 +12,8 @@ import { PersonalAccountService } from './personal-account.service';
   standalone: true,
   imports: [CommonModule, RouterOutlet, SidebarComponent, ButtonModule],
   templateUrl: './personal-account.component.html',
-  styleUrls: ['./personal-account.component.scss']
+  styleUrls: ['./personal-account.component.scss'],
+
 })
 export class PersonalAccountComponent implements OnInit, OnDestroy {
   isSidebarOpen: boolean = false;

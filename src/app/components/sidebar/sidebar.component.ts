@@ -6,11 +6,12 @@ import { Subscription } from 'rxjs';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { SidebarModule } from 'primeng/sidebar';
 import { PersonalAccountService } from '../../pages/personal-account/personal-account.service';
-
+import { CurrentUserService } from '../../services/current-user.service'
+;
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, PanelMenuModule, SidebarModule],
+  imports: [CommonModule, PanelMenuModule, SidebarModule, ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
@@ -20,7 +21,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: 'Профиль', icon: 'pi pi-user', command: () => this.executeCommand('profile') },
     {
       label: 'Инструменты', icon: 'pi pi-wrench', items: [
-        { label: 'Cопоставительная ведомость', command: 'comparativeStatement' },
+        { label: 'Cопоставительная ведомость', command: () => this.executeCommand('comparativeStatement') },
         { label: 'Подкатегория 2', command: 'tool2' }
       ]
     },
@@ -34,6 +35,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit') }
   ];
 
+  
   isSidebarOpen = false;
   isMobileScreen = false;
   darkMode = false;
@@ -44,7 +46,8 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     public sidebarService: SidebarService,
     private router: Router,
     private personalAccountService: PersonalAccountService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public currentUserService: CurrentUserService
   ) { }
 
   ngOnInit(): void {
@@ -57,6 +60,10 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isMobileScreen = isMobile;
       })
     );
+
+    if (!this.currentUserService.currentUser) {
+      this.currentUserService.getUserData();
+    }
   }
 
   ngAfterViewInit(): void {
