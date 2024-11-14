@@ -32,6 +32,10 @@ const routes: Routes = [
         path: 'UserRolePermission', 
         loadChildren: () => import('./Admin/user-role-permission/user-role-permission.module').then(m => m.UserRolePermissionModule) 
       },
+      {
+        path: 'Users', 
+        loadChildren: () => import('./Admin/users/users.module').then(m => m.UsersModule) 
+      },
     ]
   },
 ];

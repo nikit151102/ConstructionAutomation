@@ -1,0 +1,38 @@
+<div class="container">
+    <h2>Управление пользователями</h2>
+    <p-table [value]="users" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" [expandedRowKeys]="expandedRows">
+
+        <ng-template pTemplate="header">
+            <tr>
+               
+                <th pSortableColumn="userName">Имя пользователя <p-sortIcon field="userName"></p-sortIcon></th>
+                <th pSortableColumn="email">Электронная почта <p-sortIcon field="email"></p-sortIcon></th>
+                <th pSortableColumn="firstName">Имя <p-sortIcon field="firstName"></p-sortIcon></th>
+                <th pSortableColumn="lastName">Фамилия <p-sortIcon field="lastName"></p-sortIcon></th>
+                <th>Роли</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-expanded="expanded">
+            <tr>
+                <td>{{ product.userName }}</td>
+                <td>{{ product.email }}</td>
+                <td>{{ product.firstName }}</td>
+                <td>{{ product.lastName }}</td>
+                <td>
+                    <ul>
+                        <li *ngFor="let role of product.roles">
+                            {{ role.name }}
+                            <ul>
+                                <li *ngFor="let permission of role.permissions">{{ permission.name }}</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </ng-template>
+        
+
+</p-table>
+
+
+</div>

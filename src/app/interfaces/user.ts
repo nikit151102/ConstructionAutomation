@@ -11,7 +11,7 @@ export interface UserData {
     patronymic: string;
     id: string;
     roles: Role[];
-    token: string | null;
+    token?: string | null;
     userName: string;
 }
 
