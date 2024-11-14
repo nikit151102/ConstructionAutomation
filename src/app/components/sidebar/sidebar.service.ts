@@ -1,5 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -7,31 +9,40 @@ import { BehaviorSubject } from 'rxjs';
 export class SidebarService {
 
   private isSidebarOpen = new BehaviorSubject<boolean>(false);
-  isSidebarOpen$ = this.isSidebarOpen.asObservable(); // Exported for subscription
+  isSidebarOpen$ = this.isSidebarOpen.asObservable();
 
   private isMobileScreen = new BehaviorSubject<boolean>(false);
-  isMobileScreen$ = this.isMobileScreen.asObservable(); // Exported for subscription
+  isMobileScreen$ = this.isMobileScreen.asObservable();
 
-  width_slide = 256; // Default width for desktop
+  width_slide = 256;
   isSidebarClosed: boolean = true;
 
   fixedSlidebar: boolean = false;
 
-  constructor() {
-    // Initialize screen width check
+  constructor(private http: HttpClient) {
     this.checkScreenWidth();
-    // Add listener for screen resize
     window.addEventListener('resize', () => this.checkScreenWidth());
   }
 
   private checkScreenWidth() {
-    const isMobile = window.innerWidth <= 768; // Mobile mode if width <= 768px
-    this.isMobileScreen.next(isMobile); // Update state
-    this.width_slide = isMobile ? 0 : 78; // Set sidebar width based on device
+    const isMobile = window.innerWidth <= 768;
+    this.isMobileScreen.next(isMobile);
+    this.width_slide = isMobile ? 0 : 78;
   }
 
   toggleSidebar() {
     this.isSidebarOpen.next(!this.isSidebarOpen.value);
     this.isSidebarClosed = !this.isSidebarClosed;
   }
+
+  getTypeDocs(): Observable<any> {
+    const token = localStorage.getItem('YXV0aFRva2Vu');
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get(`${environment.apiUrl}/`, { headers });
+  }
+
 }

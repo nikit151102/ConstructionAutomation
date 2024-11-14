@@ -15,7 +15,7 @@ export class AuthService {
 
   // Метод для проверки аутентификации
   isAuthenticated(): Observable<boolean> {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('YXV0aFRva2Vu');
     if (!token) {
       return of(false); // Если токена нет, возвращаем false
     }
@@ -37,12 +37,12 @@ export class AuthService {
 
   // Метод для выхода из системы
   logout(): void {
-    localStorage.removeItem('authToken'); // Удаляем токен из LocalStorage
+    localStorage.removeItem('YXV0aFRva2Vu'); // Удаляем токен из LocalStorage
   }
 
 
   getCurrentUser(): Observable<any> {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('YXV0aFRva2Vu');
 
     // Создание заголовков с токеном
     const headers = new HttpHeaders({
@@ -50,7 +50,7 @@ export class AuthService {
     });
 
     // Выполнение запроса с заголовками
-    return this.http.get(`${this.domain}/users/currentUser`, { headers });
+    return this.http.get(`${environment.apiUrl}/users/currentUser`, { headers });
   }
 
 }
