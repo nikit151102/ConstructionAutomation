@@ -1,0 +1,37 @@
+<div class="container">
+    <h2>Управление разрешениями ролей</h2>
+  
+    <div>
+      <h3>Все разрешения</h3>
+      <ul>
+        <li *ngFor="let permission of userRolePermissions">
+          {{ permission.name }} - {{ permission.endPointName }}
+          <button (click)="loadUserRolePermission(permission.id)">Редактировать</button>
+          <button (click)="deleteUserRolePermission(permission.id)">Удалить</button>
+        </li>
+      </ul>
+    </div>
+  
+    <div *ngIf="selectedUserRolePermission">
+      <h3>Редактировать разрешение</h3>
+      <form (ngSubmit)="updateUserRolePermission(selectedUserRolePermission.id)">
+        <label for="name">Имя:</label>
+        <input id="name" [(ngModel)]="selectedUserRolePermission.name" name="name" required />
+        <label for="endPointName">Имя точки доступа:</label>
+        <input id="endPointName" [(ngModel)]="selectedUserRolePermission.endPointName" name="endPointName" required />
+        <button type="submit">Сохранить</button>
+      </form>
+    </div>
+  
+    <div>
+      <h3>Создать новое разрешение</h3>
+      <form (ngSubmit)="createUserRolePermission()">
+        <label for="newName">Имя:</label>
+        <input id="newName" [(ngModel)]="newUserRolePermission.name" name="name" required />
+        <label for="newEndPointName">Имя точки доступа:</label>
+        <input id="newEndPointName" [(ngModel)]="newUserRolePermission.endPointName" name="endPointName" required />
+        <button type="submit">Создать</button>
+      </form>
+    </div>
+  </div>
+  

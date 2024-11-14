@@ -32,7 +32,10 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       ]
     },
     { label: 'Настройки', icon: 'pi pi-cog', command: () => this.executeCommand('settings') },
-    { label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit') }
+    { label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit') },
+    { label: 'Роли пользователей', icon: '', command: () => this.executeCommand('UserRoles') },
+    { label: 'Права доступа', icon: '', command: () => this.executeCommand('UserRolePermission') },
+    
   ];
 
   
