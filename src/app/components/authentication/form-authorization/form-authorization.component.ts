@@ -54,7 +54,7 @@ export class FormAuthorizationComponent implements OnInit {
 
       const Data  = {
         UserName: formData.username,
-        Hash: '',
+        UserId: '',
         Email: formData.username,
         Password: formData.password, 
       };

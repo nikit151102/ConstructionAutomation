@@ -1,5 +1,5 @@
 <form [formGroup]="userProfileForm" (ngSubmit)="onSubmit()">
-    <div class="p-field">
+    <!-- <div class="p-field">
         <label for="avatar">Аватарка</label>
 
         <div *ngIf="avatarPreviewUrl; else uploadButton" class="avatar-container">
@@ -14,9 +14,9 @@
             </label>
         </ng-template>
 
-        <!-- <p-message *ngIf="formControls['avatar'].errors?.['required'] && formControls['avatar'].touched"
-            severity="error" text="Аватарка обязательна"></p-message> -->
-    </div>
+        <p-message *ngIf="formControls['avatar'].errors?.['required'] && formControls['avatar'].touched"
+            severity="error" text="Аватарка обязательна"></p-message>
+    </div> -->
 
     <div class="fields-container">
         <div class="flex flex-column gap-2">
@@ -58,8 +58,11 @@
             <p-message *ngIf="formControls['tgUserName'].errors?.['required'] && formControls['tgUserName'].touched"
               severity="error" text="Поле Телеграм обязательно для заполнения."></p-message>
           </div>
+          <div class="flex flex-column gap-2" style="display: flex; justify-content: flex-end;">
+            <button pButton type="submit" label="Отправить"></button>
+          </div>
           
 
     </div>
-    <button pButton type="submit" label="Отправить"></button>
+   
 </form>

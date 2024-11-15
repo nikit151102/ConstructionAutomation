@@ -17,7 +17,7 @@ export class SidebarService {
   width_slide = 256;
   isSidebarClosed: boolean = true;
 
-  fixedSlidebar: boolean = false;
+  fixedSlidebar: boolean = true;
 
   constructor(private http: HttpClient) {
     this.checkScreenWidth();

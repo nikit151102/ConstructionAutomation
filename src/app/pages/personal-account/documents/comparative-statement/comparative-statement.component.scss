@@ -6,13 +6,21 @@
   /* background-color: #f4f4f9;*/
 }
 
+.container{
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  width: 100%;
+}
+
 .card {
+  flex: 1;
   background-color: #ffffff;
-  border-radius: 8px;
+  border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
 
   form {
     display: flex;
@@ -87,4 +95,10 @@
       cursor: not-allowed;
     }
   }
+}
+
+
+.viewExcel{
+  flex: 2;
+  margin-right: 15px;
 }

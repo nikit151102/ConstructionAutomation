@@ -84,7 +84,7 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
     if (this.type == 'authorization') {
       Data = {
         UserName: user.username,
-        Hash: user.hash,
+        UserId: user.id,
         Email: '',
         Password: '',
       };
@@ -93,15 +93,13 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
         this.tokenService.setToken(response.data.token);
         this.userAuthenticated = true;
         this.tokenService.setToken(response.data.token);
-        console.log('response.token:', response.data.token);
         this.router.navigate([`/${response.data.id}`]);
-        console.log('response.id:', response.data.id);
       });
     } else {
       Data = {
         FirstName: '',
         LastName: '',
-        Hash: user.hash,
+        UserId: user.id,
         UserName: user.username,
         Email: '',
         Password: '',

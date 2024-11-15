@@ -36,8 +36,8 @@ export class FormUserComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       patronymic: [''],
-      email: ['', [Validators.required, Validators.email]],
-      tgUserName: ['@', [Validators.required]],
+      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
+      tgUserName: [{ value: '@', disabled: true }, [Validators.required]],
       avatar: [null],
     });
 
@@ -90,13 +90,13 @@ export class FormUserComponent implements OnInit {
       return;
     }
 
-    const userUpdateRequest: UserUpdateRequest = {
+    const userUpdateRequest: any = {
       id: this.currentUserService.currentUser.id,
       firstName: this.userProfileForm.value.firstName,
       lastName: this.userProfileForm.value.lastName,
       patronymic: this.userProfileForm.value.patronymic,
-      email: this.userProfileForm.value.email,
-      userName: this.userProfileForm.value.tgUserName.replace('@', ''),
+      // email: this.userProfileForm.value.email,
+      // userName: this.userProfileForm.value.tgUserName.replace('@', ''),
       roleIds: this.getRoleIds()
     };
 

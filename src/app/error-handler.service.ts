@@ -27,14 +27,14 @@ export class GlobalErrorHandlerService implements ErrorHandler {
             timestamp: new Date().toISOString(),
         };
 
-        this.sendErrorToServer(errorResponse).subscribe({
-            next: (response) => {
-                console.log('Error logged to server:', response);
-            },
-            error: (err) => {
-                console.error('Error while logging to server:', err);
-            },
-        });
+        // this.sendErrorToServer(errorResponse).subscribe({
+        //     next: (response) => {
+        //         console.log('Error logged to server:', response);
+        //     },
+        //     error: (err) => {
+        //         console.error('Error while logging to server:', err);
+        //     },
+        // });
     }
 
     sendErrorToServer(error: ErrorResponse) {

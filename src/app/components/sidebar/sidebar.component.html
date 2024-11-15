@@ -13,7 +13,7 @@
     <label for="nav-toggle">
       <span class="pi pi-chevron-left"></span>
     </label>
-    <hr>
+
   </div>
   <div id="nav-content" [class.mobile]="isMobileScreen">
     <ng-container *ngFor="let item of menuItems; let i = index">
@@ -32,11 +32,9 @@
           </a>
         </li> 
       </ul>
-      <hr>
     </ng-container>
   </div>
   <div id="nav-footer">
-
     <div id="nav-footer-heading" (click)="executeCommand('profile')">
       <div id="nav-footer-avatar">
         <img src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547">

@@ -38,7 +38,7 @@ export class FormRegistrationComponent {
      const Data  = {
         FirstName: '',
         LastName: '',
-        Hash: '',
+        UserId: '',
         UserName:  formData.username,
         Email: formData.email,
         Password: formData.password, 
@@ -54,7 +54,6 @@ export class FormRegistrationComponent {
     //     Password: '', 
     //     Roles: []
     //   };
-      
 
       console.log('Форма отправлена:', Data);
 

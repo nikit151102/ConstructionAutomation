@@ -9,6 +9,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import * as XLSX from 'xlsx';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -24,6 +25,7 @@ import { CommonModule } from '@angular/common';
 
 export class ComparativeStatementComponent implements OnInit {
 
+  id: string = '';
   form!: FormGroup;
   File1!: File;
   File2!: File;
@@ -33,7 +35,8 @@ export class ComparativeStatementComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
-    private comparativeStatementService: ComparativeStatementService
+    private comparativeStatementService: ComparativeStatementService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +46,11 @@ export class ComparativeStatementComponent implements OnInit {
       system: ['', Validators.required],
       planFileListName: ['', Validators.required],
       summaryFileListName: ['', Validators.required],
+    });
+
+    this.route.paramMap.subscribe(params => {
+      this.id = params.get('id') || ''; 
+      console.log('params.get()', params.get('id'))
     });
   }
 
@@ -77,12 +85,14 @@ export class ComparativeStatementComponent implements OnInit {
   }
 
   onUpload() {
-    if (!this.File1 || !this.File2 || this.form.invalid) {
+    if (!this.File1 || !this.File2 || this.form.invalid || this.id.length == 0) {
+      console.log('this.id.',this.id)
       return;
     }
-
+    
 
     const formData = new FormData();
+    formData.append('UserId', this.id);
     formData.append('planFile', this.File1);
     formData.append('summaryFile', this.File2);
     formData.append('planFileListName', this.form.get('planFileListName')?.value);

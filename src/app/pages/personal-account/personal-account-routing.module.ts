@@ -23,19 +23,7 @@ const routes: Routes = [
       {
         path: 'comparativeStatement', 
         loadChildren: () => import('./documents/comparative-statement/comparative-statement.module').then(m => m.ComparativeStatementModule) 
-      },
-      {
-        path: 'UserRoles', 
-        loadChildren: () => import('./Admin/user-role/user-role.module').then(m => m.UserRoleModule) 
-      },
-      {
-        path: 'UserRolePermission', 
-        loadChildren: () => import('./Admin/user-role-permission/user-role-permission.module').then(m => m.UserRolePermissionModule) 
-      },
-      {
-        path: 'Users', 
-        loadChildren: () => import('./Admin/users/users.module').then(m => m.UsersModule) 
-      },
+      }
     ]
   },
 ];

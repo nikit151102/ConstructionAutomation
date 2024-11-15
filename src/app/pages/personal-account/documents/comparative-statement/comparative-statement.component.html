@@ -1,40 +1,43 @@
-<div class="card flex justify-content-center">
-    <form [formGroup]="form">
-        <div class="p-field">
-            <label for="contractorName">Наименование подрядной организации</label>
-            <input id="contractorName" type="text" pInputText formControlName="contractorName" />
-        </div>
-
-        <div class="p-field">
-            <label for="statementDate">Дата составления</label>
-            <p-calendar id="statementDate" formControlName="statementDate" dateFormat="yy-mm-dd"></p-calendar>
-        </div>
-
-        <div class="p-field">
-            <label for="system">Система</label>
-            <input id="system" type="text" pInputText formControlName="system" />
-        </div>
-
-        <div class="p-field">
-            <p-toast></p-toast>
-            <p-fileUpload mode="basic" chooseLabel="Локальная смета" chooseIcon="pi pi-upload" name="file1"
-                accept=".xls, .xlsx" maxFileSize="10000000" [multiple]="false" (onSelect)="onSelect('file1', $event)" />
-
-                <p-dropdown *ngIf="sheetNamesFile1.length > 0"
-                    [options]="sheetNamesFile1"
-                    formControlName="planFileListName"
-                    placeholder="Выберите лист"></p-dropdown>
-        </div>
-        <div class="p-field">
-            <p-toast></p-toast>
-            <p-fileUpload mode="basic" chooseLabel="КС-2" chooseIcon="pi pi-upload" name="file2"
-                accept=".xls, .xlsx" maxFileSize="10000000" [multiple]="false" (onSelect)="onSelect('file2', $event)" />
-                <p-dropdown *ngIf="sheetNamesFile2.length > 0"
-                    [options]="sheetNamesFile2"
-                    formControlName="summaryFileListName"
-                    placeholder="Выберите лист"></p-dropdown>
-        </div>
-
-        <button (click)="onUpload()" [disabled]="!form.valid || !File1 || !File2">Отправить</button>
-    </form>
+<div class="container">
+    <div class="card flex justify-content-center">
+        <form [formGroup]="form">
+            <div class="p-field">
+                <label for="contractorName">Наименование подрядной организации</label>
+                <input id="contractorName" type="text" pInputText formControlName="contractorName" />
+            </div>
+    
+            <div class="p-field">
+                <label for="statementDate">Дата составления</label>
+                <p-calendar id="statementDate" formControlName="statementDate" dateFormat="yy-mm-dd"></p-calendar>
+            </div>
+    
+            <div class="p-field">
+                <label for="system">Система</label>
+                <input id="system" type="text" pInputText formControlName="system" />
+            </div>
+    
+            <div class="p-field">
+                <p-toast></p-toast>
+                <p-fileUpload mode="basic" chooseLabel="Локальная смета" chooseIcon="pi pi-upload" name="file1"
+                    accept=".xls, .xlsx" maxFileSize="10000000" [multiple]="false" (onSelect)="onSelect('file1', $event)" />
+    
+                <p-dropdown *ngIf="sheetNamesFile1.length > 0" [options]="sheetNamesFile1"
+                    formControlName="planFileListName" placeholder="Выберите лист"></p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-toast></p-toast>
+                <p-fileUpload mode="basic" chooseLabel="КС-2" chooseIcon="pi pi-upload" name="file2" accept=".xls, .xlsx"
+                    maxFileSize="10000000" [multiple]="false" (onSelect)="onSelect('file2', $event)" />
+                <p-dropdown *ngIf="sheetNamesFile2.length > 0" [options]="sheetNamesFile2"
+                    formControlName="summaryFileListName" placeholder="Выберите лист"></p-dropdown>
+            </div>
+    
+            <button (click)="onUpload()" [disabled]="!form.valid || !File1 || !File2">Сформировать</button>
+        </form>
+    
+    </div>
+    
+    <div class="viewExcel">
+        <h2>Предварительный просмотр </h2>
+    </div>
 </div>

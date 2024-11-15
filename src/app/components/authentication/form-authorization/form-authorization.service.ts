@@ -12,7 +12,7 @@ export class FormAuthorizationService {
 
   signIn(formData: {
     UserName: string;
-    Hash: string;
+    UserId: string;
     Email: string;
     Password: string;
   }): Observable<any> {

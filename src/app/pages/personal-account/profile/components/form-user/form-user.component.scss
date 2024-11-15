@@ -4,7 +4,7 @@ form {
     gap: 1rem;
     margin: 0 auto;
     padding: 1.5rem;
-    border-radius: 8px;
+    border-radius: 15px;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
@@ -112,10 +112,10 @@ form {
 
     @media (max-width: 768px) {
         .fields-container {
-            grid-template-columns: 1fr; 
+            grid-template-columns: 1fr;
         }
 
-        padding: 1rem; 
+        padding: 1rem;
 
         button[type="submit"] {
             font-size: 0.9rem;
@@ -124,11 +124,11 @@ form {
     }
 
     @media (max-width: 576px) {
-        padding: 0.5rem; 
+        padding: 0.5rem;
         max-width: 100%;
 
         .fields-container {
-            grid-template-columns: 1fr; 
+            grid-template-columns: 1fr;
         }
 
         .upload-button {

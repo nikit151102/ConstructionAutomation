@@ -7,11 +7,11 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { SidebarModule } from 'primeng/sidebar';
 import { PersonalAccountService } from '../../pages/personal-account/personal-account.service';
 import { CurrentUserService } from '../../services/current-user.service'
-;
+  ;
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, PanelMenuModule, SidebarModule, ],
+  imports: [CommonModule, PanelMenuModule, SidebarModule,],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
@@ -20,26 +20,16 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: 'Главная', icon: 'pi pi-home', command: () => this.executeCommand('home') },
     { label: 'Профиль', icon: 'pi pi-user', command: () => this.executeCommand('profile') },
     {
-      label: 'Инструменты', icon: 'pi pi-wrench', items: [
-        { label: 'Cопоставительная ведомость', command: () => this.executeCommand('comparativeStatement') },
-        { label: 'Подкатегория 2', command: 'tool2' }
-      ]
-    },
-    {
       label: 'Документы', icon: 'pi pi-file', items: [
-        { label: 'Сопоставительная ведомость', command: 'doc1' },
+        { label: 'Cопоставительная ведомость', command: () => this.executeCommand('comparativeStatement') },
         { label: 'Подкатегория 2', command: 'doc2' }
       ]
     },
     { label: 'Настройки', icon: 'pi pi-cog', command: () => this.executeCommand('settings') },
     { label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit') },
-    { label: 'Роли пользователей', icon: '', command: () => this.executeCommand('UserRoles') },
-    { label: 'Права доступа', icon: '', command: () => this.executeCommand('UserRolePermission') },
-    { label: 'Пользователи', icon: '', command: () => this.executeCommand('Users') },
-    
   ];
 
-  
+
   isSidebarOpen = false;
   isMobileScreen = false;
   darkMode = false;
@@ -74,6 +64,8 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     const navToggle = document.getElementById('nav-toggle') as HTMLInputElement;
     if (navToggle && !navToggle.checked) {
       this.updateSidebarStyles();
+      this.sidebarService.toggleSidebar();
+      this.personalAccountService.toggleSidebar();
     }
   }
 
@@ -121,6 +113,10 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
           this.router.navigate([`${id}/${commandName}`], { replaceUrl: true });
         }
       });
+    }
+
+    if(!this.sidebarService.fixedSlidebar && this.isSidebarOpen){
+      this.toggleSidebar();
     }
   }
 

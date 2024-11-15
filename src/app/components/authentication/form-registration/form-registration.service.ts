@@ -14,7 +14,7 @@ export class FormRegistrationService {
     FirstName: string;
     LastName: string;
     UserName: string;
-    Hash: string;
+    UserId: string;
     Email: string;
     Password: string;
     Roles: string[];
