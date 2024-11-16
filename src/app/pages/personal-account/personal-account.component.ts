@@ -18,16 +18,20 @@ import { PersonalAccountService } from './personal-account.service';
 export class PersonalAccountComponent implements OnInit, OnDestroy {
   isSidebarOpen: boolean = false;
   isSmallScreen = false;
+  tabTitle: string = '';
   private screenSubscription!: Subscription;
 
-  constructor(public sidebarService: SidebarService, private cdr: ChangeDetectorRef, public personalAccountService:PersonalAccountService) {}
+  constructor(public sidebarService: SidebarService, private cdr: ChangeDetectorRef, public personalAccountService: PersonalAccountService) { }
 
   ngOnInit(): void {
+    this.personalAccountService.titleTab$.subscribe((title: string) => {
+      this.tabTitle = title;
+    })
     this.screenSubscription = this.sidebarService.isSidebarOpen$.subscribe((isOpen) => {
       this.isSidebarOpen = isOpen;
-      this.cdr.detectChanges(); 
+      this.cdr.detectChanges();
     });
-    this.checkScreenSize(); 
+    this.checkScreenSize();
   }
 
   ngOnDestroy(): void {
@@ -43,7 +47,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void {
-    this.checkScreenSize(); 
+    this.checkScreenSize();
   }
 
   private checkScreenSize(): void {

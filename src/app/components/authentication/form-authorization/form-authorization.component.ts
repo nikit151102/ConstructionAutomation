@@ -58,7 +58,7 @@ export class FormAuthorizationComponent implements OnInit {
         Email: formData.username,
         Password: formData.password, 
       };
-      
+        console.log("Data",Data)
       this.AuthorizationService.signIn(Data).subscribe(
         (response) => {
           if(response.data){

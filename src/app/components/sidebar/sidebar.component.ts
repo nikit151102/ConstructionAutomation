@@ -45,6 +45,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    
     this.subscriptions.push(
       this.sidebarService.isSidebarOpen$.subscribe(state => {
         this.isSidebarOpen = state;
@@ -117,6 +118,10 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if(!this.sidebarService.fixedSlidebar && this.isSidebarOpen){
       this.toggleSidebar();
+      
+      document.querySelectorAll('#nav-header label .pi-chevron-left').forEach((el: any) => {
+        Object.assign(el.style, { transform: 'rotate(0deg)' });
+      });
     }
   }
 
@@ -124,6 +129,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.sidebarService.fixedSlidebar) {
       this.sidebarService.toggleSidebar();
       this.personalAccountService.toggleSidebar();
+      document.querySelectorAll('#nav-header label .pi-chevron-left').forEach((el: any) => {
+        Object.assign(el.style, { transform: 'rotate(180deg)' });
+      });
     }
     this.sidebarService.fixedSlidebar = !this.sidebarService.fixedSlidebar;
   }

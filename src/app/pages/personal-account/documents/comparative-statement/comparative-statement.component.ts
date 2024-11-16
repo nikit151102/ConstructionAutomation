@@ -10,6 +10,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import * as XLSX from 'xlsx';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { PersonalAccountService } from '../../personal-account.service';
 
 
 @Component({
@@ -36,10 +37,14 @@ export class ComparativeStatementComponent implements OnInit {
     private fb: FormBuilder,
     private messageService: MessageService,
     private comparativeStatementService: ComparativeStatementService,
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute,
+    private personalAccountService: PersonalAccountService
+  ) {
+    this.personalAccountService.changeTitle('Сопоставительная ведомость')
+   }
 
   ngOnInit(): void {
+
     this.form = this.fb.group({
       contractorName: ['', Validators.required],
       statementDate: [new Date(), Validators.required],

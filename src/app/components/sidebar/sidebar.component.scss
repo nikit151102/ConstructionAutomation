@@ -8,12 +8,11 @@ $navbar-light-secondary: #343536;
 
 
 #nav-bar {
-  position: absolute;
+  position: fixed;
   left: 1vw;
-  top: 1vw;
   height: calc(100% - 2vw);
-  background: $navbar-dark-primary;
-  border-radius: 16px;
+  background: #fff;
+  border-radius: 40px;
   display: flex;
   flex-direction: column;
   color: $navbar-light-primary;
@@ -39,6 +38,8 @@ $navbar-light-secondary: #343536;
   }
 
   a {
+    display: flex;
+    gap: 10px;
     color: inherit;
     text-decoration: inherit;
   }
@@ -81,12 +82,13 @@ $navbar-light-secondary: #343536;
   position: relative;
   width: 256px;
   min-height: 80px;
-  border-radius: 16px;
+  // border-radius: 40px;
   padding: 0 10px;
   z-index: 2;
   display: flex;
   align-items: center;
   transition: width 0.2s;
+  background: #ffff
 }
 
 #nav-title {
@@ -154,12 +156,12 @@ label[for="nav-toggle"] {
   transition: width .2s;
 
   &::-webkit-scrollbar {
-    width: 8px; 
+    width: 8px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: $navbar-dark-secondary; 
-    border-radius: 8px; 
+    background-color: $navbar-dark-secondary;
+    border-radius: 8px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
@@ -170,13 +172,13 @@ label[for="nav-toggle"] {
     background-color: darken(#eff2f7, 10%);
   }
 
-  scrollbar-color: $navbar-dark-secondary darken(#eff2f7, 10%); 
+  scrollbar-color: $navbar-dark-secondary darken(#eff2f7, 10%);
   scrollbar-width: thin;
 }
 
 .nav-button {
   position: relative;
-  margin: 0 16px;
+  margin: 0 10px;
   height: 54px;
   padding-left: 10px;
   display: flex;
@@ -185,9 +187,10 @@ label[for="nav-toggle"] {
   direction: ltr;
   cursor: pointer;
   z-index: 1;
-  transition: color .2s, background-color .3s ease, border-radius .3s ease;
+  transition: corightlor .2s, background-color .3s ease, border-radius .3s ease;
 
   span {
+    font-size: 14px;
     transition: opacity 1s;
   }
 
@@ -197,7 +200,7 @@ label[for="nav-toggle"] {
 
   &:hover {
     color: $navbar-light-secondary;
-    background-color: #fff;
+    background-color: var(--bg-gray-3);
     border-radius: 10px;
     transition: opacity 0.5s ease, transform 0.5s ease;
     opacity: 1;
@@ -206,16 +209,16 @@ label[for="nav-toggle"] {
 }
 
 .no-hover {
-  pointer-events: none; 
-  cursor: default; 
-  background-color: transparent !important; 
+  pointer-events: none;
+  cursor: default;
+  background-color: transparent !important;
 }
 
 .no-hover:hover {
   background-color: transparent !important;
-  color: $navbar-light-secondary;
+  color: #8392a5;
   transform: none;
-  opacity: 1; 
+  opacity: 1;
 }
 
 .submenu {
@@ -230,6 +233,7 @@ label[for="nav-toggle"] {
     width: 100%;
     height: 54px;
     padding-left: 10px;
+    margin-right: 10px;
     text-align: start;
     display: flex;
     align-items: center;
@@ -240,6 +244,7 @@ label[for="nav-toggle"] {
     transition: color .2s, background-color .3s ease, border-radius .3s ease;
 
     span {
+      font-size: 14px;
       transition: opacity 1s;
     }
 
@@ -250,7 +255,8 @@ label[for="nav-toggle"] {
     &:hover {
       color: $navbar-light-secondary;
       border-radius: 10px;
-      background-color: #fff;
+      background-color: var(--bg-gray-3);
+      ;
       transition: opacity 0.5s ease, transform 0.5s ease;
       opacity: 1;
     }
@@ -267,6 +273,7 @@ label[for="nav-toggle"] {
   flex-direction: column;
   z-index: 2;
   transition: width .2s, height .2s;
+  background: #fff;
 }
 
 #nav-footer-heading {

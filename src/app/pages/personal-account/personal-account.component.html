@@ -1,15 +1,18 @@
 <div class="container" [class.sidebar-open]="personalAccountService.isSidebarOpen">
+  <app-sidebar></app-sidebar>
 
-    <div class="header ">
+  <div [class.shrink]="isSidebarOpen" class="content" style="width: 100%;  padding-left: 30px;">
+    <div class="header">
       <div class="btn-menu" *ngIf="!isSidebarOpen && isSmallScreen">
-        <p-button icon="pi pi-bars" [rounded]="true" [text]="true"  (click)="toggleSidebar()"/>
+        <p-button icon="pi pi-bars" [rounded]="true" [text]="true" (click)="toggleSidebar()" />
       </div>
+
+      <p class="title">
+        {{tabTitle}}
+      </p>
+
     </div>
-  
-    <app-sidebar></app-sidebar>
-  
-    <div [class.shrink]="isSidebarOpen" class="content"  style="width: 100%;  padding-left: 15px;">
-      <router-outlet></router-outlet>
-    </div>
-  
+    <router-outlet></router-outlet>
   </div>
+
+</div>

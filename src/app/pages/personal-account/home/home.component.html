@@ -1,6 +1,6 @@
-<div class="menu-container">
+<!-- <div class="menu-container">
     <div class="right-container">
-      
+        <app-expense-chart></app-expense-chart>
     </div>
     <div class="left-container">
         <div class="container-cards">
@@ -22,9 +22,27 @@
             </ng-container>
         </div>
     </div>
+    <div>
+      
+    </div>
+    
+</div> -->
+
+
+<div class="container">
+    
+    <div class="statistics">
+        <div class="stat-item" *ngFor="let item of statisticsCards">
+            <p class="label">{{item.label}}:</p>
+            <p class="value">{{item.value}}</p>
+          </div>
+    </div>
+    <div class="charts">
+        <div class="expenseChart">
+            <app-expense-chart></app-expense-chart>
+        </div>
+        <div class="docs">
+            
+        </div>
+    </div>
 </div>
-
-
-<app-excel-viewer></app-excel-viewer>
-
-<app-pdf-viewer></app-pdf-viewer>
