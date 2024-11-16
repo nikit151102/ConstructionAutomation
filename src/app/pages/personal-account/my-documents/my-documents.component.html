@@ -1,0 +1,34 @@
+<div class="breadcrumb">
+    <div class="breadcrumb-navigation">
+      <p-button
+        icon="pi pi-chevron-left"
+        class="breadcrumb-back-button"
+        [rounded]="true"
+        [text]="true"
+        [raised]="true"
+        *ngIf="currentFiles !== files"
+        (click)="goBack()"
+      ></p-button>
+  
+      <ng-container *ngFor="let breadcrumb of breadcrumbs; let i = index">
+        <span
+          class="breadcrumb-item"
+          (click)="goToBreadcrumb(i)"
+          [class.active]="i === breadcrumbs.length - 1"
+        >
+          {{ breadcrumb.label }}
+        </span>
+        <span class="breadcrumb-separator" *ngIf="i < breadcrumbs.length - 1">/</span>
+      </ng-container>
+    </div>
+  
+    <div class="breadcrumb-info">
+      <span class="storage-info">0 из 15Мб</span>
+    </div>
+  </div>
+  
+  <div class="file-list">
+    <app-file *ngFor="let file of currentFiles" [file]="file" (folderClick)="openFolder(file)">
+    </app-file>
+  </div>
+  

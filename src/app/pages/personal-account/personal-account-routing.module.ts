@@ -23,6 +23,10 @@ const routes: Routes = [
       {
         path: 'comparativeStatement', 
         loadChildren: () => import('./documents/comparative-statement/comparative-statement.module').then(m => m.ComparativeStatementModule) 
+      },
+      {
+        path: 'myDocs', 
+        loadChildren: () => import('./my-documents/my-documents.module').then(m => m.MyDocumentsModule) 
       }
     ]
   },
