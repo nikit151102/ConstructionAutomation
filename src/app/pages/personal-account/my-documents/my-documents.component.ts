@@ -49,7 +49,7 @@ export class MyDocumentsComponent {
   ];
 
   openFolder(folder: any) {
-    this.breadcrumbs.push({ label: folder.title }); // Добавляем label
+    this.breadcrumbs.push({ label: folder.title });
     this.currentFiles = folder.children || [];
   }
 
@@ -68,7 +68,7 @@ export class MyDocumentsComponent {
   getFilesByBreadcrumbs() {
     let files = this.files;
     for (const breadcrumb of this.breadcrumbs) {
-      const folder = files.find(file => file.title === breadcrumb.label && file.isFolder); // Исправление
+      const folder = files.find(file => file.title === breadcrumb.label && file.isFolder); 
       if (folder) {
         files = folder.children || [];
       }
