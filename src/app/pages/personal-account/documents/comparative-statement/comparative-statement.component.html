@@ -37,7 +37,27 @@
     
     </div>
     
-    <div class="viewExcel">
-        <h2>Предварительный просмотр </h2>
+    <div class="viewExcel" [class.fullscreen]="isFullscreen">
+        <div class="preview-header">
+          <h2>Предварительный просмотр</h2>
+          <button class="fullscreen-toggle" (click)="toggleFullscreen()">
+            {{ isFullscreen ? 'Закрыть предпросмотр' : 'На весь экран' }}
+          </button>
+        </div>
+    
+        <p-selectButton 
+          *ngIf="!isFullscreen"
+          [options]="stateOptions" 
+          [(ngModel)]="viewSheetName" 
+          (ngModelChange)="onViewChange($event)" 
+          optionLabel="label" 
+          optionValue="value">
+        </p-selectButton>
+    
+        <app-excel-viewer 
+          *ngIf="selectedFile" 
+          [file]="selectedFile" 
+          [sheetName]="selectedSheet">
+        </app-excel-viewer>
+      </div>
     </div>
-</div>

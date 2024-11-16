@@ -1,13 +1,4 @@
-<div>
-  <input type="file" (change)="onFileChange($event)" accept=".xls, .xlsx" />
-
-  <div *ngIf="sheetNames.length > 1">
-    <label>Выберите лист:</label>
-    <select [(ngModel)]="selectedSheet" (change)="loadSheetData(workbook, selectedSheet)">
-      <option *ngFor="let sheet of sheetNames" [value]="sheet">{{ sheet }}</option>
-    </select>
-  </div>
-
+<div style="padding: 1rem;">
   <p-table *ngIf="excelData.length" [value]="excelData">
     <ng-template pTemplate="body" let-row>
       <tr>
