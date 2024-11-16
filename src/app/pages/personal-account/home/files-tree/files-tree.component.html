@@ -1,0 +1,27 @@
+<div class="breadcrumb">
+    <div class="breadcrumb-navigation">
+      <ng-container *ngFor="let breadcrumb of breadcrumbs; let i = index">
+        <span
+          class="breadcrumb-item"
+          (click)="goToBreadcrumb(i)"
+          [class.active]="i === breadcrumbs.length - 1"
+        >
+          {{ breadcrumb.label }}
+        </span>
+        <span class="breadcrumb-separator" *ngIf="i < breadcrumbs.length - 1">/</span>
+      </ng-container>
+    </div>
+  
+    <div class="breadcrumb-info">
+      <span class="storage-info">0 из 15Мб</span>
+    </div>
+  </div>
+  
+  <p-tree
+    [value]="currentFiles"
+    [selectionMode]="'single'"
+    (onNodeSelect)="onNodeSelect($event)"
+    class="file-tree"
+  >
+  </p-tree>
+  

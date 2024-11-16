@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { PersonalAccountService } from '../personal-account.service';
 import { ExpenseChartComponent } from './expense-chart/expense-chart.component';
+import { FilesTreeComponent } from './files-tree/files-tree.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ExpenseChartComponent],
+  imports: [CommonModule, ExpenseChartComponent, FilesTreeComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

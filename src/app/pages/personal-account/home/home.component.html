@@ -1,48 +1,16 @@
-<!-- <div class="menu-container">
-    <div class="right-container">
-        <app-expense-chart></app-expense-chart>
-    </div>
-    <div class="left-container">
-        <div class="container-cards">
-            <div class="tile" *ngFor="let item of menuItems" (click)="item.command()">
-                <i class="{{ item.icon }}"></i>
-                <span>{{ item.label }}</span>
-            </div>
-        </div>
-
-        <div *ngFor="let item of menuItems">
-            <ng-container *ngIf="item.items">
-                <h3>{{ item.label }}</h3> 
-                <div class="tile-group">
-                    <div class="tile" *ngFor="let subItem of item.items" (click)="subItem.command()">
-                        <i class="{{ subItem.icon }}"></i>
-                        <span>{{ subItem.label }}</span>
-                    </div>
-                </div>
-            </ng-container>
-        </div>
-    </div>
-    <div>
-      
-    </div>
-    
-</div> -->
-
-
 <div class="container">
-    
     <div class="statistics">
         <div class="stat-item" *ngFor="let item of statisticsCards">
             <p class="label">{{item.label}}:</p>
             <p class="value">{{item.value}}</p>
-          </div>
+        </div>
     </div>
     <div class="charts">
         <div class="expenseChart">
             <app-expense-chart></app-expense-chart>
         </div>
         <div class="docs">
-            
+            <app-files-tree></app-files-tree>
         </div>
     </div>
 </div>
