@@ -12,7 +12,7 @@ export class FormsService {
 
   uploadFiles(files: FormData, ComparativeStatement: string): Observable<any> {
    
-    const token = localStorage.getItem('YXV0aFRva2Vu');;
+    const token = localStorage.getItem('YXV0aFRva2Vu');
 
     return this.http.post(`${environment.apiUrl}/api/UserDocument/${ComparativeStatement}`, files, {
 

@@ -1,8 +1,10 @@
 <div class="file-item" (click)="handleClick()">
     <img [src]="file.icon" alt="File Icon" class="file-icon" />
     <div class="file-details">
-      <p class="file-title">{{ file.title }}</p>
+      <p class="file-title">{{ file.fileName }}</p>
       <p class="file-date">{{ file.date }}</p>
     </div>
+
+    <button *ngIf="isdelete" (click)="deleteFile(file.id)">Удалить</button>
   </div>
   
