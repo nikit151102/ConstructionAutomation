@@ -20,7 +20,6 @@ export class FileInputComponent {
   @Input() showSheetSelection: boolean = false; 
   @Output() onSelect = new EventEmitter<{ event?: FileSelectEvent; file: File, sheetName?: string }>();
 
-
   sheetName: string = ''; 
   sheetNames: string[] = [];
   selectFile!: File;
@@ -67,5 +66,6 @@ export class FileInputComponent {
       sheetName: this.sheetName
     });
   }
+  
   
 }

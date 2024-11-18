@@ -1,0 +1,81 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .sheet-selection {
+    margin-top: 20px;
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+    }
+    select {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #fff;
+    }
+  }
+  
+  /* Анимация появления для файлов */
+  .uploaded-files-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .uploaded-file {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .file-upload .p-fileupload-button {
+    margin: 10px 0;
+  }
+  

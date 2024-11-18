@@ -21,13 +21,13 @@ const routes: Routes = [
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) 
       },
       {
+        path: 'myDocs', 
+        loadChildren: () => import('./my-documents/my-documents.module').then(m => m.MyDocumentsModule) 
+      },
+      {
         path: ':configType', 
         loadChildren: () => import('./documents/documents.module').then(m => m.DocumentsModule) 
       },
-      {
-        path: 'myDocs', 
-        loadChildren: () => import('./my-documents/my-documents.module').then(m => m.MyDocumentsModule) 
-      }
     ]
   },
 ];
