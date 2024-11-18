@@ -21,8 +21,8 @@ const routes: Routes = [
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) 
       },
       {
-        path: 'comparativeStatement', 
-        loadChildren: () => import('./documents/comparative-statement/comparative-statement.module').then(m => m.ComparativeStatementModule) 
+        path: ':configType', 
+        loadChildren: () => import('./documents/documents.module').then(m => m.DocumentsModule) 
       },
       {
         path: 'myDocs', 

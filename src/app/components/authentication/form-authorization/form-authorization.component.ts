@@ -64,7 +64,8 @@ export class FormAuthorizationComponent implements OnInit {
           if(response.data){
             this.tokenService.setToken(response.data.token);
             this.router.navigate([`/${response.data.id}`]);
-            localStorage.setItem('idUser', response.data.id);
+            localStorage.setItem('VXNlcklk', response.data.id);
+            
           }
           
         },

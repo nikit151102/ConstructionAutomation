@@ -7,11 +7,13 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { SidebarModule } from 'primeng/sidebar';
 import { PersonalAccountService } from '../../pages/personal-account/personal-account.service';
 import { CurrentUserService } from '../../services/current-user.service'
-  ;
+import { DocumentsService } from '../../pages/personal-account/documents/documents.service';
+import { formConfig } from '../../pages/personal-account/documents/confs';
+
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, PanelMenuModule, SidebarModule,],
+  imports: [CommonModule, PanelMenuModule, SidebarModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
@@ -22,9 +24,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: 'Мои документы', icon: 'pi pi-folder', command: () => this.executeCommand('myDocs') },
     {
       label: 'Документы', icon: 'pi pi-file', items: [
-        { label: 'Cопоставительная ведомость', command: () => this.executeCommand('comparativeStatement') },
-        { label: 'Спецификация на метериалы', command: 'doc2' },
-        { label: 'Спецификация работ', command: 'doc2' }
+        { label: 'Cопоставительная ведомость', command: () => this.executeDocs('comparativeStatement') },
+        { label: 'Спецификация на метериалы', command: () => this.executeDocs('materialSpecification') },
+        { label: 'Спецификация работ', command: () => this.executeDocs('workSpecification') }
       ]
     },
     { label: 'Настройки', icon: 'pi pi-cog', command: () => this.executeCommand('settings') },
@@ -43,7 +45,8 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private personalAccountService: PersonalAccountService,
     private activatedRoute: ActivatedRoute,
-    public currentUserService: CurrentUserService
+    public currentUserService: CurrentUserService,
+    private documentsService:DocumentsService
   ) { }
 
   ngOnInit(): void {
@@ -72,6 +75,15 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  executeDocs(commandName: string){
+    this.activatedRoute.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.documentsService.setSelectConfValue(formConfig);
+        this.router.navigate([`${id}/${commandName}`], { replaceUrl: true });    
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());

@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ComparativeStatementComponent } from './comparative-statement.component';
-
+import { DocumentComponent } from './document.component';
 
 const routes: Routes = [
   {
-    path: '', component: ComparativeStatementComponent
+    path: '', component: DocumentComponent
   },
 ];
 
@@ -13,4 +12,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],  
   exports: [RouterModule]
 })
-export class ComparativeStatementRoutingModule { }
+export class DocumentsRoutingModule { }

@@ -6,3 +6,4 @@ export const environment = {
 };
 
 // authToken   Base64 YXV0aFRva2Vu
+// UserId  Base64: VXNlcklk

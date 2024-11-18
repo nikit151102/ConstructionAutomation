@@ -1,0 +1,37 @@
+<form [formGroup]="form" >
+    <div *ngFor="let control of config.controls">
+      <ng-container [ngSwitch]="control.type">
+
+        <app-text-input
+          *ngSwitchCase="'text'"
+          [id]="control.name"
+          [label]="control.label"
+          [control]="getSafeFormControl(form, control.name)"
+        ></app-text-input>
+
+        <!-- <div *ngSwitchCase="'date'" class="p-field">
+          <label [for]="control.name">{{ control.label }}</label>
+
+          <p-calendar
+            [id]="control.name"
+            [formControlName]="control.name"
+            dateFormat="yy-mm-dd"
+          ></p-calendar>
+
+        </div> -->
+      </ng-container>
+    </div>
+    <div *ngFor="let fileInput of config.fileInputs">
+
+      <app-file-input
+      [chooseLabel]="fileInput.label"
+      [chooseIcon]="'pi pi-upload'"
+      [accept]="fileInput.accept"
+      (onSelect)="onFileSelect($event, fileInput.key)"
+    ></app-file-input>
+    
+
+    </div>
+    <button (click)="onSubmit()" >Сформировать</button>
+  </form> 
+  

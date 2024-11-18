@@ -16,7 +16,7 @@ export class CurrentUserService {
   constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   UserData(): Observable<User> {
-    const token = localStorage.getItem('YXV0aFRva2Vu');;
+    const token = localStorage.getItem('YXV0aFRva2Vu');
     if (!token) {
       return throwError(() => new Error('Token not found'));
     }
