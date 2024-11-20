@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environment';
 
@@ -70,18 +70,15 @@ export class MyDocumentsService {
   
 
   getAllUserDocuments(): Observable<any[]> {
-    const url = `${this.apiUrl}/api/UserDocument`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
     const userId = localStorage.getItem('VXNlcklk'); 
-    const params = new HttpParams().set('userId', userId || '');
+    const url = `${this.apiUrl}/api/UserDocument/GetUserFile/${userId}`;
+    const token = localStorage.getItem('YXV0aFRva2Vu');
 
     return this.http.get<any[]>(url, {
-      
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Authorization': `Bearer ${token}`
       }),
-      params
     });
   }
 
