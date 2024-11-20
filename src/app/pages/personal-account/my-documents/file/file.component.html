@@ -20,7 +20,8 @@
     </svg>
   </a>
 </div>
-<div class="file-item" (click)="handleClick()">
+<!-- (click)="handleClick()" -->
+<div class="file-item" (click)="downloadFile(file.id)">
   <img [src]="file.icon" alt="File Icon" class="file-icon" />
   <div class="file-details">
 
@@ -28,3 +29,6 @@
     <p class="file-date">{{ file.date }}</p>
   </div>
 </div>
+
+<input type="text" pInputText [(ngModel)]="value" />
+<button (click)="renameFile(file.id)"> Переименовать</button>
