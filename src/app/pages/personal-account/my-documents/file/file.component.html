@@ -1,10 +1,30 @@
+<div class="block-btn-delete">
+  <a *ngIf="isdelete" (click)="deleteFile(file.id)">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width: 24px;">
+      <defs>
+        <style>
+          .cls-1 {
+            fill: none;
+            stroke: #d40606;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 2px;
+          }
+        </style>
+      </defs>
+      <title>Delete Icon</title>
+      <g id="cross">
+        <line class="cls-1" x1="7" x2="25" y1="7" y2="25" />
+        <line class="cls-1" x1="7" x2="25" y1="25" y2="7" />
+      </g>
+    </svg>
+  </a>
+</div>
 <div class="file-item" (click)="handleClick()">
-    <img [src]="file.icon" alt="File Icon" class="file-icon" />
-    <div class="file-details">
-      <p class="file-title">{{ file.fileName }}</p>
-      <p class="file-date">{{ file.date }}</p>
-    </div>
+  <img [src]="file.icon" alt="File Icon" class="file-icon" />
+  <div class="file-details">
 
-    <button *ngIf="isdelete" (click)="deleteFile(file.id)">Удалить</button>
+    <p class="file-title">{{ file.fileName }}</p>
+    <p class="file-date">{{ file.date }}</p>
   </div>
-  
+</div>

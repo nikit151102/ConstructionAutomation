@@ -15,7 +15,7 @@ import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
   styleUrls: ['./my-documents.component.scss'],
 })
 export class MyDocumentsComponent implements OnInit {
-  testFiles = [
+  files: any = [
     {
       icon: 'pngs/folder.png',
       title: 'folder 1',
@@ -41,22 +41,25 @@ export class MyDocumentsComponent implements OnInit {
     },
   ];
 
-  files: any = [];
-
   constructor(private personalAccountService: PersonalAccountService,
     private myDocumentsService: MyDocumentsService
   ) {
     this.personalAccountService.changeTitle('Мои документы');
   }
 
+  testFiles: any;
   ngOnInit(): void {
     this.myDocumentsService.getAllUserDocuments().subscribe((data: any) => {
-      this.files = data.data.map((file: any) => ({
+
+      const files = data.data.map((file: any) => ({
         ...file,
         icon: 'pngs/file.png'
       }));
-    })
+
+      this.testFiles = files;
+    });
   }
+
 
   currentFiles = this.files;
   breadcrumbs: MenuItem[] = [
@@ -93,35 +96,44 @@ export class MyDocumentsComponent implements OnInit {
 
   downloadFile(fileId: string) {
     console.log("fileId", fileId);
-    
+
     this.myDocumentsService.downloadFile(fileId).subscribe((data: Blob) => {
-    
+
       const downloadUrl = window.URL.createObjectURL(data);
-      
+      console.log("data", data)
       const link = document.createElement('a');
       link.href = downloadUrl;
-      link.download = fileId;  
-      link.click();  
-      
+      link.download = downloadUrl;
+      link.click();
+
       window.URL.revokeObjectURL(downloadUrl);
     }, error => {
       console.error('Ошибка при скачивании файла:', error);
     });
   }
-  
-  newfile!: any;
-  onUpload(event: FileSelectEvent) {
+
+  newfile!: File[];
+
+  onUpload(event: FileSelectEvent): void {
     if (event.files && event.files.length > 0) {
-      console.log('Files uploaded:', event.files); 
+      console.log('Files uploaded:', event.files);
       this.newfile = Array.from(event.files); 
     } else {
       console.log('No files selected.');
     }
   }
-  
-  Upload(){
-     this.myDocumentsService.upload(this.newfile).subscribe((data:any)=> console.log("upload file"))
+
+  Upload(): void {
+    if (this.newfile && this.newfile.length > 0) {
+      this.myDocumentsService.upload(this.newfile).subscribe({
+        next: (response: any) => console.log('Upload successful:', response),
+        error: (error) => console.error('Upload failed:', error),
+      });
+    } else {
+      console.warn('No files to upload.');
+    }
   }
+
 }
 
 
