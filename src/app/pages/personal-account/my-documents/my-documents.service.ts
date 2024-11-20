@@ -28,7 +28,7 @@ export class MyDocumentsService {
   }
 
   upload(files: File[]): Observable<any> {
-    console.log("Click Upload");
+    console.log("servces files", files);
     const url = `${this.apiUrl}/api/UserDocument/upload`;
     const formData = new FormData();
   
@@ -38,7 +38,7 @@ export class MyDocumentsService {
     }
   
     files.forEach(file => {
-      formData.append('Files[]', file, file.name);
+      formData.append('Files', file);
     });
   
     const token = localStorage.getItem('YXV0aFRva2Vu');

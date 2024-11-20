@@ -112,27 +112,39 @@ export class MyDocumentsComponent implements OnInit {
     });
   }
 
-  newfile!: File[];
+  uploadedFiles: File[] = [];
 
-  onUpload(event: FileSelectEvent): void {
+  onUpload(event: any): void {
     if (event.files && event.files.length > 0) {
-      console.log('Files uploaded:', event.files);
-      this.newfile = Array.from(event.files); 
+      this.uploadedFiles = event.files; 
     } else {
       console.log('No files selected.');
     }
   }
+  
 
+  onSelect(event: any): void {
+    this.uploadedFiles = [...this.uploadedFiles, ...event.files];
+  }
+
+  
   Upload(): void {
-    if (this.newfile && this.newfile.length > 0) {
-      this.myDocumentsService.upload(this.newfile).subscribe({
-        next: (response: any) => console.log('Upload successful:', response),
+    if (this.uploadedFiles && this.uploadedFiles.length > 0) {
+      this.myDocumentsService.upload(this.uploadedFiles).subscribe({
+        next: (response: any) => console.log('Upload successful:'),
         error: (error) => console.error('Upload failed:', error),
       });
     } else {
       console.warn('No files to upload.');
     }
   }
+
+
+  removeFile(file: File): void {
+    this.uploadedFiles = this.uploadedFiles.filter((f) => f !== file);
+    console.log('File removed:', file.name);
+  }
+
 
 }
 

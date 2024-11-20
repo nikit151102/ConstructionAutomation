@@ -56,3 +56,120 @@
   gap: 15px;
   margin-top: 16px;
 }
+
+
+:host {
+  display: block;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+
+  .p-fileupload {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #f9f9f9;
+
+    .p-fileupload-buttonbar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+  }
+
+  .custom-file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    margin: 4px 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    span {
+      font-size: 14px;
+      color: #333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-size {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .p-button {
+      font-size: 12px;
+    }
+  }
+
+  .uploaded-file {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    margin: 4px 0;
+    background: #fdfdfd;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+
+    .file-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      img {
+        width: 24px;
+        height: 24px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+
+      span {
+        font-size: 14px;
+        color: #555;
+      }
+
+      .file-size {
+        font-size: 12px;
+        color: #777;
+      }
+    }
+  }
+
+  .p-button {
+    &.p-button-success {
+      background-color: #28a745;
+      border-color: #28a745;
+
+      &:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+      }
+    }
+
+    &.p-button-danger {
+      color: #dc3545;
+
+      &:hover {
+        background-color: transparent;
+        color: #a71d2a;
+      }
+    }
+
+    &.p-button-text {
+      border: none;
+      background-color: transparent;
+      box-shadow: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .p-button-icon {
+    margin-right: 8px;
+  }
+}
