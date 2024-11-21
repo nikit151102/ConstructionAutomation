@@ -13,7 +13,7 @@ export class DocumentsService {
   private isselectConfSubject = new BehaviorSubject<any>('');
 
   isSelectConfState$ = this.isselectConfSubject.asObservable();
-  
+
   constructor(private http: HttpClient) { }
 
   setSelectConfValue(newValue: any): void {
@@ -33,5 +33,14 @@ export class DocumentsService {
       })
     });
   }
+
+
+  private isSuccessDoc = new BehaviorSubject<any>('');
+  isSuccessDoc$ = this.isSuccessDoc.asObservable();
+
+  setSuccessDoc(doc: any) {
+    this.isSuccessDoc.next(doc);
+  }
+
 
 }

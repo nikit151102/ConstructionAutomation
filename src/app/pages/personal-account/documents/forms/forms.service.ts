@@ -19,7 +19,10 @@ export class FormsService {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Authorization': `Bearer ${token}`
-      })
+      }),
+      responseType: 'blob' as 'json',
     });
   }
+
+  
 }

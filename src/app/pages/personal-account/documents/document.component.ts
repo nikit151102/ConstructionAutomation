@@ -41,12 +41,18 @@ export class DocumentComponent implements OnInit {
 
   }
 
-  selectfile: { file: File | null, sheetName?: string } = { file: null }; // Default to null
+  selectfile: any = null; // Default to null
   selectedSheet: string = '';
 
 
   onViewChange(fileKey: string) {
   }
+
+  onUploadSuccess(response: any): void {
+    console.log('Загрузка прошла успешно:', response);
+   this.documentsService.setSuccessDoc(response);
+  }
+
 
   isFullscreen = false;
 
@@ -54,7 +60,6 @@ export class DocumentComponent implements OnInit {
     this.isFullscreen = isFullscreen;
     console.log('Fullscreen state:', this.isFullscreen);
   }
-
 
 }
 

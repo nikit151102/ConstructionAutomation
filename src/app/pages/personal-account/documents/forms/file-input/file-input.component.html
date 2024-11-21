@@ -1,9 +1,11 @@
 <div class="container">
-  <p-fileUpload mode="basic" [chooseLabel]="chooseLabel" [chooseIcon]="chooseIcon" [accept]="accept" [multiple]="false"
+
+    <p-fileUpload mode="basic" #fileUpload [chooseLabel]="chooseLabel" [chooseIcon]="chooseIcon" [accept]="accept" [multiple]="false"
     (onSelect)="handleSelect($event)">
   </p-fileUpload>
-
-  <div *ngIf="showSheetSelection" class="sheet-selection">
+  <p-button icon="pi pi-times" [text]="true" severity="danger" *ngIf="visibleDelete" (click)="clearFile(fileUpload)"/>
+  
+ <div *ngIf="showSheetSelection" class="sheet-selection">
     <label for="sheetName">Выберите</label>
     <select id="sheetName" [(ngModel)]="sheetName" (change)="onSheetSelect(sheetName)">
       <option *ngFor="let sheet of sheetNames" [value]="sheet">{{ sheet }}</option>

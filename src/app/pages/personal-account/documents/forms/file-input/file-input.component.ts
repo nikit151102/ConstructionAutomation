@@ -24,7 +24,7 @@ export class FileInputComponent {
   sheetNames: string[] = [];
   selectFile!: File;
   selectEvent!: FileSelectEvent;
-
+visibleDelete: boolean = false;
   handleSelect(event: FileSelectEvent) {
     const file = event.files[0];
     this.selectEvent = event;
@@ -38,10 +38,11 @@ export class FileInputComponent {
   
         this.sheetNames = workbook.SheetNames;
         this.selectFile = file;
-  
+        this.visibleDelete = true;
         if (this.sheetNames.length === 1) {
       
           this.sheetName = this.sheetNames[0];
+          
           this.onSelect.emit({
             event: event,
             file: file,
@@ -57,6 +58,14 @@ export class FileInputComponent {
     }
   }
   
+  clearFile(fileUpload: any) {
+    fileUpload.clear();  
+    this.selectFile = null!;
+    this.sheetNames = [];
+    this.sheetName = '';
+    this.showSheetSelection = false;
+    this.visibleDelete = false;
+  }
 
   onSheetSelect(selectedSheet: string) {
     this.sheetName = selectedSheet;

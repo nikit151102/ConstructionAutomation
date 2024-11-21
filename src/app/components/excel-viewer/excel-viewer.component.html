@@ -3,9 +3,11 @@
     <ng-template pTemplate="body" let-row>
       <tr>
         <ng-container *ngFor="let cell of row">
-          <td *ngIf="cell" 
-              [attr.colspan]="cell.colspan" 
-              [attr.rowspan]="cell.rowspan">
+          <td
+            *ngIf="cell"
+            [attr.colspan]="cell.colspan"
+            [attr.rowspan]="cell.rowspan"
+          >
             {{ cell.value }}
           </td>
         </ng-container>

@@ -73,3 +73,24 @@
     margin: 10px 0;
   }
   
+
+  ::ng-deep .p-fileupload-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%; 
+  }
+  
+  ::ng-deep .p-fileupload-choose {
+    display: inline-block;
+        width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  
+
+  
