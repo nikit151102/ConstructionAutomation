@@ -10,11 +10,12 @@ import { ToastModule } from 'primeng/toast';
 import { FormsComponent } from './forms/forms.component';
 import { ActivatedRoute } from '@angular/router';
 import { ConfigType, getFormConfig } from './confs';
+import { PreviewComponent } from './preview/preview.component';
 
 @Component({
   selector: 'app-document',
   standalone: true,
-  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent],
+  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewComponent],
   templateUrl: './document.component.html',
   styleUrl: './document.component.scss'
 })
@@ -35,7 +36,23 @@ export class DocumentComponent implements OnInit {
         console.error('Invalid configType:', configType);
       }
     });
-    
+
   }
 
+  selectfile: { file: File | null, sheetName?: string } = { file: null }; // Default to null
+  selectedSheet: string = '';
+
+
+  onViewChange(fileKey: string) {
+  }
+
+  isFullscreen = false;
+
+  toggleFullscreen(isFullscreen: boolean) {
+    this.isFullscreen = isFullscreen;
+    console.log('Fullscreen state:', this.isFullscreen);
+  }
+
+
 }
+

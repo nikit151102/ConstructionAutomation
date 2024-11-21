@@ -1,9 +1,14 @@
 <div class="viewExcel" [class.fullscreen]="isFullscreen">
     <div class="preview-header">
         <h2>Предварительный просмотр</h2>
-        <button class="fullscreen-toggle" (click)="toggleFullscreen()">
-            {{ isFullscreen ? 'Закрыть предпросмотр' : 'На весь экран' }}
-        </button>
+        <div style="display: flex; flex-direction: row; gap: 10px;">
+            <button pButton pRipple label="Скачать" class="p-button-success" (click)="downloadFile()">
+            </button>
+            <button class="fullscreen-toggle" (click)="toggleFullscreen()">
+                {{ isFullscreen ? 'Закрыть предпросмотр' : 'На весь экран' }}
+            </button>
+        </div>
+        
     </div>
 
     <p-selectButton *ngIf="!isFullscreen" [options]="stateOptions" [(ngModel)]="selectedSheet"

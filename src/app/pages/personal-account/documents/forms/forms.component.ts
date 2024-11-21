@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileSelectEvent } from 'primeng/fileupload';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { FileInputComponent } from './file-input/file-input.component';
-import { PreviewComponent } from './preview/preview.component';
 import { TextInputComponent } from './text-input/text-input.component';
 import { CommonModule } from '@angular/common';
 import { FormsService } from './forms.service';
@@ -12,14 +11,14 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-forms',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, PreviewComponent, DropdownComponent, FileInputComponent, TextInputComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, DropdownComponent, FileInputComponent, TextInputComponent],
   templateUrl: './forms.component.html',
   styleUrl: './forms.component.scss'
 })
 export class FormsComponent {
 
   @Input() config: any;
-
+  @Output() onSelect = new EventEmitter<{ event?: FileSelectEvent; file: File, sheetName?: string }>();
   
   form!: FormGroup;
   files: { [key: string]: { file: File; sheetName?: string } } = {};
