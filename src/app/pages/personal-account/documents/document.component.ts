@@ -11,6 +11,7 @@ import { FormsComponent } from './forms/forms.component';
 import { ActivatedRoute } from '@angular/router';
 import { ConfigType, getFormConfig } from './confs';
 import { PreviewComponent } from './preview/preview.component';
+import { PersonalAccountService } from '../personal-account.service';
 
 @Component({
   selector: 'app-document',
@@ -23,7 +24,7 @@ export class DocumentComponent implements OnInit {
 
   config: any;
 
-  constructor(public documentsService: DocumentsService, private route: ActivatedRoute) { }
+  constructor(public documentsService: DocumentsService, private route: ActivatedRoute, private personalAccountService: PersonalAccountService) { }
 
   ngOnInit(): void {
 
@@ -32,6 +33,7 @@ export class DocumentComponent implements OnInit {
 
       if (configType && ['comparativeStatement', 'materialSpecification', 'workSpecification'].includes(configType)) {
         this.config = getFormConfig(configType as ConfigType);
+        this.personalAccountService.changeTitle(this.config.nameDoc)
       } else {
         console.error('Invalid configType:', configType);
       }

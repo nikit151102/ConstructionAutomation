@@ -9,6 +9,7 @@ export function getFormConfig(type: keyof typeof formConfig) {
 
 export const formConfig = {
   comparativeStatement: {
+    nameDoc: 'Cопоставительная ведомост',
     endpoint: 'ComparativeStatement',
     controls: [
       // {
@@ -60,6 +61,7 @@ export const formConfig = {
     ],
   },
   materialSpecification: {
+    nameDoc: 'Спецификация на метериалы',
     endpoint: 'MaterialSpecification',
     controls: [
       {
@@ -79,7 +81,7 @@ export const formConfig = {
     ],
   },
   workSpecification: {
-
+    nameDoc: 'Спецификация работ',
     endpoint: 'WorkSpecification',
     controls: [
       {
