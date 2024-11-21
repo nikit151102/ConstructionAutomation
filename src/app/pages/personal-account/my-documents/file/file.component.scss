@@ -67,6 +67,11 @@
 
   .file-details {
     flex-direction: row;
-    justify-content: space-around
+    justify-content: space-around;
+    align-items: center;
+
+    .file-date{
+      margin: 0;
+    }
   }
 }
