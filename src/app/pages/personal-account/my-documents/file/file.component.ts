@@ -9,6 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
+import { ToastService } from '../../../../services/toast.service';
 
 @Component({
   selector: 'app-file',
@@ -42,7 +43,7 @@ export class FileComponent implements OnInit {
     },
   ];
 
-  constructor(private myDocumentsService: MyDocumentsService, public fileService: FileService) {
+  constructor(private myDocumentsService: MyDocumentsService, public fileService: FileService, private toastService: ToastService) {
 
   }
 
@@ -68,10 +69,15 @@ export class FileComponent implements OnInit {
   }
 
   deleteFile(id: string) {
-    this.myDocumentsService.deleteFile(id).subscribe((data: any) => {
-      console.log("deletFile")
-      this.myDocumentsService.loadData();
-    }
+    this.myDocumentsService.deleteFile(id).subscribe(
+      (data: any) => {
+        this.myDocumentsService.loadData();
+        this.toastService.showSuccess('Успешно!', 'Операция выполнена успешно');
+      },
+      (error: any) => {
+        console.error('Ошибка при удалении файла:', error);
+        this.toastService.showError('Ошибка!', 'Не удалось удалить файл');
+      }
     );
   }
 
@@ -89,16 +95,21 @@ export class FileComponent implements OnInit {
       Id: this.file.id,
       Name: this.value
     }
-    this.myDocumentsService.renameFile(this.file.id, data).subscribe((data: any) => {
-      console.log("renameFile");
-      this.closeDialogRename();
-      this.myDocumentsService.loadData();
-    });
+    this.myDocumentsService.renameFile(this.file.id, data).subscribe(
+      (data: any) => {
+        this.closeDialogRename();
+        this.myDocumentsService.loadData();
+        this.toastService.showSuccess('Успех!', 'Файл переименован');
+      },
+      (error: any) => {
+        console.error('Ошибка при переименовании файла:', error);
+        this.toastService.showError('Ошибка!', 'Не удалось переименовать файл');
+      }
+    );
   }
 
   downloadFile(fileId: string) {
     this.myDocumentsService.downloadFile(fileId).subscribe((data: Blob) => {
-      console.log("data", data)
       const fileName = this.file.fileName || 'downloaded-file';
       const downloadUrl = window.URL.createObjectURL(data);
       const link = document.createElement('a');
@@ -109,6 +120,7 @@ export class FileComponent implements OnInit {
       window.URL.revokeObjectURL(downloadUrl);
     }, error => {
       console.error('Ошибка при скачивании файла:', error);
+      this.toastService.showError('Ошибка!', 'Не удалось скачать файл');
     });
   }
 

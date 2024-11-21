@@ -8,6 +8,7 @@ import { MyDocumentsService } from './my-documents.service';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-my-documents',
@@ -49,7 +50,8 @@ export class MyDocumentsComponent implements OnInit {
 
   constructor(private personalAccountService: PersonalAccountService,
     private myDocumentsService: MyDocumentsService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef, 
+    private toastService: ToastService
   ) {
     this.personalAccountService.changeTitle('Мои документы');
   }
@@ -82,11 +84,13 @@ export class MyDocumentsComponent implements OnInit {
   openFolder(folder: any) {
     this.breadcrumbs.push({ label: folder.title });
     this.currentFiles = folder.children || [];
+    this.toastService.showSuccess('Папка открыта', `Вы перешли в папку ${folder.title}`);
   }
 
   goBack() {
     this.breadcrumbs.pop();
     this.currentFiles = this.getFilesByBreadcrumbs();
+    this.toastService.showSuccess('Назад', 'Вы вернулись к предыдущей папке');
   }
 
   goToBreadcrumb(index: number) {
@@ -105,23 +109,6 @@ export class MyDocumentsComponent implements OnInit {
       }
     }
     return files;
-  }
-
-  downloadFile(fileId: string) {
-    this.myDocumentsService.downloadFile(fileId).subscribe((data: Blob) => {
-      
-      const downloadUrl = window.URL.createObjectURL(data);
-      console.log("data", data)
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = downloadUrl;
-      // link.download = data.nameFile || 'downloaded-file';
-      link.click();
-
-      window.URL.revokeObjectURL(downloadUrl);
-    }, error => {
-      console.error('Ошибка при скачивании файла:', error);
-    });
   }
 
   uploadedFiles: File[] = [];
@@ -143,14 +130,17 @@ export class MyDocumentsComponent implements OnInit {
     if (this.uploadedFiles && this.uploadedFiles.length > 0) {
       this.myDocumentsService.upload(this.uploadedFiles).subscribe({
         next: (response: any) => {
-          console.log('Upload successful:')
           this.visibleUpload = false;
           this.myDocumentsService.loadData();
+          this.toastService.showSuccess('Загрузка завершена', 'Файлы успешно загружены');
         },
-        error: (error) => console.error('Upload failed:', error),
+        error: (error) => {
+          console.error('Upload failed:', error);
+          this.toastService.showError('Ошибка', 'Не удалось загрузить файлы');
+        },
       });
     } else {
-      console.warn('No files to upload.');
+      this.toastService.showWarn('Предупреждение', 'Нет файлов для загрузки');
     }
   }
 
