@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../../environment';
 
 
@@ -10,7 +10,23 @@ import { environment } from '../../../../environment';
 export class MyDocumentsService {
 
   private apiUrl = environment.apiUrl;
+  
 
+  private isVertical = new BehaviorSubject<boolean>(false);
+  isVertical$ = this.isVertical.asObservable();
+
+
+  setTypeView(isVertical: boolean) {
+    this.isVertical.next(isVertical);
+  }
+
+  private files = new BehaviorSubject<boolean>(false);
+  filesSelect$ = this.files.asObservable();
+
+  setFiles(files: any) {
+    this.files.next(files);
+  }
+  
   constructor(private http: HttpClient) { }
 
   getUserFile(fileId: string): Observable<any> {
@@ -50,8 +66,6 @@ export class MyDocumentsService {
       }),
     });
   }
-  
-  
 
   downloadFile(id: string): Observable<Blob> {
     const url = `${this.apiUrl}/api/UserDocument/DownloadFile`;
@@ -66,8 +80,6 @@ export class MyDocumentsService {
       responseType: 'blob' as 'json',
     });
   }
-  
-  
 
   getAllUserDocuments(): Observable<any[]> {
     const userId = localStorage.getItem('VXNlcklk'); 
@@ -106,4 +118,16 @@ export class MyDocumentsService {
     });
   }
 
+
+  loadData(){
+    this.getAllUserDocuments().subscribe((data: any) => {
+
+      const files = data.data.map((file: any) => ({
+        ...file,
+        icon: 'pngs/file.png'
+      }));
+      this.setFiles(files);
+      console.log("files,",files)
+    });
+  }
 }

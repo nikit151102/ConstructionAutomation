@@ -173,3 +173,12 @@
     margin-right: 8px;
   }
 }
+
+
+.file-list--vertical{
+flex-direction: row;
+}
+
+.file-list--horizontal{
+  flex-direction: column;
+}

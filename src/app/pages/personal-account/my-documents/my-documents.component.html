@@ -1,5 +1,6 @@
 <div class="breadcrumb">
   <div class="breadcrumb-navigation">
+
     <p-button icon="pi pi-chevron-left" class="breadcrumb-back-button" [rounded]="true" [text]="true" [raised]="true"
       *ngIf="currentFiles !== files" (click)="goBack()"></p-button>
 
@@ -11,52 +12,46 @@
     </ng-container>
   </div>
 
+
   <div class="breadcrumb-info">
     <span class="storage-info">0 из 15Мб</span>
   </div>
 </div>
 
-<p-fileUpload 
-  #fileUpload 
-  mode="advanced" 
-  [auto]="false" 
-  [multiple]="true" 
-  customUpload="true"
-  (uploadHandler)="onUpload($event)"
-  (onSelect)="onSelect($event)">
->
+<div class="breadcrumb-navigation">
+
+  <p-button icon="pi pi-plus" class="breadcrumb-back-button" [rounded]="true" [text]="true" [raised]="true"
+    *ngIf="!visibleUpload" (click)="visibleUpload = true"></p-button>
+
+  <p-selectButton [options]="stateOptions" [(ngModel)]="isVertical" (onChange)="onChangeType($event.value)"
+    optionLabel="label" optionValue="value">
+  </p-selectButton>
+
+</div>
+<p-fileUpload #fileUpload mode="advanced" [auto]="false" [multiple]="true" customUpload="true" *ngIf="visibleUpload"
+  (uploadHandler)="onUpload($event)" (onSelect)="onSelect($event)">
 
   <ng-template pTemplate="header">
-    <p-button 
-      label="Добавить файлы" 
-      icon="pi pi-upload" 
-      (onClick)="fileUpload.choose()">
+    <p-button label="Закрыть" icon="pi pi-times" (onClick)="visibleUpload = false">
     </p-button>
-    <p-button 
-      label="Загрузить" 
-      icon="pi pi-cloud-upload" 
-      class="p-button-success" 
-      (onClick)="Upload()">
+    <p-button label="Добавить файлы" icon="pi pi-upload" (onClick)="fileUpload.choose()">
+    </p-button>
+    <p-button label="Загрузить" icon="pi pi-cloud-upload" class="p-button-success" (onClick)="Upload()">
     </p-button>
   </ng-template>
 
-  <ng-template let-file pTemplate="file">
+  <ng-template *ngFor="let file of uploadedFiles" pTemplate="file">
     <div class="custom-file">
       <span>{{ file.name }}</span>
       <span class="file-size">{{ file.size | number }} байт</span>
-      <p-button 
-        icon="pi pi-trash" 
-        class="p-button-text p-button-danger"
-        (onClick)="removeFile(file)">
+      <p-button icon="pi pi-trash" class="p-button-text p-button-danger" (onClick)="removeFile(file)">
       </p-button>
     </div>
   </ng-template>
 
 </p-fileUpload>
 
-
-<div class="file-list">
-  <!-- <app-file *ngFor="let testFile of testFiles" [file]="testFile" (folderClick)="openFolder(testFile)"></app-file> -->
-  <app-file *ngFor="let file of testFiles" [file]="file" [isdelete]="true" (click)="downloadFile(file.id)">
+<div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
+  <app-file *ngFor="let file of testFiles" [file]="file" [isdelete]="true">
   </app-file>
 </div>

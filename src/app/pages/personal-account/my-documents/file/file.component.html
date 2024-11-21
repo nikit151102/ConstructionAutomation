@@ -1,34 +1,22 @@
-<div class="block-btn-delete">
-  <a *ngIf="isdelete" (click)="deleteFile(file.id)">
-    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width: 24px;">
-      <defs>
-        <style>
-          .cls-1 {
-            fill: none;
-            stroke: #d40606;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-width: 2px;
-          }
-        </style>
-      </defs>
-      <title>Delete Icon</title>
-      <g id="cross">
-        <line class="cls-1" x1="7" x2="25" y1="7" y2="25" />
-        <line class="cls-1" x1="7" x2="25" y1="25" y2="7" />
-      </g>
-    </svg>
-  </a>
-</div>
-<!-- (click)="handleClick()" -->
-<div class="file-item" (click)="downloadFile(file.id)">
+<p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
+
+<div class="file-item" [ngClass]="isVertical ? 'file-item--vertical' : 'file-item--horizontal'"
+  [pTooltip]="file.fileName" tooltipPosition="bottom" (click)="onRightClick($event, file)"
+  (contextmenu)="onRightClick($event, file)">
+
   <img [src]="file.icon" alt="File Icon" class="file-icon" />
   <div class="file-details">
-
     <p class="file-title">{{ file.fileName }}</p>
-    <p class="file-date">{{ file.date }}</p>
+    <p class="file-date">{{ file.createDateTime | date: 'dd-MM-yyyy HH:mm' }}</p>
   </div>
 </div>
 
-<input type="text" pInputText [(ngModel)]="value" />
-<button (click)="renameFile(file.id)"> Переименовать</button>
+
+<p-dialog header="Edit Profile" [modal]="true" [(visible)]="fileService.visibleShonRename" [style]="{ width: '25rem' }">
+  <span class="p-text-secondary block mb-5">Новое имя файлаа</span>
+  <input type="text" pInputText [(ngModel)]="value" />
+  <div class="flex justify-content-end gap-2" style="padding-top: 10px;">
+    <p-button label="Отмена" severity="secondary" (onClick)="closeDialogRename()" />
+    <p-button label="Переименовать" (onClick)="renameFile()" />
+  </div>
+</p-dialog>

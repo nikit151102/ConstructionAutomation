@@ -1,24 +1,8 @@
-.block-btn-delete {
-  width: 100%;
-  height: 24px;
-  display: flex;
-  justify-content: flex-end;
-
-  a {
-    width: 24px;
-    height: 24px;
-  }
-
-}
-
 .file-item {
   display: flex;
   align-items: center;
-  flex-direction: column;
   justify-content: space-around;
   padding: 10px;
-  width: 127px;
-  height: 134px;
   background: #fff;
   border-radius: 25px;
   margin-bottom: 10px;
@@ -37,7 +21,6 @@
 
   .file-details {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     width: 100%;
 
@@ -58,5 +41,32 @@
       font-weight: normal;
       margin-top: 4px;
     }
+  }
+}
+
+.file-item--vertical {
+  flex-direction: column;
+  width: 127px;
+  height: 134px;
+
+  .file-details {
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+  }
+}
+
+.file-item--horizontal {
+  flex-direction: row;
+  width: 100%;
+  height: 65px;
+
+  .file-icon {
+    margin-bottom: 0;
+  }
+
+  .file-details {
+    flex-direction: row;
+    justify-content: space-around
   }
 }
