@@ -110,19 +110,27 @@ export class FileComponent implements OnInit {
 
   downloadFile(fileId: string) {
     this.myDocumentsService.downloadFile(fileId).subscribe((data: Blob) => {
-      const fileName = this.file.fileName || 'downloaded-file';
+      console.log('Received data:', data);
+  
+      // Проверка типа контента
+      const contentType = data.type;
+      console.log('Content Type:', contentType);
+  
+      // Преобразование Blob в URL
       const downloadUrl = window.URL.createObjectURL(data);
       const link = document.createElement('a');
       link.href = downloadUrl;
-      link.download = fileName;
+      link.download = this.file.fileName || 'downloaded-file';
       link.click();
-
+  
+      // Очистка URL после скачивания
       window.URL.revokeObjectURL(downloadUrl);
     }, error => {
       console.error('Ошибка при скачивании файла:', error);
       this.toastService.showError('Ошибка!', 'Не удалось скачать файл');
     });
   }
+  
 
 
 }

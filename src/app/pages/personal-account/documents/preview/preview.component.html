@@ -8,15 +8,14 @@
                 {{ isFullscreen ? 'Закрыть предпросмотр' : 'На весь экран' }}
             </button>
         </div>
-        
+
     </div>
-    <div class="viewExcel" >
-    
-    
+    <div class="viewExcel">
+
         <p-selectButton *ngIf="!isFullscreen" [options]="stateOptions" [(ngModel)]="selectedSheet"
             (ngModelChange)="onViewChange($event)" optionLabel="label" optionValue="value">
         </p-selectButton>
-    
+
         <app-excel-viewer *ngIf="blob" [blob]="blob" [sheetName]="selectedSheet">
         </app-excel-viewer>
     </div>

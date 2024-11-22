@@ -1,18 +1,44 @@
 <div class="container">
 
   <div class="field-input">
-    <p-fileUpload mode="basic"  class="custom-width" #fileUpload [chooseLabel]="chooseLabel" [chooseIcon]="chooseIcon" [accept]="accept" [multiple]="false"
-    (onSelect)="handleSelect($event)">
-  </p-fileUpload>
-  <p-button icon="pi pi-times" [text]="true" severity="danger" *ngIf="visibleDelete" (click)="clearFile(fileUpload)"/>
-  
+    <p-button (onClick)="showDialog()" icon="pi pi-file-export" text="true" />
+    <p-fileUpload mode="basic" class="custom-width" #fileUpload [chooseLabel]="chooseLabel" [chooseIcon]="chooseIcon"
+    [chooseLabel]="fileName ? fileName : chooseLabel"   
+    [accept]="accept" [multiple]="false" (onSelect)="handleSelect($event)">
+    </p-fileUpload>
+    <p-button icon="pi pi-times" [text]="true" severity="danger" *ngIf="visibleDelete"
+      (click)="clearFile()" />
+
   </div>
 
- <div *ngIf="showSheetSelection" class="sheet-selection">
+  <div *ngIf="showSheetSelection" class="sheet-selection">
     <label for="sheetName">Выберите</label>
     <select id="sheetName" [(ngModel)]="sheetName" (change)="onSheetSelect(sheetName)">
       <option *ngFor="let sheet of sheetNames" [value]="sheet">{{ sheet }}</option>
     </select>
-  </div>
-  
+  </div> 
+
 </div>
+
+<p-dialog header="Выберите файл" [modal]="true" [(visible)]="visibleDialog" [style]="{ width: '60%' }">
+  <p-selectButton 
+    [options]="stateOptions" 
+    [(ngModel)]="isVertical" 
+    (onChange)="onChangeType($event.value)"
+    optionLabel="label" 
+    optionValue="value">
+  </p-selectButton>
+
+  <div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
+    <app-select-file 
+      *ngFor="let file of testFiles" 
+      [file]="file" 
+      (selectFile)="onChangeSelectFile($event)">
+    </app-select-file>
+  </div>
+
+  <div class="sticky-footer">
+    <p-button label="Отмена" severity="secondary" (onClick)="visibleDialog = false"></p-button>
+    <p-button label="Добавить" (onClick)="visibleDialog = false; confirmSelection()"></p-button>
+  </div>
+</p-dialog>

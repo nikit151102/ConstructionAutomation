@@ -69,7 +69,7 @@ export class MyDocumentsService {
     });
   }
 
-  downloadFile(id: string): Observable<Blob> {
+  downloadFile(id: string): Observable<any> {
     const url = `${this.apiUrl}/api/UserDocument/DownloadFile`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
 
@@ -79,7 +79,7 @@ export class MyDocumentsService {
         'Authorization': `Bearer ${token}`
       }),
       params: { id },
-      responseType: 'blob' as 'json',
+      responseType: 'json',
     });
   }
 

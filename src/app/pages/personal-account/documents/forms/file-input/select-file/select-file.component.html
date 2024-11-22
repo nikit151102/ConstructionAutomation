@@ -1,0 +1,19 @@
+<input
+type="checkbox"
+class="file-checkbox"
+[checked]="isSelected"
+(change)="toggleSelection()"
+/>
+<div
+  class="file-item"
+  [ngClass]="isVertical ? 'file-item--vertical' : 'file-item--horizontal'"
+  [pTooltip]="file.fileName"
+  tooltipPosition="bottom"
+  (click)="toggleSelection()"
+>
+  <img [src]="file.icon" alt="File Icon" class="file-icon" />
+  <div class="file-details">
+    <p class="file-title">{{ file.fileName }}</p>
+    <p class="file-date">{{ file.createDateTime | date: 'dd-MM-yyyy HH:mm' }}</p>
+  </div>
+</div>
