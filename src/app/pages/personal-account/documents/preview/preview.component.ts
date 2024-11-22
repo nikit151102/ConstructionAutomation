@@ -18,30 +18,60 @@ import { DocumentsService } from '../documents.service';
 export class PreviewComponent implements OnInit {
   @Input() selectedSheet: string = '';
   blobUrl: string | null = null;
-  blob: any;
-
+  fileMetadata: any;  
+  blob:any;
   @Input() stateOptions: any[] = [];
   @Output() viewChange = new EventEmitter<string>();
   @Output() fullscreenToggle = new EventEmitter<boolean>();
 
   isFullscreen: boolean = false;
 
-  constructor(private myDocumentsService: MyDocumentsService,
+  constructor(
+    private myDocumentsService: MyDocumentsService,
     private toastService: ToastService,
     private documentsService: DocumentsService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.blob = null;
-  if (this.blobUrl) {
-    window.URL.revokeObjectURL(this.blobUrl); 
-    this.blobUrl = null;
-  }
+  
     this.documentsService.isSuccessDoc$.subscribe((data: any) => {
-      this.blob = data;
-      
-    })
+      if (data) {
+        this.fileMetadata = data.documentMetadata;  // Получаем метаданные файлаP
+        
+        this.createBlobUrl(data.file);  // Создаем URL для файла
+      }
+    });
   }
+
+  // Создание URL для скачивания файла
+  private createBlobUrl(fileData: any): void {
+    const blob = this.createBlobFromData(fileData); // Преобразуем данные в Blob
+   this.blob = blob;
+   console.log('this.blob', this.blob)
+    this.blobUrl = window.URL.createObjectURL(blob); // Генерируем URL
+  }
+
+  private createBlobFromData(fileData: any): Blob {
+    if (!fileData.fileContents) {
+      console.error('Отсутствуют данные файла для преобразования в Blob.');
+      return new Blob(); // Возвращаем пустой Blob, если данных нет.
+    }
+  
+    const byteCharacters = atob(fileData.fileContents); // Декодируем base64
+    const byteArrays = [];
+  
+    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+      const slice = byteCharacters.slice(offset, offset + 1024);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      byteArrays.push(new Uint8Array(byteNumbers));
+    }
+  
+    return new Blob(byteArrays, { type: fileData.contentType });
+  }
+  
 
   toggleFullscreen() {
     this.isFullscreen = !this.isFullscreen;
@@ -52,20 +82,20 @@ export class PreviewComponent implements OnInit {
     this.viewChange.emit(fileKey);
   }
 
-
   downloadFile() {
-    if (this.blob) {
+    if (this.fileMetadata) {
+
+      const fileName = this.fileMetadata.fileName || 'downloaded-file';
       const downloadUrl = window.URL.createObjectURL(this.blob);
       const link = document.createElement('a');
       link.href = downloadUrl;
-      link.download = 'fileName';
+      link.download = fileName;
       link.click();
 
       window.URL.revokeObjectURL(downloadUrl);
+
     } else {
       this.toastService.showError('Ошибка!', 'Нет файла для скачивания');
     }
   }
-
-
 }

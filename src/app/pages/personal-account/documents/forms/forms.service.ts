@@ -20,7 +20,7 @@ export class FormsService {
         'Accept': 'application/json',
         'Authorization': `Bearer ${token}`
       }),
-      responseType: 'blob' as 'json',
+      responseType: 'json', 
     });
   }
 
