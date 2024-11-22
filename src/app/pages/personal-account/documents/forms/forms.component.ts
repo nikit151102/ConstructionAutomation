@@ -24,7 +24,7 @@ export class FormsComponent {
   @Output() uploadSuccess = new EventEmitter<any>();
 
   form!: FormGroup;
-  files: { [key: string]: { file: File; sheetName?: string } } = {};
+  files: { [key: string]: { file: File; sheetName?: string; fileId?: string } } = {};
 
   constructor(private fb: FormBuilder, private formsService: FormsService,
     private activatedRoute: ActivatedRoute,
@@ -58,12 +58,12 @@ export class FormsComponent {
   }
 
 
-  onFileSelect(data: { event?: FileSelectEvent; file: File; sheetName?: string }, key: string) {
+  onFileSelect(data: { event?: FileSelectEvent; file: File; sheetName?: string; fileId: string  }, key: string) {
     const file = data.file;
 
     if (file) {
 
-      this.files[key] = { file, sheetName: data.sheetName };
+      this.files[key] = { file, sheetName: data.sheetName, fileId: data.fileId };
     } else {
       console.warn(`No file provided for key ${key}`);
     }
@@ -81,6 +81,10 @@ export class FormsComponent {
 
           if (fileData.sheetName) {
             formData.append(`${fileInput.key}ListName`, fileData.sheetName);
+            
+          }
+          if (fileData.sheetName && fileData.fileId) {
+            formData.append(`${fileInput.key}Id`, fileData.fileId);
           }
         }
       });

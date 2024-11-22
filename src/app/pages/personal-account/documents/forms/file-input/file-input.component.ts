@@ -31,7 +31,7 @@ export class FileInputComponent implements OnInit {
   @Input() chooseIcon = 'pi pi-upload';
   @Input() accept = '';
   @Input() showSheetSelection = false;
-  @Output() onSelect = new EventEmitter<{ event?: FileSelectEvent; file: File; sheetName?: string }>();
+  @Output() onSelect = new EventEmitter<{ event?: FileSelectEvent; file: File; sheetName?: string; fileId: string }>();
 
   @ViewChild('fileUpload') fileUpload: any;
 
@@ -46,7 +46,7 @@ export class FileInputComponent implements OnInit {
   selectFile!: File;
   selectEvent!: FileSelectEvent;
   testFiles: any;
-
+  fileId: string = '';
   stateOptions = [
     { label: 'Плитка', value: true },
     { label: 'Список', value: false },
@@ -125,7 +125,7 @@ export class FileInputComponent implements OnInit {
           this.visibleDelete = true;
 
           if (this.sheetNames.length === 1) {
-            this.emitSelection(event, file, this.sheetNames[0]);
+            this.emitSelection(event, file, this.sheetNames[0], this.fileId);
           } else {
             this.showSheetSelection = true;
           }
@@ -157,11 +157,11 @@ export class FileInputComponent implements OnInit {
 
   onSheetSelect(selectedSheet: string): void {
     this.sheetName = selectedSheet;
-    this.emitSelection(this.selectEvent, this.selectFile, selectedSheet);
+    this.emitSelection(this.selectEvent, this.selectFile, selectedSheet, this.fileId);
   }
 
-  private emitSelection(event: FileSelectEvent, file: File, sheetName: string): void {
-    this.onSelect.emit({ event, file, sheetName });
+  private emitSelection(event: FileSelectEvent, file: File, sheetName: string, fileId: string): void {
+    this.onSelect.emit({ event, file, sheetName, fileId});
   }
 
   ismyDownloadFile: any;
@@ -179,6 +179,7 @@ export class FileInputComponent implements OnInit {
   setCurrentFile(event: any) {
     this.myDocumentsService.downloadFile(event.id).subscribe({
       next: (data) => {
+        this.fileId = event.id;
         const fileName = event.fileName || 'UploadedFile.xlsx';
 
         // Проверяем, что пришел fileContents в формате base64
