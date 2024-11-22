@@ -29,12 +29,12 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         { label: 'Спецификация работ', command: () => this.executeDocs('workSpecification') }
       ]
     },
-    { label: 'Настройки', icon: 'pi pi-cog', command: () => this.executeCommand('settings') },
+    // { label: 'Настройки', icon: 'pi pi-cog', command: () => this.executeCommand('settings') },
     { label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit') },
   ];
 
 
-  isSidebarOpen = false;
+  isSidebarOpen = true;
   isMobileScreen = false;
   darkMode = false;
   submenuState: boolean[] = [];
@@ -50,7 +50,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    
+    this.updateSidebarStyles();
     this.subscriptions.push(
       this.sidebarService.isSidebarOpen$.subscribe(state => {
         this.isSidebarOpen = state;

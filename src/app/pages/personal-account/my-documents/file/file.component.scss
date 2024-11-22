@@ -33,6 +33,8 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       max-width: 100%;
+      width: 85%;
+      text-align: start;
       display: block;
     }
 
@@ -54,6 +56,10 @@
     flex-direction: column;
     justify-content: center;
     gap: 5px;
+
+    .file-title {
+      width: 100%;
+    }
   }
 }
 
@@ -71,7 +77,11 @@
     justify-content: space-around;
     align-items: center;
 
-    .file-date{
+    .file-title {
+      width: 85%;
+    }
+
+    .file-date {
       margin: 0;
     }
   }

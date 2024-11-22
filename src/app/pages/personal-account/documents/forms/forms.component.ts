@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsService } from './forms.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../../../services/toast.service';
+import { ProgressSpinnerService } from '../../../../components/progress-spinner/progress-spinner.service';
 
 @Component({
   selector: 'app-forms',
@@ -27,7 +28,9 @@ export class FormsComponent {
 
   constructor(private fb: FormBuilder, private formsService: FormsService,
     private activatedRoute: ActivatedRoute,
-    private toastService: ToastService) { }
+    private toastService: ToastService,
+    private progressSpinnerService: ProgressSpinnerService
+  ) { }
 
   ngOnInit(): void {
 
@@ -116,13 +119,16 @@ export class FormsComponent {
     let userId = localStorage.getItem('VXNlcklk')
     if (userId)
       filteredFormData.append('UserId', userId);
+    this.progressSpinnerService.show();
     this.formsService.uploadFiles(filteredFormData, this.config.endpoint).subscribe({
       next: (response: any) => {
+        this.progressSpinnerService.hide();
         console.log('Success:', response)
         this.uploadSuccess.emit(response);
       },
       error: (error: any) => {
         console.error('Error:', error)
+        this.progressSpinnerService.hide();
         this.toastService.showError('Ошибка', 'Не удалось сформировать документ');
       }
       ,

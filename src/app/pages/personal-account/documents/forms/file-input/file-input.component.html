@@ -1,6 +1,6 @@
 <div class="container">
 
-    <p-fileUpload mode="basic" #fileUpload [chooseLabel]="chooseLabel" [chooseIcon]="chooseIcon" [accept]="accept" [multiple]="false"
+    <p-fileUpload mode="basic"  class="custom-width" #fileUpload [chooseLabel]="chooseLabel" [chooseIcon]="chooseIcon" [accept]="accept" [multiple]="false"
     (onSelect)="handleSelect($event)">
   </p-fileUpload>
   <p-button icon="pi pi-times" [text]="true" severity="danger" *ngIf="visibleDelete" (click)="clearFile(fileUpload)"/>

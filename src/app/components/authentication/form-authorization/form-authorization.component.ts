@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 import { TokenService } from '../../../services/token.service';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
+import { ProgressSpinnerService } from '../../progress-spinner/progress-spinner.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-form-authorization',
@@ -22,7 +24,13 @@ import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
 export class FormAuthorizationComponent implements OnInit {
   signInForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private AuthorizationService: FormAuthorizationService, private router: Router, private tokenService: TokenService, private currentUserService: CurrentUserService) {
+  constructor(private fb: FormBuilder, 
+    private AuthorizationService: FormAuthorizationService, 
+    private router: Router, 
+    private tokenService: TokenService, 
+    private progressSpinnerService: ProgressSpinnerService,
+    private toastService:ToastService
+  ) {
     this.signInForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -48,34 +56,41 @@ export class FormAuthorizationComponent implements OnInit {
 
   onSignIn() {
     this.signInForm.markAllAsTouched();
-  
+
     if (this.signInForm.valid) {
+
+      this.progressSpinnerService.show();
+
       const formData = this.signInForm.value;
 
-      const Data  = {
+      const Data = {
         UserName: formData.username,
         UserId: '',
         Email: formData.username,
-        Password: formData.password, 
+        Password: formData.password,
       };
-        console.log("Data",Data)
+      console.log("Data", Data)
       this.AuthorizationService.signIn(Data).subscribe(
         (response) => {
-          if(response.data){
+          if (response.data) {
+            this.progressSpinnerService.hide();
             this.tokenService.setToken(response.data.token);
             this.router.navigate([`/${response.data.id}`]);
             localStorage.setItem('VXNlcklk', response.data.id);
-            
+
           }
-          
+
         },
         (error) => {
+          this.progressSpinnerService.hide();
           console.error('Ошибка при входе:', error);
+          this.toastService.showError('Ошибка', 'Ошибка при входе')
         }
       );
     } else {
       console.log('Форма недействительна');
-      this.handleFormErrors(); 
+      this.toastService.showWarn('Предупреждение', 'Форма невалидна')
+      this.handleFormErrors();
     }
   }
 
@@ -93,7 +108,7 @@ export class FormAuthorizationComponent implements OnInit {
       }
     });
   }
-  
+
 
 
 }

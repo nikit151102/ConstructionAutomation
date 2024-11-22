@@ -9,6 +9,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../../services/toast.service';
+import { ProgressSpinnerService } from '../../../components/progress-spinner/progress-spinner.service';
 
 @Component({
   selector: 'app-my-documents',
@@ -50,10 +51,12 @@ export class MyDocumentsComponent implements OnInit {
 
   constructor(private personalAccountService: PersonalAccountService,
     private myDocumentsService: MyDocumentsService,
-    private cdRef: ChangeDetectorRef, 
-    private toastService: ToastService
+    private cdRef: ChangeDetectorRef,
+    private toastService: ToastService,
+    private progressSpinnerService: ProgressSpinnerService
   ) {
     this.personalAccountService.changeTitle('Мои документы');
+    this.progressSpinnerService.show();
   }
   visibleUpload: boolean = false;
   testFiles: any;
@@ -61,11 +64,17 @@ export class MyDocumentsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.myDocumentsService.loadData();
-    this.myDocumentsService.filesSelect$.subscribe((data: any) => {
-      this.testFiles = data;
-    })
+    this.testFiles = null;
 
+    this.myDocumentsService.loadData();
+
+    this.myDocumentsService.filesSelect$.subscribe({
+      next: (data: any) => {
+        this.testFiles = data;
+      },
+      error: (error) => {
+      },
+    });
     this.myDocumentsService.isVertical$.subscribe((type: boolean) => {
       this.isVertical = type;
     })
@@ -149,7 +158,7 @@ export class MyDocumentsComponent implements OnInit {
     this.uploadedFiles = this.uploadedFiles.filter((f) => f !== file);
     console.log('File removed:', file.name);
     this.cdRef.detectChanges();
-    console.log('this.uploadedFiles',this.uploadedFiles)
+    console.log('this.uploadedFiles', this.uploadedFiles)
   }
 
 

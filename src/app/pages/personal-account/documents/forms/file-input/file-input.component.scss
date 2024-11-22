@@ -2,8 +2,11 @@
     max-width: 600px;
     margin: 20px auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 15px;
+  }
+  .custom-width {
+    width: 85% !important;
   }
   
   .sheet-selection {

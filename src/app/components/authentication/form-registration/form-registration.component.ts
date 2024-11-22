@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { TokenService } from '../../../services/token.service';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-form-registration',
@@ -21,7 +22,10 @@ import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
 export class FormRegistrationComponent {
   SignUpForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private registrationService: FormRegistrationService,  private router: Router, private tokenService: TokenService, private currentUserService: CurrentUserService) {
+  constructor(private fb: FormBuilder, private registrationService: FormRegistrationService,  
+    private router: Router, private tokenService: TokenService, 
+    private currentUserService: CurrentUserService,
+    private toastService:ToastService) {
     this.SignUpForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]], 
@@ -68,10 +72,12 @@ export class FormRegistrationComponent {
         },
         (error) => {
           console.error('Ошибка при регистрации:', error);
+          this.toastService.showError('Ошибка', 'Ошибка при регистрации')
         }
       );
     } else {
       console.log('Форма недействительна');
+      this.toastService.showWarn('Предупреждение', 'Форма невалидна')
       this.handleFormErrors();
     }
   }
