@@ -2,12 +2,19 @@
     max-width: 600px;
     margin: 20px auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 15px;
+
+    .field-input{
+      display: flex;
+      flex-direction: row;
+
+      .custom-width {
+        width: 85% !important;
+      }
+    }
   }
-  .custom-width {
-    width: 85% !important;
-  }
+  
   
   .sheet-selection {
     margin-top: 20px;
