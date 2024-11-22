@@ -1,4 +1,4 @@
-.viewExcel {
+.preview {
     flex: 2;
     margin-right: 15px;
     width: 100%;
@@ -6,7 +6,7 @@
     overflow: auto;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 0px 0px 40px 40px;
+    border-radius: 40px;
     position: relative;
 
     &.fullscreen {
@@ -22,8 +22,6 @@
         width: 100vw;
         background-color: #f9f9f9;
     }
-
-    
 }
 
 
@@ -36,6 +34,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    position: sticky; /* Фиксация заголовка */
+    top: 0; /* Остается в верхней части при прокрутке */
+    left: 0;
 
     h2 {
         margin: 0;

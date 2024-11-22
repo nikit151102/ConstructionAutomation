@@ -1,22 +1,23 @@
-
-<div class="preview-header">
-    <h2>Предварительный просмотр</h2>
-    <div style="display: flex; flex-direction: row; gap: 10px;">
-        <button pButton pRipple label="Скачать" class="p-button-success" (click)="downloadFile()">
-        </button>
-        <button class="fullscreen-toggle" (click)="toggleFullscreen()">
-            {{ isFullscreen ? 'Закрыть предпросмотр' : 'На весь экран' }}
-        </button>
+<div class="preview" [class.fullscreen]="isFullscreen">
+    <div class="preview-header">
+        <h2>Предварительный просмотр</h2>
+        <div style="display: flex; flex-direction: row; gap: 10px;">
+            <button pButton pRipple label="Скачать" class="p-button-success" (click)="downloadFile()">
+            </button>
+            <button class="fullscreen-toggle" (click)="toggleFullscreen()">
+                {{ isFullscreen ? 'Закрыть предпросмотр' : 'На весь экран' }}
+            </button>
+        </div>
+        
     </div>
+    <div class="viewExcel" >
     
-</div>
-<div class="viewExcel" [class.fullscreen]="isFullscreen">
-
-
-    <p-selectButton *ngIf="!isFullscreen" [options]="stateOptions" [(ngModel)]="selectedSheet"
-        (ngModelChange)="onViewChange($event)" optionLabel="label" optionValue="value">
-    </p-selectButton>
-
-    <app-excel-viewer *ngIf="blob" [blob]="blob" [sheetName]="selectedSheet">
-    </app-excel-viewer>
+    
+        <p-selectButton *ngIf="!isFullscreen" [options]="stateOptions" [(ngModel)]="selectedSheet"
+            (ngModelChange)="onViewChange($event)" optionLabel="label" optionValue="value">
+        </p-selectButton>
+    
+        <app-excel-viewer *ngIf="blob" [blob]="blob" [sheetName]="selectedSheet">
+        </app-excel-viewer>
+    </div>
 </div>
