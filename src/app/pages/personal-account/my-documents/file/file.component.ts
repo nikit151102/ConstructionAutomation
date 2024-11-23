@@ -93,7 +93,7 @@ export class FileComponent implements OnInit {
   renameFile() {
     let data = {
       Id: this.file.id,
-      Name: this.value
+      FileName: this.value
     }
     this.myDocumentsService.renameFile(this.file.id, data).subscribe(
       (data: any) => {

@@ -79,7 +79,7 @@ export class FormsComponent {
         if (fileData) {
           formData.append(fileInput.key, fileData.file);
 
-          if (fileData.sheetName) {
+          if (fileData.sheetName  && !fileData.fileId) {
             formData.append(`${fileInput.key}ListName`, fileData.sheetName);
             
           }

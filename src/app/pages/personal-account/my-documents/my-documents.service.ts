@@ -109,7 +109,7 @@ export class MyDocumentsService {
   }
 
   renameFile(id: string, data: any): Observable<any> {
-    const url = `${this.apiUrl}/api/UserDocument/${id}`;
+    const url = `${this.apiUrl}/api/UserDocument/UpdateUserFile/${id}`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
 
     return this.http.put<any>(url, data, {
