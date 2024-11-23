@@ -137,6 +137,7 @@ export class MyDocumentsService {
     (error) => {
       console.error('Ошибка загрузки данных:', error);
       this.toastService.showError('Ошибка', 'Не удалось загрузить данные');
+      this.progressSpinnerService.hide();
     },
     
   );

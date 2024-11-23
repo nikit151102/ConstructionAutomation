@@ -71,8 +71,11 @@ export class MyDocumentsComponent implements OnInit {
     this.myDocumentsService.filesSelect$.subscribe({
       next: (data: any) => {
         this.testFiles = data;
+        this.progressSpinnerService.hide();
       },
       error: (error) => {
+        this.toastService.showError('Ошибка', 'Не удалось загрузить данные');
+        this.progressSpinnerService.hide();
       },
     });
     this.myDocumentsService.isVertical$.subscribe((type: boolean) => {
