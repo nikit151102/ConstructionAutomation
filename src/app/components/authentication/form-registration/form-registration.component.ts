@@ -40,13 +40,9 @@ export class FormRegistrationComponent {
       const formData = this.SignUpForm.value;
 
      const Data  = {
-        FirstName: '',
-        LastName: '',
-        TgId: '',
-        UserName:  formData.username,
+        FirstName:  formData.username,
         Email: formData.email,
         Password: formData.password, 
-        Roles: []
       };
 
     //   const Data  = {

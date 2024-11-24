@@ -91,4 +91,13 @@ export class ExcelViewerComponent implements OnChanges {
       console.error('Error loading sheet data:', error);
     }
   }
+
+  ngOnDestroy(): void {
+
+    // Освобождаем ресурсы
+    this.blob = undefined;
+    this.sheetName = '';
+    this.excelData = [];
+    this.selectedSheet = '';
+  }
 }

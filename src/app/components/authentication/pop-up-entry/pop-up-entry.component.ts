@@ -97,13 +97,8 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
       });
     } else {
       Data = {
-        FirstName: '',
-        LastName: '',
         TgId: user.id,
         UserName: user.username,
-        Email: '',
-        Password: '',
-        Roles: []
       };
       this.formRegistrationService.signUn(Data).subscribe((response: any) => {
         console.log('Успешная регистрация:', response);

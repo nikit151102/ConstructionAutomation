@@ -53,4 +53,12 @@ export class PreviewComponent implements OnInit {
   downloadFile() {
     this.commomFileService.downloadFile(this.fileMetadata.id);
   }
+
+  ngOnDestroy(): void {
+
+    // Освобождаем ресурсы
+    this.blobUrl = null;
+    this.blob = null;
+    this.fileMetadata = null;
+  }
 }
