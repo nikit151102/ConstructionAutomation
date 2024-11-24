@@ -19,7 +19,7 @@ export class FormUserService {
       'Authorization': `Bearer ${token}`
     });
     
-    return this.http.put<any>(`${environment.apiUrl}/api/User/${user.id}`, user, { headers });
+    return this.http.put<any>(`${environment.apiUrl}/api/Profile/`, user, { headers });
   }
   
 }

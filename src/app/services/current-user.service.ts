@@ -28,7 +28,7 @@ export class CurrentUserService {
     const idUser = localStorage.getItem('VXNlcklk');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<User>(`${environment.apiUrl}/api/User/${idUser}`, { headers }).pipe(
+    return this.http.get<User>(`${environment.apiUrl}/api/Profile`, { headers }).pipe(
       map(response => response),
       catchError(error => {
         return throwError(() => error);

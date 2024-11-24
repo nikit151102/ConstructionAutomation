@@ -18,7 +18,7 @@ export class FormDeleteService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.delete<any>(`${environment.apiUrl}/api/User/${userId}`, { headers });
+    return this.http.delete<any>(`${environment.apiUrl}/api/Profile`, { headers });
   }
 
 }

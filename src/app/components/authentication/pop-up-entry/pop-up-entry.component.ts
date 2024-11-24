@@ -84,7 +84,7 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
     if (this.type == 'authorization') {
       Data = {
         UserName: user.username,
-        UserId: user.id,
+        TgId: user.id,
         Email: '',
         Password: '',
       };
@@ -99,7 +99,7 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
       Data = {
         FirstName: '',
         LastName: '',
-        UserId: user.id,
+        TgId: user.id,
         UserName: user.username,
         Email: '',
         Password: '',

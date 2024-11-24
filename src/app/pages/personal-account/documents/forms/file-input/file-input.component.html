@@ -30,12 +30,20 @@
   </p-selectButton>
 
   <div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
-    <app-select-file 
+    <ng-container *ngIf="testFiles && testFiles.length > 0; else noFiles">
+      <app-select-file 
       *ngFor="let file of testFiles" 
       [file]="file" 
       (selectFile)="onChangeSelectFile($event)">
     </app-select-file>
+    </ng-container>
   </div>
+  
+  <ng-template #noFiles>
+    <div class="no-files">
+      Добавьте первый файл, чтобы он появился здесь
+    </div>
+  </ng-template>
 
   <div class="sticky-footer">
     <p-button label="Отмена" severity="secondary" (onClick)="visibleDialog = false"></p-button>

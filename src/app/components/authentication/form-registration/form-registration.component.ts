@@ -42,7 +42,7 @@ export class FormRegistrationComponent {
      const Data  = {
         FirstName: '',
         LastName: '',
-        UserId: '',
+        TgId: '',
         UserName:  formData.username,
         Email: formData.email,
         Password: formData.password, 

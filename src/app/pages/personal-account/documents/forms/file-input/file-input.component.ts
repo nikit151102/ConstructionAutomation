@@ -72,7 +72,7 @@ export class FileInputComponent implements OnInit {
   private fetchUserDocuments(): void {
     this.myDocumentsService.getAllUserDocuments().subscribe({
       next: (data: any) => {
-        this.testFiles = data.data.map((file: any) => ({
+        this.testFiles = data.userDocument.map((file: any) => ({
           ...file,
           icon: 'pngs/file.png'
         }));

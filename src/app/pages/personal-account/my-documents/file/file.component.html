@@ -12,11 +12,20 @@
 </div>
 
 
-<p-dialog header="Edit Profile" [modal]="true" [(visible)]="fileService.visibleShonRename" [style]="{ width: '25rem' }">
-  <span class="p-text-secondary block mb-5">Новое имя файлаа</span>
-  <input type="text" pInputText [(ngModel)]="value" />
-  <div class="flex justify-content-end gap-2" style="padding-top: 10px;">
-    <p-button label="Отмена" severity="secondary" (onClick)="closeDialogRename()" />
-    <p-button label="Переименовать" (onClick)="renameFile()" />
+<div class="custom-modal" *ngIf="fileService.visibleShonRename">
+  <div class="custom-modal-overlay" (click)="closeDialogRename()"></div>
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <h2>Edit Profile</h2>
+      <button class="close-button" (click)="closeDialogRename()">×</button>
+    </div>
+    <div class="custom-modal-body">
+      <span class="text-secondary">Новое имя файла</span>
+      <input pInputText ="text" class="input-text" [(ngModel)]="value" />
+    </div>
+    <div class="custom-modal-footer">
+      <button class="btn secondary" (click)="closeDialogRename()">Отмена</button>
+      <button class="btn primary" (click)="renameFile()">Переименовать</button>
+    </div>
   </div>
-</p-dialog>
+</div>

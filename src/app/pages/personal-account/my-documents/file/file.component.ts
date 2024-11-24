@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastService } from '../../../../services/toast.service';
+import { CommomFileService} from '../../../../services/file.service';
 
 @Component({
   selector: 'app-file',
@@ -43,7 +44,7 @@ export class FileComponent implements OnInit {
     },
   ];
 
-  constructor(private myDocumentsService: MyDocumentsService, public fileService: FileService, private toastService: ToastService) {
+  constructor(private myDocumentsService: MyDocumentsService, public fileService: FileService, private toastService: ToastService, private commomFileService:CommomFileService) {
 
   }
 
@@ -86,7 +87,7 @@ export class FileComponent implements OnInit {
   }
 
   closeDialogRename() {
-    this.fileService.visibleShonRename = true;
+    this.fileService.visibleShonRename = false;
     this.value = '';
   }
 
@@ -108,29 +109,31 @@ export class FileComponent implements OnInit {
     );
   }
 
-  downloadFile(fileId: string) {
-    this.myDocumentsService.downloadFile(fileId).subscribe((data: Blob) => {
-      console.log('Received data:', data);
-  
-      // Проверка типа контента
-      const contentType = data.type;
-      console.log('Content Type:', contentType);
-  
-      // Преобразование Blob в URL
-      const downloadUrl = window.URL.createObjectURL(data);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = this.file.fileName || 'downloaded-file';
-      link.click();
-  
-      // Очистка URL после скачивания
-      window.URL.revokeObjectURL(downloadUrl);
-    }, error => {
-      console.error('Ошибка при скачивании файла:', error);
-      this.toastService.showError('Ошибка!', 'Не удалось скачать файл');
-    });
+  private createBlobFromData(fileData: any): Blob {
+    if (!fileData.fileContents) {
+      console.error('Отсутствуют данные файла для преобразования в Blob.');
+      return new Blob(); // Возвращаем пустой Blob, если данных нет.
+    }
+
+    const byteCharacters = atob(fileData.fileContents); // Декодируем base64
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+      const slice = byteCharacters.slice(offset, offset + 1024);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      byteArrays.push(new Uint8Array(byteNumbers));
+    }
+
+    return new Blob(byteArrays, { type: fileData.contentType });
   }
-  
+
+  downloadFile(fileId: string) {
+    this.commomFileService.downloadFile(fileId);
+  }
+
 
 
 }

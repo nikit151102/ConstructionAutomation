@@ -26,7 +26,7 @@ export class AuthService {
     });
 
     // Запрос на получение текущего пользователя
-    return this.http.get<any>(`${this.domain}/users/currentUser`, { headers }).pipe(
+    return this.http.get<any>(`${this.domain}/Profile`, { headers }).pipe(
       map(() => true),  // Если данные возвращены успешно, возвращаем true
       catchError(() => {
         this.logout(); // В случае ошибки выходим из аккаунта
@@ -50,7 +50,7 @@ export class AuthService {
     });
 
     // Выполнение запроса с заголовками
-    return this.http.get(`${environment.apiUrl}/users/currentUser`, { headers });
+    return this.http.get(`${environment.apiUrl}/Profile`, { headers });
   }
 
 }

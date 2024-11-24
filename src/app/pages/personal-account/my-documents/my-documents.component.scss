@@ -182,3 +182,11 @@ flex-direction: row;
 .file-list--horizontal{
   flex-direction: column;
 }
+
+
+.no-files {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #7a7a7a;
+  padding: 20px;
+}

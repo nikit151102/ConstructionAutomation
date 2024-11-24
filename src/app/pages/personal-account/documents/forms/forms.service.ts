@@ -14,7 +14,7 @@ export class FormsService {
    
     const token = localStorage.getItem('YXV0aFRva2Vu');
 
-    return this.http.post(`${environment.apiUrl}/api/UserDocument/${ComparativeStatement}`, files, {
+    return this.http.post(`${environment.apiUrl}/api/Profile/${ComparativeStatement}`, files, {
 
       headers: new HttpHeaders({
         'Accept': 'application/json',

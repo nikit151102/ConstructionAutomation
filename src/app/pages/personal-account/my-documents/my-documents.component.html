@@ -14,8 +14,11 @@
 
 
   <div class="breadcrumb-info">
-    <span class="storage-info">0 из 15Мб</span>
+    <span class="storage-info">
+      {{ getSizeInMB(myDocumentsService.storageInfo.storageVolumeUsage) }} из {{ getSizeInMB(myDocumentsService.storageInfo.storageVolumeCopacity) }} Мб
+    </span>
   </div>
+
 </div>
 
 <div class="breadcrumb-navigation">
@@ -32,11 +35,11 @@
   (uploadHandler)="onUpload($event)" (onSelect)="onSelect($event)">
 
   <ng-template pTemplate="header">
-    <p-button label="Закрыть" icon="pi pi-times" (onClick)="visibleUpload = false">
+    <p-button label="Закрыть" icon="pi pi-times" (onClick)="clearAllFiles()">
     </p-button>
     <p-button label="Добавить файлы" icon="pi pi-upload" (onClick)="fileUpload.choose()">
     </p-button>
-    <p-button label="Загрузить" icon="pi pi-cloud-upload" class="p-button-success" (onClick)="Upload()">
+    <p-button label="Загрузить" icon="pi pi-cloud-upload" class="p-button-success" [disabled]="disabledUploadBtn" (onClick)="Upload()">
     </p-button>
   </ng-template>
 
@@ -51,8 +54,19 @@
 
 </p-fileUpload>
 
-<div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
-  <app-file *ngFor="let file of testFiles" [file]="file" [isdelete]="true">
-  </app-file>
+<div class="error-message" *ngIf="errorMessage">
+  {{ errorMessage }}
 </div>
 
+
+<div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
+  <ng-container *ngIf="testFiles && testFiles.length > 0; else noFiles">
+    <app-file *ngFor="let file of testFiles" [file]="file" [isdelete]="true"></app-file>
+  </ng-container>
+</div>
+
+<ng-template #noFiles>
+  <div class="no-files">
+    Добавьте первый файл, чтобы он появился здесь
+  </div>
+</ng-template>

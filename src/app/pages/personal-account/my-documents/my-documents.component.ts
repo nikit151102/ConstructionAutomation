@@ -10,6 +10,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../../services/toast.service';
 import { ProgressSpinnerService } from '../../../components/progress-spinner/progress-spinner.service';
+import { CommomFileService } from '../../../services/file.service';
 
 @Component({
   selector: 'app-my-documents',
@@ -19,6 +20,7 @@ import { ProgressSpinnerService } from '../../../components/progress-spinner/pro
   styleUrls: ['./my-documents.component.scss'],
 })
 export class MyDocumentsComponent implements OnInit {
+
   files: any = [
     {
       icon: 'pngs/folder.png',
@@ -50,10 +52,12 @@ export class MyDocumentsComponent implements OnInit {
 
 
   constructor(private personalAccountService: PersonalAccountService,
-    private myDocumentsService: MyDocumentsService,
+    public myDocumentsService: MyDocumentsService,
     private cdRef: ChangeDetectorRef,
     private toastService: ToastService,
-    private progressSpinnerService: ProgressSpinnerService
+    private progressSpinnerService: ProgressSpinnerService,
+    private commomFileService: CommomFileService
+
   ) {
     this.personalAccountService.changeTitle('Мои документы');
     this.progressSpinnerService.show();
@@ -61,16 +65,17 @@ export class MyDocumentsComponent implements OnInit {
   visibleUpload: boolean = false;
   testFiles: any;
   isVertical: boolean = false;
-
+  errorMessage: string | null = ''
 
   ngOnInit(): void {
     this.testFiles = null;
 
     this.myDocumentsService.loadData();
-
+    this.totalSize = this.myDocumentsService.storageInfo.storageVolumeUsage;
     this.myDocumentsService.filesSelect$.subscribe({
       next: (data: any) => {
         this.testFiles = data;
+
         this.progressSpinnerService.hide();
       },
       error: (error) => {
@@ -87,6 +92,9 @@ export class MyDocumentsComponent implements OnInit {
     this.myDocumentsService.setTypeView(isVertical);
   }
 
+  getSizeInMB(size: number) {
+    return this.commomFileService.fileSizeInMB(size);
+  }
 
   currentFiles = this.files;
   breadcrumbs: MenuItem[] = [
@@ -124,6 +132,8 @@ export class MyDocumentsComponent implements OnInit {
   }
 
   uploadedFiles: File[] = [];
+  disabledUploadBtn: boolean = false;
+
 
   onUpload(event: any): void {
     if (event.files && event.files.length > 0) {
@@ -133,10 +143,42 @@ export class MyDocumentsComponent implements OnInit {
     }
   }
 
+  totalSize: number = 0;
+
   onSelect(event: any): void {
-    this.uploadedFiles = [...this.uploadedFiles, ...event.files];
+    const selectedFiles = event.files;
+
+    for (let file of selectedFiles) {
+      const fileSizeInBits = file.size * 8;
+      this.totalSize += fileSizeInBits;
+
+      if (this.totalSize > this.myDocumentsService.storageInfo.storageVolumeCopacity) {
+        this.errorMessage = `Файлы превышают доступную память. Лимит: ${this.commomFileService.fileSizeInMB(this.myDocumentsService.storageInfo.storageVolumeCopacity)} MB`;
+        console.log('return')
+        this.disabledUploadBtn = true;
+      }
+    }
+    if (!this.disabledUploadBtn) {
+      this.disabledUploadBtn = false;
+
+      this.errorMessage = null;
+      this.uploadedFiles = [...this.uploadedFiles, ...selectedFiles];
+    }
+
   }
 
+
+  clearAllFiles(): void {
+    this.uploadedFiles = [];
+    const fileUpload: any = document.querySelector('p-fileUpload');
+    if (fileUpload && fileUpload.clear) {
+      fileUpload.clear(); 
+    }
+    this.visibleUpload = false;
+    this.errorMessage = null;
+    this.disabledUploadBtn = false;
+    this.totalSize = this.myDocumentsService.storageInfo.storageVolumeUsage;
+  }
 
   Upload(): void {
     if (this.uploadedFiles && this.uploadedFiles.length > 0) {
@@ -159,9 +201,7 @@ export class MyDocumentsComponent implements OnInit {
 
   removeFile(file: File): void {
     this.uploadedFiles = this.uploadedFiles.filter((f) => f !== file);
-    console.log('File removed:', file.name);
     this.cdRef.detectChanges();
-    console.log('this.uploadedFiles', this.uploadedFiles)
   }
 
 

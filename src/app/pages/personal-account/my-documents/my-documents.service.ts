@@ -25,6 +25,14 @@ export class MyDocumentsService {
   private files = new BehaviorSubject<boolean>(false);
   filesSelect$ = this.files.asObservable();
 
+  storageInfo: {
+    storageVolumeCopacity: number,
+    storageVolumeUsage: number
+  } = {
+    storageVolumeCopacity: 0,
+      storageVolumeUsage: 0
+    }
+
   setFiles(files: any) {
     this.files.next(files);
   }
@@ -47,13 +55,13 @@ export class MyDocumentsService {
 
   upload(files: File[]): Observable<any> {
     console.log("servces files", files);
-    const url = `${this.apiUrl}/api/UserDocument/upload`;
+    const url = `${this.apiUrl}/api/Profile/Upload`;
     const formData = new FormData();
 
-    const userId = localStorage.getItem('VXNlcklk');
-    if (userId) {
-      formData.append('UserId', userId);
-    }
+    // const userId = localStorage.getItem('VXNlcklk');
+    // if (userId) {
+    //   formData.append('UserId', userId);
+    // }
 
     files.forEach(file => {
       formData.append('Files', file);
@@ -70,7 +78,7 @@ export class MyDocumentsService {
   }
 
   downloadFile(id: string): Observable<any> {
-    const url = `${this.apiUrl}/api/UserDocument/DownloadFile`;
+    const url = `${this.apiUrl}/api/Profile/DownloadFile/${id}`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
 
     return this.http.get<Blob>(url, {
@@ -78,14 +86,13 @@ export class MyDocumentsService {
         'Accept': 'application/json',
         'Authorization': `Bearer ${token}`
       }),
-      params: { id },
       responseType: 'json',
     });
   }
 
   getAllUserDocuments(): Observable<any[]> {
     const userId = localStorage.getItem('VXNlcklk');
-    const url = `${this.apiUrl}/api/UserDocument/GetUserFile/${userId}`;
+    const url = `${this.apiUrl}/api/Profile/GetUserFiles`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
 
     return this.http.get<any[]>(url, {
@@ -97,7 +104,7 @@ export class MyDocumentsService {
   }
 
   deleteFile(id: string): Observable<any> {
-    const url = `${this.apiUrl}/api/UserDocument/${id}`;
+    const url = `${this.apiUrl}/api/Profile/${id}`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
 
     return this.http.delete<any>(url, {
@@ -109,7 +116,7 @@ export class MyDocumentsService {
   }
 
   renameFile(id: string, data: any): Observable<any> {
-    const url = `${this.apiUrl}/api/UserDocument/UpdateUserFile/${id}`;
+    const url = `${this.apiUrl}/api/Profile/UpdateUserFile`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
 
     return this.http.put<any>(url, data, {
@@ -127,7 +134,9 @@ export class MyDocumentsService {
 
     this.getAllUserDocuments().subscribe((data: any) => {
 
-      const files = data.data.map((file: any) => ({
+      this.storageInfo = data.storageInfo;
+      console.log('this.storageInfo',this.storageInfo)
+      const files = data.userDocument.map((file: any) => ({
         ...file,
         icon: 'pngs/file.png'
       }));
@@ -136,8 +145,9 @@ export class MyDocumentsService {
     },
     (error) => {
       console.error('Ошибка загрузки данных:', error);
-      this.toastService.showError('Ошибка', 'Не удалось загрузить данные');
       this.progressSpinnerService.hide();
+      this.toastService.showError('Ошибка', 'Не удалось загрузить данные');
+      
     },
     
   );

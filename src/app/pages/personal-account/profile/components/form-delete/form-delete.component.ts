@@ -21,17 +21,20 @@ export class FormDeleteComponent {
     private activatedRoute: ActivatedRoute,
   ) {
     this.deleteForm = this.fb.group({
-      confirm: [false, Validators.requiredTrue]  
+      confirm: [false, Validators.requiredTrue]
     });
   }
 
   onSubmit(): void {
     if (this.deleteForm.valid) {
-      const id = this.activatedRoute.snapshot.paramMap.get('id');
+      const id = localStorage.getItem('VXNlcklk');
+      console.log('id',id)
       if (id) {
         this.formDeleteService.deleteUser(id).subscribe(
           () => {
-            this.router.navigate(['/']);
+            localStorage.removeItem('YXV0aFRva2Vu');
+            localStorage.removeItem('VXNlcklk');
+            this.router.navigate(['/login']);
           },
           (error) => {
             console.error('Error deleting account:', error);
@@ -42,5 +45,5 @@ export class FormDeleteComponent {
       }
     }
   }
-  
+
 }
