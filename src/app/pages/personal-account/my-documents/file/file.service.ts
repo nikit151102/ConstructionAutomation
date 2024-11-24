@@ -10,7 +10,7 @@ export class FileService {
   private currentMenu: any = null;
 
   public visibleShonRename: boolean = false;
-
+  public oldFileName: string = '';
   setMenu(menu: any) {
     if (this.currentMenu && this.currentMenu !== menu) {
       this.currentMenu.hide();

@@ -39,19 +39,6 @@ export class MyDocumentsService {
 
   constructor(private http: HttpClient, private progressSpinnerService: ProgressSpinnerService, private toastService:ToastService) { }
 
-  getUserFile(fileId: string): Observable<any> {
-
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    const url = `${this.apiUrl}/api/UserDocument/GetUserFile/${fileId}`;
-    return this.http.get<any>(url, {
-
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      })
-    });
-  }
 
   upload(files: File[]): Observable<any> {
     console.log("servces files", files);
@@ -129,8 +116,6 @@ export class MyDocumentsService {
 
 
   loadData() {
-
-    this.progressSpinnerService.show();
 
     this.getAllUserDocuments().subscribe((data: any) => {
 

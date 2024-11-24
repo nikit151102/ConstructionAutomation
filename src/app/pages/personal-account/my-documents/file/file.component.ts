@@ -35,7 +35,7 @@ export class FileComponent implements OnInit {
     {
       label: 'Переименовать',
       icon: 'pi pi-pencil',
-      command: () => this.openDialogRename(),
+      command: () => this.openDialogRename(this.file.fileName),
     },
     {
       label: 'Удалить',
@@ -82,8 +82,10 @@ export class FileComponent implements OnInit {
     );
   }
 
-  openDialogRename() {
+  openDialogRename(fileName: string) {
     this.fileService.visibleShonRename = true;
+    console.log('fileName',fileName)
+    this.value = fileName
   }
 
   closeDialogRename() {

@@ -69,8 +69,9 @@ export class MyDocumentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.testFiles = null;
-
+    this.progressSpinnerService.show();
     this.myDocumentsService.loadData();
+    
     this.totalSize = this.myDocumentsService.storageInfo.storageVolumeUsage;
     this.myDocumentsService.filesSelect$.subscribe({
       next: (data: any) => {
