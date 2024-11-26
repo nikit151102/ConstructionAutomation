@@ -65,7 +65,8 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.currentUserService.hasUser()) {
       this.currentUserService.getUserData().subscribe({
         next: (userData) => {
-          this.currentUser = userData;
+          this.currentUser = userData.data;
+          this.currentUserService.saveUser(userData.data)
         },
         error: (err) => {
           console.error('Ошибка при загрузке данных пользователя:', err);

@@ -21,12 +21,13 @@ export class ProfileComponent implements OnInit {
   }
 
   currentUser: any;
-  
+
   ngOnInit(): void {
     if (!this.currentUserService.hasUser()) {
       this.currentUserService.getUserData().subscribe({
         next: (userData) => {
-          this.currentUser = userData;
+          this.currentUser = userData.data;
+          this.currentUserService.saveUser(userData.data)
         },
         error: (err) => {
           console.error('Ошибка при загрузке данных пользователя:', err);
@@ -34,6 +35,7 @@ export class ProfileComponent implements OnInit {
       });
     } else {
       this.currentUser = this.currentUserService.getUser();
+      console.log(' this.currentUser', this.currentUser)
     }
 
   }
