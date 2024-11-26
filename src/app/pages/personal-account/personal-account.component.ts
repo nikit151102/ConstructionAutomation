@@ -16,7 +16,7 @@ import { PersonalAccountService } from './personal-account.service';
 
 })
 export class PersonalAccountComponent implements OnInit, OnDestroy {
-  isSidebarOpen: boolean = false;
+  isSidebarOpen: boolean = true;
   isSmallScreen = false;
   tabTitle: string = '';
   private screenSubscription!: Subscription;
@@ -29,7 +29,6 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     })
     this.screenSubscription = this.sidebarService.isSidebarOpen$.subscribe((isOpen) => {
       this.isSidebarOpen = isOpen;
-      this.cdr.detectChanges();
     });
     this.checkScreenSize();
   }

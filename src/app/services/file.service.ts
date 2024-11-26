@@ -24,7 +24,7 @@ export class CommomFileService {
       return '0.00';
     }
   
-    return (bits / 8 / 1024 / 1024).toFixed(2);
+    return (bits / 1024 / 1024).toFixed(2);
   }
   
   downloadFile(fileId: string) {
