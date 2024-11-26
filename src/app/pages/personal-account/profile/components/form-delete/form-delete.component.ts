@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormDeleteService } from './form-delete.service';
@@ -13,7 +13,6 @@ import { FormDeleteService } from './form-delete.service';
 })
 export class FormDeleteComponent {
   deleteForm: FormGroup;
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -28,7 +27,7 @@ export class FormDeleteComponent {
   onSubmit(): void {
     if (this.deleteForm.valid) {
       const id = localStorage.getItem('VXNlcklk');
-      console.log('id',id)
+      console.log('id', id)
       if (id) {
         this.formDeleteService.deleteUser(id).subscribe(
           () => {

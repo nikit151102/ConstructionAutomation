@@ -22,9 +22,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.currentUserService.currentUser) {
-      this.currentUserService.getUserData();
-    }
   }
 
   statisticsCards = [

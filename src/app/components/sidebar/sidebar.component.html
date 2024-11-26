@@ -40,7 +40,7 @@
         <img src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547">
       </div>
       <div id="nav-footer-titlebox">
-        <a *ngIf="currentUserService.currentUser" target="_blank" id="nav-footer-title" style=" font-size: 12px;">{{currentUserService.currentUser.lastName}} {{currentUserService.currentUser.firstName}} {{currentUserService.currentUser.patronymic}}</a>
+        <a *ngIf="currentUser" target="_blank" id="nav-footer-title" style=" font-size: 12px;">{{currentUser.lastName}} {{currentUser.firstName}} {{currentUser.patronymic}}</a>
       </div>
     </div>
   </div>

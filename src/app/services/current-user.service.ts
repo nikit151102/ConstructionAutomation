@@ -13,7 +13,43 @@ import { Router } from '@angular/router';
 })
 export class CurrentUserService {
 
-  currentUser!: UserData;
+  private readonly storageKey = 'currentUser'; 
+
+  /**
+   * Сохраняет объект пользователя в sessionStorage.
+   * @param user Объект пользователя для сохранения.
+   */
+  saveUser(user: any): void {
+    if (user) {
+      sessionStorage.setItem(this.storageKey, JSON.stringify(user));
+    }
+  }
+
+  /**
+   * Извлекает объект пользователя из sessionStorage.
+   * @returns Объект пользователя или `null`, если его нет.
+   */
+  getUser(): any | null {
+    const userData = sessionStorage.getItem(this.storageKey);
+    return userData ? JSON.parse(userData) : null;
+  }
+
+  /**
+   * Проверяет, существует ли объект пользователя в sessionStorage.
+   * @returns `true`, если объект существует, иначе `false`.
+   */
+  hasUser(): boolean {
+    return sessionStorage.getItem(this.storageKey) !== null;
+  }
+
+  /**
+   * Удаляет объект пользователя из sessionStorage.
+   */
+  removeUser(): void {
+    sessionStorage.removeItem(this.storageKey);
+  }
+  
+  
 
   constructor(private http: HttpClient, 
     private tokenService: TokenService, 
@@ -36,18 +72,20 @@ export class CurrentUserService {
     );
   }
 
-  getUserData() {
-    this.UserData().subscribe({
-      next: (data) => {
-        console.log(data)
-        this.currentUser = data.data;
-      },
-      error: (error) => {
+  getUserData(): Observable<User> {
+    return this.UserData().pipe(
+      map((data) => {
+        this.saveUser(data);
+        return data; 
+      }),
+      catchError((error) => {
         console.error('Ошибка при получении данных пользователя:', error);
         this.toastService.showError('Сеанс истёк', 'Пожалуйста, выполните повторный вход');
         localStorage.removeItem('YXV0aFRva2Vu');
         this.router.navigate(['/login']);
-      }
-    });
+        return throwError(() => error); 
+      })
+    );
   }
+  
 }

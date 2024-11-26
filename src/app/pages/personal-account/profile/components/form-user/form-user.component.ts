@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -26,6 +26,7 @@ import { FormUserService } from './form-user.service';
 })
 export class FormUserComponent implements OnInit {
 
+  @Input() currentUser:any;
   userProfileForm!: FormGroup;
   avatarPreviewUrl: string | null = null;
 
@@ -41,14 +42,14 @@ export class FormUserComponent implements OnInit {
       avatar: [null],
     });
 
-    if (!this.currentUserService.currentUser) {
+    if (!this.currentUser) {
       this.currentUserService.getUserData();
       this.currentUserService.UserData().subscribe({
         next: (userData) => this.fillForm(userData.data),
         error: (error) => console.error('Ошибка при получении данных пользователя:', error)
       });
     } else {
-      this.fillForm(this.currentUserService.currentUser);
+      this.fillForm(this.currentUser);
     }
 
   }
@@ -85,13 +86,13 @@ export class FormUserComponent implements OnInit {
   }
 
   updateUser() {
-    if (!this.currentUserService.currentUser.id) {
+    if (!this.currentUser.id) {
       console.error("User ID is missing");
       return;
     }
 
     const userUpdateRequest: any = {
-      id: this.currentUserService.currentUser.id,
+      id: this.currentUser.id,
       firstName: this.userProfileForm.value.firstName,
       lastName: this.userProfileForm.value.lastName,
       patronymic: this.userProfileForm.value.patronymic,
@@ -104,7 +105,8 @@ export class FormUserComponent implements OnInit {
     this.formUserService.updateUserData(userUpdateRequest).subscribe((data: any) => {
       this.currentUserService.UserData().subscribe({
         next: (data) => {
-          this.currentUserService.currentUser = data.data;
+          this.currentUser = data.data;
+          this.currentUserService.saveUser(data.data);
         },
         error: (error) => {
           console.error('Ошибка при получении данных пользователя:', error);
@@ -114,11 +116,11 @@ export class FormUserComponent implements OnInit {
   }
 
   getRoleIds(): string[] {
-    if (!this.currentUserService.currentUser) {
+    if (!this.currentUser) {
       console.error('Пользователь не найден');
       return [];
     }
-    return this.currentUserService.currentUser.roles.map(role => role.id);
+    return this.currentUser.roles.map((role: any) => role.id);
   }
 
   get formControls() {

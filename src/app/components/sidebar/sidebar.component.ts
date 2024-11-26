@@ -38,6 +38,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   isMobileScreen = false;
   darkMode = false;
   submenuState: boolean[] = [];
+  currentUser: any;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -46,7 +47,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     private personalAccountService: PersonalAccountService,
     private activatedRoute: ActivatedRoute,
     public currentUserService: CurrentUserService,
-    private documentsService:DocumentsService
+    private documentsService: DocumentsService
   ) { }
 
   ngOnInit(): void {
@@ -61,9 +62,20 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     );
 
-    if (!this.currentUserService.currentUser) {
-      this.currentUserService.getUserData();
+    if (!this.currentUserService.hasUser()) {
+      this.currentUserService.getUserData().subscribe({
+        next: (userData) => {
+          this.currentUser = userData;
+        },
+        error: (err) => {
+          console.error('Ошибка при загрузке данных пользователя:', err);
+        },
+      });
+    } else {
+      this.currentUser = this.currentUserService.getUser();
     }
+
+
   }
 
   ngAfterViewInit(): void {
@@ -74,12 +86,12 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  executeDocs(commandName: string){
+  executeDocs(commandName: string) {
     this.activatedRoute.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
         this.documentsService.setSelectConfValue(formConfig);
-        this.router.navigate([`${id}/${commandName}`], { replaceUrl: true });    
+        this.router.navigate([`${id}/${commandName}`], { replaceUrl: true });
       }
     });
   }
@@ -127,9 +139,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }
 
-    if(!this.sidebarService.fixedSlidebar && this.isSidebarOpen){
+    if (!this.sidebarService.fixedSlidebar && this.isSidebarOpen) {
       this.toggleSidebar();
-      
+
       document.querySelectorAll('#nav-header label .pi-chevron-left').forEach((el: any) => {
         Object.assign(el.style, { transform: 'rotate(0deg)' });
       });

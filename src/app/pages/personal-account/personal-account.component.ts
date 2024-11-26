@@ -28,6 +28,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.personalAccountService.titleTab$.subscribe((title: string) => {
       this.tabTitle = title;
+      this.cdr.detectChanges();
     })
     this.screenSubscription = this.sidebarService.isSidebarOpen$.subscribe((isOpen) => {
       this.isSidebarOpen = isOpen;

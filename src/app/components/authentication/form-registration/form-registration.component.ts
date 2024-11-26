@@ -60,7 +60,7 @@ export class FormRegistrationComponent {
       this.registrationService.signUn(Data).subscribe(
         (response) => {
           console.log('Успешная регистрация:', response);
-          
+          this.currentUserService.saveUser(response.data);
           this.tokenService.setToken(response.data.token);
           console.log('response.token:', response.data.token);
           this.router.navigate([`/${response.data.id}`]);

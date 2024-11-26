@@ -29,7 +29,8 @@ export class FormAuthorizationComponent implements OnInit {
     private router: Router, 
     private tokenService: TokenService, 
     private progressSpinnerService: ProgressSpinnerService,
-    private toastService:ToastService
+    private toastService:ToastService,
+    private currentUserService:CurrentUserService
   ) {
     this.signInForm = this.fb.group({
       username: ['', Validators.required],
@@ -73,6 +74,7 @@ export class FormAuthorizationComponent implements OnInit {
         (response) => {
           if (response.data) {
             this.progressSpinnerService.hide();
+            this.currentUserService.saveUser(response.data);
             this.tokenService.setToken(response.data.token);
             this.router.navigate([`/${response.data.id}`]);
             localStorage.setItem('VXNlcklk', response.data.id);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { ToastService } from './services/toast.service';
@@ -17,13 +17,18 @@ export class AppComponent {
 
   title = 'ConstructionAutomation';
   isLoading: boolean = false;
-  constructor(public spinnerService: ProgressSpinnerService) {
+  constructor(public spinnerService: ProgressSpinnerService,
+    private cdr: ChangeDetectorRef
+  ) {
 
 
   }
 
   ngOnInit(): void {
-    this.spinnerService.isLoading$.subscribe(data => this.isLoading = data)
+    this.spinnerService.isLoading$.subscribe(data => {
+      this.isLoading = data
+      this.cdr.detectChanges(); 
+    })
   }
 
 

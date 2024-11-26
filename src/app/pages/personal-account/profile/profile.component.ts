@@ -20,10 +20,22 @@ export class ProfileComponent implements OnInit {
     this.personalAccountService.changeTitle('Профиль')
   }
 
+  currentUser: any;
+  
   ngOnInit(): void {
-    if (!this.currentUserService.currentUser) {
-      this.currentUserService.getUserData();
+    if (!this.currentUserService.hasUser()) {
+      this.currentUserService.getUserData().subscribe({
+        next: (userData) => {
+          this.currentUser = userData;
+        },
+        error: (err) => {
+          console.error('Ошибка при загрузке данных пользователя:', err);
+        },
+      });
+    } else {
+      this.currentUser = this.currentUserService.getUser();
     }
+
   }
 
 

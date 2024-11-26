@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CurrentUserService } from '../../../../../services/current-user.service';
 import { CommonModule } from '@angular/common';
 
@@ -11,12 +11,11 @@ import { CommonModule } from '@angular/common';
 })
 export class UserCardComponent implements OnInit{
 
+  @Input() currentUser:any;
   constructor(public currentUserService: CurrentUserService) { }
   
   ngOnInit(): void {
-    if (!this.currentUserService.currentUser) {
-      this.currentUserService.getUserData();
-    }
+    
   }
 
 }

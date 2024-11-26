@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DocumentsService } from './documents.service';
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
@@ -24,7 +24,9 @@ export class DocumentComponent implements OnInit {
 
   config: any;
 
-  constructor(public documentsService: DocumentsService, private route: ActivatedRoute, private personalAccountService: PersonalAccountService) { }
+  constructor(public documentsService: DocumentsService, private route: ActivatedRoute, 
+    private personalAccountService: PersonalAccountService,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
 
@@ -34,6 +36,7 @@ export class DocumentComponent implements OnInit {
       if (configType && ['comparativeStatement', 'materialSpecification', 'workSpecification'].includes(configType)) {
         this.config = getFormConfig(configType as ConfigType);
         this.personalAccountService.changeTitle(this.config.nameDoc)
+        this.cdr.detectChanges(); 
       } else {
         console.error('Invalid configType:', configType);
       }
