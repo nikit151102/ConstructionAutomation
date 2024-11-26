@@ -71,7 +71,6 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (navToggle && !navToggle.checked) {
       this.updateSidebarStyles();
       this.sidebarService.toggleSidebar();
-      this.personalAccountService.toggleSidebar();
     }
   }
 
@@ -85,9 +84,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
+
 
   updateSidebarStyles(): void {
     const styles = this.isSidebarOpen ? { opacity: '1', pointerEvents: 'auto' } : { opacity: '0', pointerEvents: 'none' };
@@ -156,6 +153,11 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   toggleSubmenu(index: number): void {
     this.submenuState[index] = !this.submenuState[index];
+  }
+
+  ngOnDestroy(): void {
+    this.sidebarService.closedSidebar();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
 }

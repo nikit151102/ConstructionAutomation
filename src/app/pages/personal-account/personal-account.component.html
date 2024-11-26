@@ -1,7 +1,7 @@
-<div class="container" [class.sidebar-open]="personalAccountService.isSidebarOpen">
+<div class="container" [class.sidebar-open]="sidebarService.isSidebarOpen$ | async">
   <app-sidebar></app-sidebar>
 
-  <div [class.shrink]="isSidebarOpen" class="content" style="width: 100%;  padding-left: 30px;">
+  <div [class.shrink]="sidebarService.isSidebarOpen$ | async" class="content" style="width: 100%;  padding-left: 30px;">
     <div class="header">
       <div class="btn-menu" *ngIf="!isSidebarOpen && isSmallScreen">
         <p-button icon="pi pi-bars" [rounded]="true" [text]="true" (click)="toggleSidebar()" />

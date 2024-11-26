@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener, NgZone } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { ButtonModule } from 'primeng/button';
@@ -21,7 +21,9 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   tabTitle: string = '';
   private screenSubscription!: Subscription;
 
-  constructor(public sidebarService: SidebarService, private cdr: ChangeDetectorRef, public personalAccountService: PersonalAccountService) { }
+  constructor(public sidebarService: SidebarService,
+    private ngZone: NgZone,
+     private cdr: ChangeDetectorRef, public personalAccountService: PersonalAccountService) { }
 
   ngOnInit(): void {
     this.personalAccountService.titleTab$.subscribe((title: string) => {
@@ -29,9 +31,11 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     })
     this.screenSubscription = this.sidebarService.isSidebarOpen$.subscribe((isOpen) => {
       this.isSidebarOpen = isOpen;
+      this.cdr.detectChanges();
     });
     this.checkScreenSize();
   }
+  
 
   ngOnDestroy(): void {
     if (this.screenSubscription) {

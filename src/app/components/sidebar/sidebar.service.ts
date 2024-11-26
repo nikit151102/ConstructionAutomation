@@ -15,7 +15,7 @@ export class SidebarService {
   isMobileScreen$ = this.isMobileScreen.asObservable();
 
   width_slide = 256;
-  isSidebarClosed: boolean = true;
+
 
   fixedSlidebar: boolean = true;
 
@@ -32,7 +32,11 @@ export class SidebarService {
 
   toggleSidebar() {
     this.isSidebarOpen.next(!this.isSidebarOpen.value);
-    this.isSidebarClosed = !this.isSidebarClosed;
+
+  }
+
+  closedSidebar(){
+    this.isSidebarOpen.next(false)
   }
 
   getTypeDocs(): Observable<any> {
