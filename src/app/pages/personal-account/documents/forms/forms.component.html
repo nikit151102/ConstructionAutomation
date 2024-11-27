@@ -25,4 +25,9 @@
 
   </div>
   <button (click)="onSubmit()">Сформировать</button>
+
+  <ng-container *ngIf="fileMetadata">
+    <button (click)="downloadFile()">Скачать</button>
+  </ng-container>
+  
 </form>

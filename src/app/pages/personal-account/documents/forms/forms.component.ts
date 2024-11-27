@@ -9,6 +9,7 @@ import { FormsService } from './forms.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../../../services/toast.service';
 import { ProgressSpinnerService } from '../../../../components/progress-spinner/progress-spinner.service';
+import { CommomFileService } from '../../../../services/file.service';
 
 @Component({
   selector: 'app-forms',
@@ -29,13 +30,15 @@ export class FormsComponent {
   constructor(private fb: FormBuilder, private formsService: FormsService,
     private activatedRoute: ActivatedRoute,
     private toastService: ToastService,
-    private progressSpinnerService: ProgressSpinnerService
+    private progressSpinnerService: ProgressSpinnerService,
+    private commomFileService: CommomFileService
   ) { }
 
   ngOnInit(): void {
-
+    this.fileMetadata = null;
     console.log("configconfig", this.config)
     this.initForm();
+
   }
 
   initForm() {
@@ -129,6 +132,7 @@ export class FormsComponent {
         this.progressSpinnerService.hide();
         console.log('Success:', response)
         this.uploadSuccess.emit(response);
+        this.fileMetadata = response.documentMetadata;
       },
       error: (error: any) => {
         console.error('Error:', error)
@@ -138,5 +142,11 @@ export class FormsComponent {
       ,
     });
   }
+
+  fileMetadata:any = null;
+  downloadFile() {
+    this.commomFileService.downloadFile(this.fileMetadata.id);
+  }
+
 
 }
