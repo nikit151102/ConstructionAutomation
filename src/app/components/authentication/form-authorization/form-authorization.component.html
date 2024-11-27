@@ -4,7 +4,7 @@
     <div class="inputGroup">
       <p-floatLabel>
         <input pInputText id="username" formControlName="username" autocomplete="new-username" />
-        <label for="username">Имя пользователя</label>
+        <label for="username">Электронная почта</label>
         <div *ngIf="signInForm.get('username')?.touched && signInForm.get('username')?.invalid" class="error">
           <small *ngIf="signInForm.get('username')?.errors?.['required']">Имя пользователя обязательно.</small>
         </div>

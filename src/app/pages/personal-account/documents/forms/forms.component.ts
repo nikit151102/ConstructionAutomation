@@ -20,7 +20,21 @@ import { CommomFileService } from '../../../../services/file.service';
 })
 export class FormsComponent {
 
-  @Input() config: any;
+  private _config: any;
+
+  @Input()
+  set config(value: any) {
+    this._config = value;
+    this.onConfigChange(); 
+  }
+  get config(): any {
+    return this._config;
+  }
+
+  onConfigChange() {
+    this.fileMetadata = null;
+  }
+  
   @Output() onSelect = new EventEmitter<{ event?: FileSelectEvent; file: File, sheetName?: string }>();
   @Output() uploadSuccess = new EventEmitter<any>();
 
