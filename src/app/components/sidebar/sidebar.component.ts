@@ -130,6 +130,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   executeCommand(commandName: string): void {
     if (commandName === 'exit') {
       localStorage.removeItem('YXV0aFRva2Vu');
+      this.currentUserService.removeUser();
       this.router.navigate(['/login']);
     } else {
       this.activatedRoute.paramMap.subscribe(params => {
