@@ -1,11 +1,15 @@
 <div class="container" [ngClass]="{ 'right-panel-active': isRightPanelActive }" id="container">
   <div class="form-container sign-up-container" *ngIf="isRightPanelActive">
     <app-form-registration></app-form-registration>
-    <button class="ghost" (click)="togglePanel(false)">Sign In</button>
+    <div class="additional-btns">
+      <p>У вас уже есть аккаунт?</p><a (click)="togglePanel(false)">Войти</a>
+    </div>
   </div>
   <div class="form-container sign-in-container" *ngIf="!isRightPanelActive">
     <app-form-authorization></app-form-authorization>
-    <button class="ghost" (click)="togglePanel(true)">Sign Up</button>
+    <div class="additional-btns">
+      <p>У вас нет учетной записи?</p><a (click)="togglePanel(true)">Зарегистрироваться</a>
+    </div>
   </div>
   <div class="overlay-container">
     <div class="overlay">

@@ -1,4 +1,3 @@
-
 h1 {
 	font-weight: bold;
 	margin: 0;
@@ -64,6 +63,10 @@ button.ghost {
 	width: 768px;
 	max-width: 100%;
 	min-height: 480px;
+
+	@media (max-width: 768px) {
+		width: 100vw;
+	}
 }
 
 .form-container {
@@ -71,12 +74,40 @@ button.ghost {
 	top: 0;
 	height: 100%;
 	transition: all 0.6s ease-in-out;
+
+	@media (max-width: 768px) {
+		.additional-btns {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+
+			p {
+				margin: 0;
+			}
+
+			a {
+				cursor: pointer;
+				color: #5652ff;
+
+				&:hover{
+					color: #4c4ad3;
+				}
+			}
+		}
+	}
 }
 
 .sign-in-container {
 	left: 0;
 	width: 50%;
 	z-index: 2;
+
+	@media (max-width: 768px) {
+		width: 100vw;
+		transform: translateX(0%);
+		animation: mobileShow 0.5s ease-in-out;
+	}
 }
 
 .container.right-panel-active .sign-in-container {
@@ -88,6 +119,10 @@ button.ghost {
 	width: 50%;
 	opacity: 0;
 	z-index: 1;
+
+	@media (max-width: 768px) {
+		width: 98vw;
+	}
 }
 
 .container.right-panel-active .sign-up-container {
@@ -95,15 +130,39 @@ button.ghost {
 	opacity: 1;
 	z-index: 5;
 	animation: show 0.6s;
+
+
+	@media (max-width: 768px) {
+		transform: translateX(0%);
+		animation: mobileShow 0.5s ease-in-out;
+	}
 }
 
+@keyframes mobileShow {
+
+	0%{
+		opacity: 0;
+	}
+	49.99% {
+		opacity: 0.5;
+		z-index: 1;
+	}
+
+	100% {
+		opacity: 1;
+		z-index: 5;
+	}
+}
 @keyframes show {
-	0%, 49.99% {
+
+	0%,
+	49.99% {
 		opacity: 0;
 		z-index: 1;
 	}
-	
-	50%, 100% {
+
+	50%,
+	100% {
 		opacity: 1;
 		z-index: 5;
 	}
@@ -118,9 +177,13 @@ button.ghost {
 	overflow: hidden;
 	transition: transform 0.6s ease-in-out;
 	z-index: 100;
+
+	@media (max-width: 768px) {
+		display: none;
+	}
 }
 
-.container.right-panel-active .overlay-container{
+.container.right-panel-active .overlay-container {
 	transform: translateX(-100%);
 }
 
@@ -134,12 +197,12 @@ button.ghost {
 	left: -100%;
 	height: 100%;
 	width: 200%;
-  	transform: translateX(0);
+	transform: translateX(0);
 	transition: transform 0.6s ease-in-out;
 }
 
 .container.right-panel-active .overlay {
-  	transform: translateX(50%);
+	transform: translateX(50%);
 }
 
 .overlay-panel {
@@ -188,4 +251,3 @@ button.ghost {
 	height: 40px;
 	width: 40px;
 }
-

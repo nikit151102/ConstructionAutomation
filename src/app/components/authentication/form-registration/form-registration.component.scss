@@ -1,6 +1,9 @@
 .container{
     height: 100%;
     padding: 20px;
+    @media (max-width: 768px) {
+		height: 90%;
+	}
 }
 
 h1{
