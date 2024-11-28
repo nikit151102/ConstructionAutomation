@@ -36,6 +36,7 @@
       width: 85%;
       text-align: start;
       display: block;
+
     }
 
     .file-date {
@@ -68,6 +69,10 @@
   width: 100%;
   height: 65px;
 
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
+
   .file-icon {
     margin-bottom: 0;
   }
@@ -77,8 +82,16 @@
     justify-content: space-around;
     align-items: center;
 
+    @media (max-width: 768px) {
+      justify-content: start;
+    }
+
     .file-title {
       width: 85%;
+
+      @media (max-width: 768px) {
+        width: 65%;
+      }
     }
 
     .file-date {

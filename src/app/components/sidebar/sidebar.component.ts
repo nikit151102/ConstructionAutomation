@@ -91,6 +91,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activatedRoute.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
+        this.toggleSidebar();
         this.documentsService.setSelectConfValue(formConfig);
         this.router.navigate([`${id}/${commandName}`], { replaceUrl: true });
       }

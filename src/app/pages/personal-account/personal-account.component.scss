@@ -6,6 +6,10 @@
     // gap: 1rem;
     transition: margin-left 0.5s ease;
     margin-left: 70px;
+
+    @media (max-width: 768px) {
+        margin-left: 0;
+    }
 }
 
 .header {
@@ -19,7 +23,8 @@
     transition: all 0.5s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-
+    padding-right: 20px;
+    
     .title {
         margin: 0;
         padding-left: 20px;
@@ -30,15 +35,27 @@
 
 .content {
     width: 100%;
+    padding-left: 30px;
     transition: all 0.5s ease;
+
+    @media (max-width: 768px) {
+        padding-left: 0;
+    }
 }
 
 .sidebar-open {
     margin-left: 260px;
+
+    @media (max-width: 768px) {
+        margin-left: 0;
+    }
 }
 
 .sidebar-open .content {
     width: calc(100% - 250px);
+    @media (max-width: 768px) {
+        width: auto;
+    }
 }
 
 .shrink {

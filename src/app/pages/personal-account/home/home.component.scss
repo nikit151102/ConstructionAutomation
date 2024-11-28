@@ -23,6 +23,10 @@
       padding: 20px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
+      @media (max-width: 768px) {
+        height: auto;
+      }
+
       p {
         margin: 0;
         text-align: start;
@@ -32,18 +36,22 @@
         color: #8392a5;
       }
 
-      .value{
+      .value {
         font-size: 35px;
       }
     }
   }
 
-  .charts{
+  .charts {
     display: flex;
     flex-direction: row;
     gap: 15px;
 
-    .expenseChart{
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+
+    .expenseChart {
       flex: 2;
       background: #fff;
       border-radius: 40px;
@@ -51,9 +59,9 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .docs{
+    .docs {
       flex: 1;
     }
   }
-  
+
 }
