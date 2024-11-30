@@ -122,9 +122,9 @@ label[for="nav-toggle"] {
   transition: transform 0.3s ease;
 }
 
-#nav-toggle:checked~#nav-header label .pi-chevron-left {
-  transform: rotate(180deg);
-}
+// #nav-toggle:checked~#nav-header label .pi-chevron-left {
+//   transform: rotate(180deg);
+// }
 
 .pi-chevron-left {
   transition: transform 0.3s ease;

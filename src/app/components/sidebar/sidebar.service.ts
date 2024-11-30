@@ -32,7 +32,10 @@ export class SidebarService {
 
   toggleSidebar() {
     this.isSidebarOpen.next(!this.isSidebarOpen.value);
+  }
 
+  openedSidebar() {
+    this.isSidebarOpen.next(true);
   }
 
   closedSidebar(){
