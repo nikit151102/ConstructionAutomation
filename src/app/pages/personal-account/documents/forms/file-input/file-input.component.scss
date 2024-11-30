@@ -1,233 +1,251 @@
+
 .container {
-    max-width: 600px;
-    margin: 20px auto;
+  max-width: 600px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .field-input {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: row;
 
-    .field-input{
-      display: flex;
-      flex-direction: row;
+    .custom-width {
+      width: 77% !important;
+    }
+  }
+}
 
-      .custom-width {
-        width: 77% !important;
-      }
-    }
+
+.sheet-selection {
+  margin-top: 20px;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   }
   
-  
-  .sheet-selection {
-    margin-top: 20px;
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #333;
-    }
-    select {
-      width: 100%;
-      padding: 8px;
-      font-size: 14px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      background-color: #fff;
-    }
+  option {
+    font-size: 16px;
+    color: #333;
   }
+
   
-  /* Анимация появления для файлов */
-  .uploaded-files-list {
-    list-style: none;
-    padding: 0;
-    margin-top: 20px;
-    animation: fadeIn 0.5s ease-in-out;
+  select {
+    width: 100%;
+    padding: 14px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    background-color: #fff;
   }
-  
-  .uploaded-file {
+}
+
+/* Анимация появления для файлов */
+.uploaded-files-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.uploaded-file {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.file-upload .p-fileupload-button {
+  margin: 10px 0;
+}
+
+
+::ng-deep .p-fileupload-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+::ng-deep .p-fileupload-choose {
+  border-radius: 15px;
+  display: inline-block;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+
+.file-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 16px;
+}
+
+
+:host {
+  display: block;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+
+
+  .custom-file {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #f1f1f1;
+    align-items: center;
+    padding: 8px 12px;
+    margin: 4px 0;
+    background: #fff;
+    border: 1px solid #ddd;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .delete-btn {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    font-size: 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .delete-btn:hover {
-    background-color: #c0392b;
-  }
-  
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .file-upload .p-fileupload-button {
-    margin: 10px 0;
-  }
-  
 
-  ::ng-deep .p-fileupload-button {
+    span {
+      font-size: 14px;
+      color: #333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-size {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .p-button {
+      font-size: 12px;
+    }
+  }
+
+  .uploaded-file {
     display: flex;
-    justify-content: center;
     align-items: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 100%; 
-  }
-  
-  ::ng-deep .p-fileupload-choose {
-    display: inline-block;
-        width: 100%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  
-  
+    padding: 8px;
+    margin: 4px 0;
+    background: #fdfdfd;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
 
-  .file-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 16px;
-  }
-
-
-  :host {
-    display: block;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-
-
-    .custom-file {
+    .file-info {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 8px 12px;
-      margin: 4px 0;
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      gap: 12px;
+
+      img {
+        width: 24px;
+        height: 24px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
 
       span {
         font-size: 14px;
-        color: #333;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        color: #555;
       }
 
       .file-size {
         font-size: 12px;
-        color: #999;
+        color: #777;
       }
+    }
+  }
 
-      .p-button {
-        font-size: 12px;
+   .button {
+    border-radius: 15px;
+    &.p-button-success {
+      background-color: #28a745;
+      border-color: #28a745;
+
+      &:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
       }
     }
 
-    .uploaded-file {
-      display: flex;
-      align-items: center;
-      padding: 8px;
-      margin: 4px 0;
-      background: #fdfdfd;
-      border: 1px solid #e5e5e5;
-      border-radius: 4px;
+    &.p-button-danger {
+      color: #dc3545;
 
-      .file-info {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-
-        img {
-          width: 24px;
-          height: 24px;
-          object-fit: cover;
-          border-radius: 4px;
-        }
-
-        span {
-          font-size: 14px;
-          color: #555;
-        }
-
-        .file-size {
-          font-size: 12px;
-          color: #777;
-        }
-      }
-    }
-
-    .p-button {
-      &.p-button-success {
-        background-color: #28a745;
-        border-color: #28a745;
-
-        &:hover {
-          background-color: #218838;
-          border-color: #1e7e34;
-        }
-      }
-
-      &.p-button-danger {
-        color: #dc3545;
-
-        &:hover {
-          background-color: transparent;
-          color: #a71d2a;
-        }
-      }
-
-      &.p-button-text {
-        border: none;
+      &:hover {
         background-color: transparent;
-        box-shadow: none;
-
-        &:hover {
-          text-decoration: underline;
-        }
+        color: #a71d2a;
       }
     }
 
-    .p-button-icon {
-      margin-right: 8px;
+    &.p-button-text {
+      border: none;
+      background-color: transparent;
+      box-shadow: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
-
-  .file-list--vertical {
-    flex-direction: row;
+  .p-button-icon {
+    margin-right: 8px;
   }
-
-  .file-list--horizontal {
-    flex-direction: column;
-  }
+}
 
 
+.file-list--vertical {
+  flex-direction: row;
+}
 
-  
+.file-list--horizontal {
+  flex-direction: column;
+}
+
+
+
+
 .no-files {
   text-align: center;
   font-size: 1.2rem;

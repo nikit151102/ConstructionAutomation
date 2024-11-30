@@ -52,7 +52,7 @@
 }
 
 .sidebar-open .content {
-    width: calc(100% - 250px);
+    width: 100%;
     @media (max-width: 768px) {
         width: auto;
     }
