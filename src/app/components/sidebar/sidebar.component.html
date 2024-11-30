@@ -25,8 +25,8 @@
         </a>
       </li>
       <ul class="submenu" *ngIf="isSidebarOpen">
-        <li class="sub-button"  *ngFor="let subItem of item.items">
-          <a (click)="subItem.command()">
+        <li class="sub-button"  *ngFor="let subItem of item.items" (click)="subItem.command()">
+          <a>
             <i class="bx" [ngClass]="subItem.icon"></i>
             <span class="text nav-text">{{ subItem.label }}</span>
           </a>
