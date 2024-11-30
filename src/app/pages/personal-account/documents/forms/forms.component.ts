@@ -6,7 +6,6 @@ import { FileInputComponent } from './file-input/file-input.component';
 import { TextInputComponent } from './text-input/text-input.component';
 import { CommonModule } from '@angular/common';
 import { FormsService } from './forms.service';
-import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../../../services/toast.service';
 import { ProgressSpinnerService } from '../../../../components/progress-spinner/progress-spinner.service';
 import { CommomFileService } from '../../../../services/file.service';
@@ -33,6 +32,7 @@ export class FormsComponent {
 
   onConfigChange() {
     this.fileMetadata = null;
+    this.updateSortedControls();
   }
   
   @Output() onSelect = new EventEmitter<{ event?: FileSelectEvent; file: File, sheetName?: string }>();
@@ -40,9 +40,8 @@ export class FormsComponent {
 
   form!: FormGroup;
   files: { [key: string]: { file: File; sheetName?: string; fileId?: string } } = {};
-
+  sortedControls: any;
   constructor(private fb: FormBuilder, private formsService: FormsService,
-    private activatedRoute: ActivatedRoute,
     private toastService: ToastService,
     private progressSpinnerService: ProgressSpinnerService,
     private commomFileService: CommomFileService
@@ -50,9 +49,17 @@ export class FormsComponent {
 
   ngOnInit(): void {
     this.fileMetadata = null;
+    this.sortedControls = null;
     console.log("configconfig", this.config)
     this.initForm();
+    this.updateSortedControls();
+  }
 
+  updateSortedControls(){
+    this.sortedControls = [...this.config.controls]
+    .filter(control => control.order !== 0) // Исключаем элементы с order === 0
+    .sort((a, b) => (a.order || Number.MAX_SAFE_INTEGER) - (b.order || Number.MAX_SAFE_INTEGER)); // Сортируем остальные
+  
   }
 
   initForm() {
@@ -63,8 +70,10 @@ export class FormsComponent {
         control.validators || [],
       ];
     });
+  
     this.form = this.fb.group(formControls);
   }
+  
 
   getSafeFormControl(group: FormGroup, controlName: string): FormControl {
     const control = group.get(controlName);

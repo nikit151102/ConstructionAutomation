@@ -19,6 +19,7 @@ export const formConfig = {
         options: [],
         validators: [Validators.required],
         isFileInput: true,
+        order: 0
       },
       {
         name: 'summaryFileListName',
@@ -27,6 +28,7 @@ export const formConfig = {
         options: [],
         validators: [Validators.required],
         isFileInput: true,
+        order: 0
       },
       {
         name: 'planFile',
@@ -34,6 +36,7 @@ export const formConfig = {
         label: 'Локальная смета',
         accept: '.xls, .xlsx',
         validators: [Validators.required],
+        order: 1
       },
       {
         name: 'summaryFile',
@@ -41,6 +44,7 @@ export const formConfig = {
         label: 'КС-2',
         accept: '.xls, .xlsx',
         validators: [Validators.required],
+        order: 2
       },
     ],
   },
@@ -55,6 +59,7 @@ export const formConfig = {
         options: [],
         validators: [Validators.required],
         isFileInput: true,
+        order: 0
       },
       {
         name: 'SummaryFile',
@@ -62,6 +67,7 @@ export const formConfig = {
         label: 'КС-2',
         accept: '.xls, .xlsx',
         validators: [Validators.required],
+        order: 1
       },
     ],
   },
@@ -76,6 +82,7 @@ export const formConfig = {
         options: [],
         validators: [Validators.required],
         isFileInput: true,
+        order: 0
       },
       {
         name: 'SummaryFile',
@@ -83,6 +90,7 @@ export const formConfig = {
         label: 'КС-2',
         accept: '.xls, .xlsx',
         validators: [Validators.required],
+        order: 1
       },
     ],
   }

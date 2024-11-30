@@ -1,26 +1,25 @@
 <form [formGroup]="form">
-  <div *ngFor="let control of config.controls">
+  <div *ngFor="let control of sortedControls">
     <ng-container [ngSwitch]="control.type">
-
       <!-- Text input -->
       <app-text-input *ngSwitchCase="'text'" [id]="control.name" [label]="control.label"
         [control]="getSafeFormControl(form, control.name)"></app-text-input>
-
+  
       <!-- Dropdown -->
       <ng-container *ngSwitchCase="'dropdown'">
-        <app-dropdown *ngIf="!control.isFileInput" [id]="control.name" [options]="control.options" 
+        <app-dropdown *ngIf="!control.isFileInput" [id]="control.name" [options]="control.options"
           [control]="getSafeFormControl(form, control.name)"></app-dropdown>
       </ng-container>
-
+  
       <!-- File Input with new 'isFileInput' check -->
       <div *ngSwitchCase="'file'" class="file-input-container">
         <label>{{ control.label }}</label>
-        <app-file-input [chooseLabel]="control.label" [chooseIcon]="'pi pi-upload'" 
+        <app-file-input [chooseLabel]="control.label" [chooseIcon]="'pi pi-upload'"
           [accept]="control.accept" (onSelect)="onFileSelect($event, control.name)"></app-file-input>
       </div>
-
     </ng-container>
   </div>
+  
 
   <button (click)="onSubmit()">Сформировать</button>
 
