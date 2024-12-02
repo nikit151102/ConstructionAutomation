@@ -65,7 +65,8 @@
 }
 
 .popup-login-link {
-    border-radius: 15px;
+    border-radius: 20px;
+    height: 40px;
     padding: 4.5px 30px;
     background: #0088cc;
     display: flex;

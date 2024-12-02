@@ -32,6 +32,8 @@ form{
 
 input{
     width: 100%;
+    border-radius: 20px;
+    
 }
 
 input::placeholder{
@@ -43,6 +45,7 @@ input::placeholder{
 :host ::ng-deep .p-input-icon-right > .p-inputtext,
 :host ::ng-deep .p-password {
     width: 100%;
+    border-radius: 20px;
 }
 
 

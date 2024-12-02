@@ -21,11 +21,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styles: [`
   button {
     border: none;
-    border-radius: 15px;
+    border-radius: 20px;
     padding: 12px 45px;
     cursor: pointer;
     width: 100%;
-    height: 100%;
+    height: 40px;
   }
 `]
 })
