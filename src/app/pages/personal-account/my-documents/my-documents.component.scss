@@ -55,6 +55,10 @@
   flex-wrap: wrap;
   gap: 15px;
   margin-top: 16px;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 }
 
 
@@ -69,11 +73,6 @@
     padding: 16px;
     background-color: #f9f9f9;
 
-    .p-fileupload-buttonbar {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
   }
 
   .custom-file {
@@ -175,11 +174,11 @@
 }
 
 
-.file-list--vertical{
-flex-direction: row;
+.file-list--vertical {
+  flex-direction: row;
 }
 
-.file-list--horizontal{
+.file-list--horizontal {
   flex-direction: column;
 }
 
@@ -189,4 +188,17 @@ flex-direction: row;
   font-size: 1.2rem;
   color: #7a7a7a;
   padding: 20px;
+}
+
+:host ::ng-deep .p-fileupload-buttonbar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
 }
