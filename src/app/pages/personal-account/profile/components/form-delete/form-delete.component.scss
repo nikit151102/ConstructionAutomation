@@ -17,7 +17,7 @@
         margin-bottom: 0.7rem;
     }
 
-    p{
+    p {
         margin: 0;
         margin-bottom: 0.7rem;
     }
@@ -46,6 +46,10 @@
     .container_btn {
         width: 48%;
 
+        @media (max-width: 768px) {
+            width: 100%;
+        }
+
         button {
             width: 100%;
             padding: 10px;
@@ -56,6 +60,7 @@
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s;
+            border-radius: 20px;
 
             &:hover {
                 background-color: #c9302c;

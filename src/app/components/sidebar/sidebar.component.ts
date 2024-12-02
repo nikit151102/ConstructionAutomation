@@ -40,6 +40,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   submenuState: boolean[] = [];
   currentUser: any;
   private subscriptions: Subscription[] = [];
+  private resizeObserver!: ResizeObserver;
 
   constructor(
     public sidebarService: SidebarService,
@@ -76,7 +77,27 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.currentUser = this.currentUserService.getUser();
     }
 
+    this.resizeObserver = new ResizeObserver(() => {
+      this.detectScreenSize();
+    });
 
+    this.resizeObserver.observe(document.body);
+    this.detectScreenSize();
+
+  }
+
+  detectScreenSize(): void {
+    const screenWidth = window.innerWidth;
+    this.isMobileScreen = screenWidth <= 769;
+    let isDektopScreen = screenWidth >= 770;
+
+    if (this.isMobileScreen && this.isSidebarOpen) {
+      this.sidebarService.fixedSlidebar = false;
+      this.sidebarService.closedSidebar();
+    }
+    if(isDektopScreen){
+      this.sidebarService.openedSidebar()
+    }
   }
 
   ngAfterViewInit(): void {
@@ -86,6 +107,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sidebarService.toggleSidebar();
     }
   }
+
 
   executeDocs(commandName: string) {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -153,6 +175,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   executeCommand(commandName: string): void {
+    
     if (commandName === 'exit') {
       localStorage.removeItem('YXV0aFRva2Vu');
       this.currentUserService.removeUser();

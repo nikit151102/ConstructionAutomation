@@ -26,7 +26,11 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     padding-right: 20px;
-    
+
+    @media (max-width: 768px) {
+        margin-top: 15px;
+    }
+
     .title {
         margin: 0;
         padding-left: 20px;
@@ -55,6 +59,7 @@
 
 .sidebar-open .content {
     width: 100%;
+
     @media (max-width: 768px) {
         width: auto;
     }
