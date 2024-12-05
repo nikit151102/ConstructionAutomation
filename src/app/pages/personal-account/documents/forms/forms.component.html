@@ -27,14 +27,15 @@
   <ng-container *ngIf="fileMetadata">
     <button (click)="downloadFile()">Скачать</button>
   </ng-container>
+  
   <ng-container *ngIf="fileMetadata?.divergenceList">
-    <p>
+    <p [innerHTML]="getFormattedDivergenceList()">
       {{fileMetadata?.divergenceList}}
     </p>
   </ng-container>
   <br>
   <ng-container *ngIf="fileMetadata?.errorListCipher ">
-    <p>
+    <p [innerHTML]="getFormattedDivergenceList()">
       {{fileMetadata?.errorListCipher}}
     </p>
   </ng-container>

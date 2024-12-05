@@ -158,7 +158,10 @@ export class FormsComponent {
     });
   }
   
- 
+  getFormattedDivergenceList(): string {
+    return this.fileMetadata?.divergenceList.replace(/\n/g, '<br>') || '';
+  }
+  
 
   fileMetadata:any = null;
   downloadFile() {
