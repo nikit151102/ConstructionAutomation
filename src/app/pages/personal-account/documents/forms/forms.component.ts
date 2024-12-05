@@ -90,7 +90,6 @@ export class FormsComponent {
     if (file) {
 
       this.files[key] = { file, sheetName: data.sheetName, fileId: data.fileId };
-      console.log('data.fileId',data.fileId)
     } else {
       console.warn(`No file provided for key ${key}`);
     }
@@ -98,86 +97,50 @@ export class FormsComponent {
   
   onSubmit() {
     const formData = new FormData();
-    const appendedKeys = new Set<string>(); // Для отслеживания добавленных ключей
-    // console.log('Начинаем обработку формы.');
-  
-    // Обработка обычных полей
-    this.config.controls.forEach((control: any) => {
-      const value = this.form.get(control.name)?.value;
-  
-      // console.log(`Обрабатываем поле: ${control.name}, значение: ${value}`);
-  
-      // Проверка, что значение не undefined, и добавление в FormData
-      if (value !== undefined) {
-        // Обработка dropdown, связанного с файловым вводом
-        if (control.type === 'dropdown' && control.isFileInput) {
-          const fileControlName = control.name.replace('ListName', '');
-          const fileData = this.files[fileControlName];
-  
-          // console.log(`Поле типа dropdown для ${control.name}, ищем файл: ${fileControlName}`);
-  
-          if (fileData && fileData.sheetName && !fileData.fileId) {
-            // Проверка, существует ли уже ключ, если да, то обновить, если нет — добавить
-            if (appendedKeys.has(control.name)) {
-              // console.log(`Удаляем старое значение для ключа ${control.name}`);
-              formData.delete(control.name); // Удалить существующее значение
-            }
-            // console.log(`Добавляем в FormData: ${control.name} = ${fileData.sheetName}`);
-            formData.append(control.name, fileData.sheetName);
-            appendedKeys.add(control.name); // Отслеживаем ключ
-          } else {
+    const appendedKeys = new Set<string>();
 
-            // console.warn(`Файл для dropdown ${control.name} не найден`);
-          }
-        } else {
-          // Для обычных полей
-          if (appendedKeys.has(control.name)) {
-            // console.log(`Удаляем старое значение для ключа ${control.name}`);
-            formData.delete(control.name); // Удалить существующее значение
-          }
-          // console.log(`Добавляем в FormData: ${control.name} = ${value}`);
-          formData.append(control.name, value);
-          appendedKeys.add(control.name); // Отслеживаем ключ
+    const addOrUpdateKey = (key: string, value: any) => {
+        if (appendedKeys.has(key)) {
+            formData.delete(key);
         }
-      } else {
-        // console.warn(`Значение для ${control.name} не определено, пропускаем.`);
-      }
-  
-      // Обработка файловых полей
-      if (control.type === 'file' && this.files[control.name]) {
-        const file = this.files[control.name].file;
-        if (file) {
-          if (appendedKeys.has(control.name)) {
-            // console.log(`Удаляем старое значение для файла с ключом ${control.name}`);
-            formData.delete(control.name); // Удалить существующее значение
-          }
-          // console.log(`Добавляем файл в FormData: ${control.name} = ${file.name}`);
-          formData.append(control.name, file);
-          appendedKeys.add(control.name); // Отслеживаем ключ
-        } else {
-          // console.warn(`Не выбран файл для ${control.name}`);
+        formData.append(key, value);
+        appendedKeys.add(key);
+    };
+
+    this.config.controls.forEach((control: any) => {
+        const value = this.form.get(control.name)?.value;
+
+        if (value !== undefined) {
+            if (control.type === 'dropdown' && control.isFileInput) {
+                const fileControlName = control.name.replace('ListName', '');
+                const fileData = this.files[fileControlName];
+
+                if (fileData?.sheetName) {
+                    addOrUpdateKey(control.name, fileData.sheetName);
+                }
+            } else {
+                addOrUpdateKey(control.name, value);
+            }
         }
-      }
+
+        if (control.type === 'file' && this.files[control.name]) {
+            const fileData = this.files[control.name];
+            if (fileData?.fileId) {
+                addOrUpdateKey(`${control.name}Id`, fileData.fileId);
+            } else if (fileData?.file) {
+                addOrUpdateKey(control.name, fileData.file);
+            }
+        }
     });
-  
-    // Добавление UserId, если оно доступно
-    let userId = localStorage.getItem('VXNlcklk');
+
+    const userId = localStorage.getItem('VXNlcklk');
     if (userId) {
-      if (appendedKeys.has('UserId')) {
-        // console.log(`Удаляем старое значение для ключа 'UserId'`);
-        formData.delete('UserId'); 
-      }
-      // console.log(`Добавляем UserId в FormData: UserId = ${userId}`);
-      formData.append('UserId', userId);
-      appendedKeys.add('UserId'); 
+        addOrUpdateKey('UserId', userId);
     }
-  
-    // Логирование FormData для проверки
-    // console.log('Финальные данные формы:');
+
     formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
+        console.log(`${key}: ${value}`);
     });
-    
   
     this.progressSpinnerService.show();
     this.formsService.uploadFiles(formData, this.config.endpoint).subscribe({
@@ -185,7 +148,7 @@ export class FormsComponent {
         this.progressSpinnerService.hide();
         this.uploadSuccess.emit(response);
         this.fileMetadata = response.documentMetadata;
-        console.log(' response.documentMetadata:', response.documentMetadata)
+        console.log('response.documentMetadata:', response.documentMetadata);
       },
       error: (error: any) => {
         console.error('Error:', error);
@@ -194,6 +157,7 @@ export class FormsComponent {
       }
     });
   }
+  
  
 
   fileMetadata:any = null;
