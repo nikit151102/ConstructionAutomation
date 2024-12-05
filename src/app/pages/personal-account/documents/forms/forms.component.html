@@ -4,22 +4,22 @@
       <!-- Text input -->
       <app-text-input *ngSwitchCase="'text'" [id]="control.name" [label]="control.label"
         [control]="getSafeFormControl(form, control.name)"></app-text-input>
-  
+
       <!-- Dropdown -->
       <ng-container *ngSwitchCase="'dropdown'">
         <app-dropdown *ngIf="!control.isFileInput" [id]="control.name" [options]="control.options"
           [control]="getSafeFormControl(form, control.name)"></app-dropdown>
       </ng-container>
-  
+
       <!-- File Input with new 'isFileInput' check -->
       <div *ngSwitchCase="'file'" class="file-input-container">
         <label>{{ control.label }}</label>
-        <app-file-input [chooseLabel]="control.label" [chooseIcon]="'pi pi-upload'"
-          [accept]="control.accept" (onSelect)="onFileSelect($event, control.name)"></app-file-input>
+        <app-file-input [chooseLabel]="control.label" [chooseIcon]="'pi pi-upload'" [accept]="control.accept"
+          (onSelect)="onFileSelect($event, control.name)"></app-file-input>
       </div>
     </ng-container>
   </div>
-  
+
 
   <button (click)="onSubmit()">Сформировать</button>
 
@@ -27,4 +27,14 @@
   <ng-container *ngIf="fileMetadata">
     <button (click)="downloadFile()">Скачать</button>
   </ng-container>
+  <ng-container *ngIf="fileMetadata.DivergenceList">
+    <p>
+      {{fileMetadata.DivergenceList}}
+    </p>
+  </ng-container>
+  <br>
+  <ng-container *ngIf="fileMetadata.ErrorListCipher ">
+    {{fileMetadata.ErrorListCipher}}
+  </ng-container>
+
 </form>

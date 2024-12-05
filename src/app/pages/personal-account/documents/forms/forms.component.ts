@@ -90,6 +90,7 @@ export class FormsComponent {
     if (file) {
 
       this.files[key] = { file, sheetName: data.sheetName, fileId: data.fileId };
+      console.log('data.fileId',data.fileId)
     } else {
       console.warn(`No file provided for key ${key}`);
     }
@@ -115,7 +116,7 @@ export class FormsComponent {
   
           // console.log(`Поле типа dropdown для ${control.name}, ищем файл: ${fileControlName}`);
   
-          if (fileData && fileData.sheetName) {
+          if (fileData && fileData.sheetName && !fileData.fileId) {
             // Проверка, существует ли уже ключ, если да, то обновить, если нет — добавить
             if (appendedKeys.has(control.name)) {
               // console.log(`Удаляем старое значение для ключа ${control.name}`);
@@ -125,6 +126,7 @@ export class FormsComponent {
             formData.append(control.name, fileData.sheetName);
             appendedKeys.add(control.name); // Отслеживаем ключ
           } else {
+
             // console.warn(`Файл для dropdown ${control.name} не найден`);
           }
         } else {
@@ -183,6 +185,7 @@ export class FormsComponent {
         this.progressSpinnerService.hide();
         this.uploadSuccess.emit(response);
         this.fileMetadata = response.documentMetadata;
+        console.log(' response.documentMetadata:', response.documentMetadata)
       },
       error: (error: any) => {
         console.error('Error:', error);
@@ -191,7 +194,7 @@ export class FormsComponent {
       }
     });
   }
-  
+ 
 
   fileMetadata:any = null;
   downloadFile() {
