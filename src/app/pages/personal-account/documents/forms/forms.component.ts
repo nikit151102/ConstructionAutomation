@@ -162,6 +162,9 @@ export class FormsComponent {
     return this.fileMetadata?.divergenceList.replace(/\n/g, '<br>') || '';
   }
   
+  getFormattedErrorListCipher(): string {
+    return this.fileMetadata?.errorListCipher.replace(/\n/g, '<br>') || '';
+  }
 
   fileMetadata:any = null;
   downloadFile() {
