@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
@@ -26,7 +26,7 @@ import { FilesListService } from './files-list.service';
   templateUrl: './file-input.component.html',
   styleUrls: ['./file-input.component.scss'],
 })
-export class FileInputComponent implements OnInit {
+export class FileInputComponent implements OnInit, OnDestroy {
   @Input() chooseLabel = 'Upload';
   @Input() chooseIcon = 'pi pi-upload';
   @Input() accept = '';
@@ -56,8 +56,13 @@ export class FileInputComponent implements OnInit {
     private filesListService: FilesListService,
     private myDocumentsService: MyDocumentsService
   ) { }
+  ngOnDestroy(): void {
+    this.resetFileSelection();
+    console.log(' this.resetFileSelection();')
+  }
 
   ngOnInit(): void {
+    this.resetFileSelection();
     this.subscribeToFileListVisibility();
     this.fetchUserDocuments();
     this.subscribeToViewType();
@@ -95,15 +100,18 @@ export class FileInputComponent implements OnInit {
   }
 
   handleSelect(event: FileSelectEvent): void {
+    this.resetFileSelection(); // Очистка состояния
+  
     const file = event.files[0];
     this.fileName = file?.name || '';
-
+  
     if (file?.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
       const reader = new FileReader();
       reader.onload = (e: any) => this.processExcelFile(e.target.result, file, event);
       reader.readAsBinaryString(file);
     }
   }
+  
   private processExcelFile(data: ArrayBuffer, file: File, event: FileSelectEvent): void {
     try {
       const reader = new FileReader();
@@ -123,8 +131,9 @@ export class FileInputComponent implements OnInit {
 
           this.selectFile = file;
           this.visibleDelete = true;
-
+          this.showSheetSelection = true;
           if (this.sheetNames.length === 1) {
+            console.error(' Excel file length === 1');
             this.emitSelection(event, file, this.sheetNames[0], this.fileId);
           } else {
             this.showSheetSelection = true;
@@ -146,15 +155,18 @@ export class FileInputComponent implements OnInit {
     this.resetFileSelection();
   }
 
+  
   private resetFileSelection(): void {
     this.selectFile = null!;
+    this.selectEvent = null!;
     this.sheetNames = [];
     this.sheetName = '';
+    this.fileName = '';
+    this.fileId = '';
     this.showSheetSelection = false;
     this.visibleDelete = false;
-    this.fileName = '';
   }
-
+  
   onSheetSelect(selectedSheet: string): void {
     this.sheetName = selectedSheet;
     this.emitSelection(this.selectEvent, this.selectFile, selectedSheet, this.fileId);
