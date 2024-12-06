@@ -101,7 +101,6 @@ export class FileInputComponent implements OnInit, OnDestroy {
   }
 
   handleSelect(event: FileSelectEvent): void {
-    this.resetFileSelection(); // Очистка состояния
   
     const file = event.files[0];
     this.fileName = file?.name || '';
@@ -177,7 +176,7 @@ export class FileInputComponent implements OnInit, OnDestroy {
 
   private emitSelection(event: FileSelectEvent, file: File, sheetName: string, fileId: string): void {
     this.onSelect.emit({ event, file, sheetName, fileId});
-    this.resetFileSelection(); 
+   
   }
 
   ismyDownloadFile: any;
