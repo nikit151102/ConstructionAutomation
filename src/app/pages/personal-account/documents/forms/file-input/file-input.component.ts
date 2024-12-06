@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
@@ -54,7 +54,8 @@ export class FileInputComponent implements OnInit, OnDestroy {
 
   constructor(
     private filesListService: FilesListService,
-    private myDocumentsService: MyDocumentsService
+    private myDocumentsService: MyDocumentsService,
+    private cdr: ChangeDetectorRef
   ) { }
   ngOnDestroy(): void {
     this.resetFileSelection();
@@ -132,6 +133,8 @@ export class FileInputComponent implements OnInit, OnDestroy {
           this.selectFile = file;
           this.visibleDelete = true;
           this.showSheetSelection = true;
+          this.cdr.detectChanges();
+          console.log('this.showSheetSelection',this.showSheetSelection)
           if (this.sheetNames.length === 1) {
             console.error(' Excel file length === 1');
             this.emitSelection(event, file, this.sheetNames[0], this.fileId);
@@ -174,6 +177,7 @@ export class FileInputComponent implements OnInit, OnDestroy {
 
   private emitSelection(event: FileSelectEvent, file: File, sheetName: string, fileId: string): void {
     this.onSelect.emit({ event, file, sheetName, fileId});
+    this.resetFileSelection(); 
   }
 
   ismyDownloadFile: any;
