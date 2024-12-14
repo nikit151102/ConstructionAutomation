@@ -1,0 +1,13 @@
+<div class="file-item" [ngClass]="isVertical ? 'file-item--vertical' : 'file-item--horizontal'">
+    <img src="pngs/folder.png" alt="File Icon" class="file-icon" />
+    <div class="file-details">
+      <input 
+        pInputText="text" 
+        class="input-text" 
+        [(ngModel)]="value" 
+        (keydown)="handleKeyDown($event)" 
+        (blur)="handleBlur()" 
+        #renameInput />
+    </div>
+  </div>
+  

@@ -13,7 +13,8 @@ export class MyDocumentsService {
 
   private apiUrl = environment.apiUrl;
 
-
+  visibleCreateFolder: boolean = false;
+  
   private isVertical = new BehaviorSubject<boolean>(false);
   isVertical$ = this.isVertical.asObservable();
 
@@ -29,7 +30,7 @@ export class MyDocumentsService {
     storageVolumeCopacity: number,
     storageVolumeUsage: number
   } = {
-    storageVolumeCopacity: 0,
+      storageVolumeCopacity: 0,
       storageVolumeUsage: 0
     }
 
@@ -37,7 +38,7 @@ export class MyDocumentsService {
     this.files.next(files);
   }
 
-  constructor(private http: HttpClient, private progressSpinnerService: ProgressSpinnerService, private toastService:ToastService) { }
+  constructor(private http: HttpClient, private progressSpinnerService: ProgressSpinnerService, private toastService: ToastService) { }
 
 
   upload(files: File[]): Observable<any> {
@@ -77,9 +78,22 @@ export class MyDocumentsService {
     });
   }
 
-  getAllUserDocuments(): Observable<any[]> {
+  getAllUserDirectories(idUser: string): Observable<any[]> {
     const userId = localStorage.getItem('VXNlcklk');
-    const url = `${this.apiUrl}/api/Profile/GetUserFiles`;
+    const url = `${this.apiUrl}/Directories?UserId=${idUser}`;
+    const token = localStorage.getItem('YXV0aFRva2Vu');
+
+    return this.http.get<any[]>(url, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }),
+    });
+  }
+
+  getAllFileOfDirectory(): Observable<any[]> {
+    const userId = localStorage.getItem('VXNlcklk');
+    const url = `${this.apiUrl}/api/Profile/UserDirectories`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
 
     return this.http.get<any[]>(url, {
@@ -115,28 +129,31 @@ export class MyDocumentsService {
   }
 
 
-  loadData() {
+  loadData(idUser: string) {
 
-    this.getAllUserDocuments().subscribe((data: any) => {
+    this.getAllUserDirectories(idUser).subscribe((data: any) => {
 
-      this.storageInfo = data.storageInfo;
-      console.log('this.storageInfo',this.storageInfo)
-      const files = data.userDocument.map((file: any) => ({
+      // this.storageInfo = data.storageInfo;
+      this.storageInfo = { 'storageVolumeCopacity': 2000000, 'storageVolumeUsage': 5000000 };
+      const files = data.data
+      .filter((file: any) => file.type) 
+      .map((file: any) => ({
         ...file,
-        icon: 'pngs/file.png'
+        icon: file.type === 'file' ? 'pngs/file.png' : file.type === "directory" ? 'pngs/folder.png' : ''
       }));
+    
       this.setFiles(files);
       this.progressSpinnerService.hide();
     },
-    (error) => {
-      console.error('Ошибка загрузки данных:', error);
-      this.progressSpinnerService.hide();
-      this.toastService.showError('Ошибка', 'Не удалось загрузить данные');
-      
-    },
-    
-  );
+      (error) => {
+        console.error('Ошибка загрузки данных:', error);
+        this.progressSpinnerService.hide();
+        this.toastService.showError('Ошибка', 'Не удалось загрузить данные');
 
-   
+      },
+
+    );
+
+
   }
 }

@@ -9,6 +9,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { MyDocumentsService } from '../../../my-documents/my-documents.service';
 import { SelectFileComponent } from './select-file/select-file.component';
 import { FilesListService } from './files-list.service';
+import { CurrentUserService } from '../../../../../services/current-user.service';
 
 @Component({
   selector: 'app-file-input',
@@ -55,7 +56,8 @@ export class FileInputComponent implements OnInit, OnDestroy {
   constructor(
     private filesListService: FilesListService,
     private myDocumentsService: MyDocumentsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private currentUserService:CurrentUserService
   ) { }
   ngOnDestroy(): void {
     this.resetFileSelection();
@@ -76,7 +78,8 @@ export class FileInputComponent implements OnInit, OnDestroy {
   }
 
   private fetchUserDocuments(): void {
-    this.myDocumentsService.getAllUserDocuments().subscribe({
+    const userId = this.currentUserService.getUser();
+    this.myDocumentsService.getAllUserDirectories(userId).subscribe({
       next: (data: any) => {
         this.testFiles = data.userDocument.map((file: any) => ({
           ...file,

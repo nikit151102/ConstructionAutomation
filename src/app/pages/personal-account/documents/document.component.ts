@@ -12,11 +12,12 @@ import { ActivatedRoute } from '@angular/router';
 import { ConfigType, getFormConfig } from './confs';
 import { PreviewComponent } from './preview/preview.component';
 import { PersonalAccountService } from '../personal-account.service';
+import { PreviewPdfComponent } from '../../../components/preview-pdf/preview-pdf.component';
 
 @Component({
   selector: 'app-document',
   standalone: true,
-  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewComponent],
+  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewComponent, PreviewPdfComponent],
   templateUrl: './document.component.html',
   styleUrl: './document.component.scss'
 })
@@ -44,16 +45,20 @@ export class DocumentComponent implements OnInit {
 
   }
 
-  selectfile: any = null; // Default to null
+  selectfile: any = null; 
   selectedSheet: string = '';
+  selectPdf:any;
+  visiblePdf:boolean = false;
 
-
-  onViewChange(fileKey: string) {
-  }
 
   onUploadSuccess(response: any): void {
-    console.log('Загрузка прошла успешно:', response);
    this.documentsService.setSuccessDoc(response);
+   if(response.pdfFile){
+    const base64Data = response.pdfFile.fileContents;
+    const pdfBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+    this.selectPdf = new Blob([pdfBytes], { type: 'application/pdf' });
+    this.visiblePdf = true;
+   }
   }
 
 

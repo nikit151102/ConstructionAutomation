@@ -11,11 +11,16 @@ import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../../services/toast.service';
 import { ProgressSpinnerService } from '../../../components/progress-spinner/progress-spinner.service';
 import { CommomFileService } from '../../../services/file.service';
+import { FolderComponent } from './folder/folder.component';
+import { CurrentUserService } from '../../../services/current-user.service';
+import { MenuModule } from 'primeng/menu';
+import { ToastModule } from 'primeng/toast';
+import { CreateFolderComponent } from './create-folder/create-folder.component';
 
 @Component({
   selector: 'app-my-documents',
   standalone: true,
-  imports: [CommonModule, FileComponent, ButtonModule, FileUploadModule, SelectButtonModule, FormsModule],
+  imports: [CommonModule, FileComponent, ButtonModule, FileUploadModule, SelectButtonModule, FormsModule, FolderComponent, MenuModule, ToastModule, CreateFolderComponent],
   templateUrl: './my-documents.component.html',
   styleUrls: ['./my-documents.component.scss'],
 })
@@ -47,6 +52,24 @@ export class MyDocumentsComponent implements OnInit {
     },
   ];
 
+  items: MenuItem[] | undefined = [
+    {
+      label: 'Сооздать',
+      items: [
+        {
+          label: 'Папку',
+          icon: 'pi pi-refresh',
+          command: () => {this.myDocumentsService.visibleCreateFolder = true}
+        },
+        {
+          label: 'Файл',
+          icon: 'pi pi-upload',
+          command: () => {this.visibleUpload = true}
+        }
+      ]
+    }
+  ];
+
   stateOptions: any[] = [{ label: 'Плитка', value: true },
   { label: 'Список', value: false },];
 
@@ -56,8 +79,8 @@ export class MyDocumentsComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private toastService: ToastService,
     private progressSpinnerService: ProgressSpinnerService,
-    private commomFileService: CommomFileService
-
+    private commomFileService: CommomFileService,
+    private currentUserService: CurrentUserService
   ) {
     this.personalAccountService.changeTitle('Мои документы');
     this.progressSpinnerService.show();
@@ -70,8 +93,9 @@ export class MyDocumentsComponent implements OnInit {
   ngOnInit(): void {
     this.testFiles = null;
     this.progressSpinnerService.show();
-    this.myDocumentsService.loadData();
-    
+    const userId = this.currentUserService.getUser();
+    this.myDocumentsService.loadData(userId.id);
+
     this.totalSize = this.myDocumentsService.storageInfo.storageVolumeUsage;
     this.myDocumentsService.filesSelect$.subscribe({
       next: (data: any) => {
@@ -173,7 +197,7 @@ export class MyDocumentsComponent implements OnInit {
     this.uploadedFiles = [];
     const fileUpload: any = document.querySelector('p-fileUpload');
     if (fileUpload && fileUpload.clear) {
-      fileUpload.clear(); 
+      fileUpload.clear();
     }
     this.visibleUpload = false;
     this.errorMessage = null;
@@ -186,7 +210,8 @@ export class MyDocumentsComponent implements OnInit {
       this.myDocumentsService.upload(this.uploadedFiles).subscribe({
         next: (response: any) => {
           this.visibleUpload = false;
-          this.myDocumentsService.loadData();
+          const userId = this.currentUserService.getUser();
+          this.myDocumentsService.loadData(userId.id);
           this.toastService.showSuccess('Загрузка завершена', 'Файлы успешно загружены');
         },
         error: (error) => {

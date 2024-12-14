@@ -26,6 +26,10 @@
   <p-button icon="pi pi-plus" class="breadcrumb-back-button" [rounded]="true" [text]="true" [raised]="true"
     *ngIf="!visibleUpload" (click)="visibleUpload = true"></p-button>
 
+    <p-toast />
+<p-menu #menu [model]="items" [popup]="true" />
+<p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v"/>
+
   <p-selectButton [options]="stateOptions" [(ngModel)]="isVertical" (onChange)="onChangeType($event.value)"
     optionLabel="label" optionValue="value">
   </p-selectButton>
@@ -60,9 +64,22 @@
 
 
 <div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
+  <app-create-folder *ngIf="myDocumentsService.visibleCreateFolder"></app-create-folder>
   <ng-container *ngIf="testFiles && testFiles.length > 0; else noFiles">
-    <app-file *ngFor="let file of testFiles" [file]="file" [isdelete]="true"></app-file>
+    <ng-container *ngFor="let file of testFiles">
+      <app-file 
+        *ngIf="file.type === 'file'" 
+        [file]="file" 
+        [isdelete]="true">
+      </app-file>
+      <app-folder 
+        *ngIf="file.type === 'directory'" 
+        [folder]="file" 
+        [isdelete]="true">
+      </app-folder>
+    </ng-container>
   </ng-container>
+  
 </div>
 
 <ng-template #noFiles>
@@ -70,3 +87,4 @@
     Добавьте первый файл, чтобы он появился здесь
   </div>
 </ng-template>
+

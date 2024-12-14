@@ -1,18 +1,26 @@
 <p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
 
 <div class="file-item" [ngClass]="isVertical ? 'file-item--vertical' : 'file-item--horizontal'"
-  [pTooltip]="file.fileName" tooltipPosition="bottom" (click)="onRightClick($event, file)"
-  (contextmenu)="onRightClick($event, file)">
+  [pTooltip]="folder.fileName" tooltipPosition="bottom" (click)="transitionFolder()"
+  (contextmenu)="onRightClick($event, folder)">
 
-  <img [src]="file.icon" alt="File Icon" class="file-icon" />
+  <img [src]="folder.icon" alt="File Icon" class="file-icon" />
   <div class="file-details">
-    <p class="file-title">{{ file.name }}</p>
-    <p class="file-date">{{ file.createDateTime | date: 'dd-MM-yyyy HH:mm' }}</p>
+    <p class="file-title" *ngIf="!visibleShonRename">{{ folder.name }}</p>
+    <input 
+    pInputText="text" 
+    class="input-text" 
+    [(ngModel)]="value" 
+    *ngIf="visibleShonRename" 
+    (keydown.enter)="onEnter()"
+    (keydown.esc)="onEsc()"
+    #renameInput />
+    <p class="file-date">{{ folder.createDateTime | date: 'dd-MM-yyyy HH:mm' }}</p>
   </div>
 </div>
 
 
-<div class="custom-modal" *ngIf="fileService.visibleShonRename">
+<div class="custom-modal" *ngIf="folderService.visibleShonRename">
   <div class="custom-modal-overlay" (click)="closeDialogRename()"></div>
   <div class="custom-modal-content">
     <div class="custom-modal-header">

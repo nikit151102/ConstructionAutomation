@@ -72,7 +72,7 @@ export class FileComponent implements OnInit {
   deleteFile(id: string) {
     this.myDocumentsService.deleteFile(id).subscribe(
       (data: any) => {
-        this.myDocumentsService.loadData();
+        // this.myDocumentsService.loadData();
         this.toastService.showSuccess('Успешно!', 'Операция выполнена успешно');
       },
       (error: any) => {
@@ -101,7 +101,7 @@ export class FileComponent implements OnInit {
     this.myDocumentsService.renameFile(this.file.id, data).subscribe(
       (data: any) => {
         this.closeDialogRename();
-        this.myDocumentsService.loadData();
+        // this.myDocumentsService.loadData();
         this.toastService.showSuccess('Успех!', 'Файл переименован');
       },
       (error: any) => {

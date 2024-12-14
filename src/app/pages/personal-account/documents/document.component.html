@@ -7,4 +7,5 @@
   <!-- <app-preview style="width: calc(100% - 400px);"  [selectedSheet]="selectedSheet"
     (viewChange)="onViewChange($event)" (fullscreenToggle)="toggleFullscreen($event)"></app-preview> -->
 
+  <app-preview-pdf style="width: calc(100% - 400px);"  [pdfData]="selectPdf" *ngIf="visiblePdf"></app-preview-pdf>
 </div>
