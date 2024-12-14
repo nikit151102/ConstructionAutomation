@@ -33,18 +33,18 @@ export class FolderComponent implements OnInit {
     {
       label: 'Открыть',
       icon: 'pi pi-pencil',
-      command: () => this.openDialog(this.folder.id),
+      command: () => this.openFolder(),
     },
     {
       label: 'Переименовать',
       icon: 'pi pi-pencil',
       command: () => this.openDialogRename(this.folder.name),
     },
-    {
-      label: 'Свойство',
-      icon: 'pi pi-exclamation-circle',
-      // command: () => this.openDialogRename(this.folder.fileName),
-    },
+    // {
+    //   label: 'Свойство',
+    //   icon: 'pi pi-exclamation-circle',
+    //   // command: () => this.openDialogRename(this.folder.fileName),
+    // },
     {
       label: 'Удалить',
       icon: 'pi pi-trash',
@@ -64,25 +64,21 @@ export class FolderComponent implements OnInit {
   }
 
 
-  openDialog(IdFolder: string){
-    this.folderService.openFolder(IdFolder).subscribe((data: any) => {
+  openFolder(){
+    if(!this.visibleShonRename)
+    this.folderService.openFolder(this.folder.id).subscribe((data: any) => {
+      console.log('data')
       const combinedArray = [
         ...(data.data.subDirectories || []), 
         ...(data.data.documents || [])
       ];
       this.myDocumentsService.setFiles(combinedArray)
+      const menuItem: MenuItem = { label: this.folder.name };
+      this.myDocumentsService.BreadcrumbItems = [...this.myDocumentsService.BreadcrumbItems, menuItem];
     })
   }
 
-  transitionFolder() {
-    this.folderService.transitionFolder(this.folder.id).subscribe((response: any)=>{
-      const combinedArray = [
-        ...(response.data.subDirectories || []).map((item:any) => ({ ...item, source: 'subDirectory' })),
-        ...(response.data.documents || []).map((item:any) => ({ ...item, source: 'document' }))
-      ];
-      this.myDocumentsService.setFiles(combinedArray);
-    })
-  }
+
 
   onEnter(): void {
     console.log('Enter key pressed:', this.value);
@@ -97,7 +93,14 @@ export class FolderComponent implements OnInit {
   applyRename(): void {
     // Логика для подтверждения ввода
     console.log('Rename applied:', this.value);
-
+    const data = {
+      "id": this.folder.id,
+      "name": this.value
+    }
+    this.folderService.renameFolder(this.folder.id,data ).subscribe((data: any) => {
+      console.log('data', data)
+      this.folder = {...data.data, icon: data.data.type === 'file' ? 'pngs/file.png' : data.data.type === "directory" ? 'pngs/folder.png' : ''}
+    })
     this.visibleShonRename = false;
   }
 
@@ -125,7 +128,8 @@ export class FolderComponent implements OnInit {
   }
 
   deleteFolder(id: string) {
-    this.folderService.deleteFolder(id).subscribe(
+    console.log('this.folder',this.folder)
+    this.folderService.deleteFolder(this.folder.id).subscribe(
       (data: any) => {
         // this.myDocumentsService.loadData();
         this.toastService.showSuccess('Успешно!', 'Операция выполнена успешно');

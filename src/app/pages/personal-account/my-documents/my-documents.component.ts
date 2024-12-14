@@ -16,42 +16,28 @@ import { CurrentUserService } from '../../../services/current-user.service';
 import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 @Component({
   selector: 'app-my-documents',
   standalone: true,
-  imports: [CommonModule, FileComponent, ButtonModule, FileUploadModule, SelectButtonModule, FormsModule, FolderComponent, MenuModule, ToastModule, CreateFolderComponent],
+  imports: [CommonModule, FileComponent, ButtonModule, FileUploadModule, SelectButtonModule, FormsModule, FolderComponent, MenuModule, ToastModule, CreateFolderComponent, BreadcrumbModule],
   templateUrl: './my-documents.component.html',
   styleUrls: ['./my-documents.component.scss'],
 })
 export class MyDocumentsComponent implements OnInit {
 
-  files: any = [
-    {
-      icon: 'pngs/folder.png',
-      title: 'folder 1',
-      date: '2024-11-15',
-      isFolder: true,
-      children: [
-        { icon: 'pngs/file.png', title: 'file 1-1', date: '2024-11-14', isFolder: false },
-        { icon: 'pngs/file.png', title: 'file 1-2', date: '2024-11-13', isFolder: false },
-      ],
-    },
-    {
-      icon: 'pngs/folder.png',
-      title: 'folder 2',
-      date: '2024-11-14',
-      isFolder: true,
-      children: [{ icon: 'pngs/file.png', title: 'file 2-1', date: '2024-11-13', isFolder: false }],
-    },
-    {
-      icon: 'pngs/file.png',
-      title: 'file 3',
-      date: '2024-11-13',
-      isFolder: false,
-    },
-  ];
-
+  files: any = [];
+  
+  home = {
+    icon: 'pi pi-home',
+    command: () => {
+      this.myDocumentsService.BreadcrumbItems = [];
+      const userId = this.currentUserService.getUser();
+    this.myDocumentsService.loadData(userId.id);
+    }
+  };
+  
   items: MenuItem[] | undefined = [
     {
       label: 'Сооздать',
@@ -59,19 +45,19 @@ export class MyDocumentsComponent implements OnInit {
         {
           label: 'Папку',
           icon: 'pi pi-refresh',
-          command: () => {this.myDocumentsService.visibleCreateFolder = true}
+          command: () => {this.visibleUpload = false; this.myDocumentsService.visibleCreateFolder = true}
         },
         {
           label: 'Файл',
           icon: 'pi pi-upload',
-          command: () => {this.visibleUpload = true}
+          command: () => {this.visibleUpload = true; this.myDocumentsService.visibleCreateFolder = false;}
         }
       ]
     }
   ];
 
-  stateOptions: any[] = [{ label: 'Плитка', value: true },
-  { label: 'Список', value: false },];
+  stateOptions: any[] = [{ label: ' ', value: true, icon: 'pi pi-th-large'},
+  { label: ' ', value: false, icon: 'pi pi-bars'},];
 
 
   constructor(private personalAccountService: PersonalAccountService,

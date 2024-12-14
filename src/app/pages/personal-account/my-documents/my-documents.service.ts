@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../../environment';
 import { ProgressSpinnerService } from '../../../components/progress-spinner/progress-spinner.service';
 import { ToastService } from '../../../services/toast.service';
+import { MenuItem } from 'primeng/api';
 
 
 @Injectable({
@@ -13,6 +14,8 @@ export class MyDocumentsService {
 
   private apiUrl = environment.apiUrl;
 
+  BreadcrumbItems: MenuItem[] = [];
+  
   visibleCreateFolder: boolean = false;
   
   private isVertical = new BehaviorSubject<boolean>(false);

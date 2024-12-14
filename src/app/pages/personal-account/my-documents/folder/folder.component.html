@@ -1,7 +1,7 @@
 <p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
 
 <div class="file-item" [ngClass]="isVertical ? 'file-item--vertical' : 'file-item--horizontal'"
-  [pTooltip]="folder.fileName" tooltipPosition="bottom" (click)="transitionFolder()"
+  [pTooltip]="folder.fileName" tooltipPosition="bottom" (click)="openFolder()"
   (contextmenu)="onRightClick($event, folder)">
 
   <img [src]="folder.icon" alt="File Icon" class="file-icon" />
@@ -16,24 +16,5 @@
     (keydown.esc)="onEsc()"
     #renameInput />
     <p class="file-date">{{ folder.createDateTime | date: 'dd-MM-yyyy HH:mm' }}</p>
-  </div>
-</div>
-
-
-<div class="custom-modal" *ngIf="folderService.visibleShonRename">
-  <div class="custom-modal-overlay" (click)="closeDialogRename()"></div>
-  <div class="custom-modal-content">
-    <div class="custom-modal-header">
-      <h2>Переименовать</h2>
-      <button class="close-button" (click)="closeDialogRename()">×</button>
-    </div>
-    <div class="custom-modal-body">
-      <span class="text-secondary">Новое имя файла</span>
-      <input pInputText ="text" class="input-text" [(ngModel)]="value" />
-    </div>
-    <div class="custom-modal-footer">
-      <button class="btn secondary" (click)="closeDialogRename()">Отмена</button>
-      <button class="btn primary" (click)="renameFile()">Переименовать</button>
-    </div>
   </div>
 </div>

@@ -45,20 +45,6 @@ export class FolderService {
       });
   }
 
-  transitionFolder(idFolder: string) {
-    const userId = localStorage.getItem('VXNlcklk');
-    const url = `${this.apiUrl}/api/Profile/UserDirectories/${idFolder}`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.get<any[]>(url, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }),
-    });
-
-  }
-
 
   deleteFolder(idFolder: string) {
     const url = `${this.apiUrl}/Directories/${idFolder}`;

@@ -30,7 +30,8 @@ export class DocumentComponent implements OnInit {
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-
+    this.visiblePdf = false;
+    this.selectPdf = null;
     this.route.paramMap.subscribe(params => {
       const configType = params.get('configType') as ConfigType | null;
 
