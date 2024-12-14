@@ -215,8 +215,13 @@ export class FormsComponent {
   
 
   fileMetadata:any = null;
-  downloadFile() {
-    this.commomFileService.downloadFile(this.fileMetadata.id);
+  downloadFile(type:string) {
+    if(type == 'excel'){
+      this.commomFileService.downloadFile(this.fileMetadata.fullResultXlsx.id);
+    }
+    if(type == 'pdf'){
+      this.commomFileService.downloadFile(this.fileMetadata.fullResultPdf.id);
+    }
   }
 
 

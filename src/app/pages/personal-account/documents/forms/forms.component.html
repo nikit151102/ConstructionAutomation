@@ -25,7 +25,9 @@
 
   <!-- File Download -->
   <ng-container *ngIf="fileMetadata">
-    <button (click)="downloadFile()">Скачать</button>
+    <button (click)="downloadFile('pdf')">Скачать pdf</button>
+    <button (click)="downloadFile('excel')">Скачать  excel</button>
+
   </ng-container>
   
   <ng-container *ngIf="fileMetadata?.divergenceList">
