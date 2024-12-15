@@ -59,8 +59,9 @@
   {{ errorMessage }}
 </div>
 
+<p-contextMenu #cm [model]="contextMenuItems" [global]="true" ></p-contextMenu>
 
-<div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
+<div class="file-list"  [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
   <app-create-folder *ngIf="myDocumentsService.visibleCreateFolder"></app-create-folder>
 
   <ng-container *ngIf="testFiles && testFiles.length > 0; else noFiles">

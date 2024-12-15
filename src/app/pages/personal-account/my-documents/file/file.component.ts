@@ -10,7 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastService } from '../../../../services/toast.service';
-import { CommomFileService} from '../../../../services/file.service';
+import { CommomFileService } from '../../../../services/file.service';
 
 @Component({
   selector: 'app-file',
@@ -38,13 +38,18 @@ export class FileComponent implements OnInit {
       command: () => this.openDialogRename(this.file.fileName),
     },
     {
+      label: 'Переместить',
+      icon: 'pi pi-arrow-right',
+      command: () => this.moveFile(this.file),
+    },
+    {
       label: 'Удалить',
       icon: 'pi pi-trash',
       command: () => this.deleteFile(this.file.id),
     },
   ];
 
-  constructor(private myDocumentsService: MyDocumentsService, public fileService: FileService, private toastService: ToastService, private commomFileService:CommomFileService) {
+  constructor(private myDocumentsService: MyDocumentsService, public fileService: FileService, private toastService: ToastService, private commomFileService: CommomFileService) {
 
   }
 
@@ -53,6 +58,20 @@ export class FileComponent implements OnInit {
     this.myDocumentsService.isVertical$.subscribe((type: boolean) => {
       this.isVertical = type;
     })
+  }
+
+  moveFile(file: any) {
+    this.visiblemoveFile = file;
+    this.myDocumentsService.setMoveFile(file);
+  }
+
+  visiblemoveFile:any;
+  moveDirectory:any;
+  subscribeToMoveEvents(): void {
+    this.myDocumentsService.moveFileObservable.subscribe((file) => {
+      this.visiblemoveFile = file;
+    });
+
   }
 
   onRightClick(event: MouseEvent, file: any) {
@@ -73,8 +92,8 @@ export class FileComponent implements OnInit {
     this.myDocumentsService.deleteFile(id).subscribe(
       (data: any) => {
         const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
-        ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-        : "";
+          ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+          : "";
         this.myDocumentsService.loadData(idFolder);
         this.toastService.showSuccess('Успешно!', 'Операция выполнена успешно');
       },
@@ -104,8 +123,8 @@ export class FileComponent implements OnInit {
       (data: any) => {
         this.closeDialogRename();
         const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
-        ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-        : "";
+          ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+          : "";
         this.myDocumentsService.loadData(idFolder);
         this.toastService.showSuccess('Успех!', 'Файл переименован');
       },
@@ -116,7 +135,7 @@ export class FileComponent implements OnInit {
     );
   }
 
- 
+
   downloadFile(fileId: string) {
     this.commomFileService.downloadFile(fileId);
   }

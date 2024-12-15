@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, Subject, throwError } from 'rxjs';
 import { environment } from '../../../../environment';
 import { ProgressSpinnerService } from '../../../components/progress-spinner/progress-spinner.service';
 import { ToastService } from '../../../services/toast.service';
@@ -22,7 +22,21 @@ export class MyDocumentsService {
   private apiUrl = environment.apiUrl;
 
   BreadcrumbItems: MenuItem[] = [];
+ 
+  private moveFileSubject = new Subject<any>();
+  private moveDirectorySubject = new Subject<any>();
 
+  moveFileObservable = this.moveFileSubject.asObservable();
+  moveDirectoryObservable = this.moveDirectorySubject.asObservable();
+
+  setMoveFile(file: any): void {
+    this.moveFileSubject.next(file);
+  }
+
+  setMoveDirectory(directory: any): void {
+    this.moveDirectorySubject.next(directory);
+  }
+  
   visibleCreateFolder: boolean = false;
 
   private isVertical = new BehaviorSubject<boolean>(false);
@@ -290,4 +304,59 @@ export class MyDocumentsService {
     }
 
   }
+
+  elementMove:any;
+
+  public handleFileMove(documentId: string, currentFolderId: string, targetFolderId: string): void {
+    const deleteData = { documentId, directoryId: currentFolderId };
+    const addData = { documentId, directoryId: targetFolderId };
+  
+    console.log('Удаление файла из текущей папки:', deleteData);
+    console.log('Добавление файла в целевую папку:', addData);
+  
+    // this.removeFileMove(deleteData).pipe(
+    //   catchError(error => {
+    //     console.error('Ошибка при удалении файла:', error);
+    //     return throwError(() => error);
+    //   })
+    // ).subscribe(() => {
+    //   console.log('Файл успешно удалён из текущей папки');
+      this.addFileMove(addData).pipe(
+        catchError(error => {
+          console.error('Ошибка при добавлении файла:', error);
+          return throwError(() => error);
+        })
+      ).subscribe(() => {
+        // console.log('Файл успешно добавлен в целевую папку');
+        this.loadData(currentFolderId);
+      });
+    // });
+  }
+  
+  public handleFolderMove(directoryId: string, currentFolderId: string, targetFolderId: string): void {
+    const deleteData = { documentId: directoryId, directoryId: currentFolderId };
+    const addData = { documentId: directoryId, directoryId: targetFolderId };
+  
+    console.log('Удаление папки из текущей папки:', deleteData);
+    console.log('Добавление папки в целевую папку:', addData);
+  
+    // this.removeOrderMove(deleteData).pipe(
+    //   catchError(error => {
+    //     console.error('Ошибка при удалении папки:', error);
+    //     return throwError(() => error);
+    //   })
+    // ).subscribe(() => {
+    //   console.log('Папка успешно удалена из текущей папки');
+      this.addOrderMove(addData).pipe(
+        catchError(error => {
+          console.error('Ошибка при добавлении папки:', error);
+          return throwError(() => error);
+        })
+      ).subscribe(() => {
+        // console.log('Папка успешно добавлена в целевую папку');
+        this.loadData(currentFolderId);
+      });
+    // });
+  }
+  
 }

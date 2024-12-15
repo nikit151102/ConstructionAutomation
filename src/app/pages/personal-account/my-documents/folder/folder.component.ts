@@ -32,7 +32,7 @@ export class FolderComponent implements OnInit {
   contextMenuItems: MenuItem[] = [
     {
       label: 'Открыть',
-      icon: 'pi pi-pencil',
+      icon: 'pi pi-folder-open', 
       command: () => this.openFolder(),
     },
     {
@@ -40,11 +40,11 @@ export class FolderComponent implements OnInit {
       icon: 'pi pi-pencil',
       command: () => this.openDialogRename(this.folder.name),
     },
-    // {
-    //   label: 'Свойство',
-    //   icon: 'pi pi-exclamation-circle',
-    //   // command: () => this.openDialogRename(this.folder.fileName),
-    // },
+    {
+      label: 'Переместить',
+      icon: 'pi pi-arrow-right',
+      command: () => this.moveFolder(this.folder),
+    },
     {
       label: 'Удалить',
       icon: 'pi pi-trash',
@@ -56,17 +56,66 @@ export class FolderComponent implements OnInit {
 
   }
 
+
+  moveFolder(folder: any) {
+    this.moveDirectory = folder;
+    this.myDocumentsService.setMoveDirectory(folder);
+  }
+
   isVertical: boolean = false;
+
+
+  updateContextMenu(): void {
+    if (this.moveFile || this.moveDirectory) {
+      this.contextMenuItems.push({
+        label: 'Вставить',
+        icon: 'pi pi-clipboard',
+        command: () => this.pasteItem(),
+      });
+    } else {
+      this.contextMenuItems = this.contextMenuItems.filter(item => item.label !== 'Вставить');
+    }
+  }
+
+  pasteItem(): void {
+    if (this.moveDirectory) {
+      const folder = this.moveDirectory;
+      this.myDocumentsService.handleFolderMove(folder.id, this.folder.id, this.folder.id)
+      this.moveDirectory = null;
+    }
+    else if (this.moveFile) {
+      const file = this.moveFile;
+      this.myDocumentsService.handleFileMove(file.id, this.folder.id, this.folder.id)
+      this.moveFile = null;
+    }
+  }
+
   ngOnInit(): void {
+    this.updateContextMenu();
+    this.subscribeToMoveEvents();
     this.myDocumentsService.isVertical$.subscribe((type: boolean) => {
       this.isVertical = type;
     })
   }
 
+  moveFile:any;
+  moveDirectory:any;
+  subscribeToMoveEvents(): void {
+    this.myDocumentsService.moveFileObservable.subscribe((file) => {
+      this.moveFile = file;
+      this.updateContextMenu();
+    });
 
-  openFolder(){
-    if(!this.visibleShonRename)
-    this.myDocumentsService.loadData(this.folder.id)
+    this.myDocumentsService.moveDirectoryObservable.subscribe((directory) => {
+      this.moveDirectory = directory;
+      this.updateContextMenu();
+    });
+  }
+
+
+  openFolder() {
+    if (!this.visibleShonRename)
+      this.myDocumentsService.loadData(this.folder.id)
   }
 
 
@@ -88,9 +137,9 @@ export class FolderComponent implements OnInit {
       "id": this.folder.id,
       "name": this.value
     }
-    this.folderService.renameFolder(this.folder.id,data ).subscribe((data: any) => {
+    this.folderService.renameFolder(this.folder.id, data).subscribe((data: any) => {
       console.log('data', data)
-      this.folder = {...data.data, icon: data.data.type === 'file' ? 'pngs/file.png' : data.data.type === "directory" ? 'pngs/folder.png' : ''}
+      this.folder = { ...data.data, icon: data.data.type === 'file' ? 'pngs/file.png' : data.data.type === "directory" ? 'pngs/folder.png' : '' }
     })
     this.visibleShonRename = false;
   }
@@ -119,14 +168,14 @@ export class FolderComponent implements OnInit {
   }
 
   deleteFolder(id: string) {
-    console.log('this.folder',this.folder)
+    console.log('this.folder', this.folder)
     this.folderService.deleteFolder(this.folder.id).subscribe(
       (data: any) => {
         const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
-        ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-        : "";
+          ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+          : "";
         this.myDocumentsService.loadData(idFolder);
-        
+
         this.toastService.showSuccess('Успешно!', 'Операция выполнена успешно');
       },
       (error: any) => {
@@ -156,8 +205,8 @@ export class FolderComponent implements OnInit {
       (data: any) => {
         this.closeDialogRename();
         const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
-        ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-        : "";
+          ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+          : "";
         this.myDocumentsService.loadData(idFolder);
         this.toastService.showSuccess('Успех!', 'Файл переименован');
       },
