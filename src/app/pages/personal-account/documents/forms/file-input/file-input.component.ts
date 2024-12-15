@@ -78,8 +78,7 @@ export class FileInputComponent implements OnInit, OnDestroy {
   }
 
   private fetchUserDocuments(): void {
-    const userId = this.currentUserService.getUser();
-    this.myDocumentsService.getAllUserDirectories(userId).subscribe({
+    this.myDocumentsService.getAllUserDirectories().subscribe({
       next: (data: any) => {
         this.testFiles = data.userDocument.map((file: any) => ({
           ...file,

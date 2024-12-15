@@ -17,27 +17,28 @@ import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { DragDropModule } from 'primeng/dragdrop';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-my-documents',
   standalone: true,
-  imports: [CommonModule, FileComponent, ButtonModule, FileUploadModule, SelectButtonModule, FormsModule, FolderComponent, MenuModule, ToastModule, CreateFolderComponent, BreadcrumbModule],
+  imports: [CommonModule, FileComponent, ButtonModule, FileUploadModule, SelectButtonModule, FormsModule, FolderComponent, MenuModule, ToastModule, CreateFolderComponent, BreadcrumbModule, DragDropModule],
   templateUrl: './my-documents.component.html',
   styleUrls: ['./my-documents.component.scss'],
 })
 export class MyDocumentsComponent implements OnInit {
 
   files: any = [];
-  
+
   home = {
     icon: 'pi pi-home',
     command: () => {
       this.myDocumentsService.BreadcrumbItems = [];
-      const userId = this.currentUserService.getUser();
-    this.myDocumentsService.loadData(userId.id);
+      this.myDocumentsService.loadData('');
     }
   };
-  
+
   items: MenuItem[] | undefined = [
     {
       label: 'Сооздать',
@@ -45,19 +46,19 @@ export class MyDocumentsComponent implements OnInit {
         {
           label: 'Папку',
           icon: 'pi pi-refresh',
-          command: () => {this.visibleUpload = false; this.myDocumentsService.visibleCreateFolder = true}
+          command: () => { this.visibleUpload = false; this.myDocumentsService.visibleCreateFolder = true }
         },
         {
           label: 'Файл',
           icon: 'pi pi-upload',
-          command: () => {this.visibleUpload = true; this.myDocumentsService.visibleCreateFolder = false;}
+          command: () => { this.visibleUpload = true; this.myDocumentsService.visibleCreateFolder = false; }
         }
       ]
     }
   ];
 
-  stateOptions: any[] = [{ label: ' ', value: true, icon: 'pi pi-th-large'},
-  { label: ' ', value: false, icon: 'pi pi-bars'},];
+  stateOptions: any[] = [{ label: ' ', value: true, icon: 'pi pi-th-large' },
+  { label: ' ', value: false, icon: 'pi pi-bars' },];
 
 
   constructor(private personalAccountService: PersonalAccountService,
@@ -80,7 +81,7 @@ export class MyDocumentsComponent implements OnInit {
     this.testFiles = null;
     this.progressSpinnerService.show();
     const userId = this.currentUserService.getUser();
-    this.myDocumentsService.loadData(userId.id);
+    this.myDocumentsService.loadData('');
 
     this.totalSize = this.myDocumentsService.storageInfo.storageVolumeUsage;
     this.myDocumentsService.filesSelect$.subscribe({
@@ -193,11 +194,14 @@ export class MyDocumentsComponent implements OnInit {
 
   Upload(): void {
     if (this.uploadedFiles && this.uploadedFiles.length > 0) {
-      this.myDocumentsService.upload(this.uploadedFiles).subscribe({
+      const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
+  ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+  : "";
+
+      this.myDocumentsService.upload({ DirectoryId: idFolder, files: this.uploadedFiles }).subscribe({
         next: (response: any) => {
           this.visibleUpload = false;
-          const userId = this.currentUserService.getUser();
-          this.myDocumentsService.loadData(userId.id);
+          this.myDocumentsService.loadData(idFolder);
           this.toastService.showSuccess('Загрузка завершена', 'Файлы успешно загружены');
         },
         error: (error) => {
@@ -216,7 +220,101 @@ export class MyDocumentsComponent implements OnInit {
     this.cdRef.detectChanges();
   }
 
+  
+  draggedItem: any = null; 
 
+  onDragStart(event: DragEvent, item: any): void {
+    this.draggedItem = item; 
+    event.dataTransfer?.setData('text/plain', JSON.stringify(item));
+  }
+  
+  onDragOver(event: DragEvent): void {
+    event.preventDefault(); 
+  }
+  
+  onDrop(event: DragEvent, targetFolder: any): void {
+    event.preventDefault();
+  
+    if (!this.draggedItem) return;
+  
+    if (this.draggedItem.id === targetFolder.id) {
+      console.warn('Нельзя переместить папку в саму себя!');
+      return;
+    }
+  
+    const idFolder = this.getCurrentFolderId();
+  
+    if (this.draggedItem.type === 'file') {
+      this.handleFileMove(this.draggedItem.id, idFolder, targetFolder.id);
+    } else if (this.draggedItem.type === 'directory') {
+      this.handleFolderMove(this.draggedItem.id, idFolder, targetFolder.id);
+    }
+  
+    this.draggedItem = null;
+  }
+  
+  private getCurrentFolderId(): string {
+    return this.myDocumentsService.BreadcrumbItems.length > 0
+      ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+      : "";
+  }
+  
+  private handleFileMove(documentId: string, currentFolderId: string, targetFolderId: string): void {
+    const deleteData = { documentId, directoryId: currentFolderId };
+    const addData = { documentId, directoryId: targetFolderId };
+  
+    console.log('Удаление файла из текущей папки:', deleteData);
+    console.log('Добавление файла в целевую папку:', addData);
+  
+    this.myDocumentsService.removeFileMove(deleteData).pipe(
+      catchError(error => {
+        console.error('Ошибка при удалении файла:', error);
+        return throwError(() => error);
+      })
+    ).subscribe(() => {
+      console.log('Файл успешно удалён из текущей папки');
+      this.myDocumentsService.addFileMove(addData).pipe(
+        catchError(error => {
+          console.error('Ошибка при добавлении файла:', error);
+          return throwError(() => error);
+        })
+      ).subscribe(() => {
+        console.log('Файл успешно добавлен в целевую папку');
+        this.myDocumentsService.loadData(currentFolderId);
+      });
+    });
+  }
+  
+  private handleFolderMove(directoryId: string, currentFolderId: string, targetFolderId: string): void {
+    const deleteData = { documentId: directoryId, directoryId: currentFolderId };
+    const addData = { documentId: directoryId, directoryId: targetFolderId };
+  
+    console.log('Удаление папки из текущей папки:', deleteData);
+    console.log('Добавление папки в целевую папку:', addData);
+  
+    this.myDocumentsService.removeOrderMove(deleteData).pipe(
+      catchError(error => {
+        console.error('Ошибка при удалении папки:', error);
+        return throwError(() => error);
+      })
+    ).subscribe(() => {
+      console.log('Папка успешно удалена из текущей папки');
+      this.myDocumentsService.addOrderMove(addData).pipe(
+        catchError(error => {
+          console.error('Ошибка при добавлении папки:', error);
+          return throwError(() => error);
+        })
+      ).subscribe(() => {
+        console.log('Папка успешно добавлена в целевую папку');
+        this.myDocumentsService.loadData(currentFolderId);
+      });
+    });
+  }
+  
+  
+
+
+  
 }
 
 

@@ -3,7 +3,7 @@
 
     <p-button icon="pi pi-chevron-left" class="breadcrumb-back-button" [rounded]="true" [text]="true" [raised]="true"
       *ngIf="currentFiles !== files" (click)="goBack()"></p-button>
-      <p-breadcrumb class="max-w-full" [model]="myDocumentsService.BreadcrumbItems" [home]="home"></p-breadcrumb>
+    <p-breadcrumb class="max-w-full" [model]="myDocumentsService.BreadcrumbItems" [home]="home"></p-breadcrumb>
     <!-- <ng-container *ngFor="let breadcrumb of breadcrumbs; let i = index">
       <span class="breadcrumb-item" (click)="goToBreadcrumb(i)" [class.active]="i === breadcrumbs.length - 1">
         {{ breadcrumb.label }}
@@ -23,10 +23,10 @@
 </div>
 
 <div class="breadcrumb-navigation">
-  
-  <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v"  [text]="true"/>
 
-  <p-selectButton [options]="stateOptions" [(ngModel)]="isVertical" (onChange)="onChangeType($event.value)" 
+  <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" [text]="true" />
+
+  <p-selectButton [options]="stateOptions" [(ngModel)]="isVertical" (onChange)="onChangeType($event.value)"
     optionLabel="label" optionValue="value">
   </p-selectButton>
 
@@ -62,16 +62,35 @@
 
 <div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
   <app-create-folder *ngIf="myDocumentsService.visibleCreateFolder"></app-create-folder>
-  <ng-container *ngIf="testFiles && testFiles.length > 0; else noFiles">
-    <ng-container *ngFor="let file of testFiles">
-      <app-file *ngIf="file.type === 'file'" [file]="file" [isdelete]="true">
-      </app-file>
-      <app-folder *ngIf="file.type === 'directory'" [folder]="file" [isdelete]="true">
-      </app-folder>
-    </ng-container>
-  </ng-container>
 
+  <ng-container *ngIf="testFiles && testFiles.length > 0; else noFiles">
+
+    <!-- Папки -->
+    <ng-container *ngFor="let folder of testFiles">
+      <div *ngIf="folder.type === 'directory'" [attr.data-id]="folder.id" class="droppable-item"
+        draggable="true"
+        (dragstart)="onDragStart($event, folder)"
+        (dragover)="onDragOver($event)"
+        (drop)="onDrop($event, folder)">
+        <app-folder [folder]="folder"></app-folder>
+      </div>
+    </ng-container>
+
+    <!-- Файлы -->
+    <ng-container *ngFor="let file of testFiles">
+      <div *ngIf="file.type === 'file'" [attr.data-id]="file.id" class="draggable-item" draggable="true"
+        (dragstart)="onDragStart($event, file)">
+        <app-file [file]="file"></app-file>
+      </div>
+    </ng-container>
+
+  </ng-container>
 </div>
+
+
+
+
+
 
 <ng-template #noFiles>
   <div class="no-files">

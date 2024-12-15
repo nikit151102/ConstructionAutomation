@@ -66,16 +66,7 @@ export class FolderComponent implements OnInit {
 
   openFolder(){
     if(!this.visibleShonRename)
-    this.folderService.openFolder(this.folder.id).subscribe((data: any) => {
-      console.log('data')
-      const combinedArray = [
-        ...(data.data.subDirectories || []), 
-        ...(data.data.documents || [])
-      ];
-      this.myDocumentsService.setFiles(combinedArray)
-      const menuItem: MenuItem = { label: this.folder.name };
-      this.myDocumentsService.BreadcrumbItems = [...this.myDocumentsService.BreadcrumbItems, menuItem];
-    })
+    this.myDocumentsService.loadData(this.folder.id)
   }
 
 
@@ -131,7 +122,11 @@ export class FolderComponent implements OnInit {
     console.log('this.folder',this.folder)
     this.folderService.deleteFolder(this.folder.id).subscribe(
       (data: any) => {
-        // this.myDocumentsService.loadData();
+        const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
+        ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+        : "";
+        this.myDocumentsService.loadData(idFolder);
+        
         this.toastService.showSuccess('Успешно!', 'Операция выполнена успешно');
       },
       (error: any) => {
@@ -160,8 +155,10 @@ export class FolderComponent implements OnInit {
     this.folderService.renameFolder(this.folder.id, data).subscribe(
       (data: any) => {
         this.closeDialogRename();
-        // const userId = this.currentUserService.getUser();
-        // this.myDocumentsService.loadData(userId.id);
+        const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
+        ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+        : "";
+        this.myDocumentsService.loadData(idFolder);
         this.toastService.showSuccess('Успех!', 'Файл переименован');
       },
       (error: any) => {
@@ -170,28 +167,5 @@ export class FolderComponent implements OnInit {
       }
     );
   }
-
-  private createBlobFromData(fileData: any): Blob {
-    if (!fileData.fileContents) {
-      console.error('Отсутствуют данные файла для преобразования в Blob.');
-      return new Blob(); // Возвращаем пустой Blob, если данных нет.
-    }
-
-    const byteCharacters = atob(fileData.fileContents); // Декодируем base64
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-      const slice = byteCharacters.slice(offset, offset + 1024);
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-      byteArrays.push(new Uint8Array(byteNumbers));
-    }
-
-    return new Blob(byteArrays, { type: fileData.contentType });
-  }
-
-
 
 }

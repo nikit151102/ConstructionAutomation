@@ -72,7 +72,10 @@ export class FileComponent implements OnInit {
   deleteFile(id: string) {
     this.myDocumentsService.deleteFile(id).subscribe(
       (data: any) => {
-        // this.myDocumentsService.loadData();
+        const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
+        ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+        : "";
+        this.myDocumentsService.loadData(idFolder);
         this.toastService.showSuccess('Успешно!', 'Операция выполнена успешно');
       },
       (error: any) => {
@@ -84,7 +87,6 @@ export class FileComponent implements OnInit {
 
   openDialogRename(fileName: string) {
     this.fileService.visibleShonRename = true;
-    console.log('fileName',fileName)
     this.value = fileName
   }
 
@@ -101,7 +103,10 @@ export class FileComponent implements OnInit {
     this.myDocumentsService.renameFile(this.file.id, data).subscribe(
       (data: any) => {
         this.closeDialogRename();
-        // this.myDocumentsService.loadData();
+        const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
+        ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+        : "";
+        this.myDocumentsService.loadData(idFolder);
         this.toastService.showSuccess('Успех!', 'Файл переименован');
       },
       (error: any) => {
@@ -111,27 +116,7 @@ export class FileComponent implements OnInit {
     );
   }
 
-  private createBlobFromData(fileData: any): Blob {
-    if (!fileData.fileContents) {
-      console.error('Отсутствуют данные файла для преобразования в Blob.');
-      return new Blob(); // Возвращаем пустой Blob, если данных нет.
-    }
-
-    const byteCharacters = atob(fileData.fileContents); // Декодируем base64
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-      const slice = byteCharacters.slice(offset, offset + 1024);
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-      byteArrays.push(new Uint8Array(byteNumbers));
-    }
-
-    return new Blob(byteArrays, { type: fileData.contentType });
-  }
-
+ 
   downloadFile(fileId: string) {
     this.commomFileService.downloadFile(fileId);
   }

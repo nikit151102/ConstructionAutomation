@@ -20,7 +20,7 @@ export class CreateFolderComponent implements OnInit, AfterViewInit {
 
   @ViewChild('renameInput') renameInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private myDocumentsService: MyDocumentsService, private folderService:FolderService, private currentUserService:CurrentUserService) {}
+  constructor(private myDocumentsService: MyDocumentsService, private folderService: FolderService, private currentUserService: CurrentUserService) { }
 
   ngOnInit(): void {
     this.myDocumentsService.isVertical$.subscribe((type: boolean) => {
@@ -34,13 +34,21 @@ export class CreateFolderComponent implements OnInit, AfterViewInit {
 
   onEnter(): void {
     if (this.value.trim()) {
-      this.folderService.addFolder({ 'name': this.value}).subscribe((data: any) => {
-        const userId = this.currentUserService.getUser();
-        this.myDocumentsService.loadData(userId.id);
+      this.folderService.addFolder({
+        "name": this.value,
+        "userDocumentDirectoryId": this.myDocumentsService.BreadcrumbItems.length > 0
+          ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder']
+          : ""
+      }).subscribe((data: any) => {
+        const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
+          ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+          : "";
+
+        this.myDocumentsService.loadData(idFolder);
         this.myDocumentsService.visibleCreateFolder = false;
         this.value = '';
       });
-     
+
     }
   }
 
