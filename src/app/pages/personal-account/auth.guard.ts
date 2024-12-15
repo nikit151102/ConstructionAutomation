@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
       'Authorization': `Bearer ${token}`
     });
     
-    const idUser = localStorage.getItem('idUser');
+    const idUser = localStorage.getItem('VXNlcklk');
     return this.http.get<any>(`${environment.apiUrl}/api/User/${idUser}`, { headers }).pipe(
       map(() => true), 
       catchError(() => {
