@@ -99,6 +99,7 @@ export class MyDocumentsComponent implements OnInit {
   errorMessage: string | null = ''
 
   ngOnInit(): void {
+    this.myDocumentsService.BreadcrumbItems = [];
     this.updateContextMenu();
     this.subscribeToMoveEvents();
     this.testFiles = null;
