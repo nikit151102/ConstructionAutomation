@@ -197,7 +197,7 @@ export class MyDocumentsService {
 
   addOrderMove(data: {
     documentId: string,
-    directoryId: string
+    directoryId: string|null
   }) {
     const url = `${this.apiUrl}/api/Profile/UserDirectories/AddDirectory`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
@@ -333,7 +333,7 @@ export class MyDocumentsService {
     // });
   }
   
-  public handleFolderMove(directoryId: string, currentFolderId: string, targetFolderId: string): void {
+  public handleFolderMove(directoryId: string, currentFolderId: string|null, targetFolderId: string|null): void {
     const deleteData = { documentId: directoryId, directoryId: currentFolderId };
     const addData = { documentId: directoryId, directoryId: targetFolderId };
   
@@ -354,7 +354,10 @@ export class MyDocumentsService {
         })
       ).subscribe(() => {
         // console.log('Папка успешно добавлена в целевую папку');
+        if(currentFolderId)
         this.loadData(currentFolderId);
+        else
+        this.loadData('');
       });
     // });
   }

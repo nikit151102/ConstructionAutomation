@@ -40,7 +40,7 @@ export class CreateFolderComponent implements OnInit, AfterViewInit {
         "name": this.value,
         "userDocumentDirectoryId": this.myDocumentsService.BreadcrumbItems.length > 0
           ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder']
-          : ""
+          : null
       }).subscribe(
         (data: any) => {
           const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0

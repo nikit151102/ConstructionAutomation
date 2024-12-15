@@ -161,16 +161,19 @@ export class MyDocumentsComponent implements OnInit {
 
 
   pasteItem(): void {
-    const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
-      ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-      : "";
     if (this.moveDirectory) {
       const folder = this.moveDirectory;
+      const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
+      ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+      : null;
       this.myDocumentsService.handleFolderMove(folder.id, idFolder, idFolder)
       this.moveDirectory = null;
     }
     else if (this.moveFile) {
       const file = this.moveFile;
+      const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
+      ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+      : "";
       this.myDocumentsService.handleFileMove(file.id, idFolder, idFolder)
       this.moveFile = null;
 
