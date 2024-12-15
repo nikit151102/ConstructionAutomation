@@ -21,7 +21,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   menuItems: any[] = [
     { label: 'Главная', icon: 'pi pi-home', command: () => this.executeCommand('home') },
     { label: 'Профиль', icon: 'pi pi-user', command: () => this.executeCommand('profile') },
-    { label: 'Мои документы', icon: 'pi pi-folder', command: () => this.executeCommand('myDocs') },
+    // { label: 'Мои документы', icon: 'pi pi-folder', command: () => this.executeCommand('myDocs') },
     {
       label: 'Документы', icon: 'pi pi-file', command: () => this.toggleSidebar(),
       items: [
