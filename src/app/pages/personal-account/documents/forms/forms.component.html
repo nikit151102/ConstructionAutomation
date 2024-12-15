@@ -25,8 +25,8 @@
 
   <!-- File Download -->
   <ng-container *ngIf="fileMetadata">
-    <button (click)="downloadFile('pdf')">Скачать pdf</button>
-    <button (click)="downloadFile('excel')">Скачать  excel</button>
+    <button (click)="downloadFile('pdf')" *ngIf="fileMetadata.fullResultXlsx">Скачать pdf</button>
+    <button (click)="downloadFile('excel')" *ngIf="fileMetadata.fullResultPdf">Скачать  excel</button>
 
   </ng-container>
   
