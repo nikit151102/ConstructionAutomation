@@ -187,7 +187,7 @@ export class FormsComponent {
       console.log(`${key}: ${value}`);
     });
     
-  
+    this.uploadSuccess.emit(null);
     this.progressSpinnerService.show();
     this.formsService.uploadFiles(formData, this.config.endpoint).subscribe({
       next: (response: any) => {

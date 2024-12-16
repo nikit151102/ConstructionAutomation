@@ -53,13 +53,20 @@ export class DocumentComponent implements OnInit {
 
 
   onUploadSuccess(response: any): void {
-   this.documentsService.setSuccessDoc(response);
-   if(response.pdfFile){
-    const base64Data = response.pdfFile.fileContents;
-    const pdfBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
-    this.selectPdf = new Blob([pdfBytes], { type: 'application/pdf' });
-    this.visiblePdf = true;
-   }
+  if(response){
+    this.documentsService.setSuccessDoc(response);
+    if(response.pdfFile){
+     const base64Data = response.pdfFile.fileContents;
+     const pdfBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+     this.selectPdf = new Blob([pdfBytes], { type: 'application/pdf' });
+     this.visiblePdf = true;
+    }
+  }else{
+    this.selectPdf = null;
+    this.visiblePdf = false;
+
+  }
+  
   }
 
 
