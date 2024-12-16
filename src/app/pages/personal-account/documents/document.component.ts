@@ -58,6 +58,7 @@ export class DocumentComponent implements OnInit {
     if(response.pdfFile){
      const base64Data = response.pdfFile.fileContents;
      const pdfBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+
      this.documentsService.selectPdf = new Blob([pdfBytes], { type: 'application/pdf' });
      this.documentsService.visiblePdf = false;
     }
