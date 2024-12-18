@@ -1,0 +1,261 @@
+.content {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#map {
+    width: 100%;
+    max-width: 1000px;
+    height: 500px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.container {
+    width: 35%;
+    padding: 20px;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.primary-btn {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.primary-btn:hover {
+    background: #0056b3;
+}
+
+.file-upload input[type="file"] {
+    margin-top: 10px;
+}
+
+.polygon-list {
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 75vh;
+    overflow-y: auto;
+}
+
+.polygon-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.polygon-card {
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+}
+
+.polygon-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.actions button:hover {
+    opacity: 0.8;
+}
+
+.polygon-editor {
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.polygon-editor label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.polygon-editor input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+p-dialog {
+    .p-dialog-content {
+        padding: 1rem;
+    }
+
+    .p-field {
+        margin-bottom: 1rem;
+
+        label {
+            font-weight: bold;
+        }
+
+        .p-error {
+            color: #f44336;
+            font-size: 0.875rem;
+        }
+    }
+
+    button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .container {
+        width: 45%;
+    }
+
+    .controls {
+        flex-direction: row;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .content {
+        flex-direction: column;
+    }
+}
+
+
+
+
+.p-dialog-content {
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.p-dialog-header {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 10px 10px 0 0;
+}
+
+.p-dialog-footer {
+    background-color: #f7f7f7;
+    padding: 15px;
+    text-align: right;
+}
+
+
+/* Стили для формы */
+.p-fluid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Стили для каждого поля формы */
+.p-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Стили для заголовков в форме */
+.p-field label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Стили для input полей */
+.p-inputtext {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.p-inputtext:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Стили для отображения ошибок */
+.p-error {
+    font-size: 12px;
+    color: #f44336;
+}
+
+/* Стили для кнопки */
+button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+button[type="submit"]:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Стили для маленьких полей ввода типа number */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    appearance: textfield;
+    height: 40px;
+    border-radius: 8px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

@@ -19,22 +19,7 @@ export class GlobalErrorHandlerService implements ErrorHandler {
 
     handleError(error: any): void {
 
-        const errorResponse: ErrorResponse = {
-            errorMessage: error.message || 'Unknown Error',
-            details: error.stack || 'No details',
-            url: window.location.href,
-            username: '',
-            timestamp: new Date().toISOString(),
-        };
-
-        this.sendErrorToServer(errorResponse).subscribe({
-            next: (response) => {
-                console.log('Error logged to server:', response);
-            },
-            error: (err) => {
-                console.error('Error while logging to server:', err);
-            },
-        });
+      
     }
 
     sendErrorToServer(error: ErrorResponse) {

@@ -1,0 +1,101 @@
+<div class="content">
+  <div id="map"></div>
+
+  <div class="container">
+    <div class="controls">
+      <button class="primary-btn" (click)="startDrawing()">Рисовать полигон</button>
+      <button class="primary-btn" (click)="display = true">Загрузить Shapefile</button>
+    </div>
+   
+  
+    <div class="polygon-list">
+      <h3>Список полигонов</h3>
+      <ul>
+        <li *ngFor="let polygon of polygons" class="polygon-card">
+          <div>
+            <strong>ID:</strong> {{ polygon.id }}
+            <br />
+            <strong>Площадь:</strong> {{ polygon.area }} м²
+            <br />
+            <strong>Периметр:</strong> {{ polygon.perimeter }} м
+          </div>
+          <div class="actions">
+            <button class="edit-btn" (click)="editPolygon(polygon)">✏️</button>
+            <button class="delete-btn" (click)="deletePolygon(polygon)">🗑️</button>
+            <button (click)="togglePolygonVisibility(polygon)">
+              {{ polygon.visible ? 'Скрыть' : 'Показать' }}
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  
+  </div>
+</div>
+
+
+<p-dialog header="Редактировать полигон" [(visible)]="selectedPolygon" [closable]="true">
+  <div class="polygon-editor">
+    <p>Площадь: {{ selectedPolygon?.area }} м²</p>
+    <p>Периметр: {{ selectedPolygon?.perimeter }} м</p>
+
+    <label>Цвет контура:</label>
+    <input type="color" [(ngModel)]="strokeColor" />
+
+    <label>Цвет заливки:</label>
+    <input type="color" [(ngModel)]="fillColor" />
+
+    <label>Толщина контура:</label>
+    <input type="number" [(ngModel)]="strokeWidth" min="1" max="10" />
+
+    <button class="primary-btn" (click)="saveEditedPolygon()">Сохранить изменения</button>
+  </div>
+</p-dialog>
+
+
+
+<p-dialog 
+  [(visible)]="display" 
+  header="Загрузить данные" 
+  [modal]="true" 
+  [closable]="true" 
+  [style]="{width: '400px'}">
+  <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="p-fluid">
+    
+    <div class="p-field">
+      <label for="shapeFile">Shape File</label>
+      <input id="shapeFile" type="file" formControlName="shapeFile" pInputText />
+      <small *ngIf="uploadForm.controls['shapeFile'].invalid && uploadForm.controls['shapeFile'].touched" class="p-error">
+        Shape File обязателен.
+      </small>
+    </div>
+
+    <div class="p-field">
+      <label for="dbfFile">DBF File</label>
+      <input id="dbfFile" type="file" formControlName="dbfFile" pInputText />
+      <small *ngIf="uploadForm.controls['dbfFile'].invalid && uploadForm.controls['dbfFile'].touched" class="p-error">
+        DBF File обязателен.
+      </small>
+    </div>
+
+    <div class="p-field">
+      <label for="batchSize">Batch Size</label>
+      <input id="batchSize" type="number" formControlName="batchSize" pInputText />
+      <small *ngIf="uploadForm.controls['batchSize'].invalid && uploadForm.controls['batchSize'].touched" class="p-error">
+        Batch Size обязателен и должен быть больше 0.
+      </small>
+    </div>
+
+    <div class="p-field">
+      <label for="titleSize">Title Size</label>
+      <input id="titleSize" type="number" formControlName="titleSize" pInputText />
+      <small *ngIf="uploadForm.controls['titleSize'].invalid && uploadForm.controls['titleSize'].touched" class="p-error">
+        Title Size обязателен и должен быть больше 0.
+      </small>
+    </div>
+
+    <div class="p-field">
+      <button pButton type="submit" label="Загрузить" [disabled]="uploadForm.invalid"></button>
+    </div>
+  </form>
+</p-dialog>

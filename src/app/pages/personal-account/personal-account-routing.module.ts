@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PersonalAccountComponent } from './personal-account.component';
+import { MapComponent } from './map/map.component';
 
 const routes: Routes = [
   {
@@ -14,11 +15,14 @@ const routes: Routes = [
       },
       {
         path: 'home', 
-        loadChildren: () => import('./home/home.module').then(m => m.HomeModule) 
+        component: MapComponent
       },
       {
         path: 'profile', 
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) 
+      },
+      {
+        path: 'map', component: MapComponent
       },
       {
         path: 'myDocs', 

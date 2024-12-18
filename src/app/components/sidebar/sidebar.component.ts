@@ -21,15 +21,16 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   menuItems: any[] = [
     { label: 'Главная', icon: 'pi pi-home', command: () => this.executeCommand('home') },
     { label: 'Профиль', icon: 'pi pi-user', command: () => this.executeCommand('profile') },
-    { label: 'Мои документы', icon: 'pi pi-folder', command: () => this.executeCommand('myDocs') },
-    {
-      label: 'Документы', icon: 'pi pi-file', command: () => this.toggleSidebar(),
-      items: [
-        { label: 'Cопоставительная ведомость', command: () => this.executeDocs('comparativeStatement') },
-        { label: 'Спецификация на метериалы', command: () => this.executeDocs('materialSpecification') },
-        { label: 'Спецификация работ', command: () => this.executeDocs('workSpecification') }
-      ]
-    },
+    { label: 'Хранилище', icon: 'pi pi-folder', command: () => this.executeCommand('myDocs') },
+    { label: 'Карта', icon: 'pi pi-map', command: () => this.executeCommand('map') },
+    // {
+    //   label: 'Документы', icon: 'pi pi-file', command: () => this.toggleSidebar(),
+    //   items: [
+    //     { label: 'Cопоставительная ведомость', command: () => this.executeDocs('comparativeStatement') },
+    //     { label: 'Спецификация на метериалы', command: () => this.executeDocs('materialSpecification') },
+    //     { label: 'Спецификация работ', command: () => this.executeDocs('workSpecification') }
+    //   ]
+    // },
     // { label: 'Настройки', icon: 'pi pi-cog', command: () => this.executeCommand('settings') },
     { label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit') },
   ];

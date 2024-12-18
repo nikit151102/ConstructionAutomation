@@ -6,6 +6,7 @@ import { PersonalAccountService } from '../personal-account.service';
 import { ExpenseChartComponent } from './expense-chart/expense-chart.component';
 import { FilesTreeComponent } from './files-tree/files-tree.component';
 
+
 @Component({
   selector: 'app-home',
   standalone: true,
