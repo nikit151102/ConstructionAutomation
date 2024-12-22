@@ -3,9 +3,9 @@
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  height: 90vh;  
+  height: 90vh;
   width: 100%;
-  padding: 15px; 
+  padding: 15px;
   box-sizing: border-box;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -13,16 +13,19 @@
 }
 
 .pdf-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   width: 100%;
-  flex: 1; 
-  overflow-y: auto; 
+  flex: 1;
+  overflow-y: auto;
 }
 
 #pdfCanvas {
   display: block;
   width: 100%;
-  height: auto;  
+  height: auto;
   border: 1px solid #ddd;
 }
 
@@ -30,7 +33,7 @@
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-top: 10px; 
+  margin-top: 10px;
 }
 
 button {
@@ -47,4 +50,20 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.zoom-controls button {
+  font-size: 20px;
+  padding: 5px 15px;
+}
+
+.zoom-controls span {
+  font-size: 18px;
 }

@@ -10,14 +10,13 @@ import { ToastModule } from 'primeng/toast';
 import { FormsComponent } from './forms/forms.component';
 import { ActivatedRoute } from '@angular/router';
 import { ConfigType, getFormConfig } from './confs';
-import { PreviewComponent } from './preview/preview.component';
 import { PersonalAccountService } from '../personal-account.service';
 import { PreviewPdfComponent } from '../../../components/preview-pdf/preview-pdf.component';
 
 @Component({
   selector: 'app-document',
   standalone: true,
-  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewComponent, PreviewPdfComponent],
+  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewPdfComponent],
   templateUrl: './document.component.html',
   styleUrl: './document.component.scss'
 })
