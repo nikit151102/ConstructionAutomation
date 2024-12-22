@@ -13,11 +13,12 @@ import { ConfigType, getFormConfig } from './confs';
 import { PreviewComponent } from './preview/preview.component';
 import { PersonalAccountService } from '../personal-account.service';
 import { PreviewPdfComponent } from '../../../components/preview-pdf/preview-pdf.component';
+import { HistoryFormingComponent } from '../../../components/history-forming/history-forming.component';
 
 @Component({
   selector: 'app-document',
   standalone: true,
-  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewComponent, PreviewPdfComponent],
+  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewComponent, PreviewPdfComponent, HistoryFormingComponent],
   templateUrl: './document.component.html',
   styleUrl: './document.component.scss'
 })
@@ -30,8 +31,8 @@ export class DocumentComponent implements OnInit {
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.visiblePdf = false;
-    this.selectPdf = null;
+    this.documentsService.visiblePdf = false;
+    this.documentsService.selectPdf = null;
     this.route.paramMap.subscribe(params => {
       const configType = params.get('configType') as ConfigType | null;
 
@@ -48,7 +49,6 @@ export class DocumentComponent implements OnInit {
 
   selectfile: any = null; 
   selectedSheet: string = '';
-  selectPdf:any;
   visiblePdf:boolean = false;
 
 
@@ -58,13 +58,12 @@ export class DocumentComponent implements OnInit {
     if(response.pdfFile){
      const base64Data = response.pdfFile.fileContents;
      const pdfBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
-     this.selectPdf = new Blob([pdfBytes], { type: 'application/pdf' });
-     this.visiblePdf = true;
+     this.documentsService.selectPdf = new Blob([pdfBytes], { type: 'application/pdf' });
+     this.documentsService.visiblePdf = false;
     }
   }else{
-    this.selectPdf = null;
-    this.visiblePdf = false;
-
+    this.documentsService.selectPdf = null;
+    this.documentsService.visiblePdf = false;
   }
   
   }
@@ -76,6 +75,8 @@ export class DocumentComponent implements OnInit {
     this.isFullscreen = isFullscreen;
     console.log('Fullscreen state:', this.isFullscreen);
   }
+
+
 
 }
 

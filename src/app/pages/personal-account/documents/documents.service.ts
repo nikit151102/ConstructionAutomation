@@ -9,7 +9,9 @@ import { environment } from '../../../../environment';
 export class DocumentsService {
 
   selectConf: any;
-
+  visiblePdf:boolean = false;
+  selectPdf:any;
+  
   private isselectConfSubject = new BehaviorSubject<any>('');
 
   isSelectConfState$ = this.isselectConfSubject.asObservable();

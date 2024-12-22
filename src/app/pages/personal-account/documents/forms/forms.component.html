@@ -24,11 +24,11 @@
   <button (click)="onSubmit()">Сформировать</button>
 
   <!-- File Download -->
-  <ng-container *ngIf="fileMetadata">
+  <!-- <ng-container *ngIf="fileMetadata">
     <button (click)="downloadFile('pdf')" *ngIf="fileMetadata.fullResultPdf">Скачать pdf</button>
     <button (click)="downloadFile('excel')" *ngIf="fileMetadata.fullResultXlsx">Скачать  excel</button>
 
-  </ng-container>
+  </ng-container> -->
   
   <ng-container *ngIf="fileMetadata?.divergenceList">
     <p [innerHTML]="getFormattedDivergenceList()">

@@ -74,7 +74,7 @@ export class FormAuthorizationComponent implements OnInit {
         (response) => {
           if (response.data) {
             this.progressSpinnerService.hide();
-            this.currentUserService.saveUser(response.data);
+            this.currentUserService.getUserData();
             this.tokenService.setToken(response.data.token);
             this.router.navigate([`/${response.data.id}`]);
             localStorage.setItem('VXNlcklk', response.data.id);

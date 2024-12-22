@@ -1,0 +1,20 @@
+<div class="popup-overlay" (click)="onClose()">
+    <div class="popup-content" (click)="$event.stopPropagation()">
+        <button class="popup-close" (click)="onClose()">×</button>
+
+        <div class="popup-header">
+            <img *ngIf="imageSrc" [src]="imageSrc" alt="Popup Image" />
+            <h2 style="text-align: center;">{{ title }}</h2>
+        </div>
+
+        <div class="popup-body">
+            <p>{{ description }}</p>
+        </div>
+
+        <div class="popup-footer">
+            <button *ngFor="let button of buttons" (click)="button.onClick()">
+                {{ button.label }}
+            </button>
+        </div>
+    </div>
+</div>
