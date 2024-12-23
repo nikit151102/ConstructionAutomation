@@ -10,19 +10,38 @@ export class FormsService {
 
   constructor(private http: HttpClient) { }
 
-  uploadFiles(files: FormData, ComparativeStatement: string): Observable<any> {
-   
+
+// Эндпоинт для начала формирования документа
+
+// response
+  //   {
+  //  status
+  //  message
+  //  data{
+  //    id: string,
+  //    statusCode: number,
+  //    fileName: string,
+  //    fileSize: number,
+  //    documentType: number, 
+  //    initDate: Date,
+  //    DocumentPdfId: string,
+  //    DocumentXlsxId: string
+  //  }
+  // } 
+  
+  uploadFiles(files: FormData, nameDoc: string): Observable<any> {
+
     const token = localStorage.getItem('YXV0aFRva2Vu');
 
-    return this.http.post(`${environment.apiUrl}/api/Profile/${ComparativeStatement}`, files, {
+    return this.http.post(`${environment.apiUrl}/api/Profile/${nameDoc}`, files, {
 
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Authorization': `Bearer ${token}`
       }),
-      responseType: 'json', 
+      responseType: 'json',
     });
   }
 
-  
+
 }

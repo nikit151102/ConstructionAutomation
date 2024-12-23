@@ -14,6 +14,7 @@ import { PreviewComponent } from './preview/preview.component';
 import { PersonalAccountService } from '../personal-account.service';
 import { PreviewPdfComponent } from '../../../components/preview-pdf/preview-pdf.component';
 import { HistoryFormingComponent } from '../../../components/history-forming/history-forming.component';
+import { HistoryFormingService } from '../../../components/history-forming/history-forming.service';
 
 @Component({
   selector: 'app-document',
@@ -26,9 +27,10 @@ export class DocumentComponent implements OnInit {
 
   config: any;
 
-  constructor(public documentsService: DocumentsService, private route: ActivatedRoute, 
+  constructor(public documentsService: DocumentsService, private route: ActivatedRoute,
     private personalAccountService: PersonalAccountService,
-    private cdr: ChangeDetectorRef) { }
+    private cdr: ChangeDetectorRef,
+    private historyFormingService: HistoryFormingService) { }
 
   ngOnInit(): void {
     this.documentsService.visiblePdf = false;
@@ -39,7 +41,7 @@ export class DocumentComponent implements OnInit {
       if (configType && ['comparativeStatement', 'materialSpecification', 'workSpecification'].includes(configType)) {
         this.config = getFormConfig(configType as ConfigType);
         this.personalAccountService.changeTitle(this.config.nameDoc)
-        this.cdr.detectChanges(); 
+        this.cdr.detectChanges();
       } else {
         console.error('Invalid configType:', configType);
       }
@@ -47,26 +49,38 @@ export class DocumentComponent implements OnInit {
 
   }
 
-  selectfile: any = null; 
+  selectfile: any = null;
   selectedSheet: string = '';
-  visiblePdf:boolean = false;
+  visiblePdf: boolean = false;
+
 
 
   onUploadSuccess(response: any): void {
-  if(response){
-    this.documentsService.setSuccessDoc(response);
-    if(response.pdfFile){
-     const base64Data = response.pdfFile.fileContents;
-     const pdfBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
-
-     this.documentsService.selectPdf = new Blob([pdfBytes], { type: 'application/pdf' });
-     this.documentsService.visiblePdf = false;
+    if (response) {
+      this.documentsService.setSuccessDoc(response);
+      this.historyFormingService.setHistoryDocsValue({
+        id: response.data.id,
+        statusCode: response.data.statusCode,
+        fileName: response.data.fileName,
+        fileSize: response.data.fileSize,
+        documentType: response.data.documentType,
+        initDate:response.data.initDate,
+        documentPdfId: response.data.documentPdfId,
+        documentXlsxId: response.data.documentXlsxId
+      })
+      this.historyFormingService.selectExcel = response.documentMetadata.fullResultXlsx
+      this.historyFormingService.selectpdf = response.documentMetadata.fullResultPdf
+      if (response.pdfFile) {
+        const base64Data = response.pdfFile.fileContents;
+        const pdfBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+        this.historyFormingService.selectpdf = new Blob([pdfBytes], { type: 'application/pdf' });
+        this.documentsService.visiblePdf = false;
+      }
+    } else {
+      this.historyFormingService.selectpdf = null;
+      this.historyFormingService.visiblePdf = false;
     }
-  }else{
-    this.documentsService.selectPdf = null;
-    this.documentsService.visiblePdf = false;
-  }
-  
+
   }
 
 

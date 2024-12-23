@@ -1,80 +1,119 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import jsPDF from 'jspdf';
-import { GlobalWorkerOptions, PDFDocumentProxy, getDocument } from 'pdfjs-dist';
+import { Component, ElementRef, Input, OnInit, ViewChild, ViewChildren, QueryList, EventEmitter, Output, SimpleChanges } from '@angular/core';
+import { GlobalWorkerOptions, getDocument, PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
+import { HistoryFormingService } from '../history-forming/history-forming.service';
+import { CommomFileService } from '../../services/file.service';
 
 @Component({
   selector: 'app-preview-pdf',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './preview-pdf.component.html',
-  styleUrl: './preview-pdf.component.scss'
+  styleUrls: ['./preview-pdf.component.scss']
 })
 export class PreviewPdfComponent implements OnInit {
-  @ViewChild('pdfCanvas', { static: true }) pdfCanvas!: ElementRef<HTMLCanvasElement>;
-  @Input() pdfData!: Blob;  
+  @ViewChildren('pdfCanvas') pdfCanvases!: QueryList<ElementRef<HTMLCanvasElement>>;
+  @Input() pdfData!: Blob;
+  @Output() close = new EventEmitter<void>();
+  xlsxId: string = '';
+  pdfId: string = '';
   pdf: PDFDocumentProxy | null = null;
-  currentPage: number = 1;
-  totalPages: number = 0;
+  pages: number[] = [];
+  currentScale: number = 1.5;
   isRendering: boolean = false;
+  isPopupVisible: boolean = false;
 
-  constructor() {
+  constructor(private historyFormingService: HistoryFormingService,
+    private commomFileService:CommomFileService
+  ) {
     GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.preview.mjs';
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['pdfData'] && this.pdfData) {
+      this.loadPdf();
+    }
+  }
+
   ngOnInit(): void {
-    this.loadPdf();
+    if (this.pdfData) {
+      this.loadPdf();
+    }
+    
+    this.historyFormingService.selectExcelIdState$.subscribe((value:string)=>{
+      this.xlsxId = value;
+    })
+
+    this.historyFormingService.selectpdfIdState$.subscribe((value:string)=>{
+      this.pdfId = value;
+    })
   }
 
   loadPdf(): void {
+
     const fileReader = new FileReader();
     fileReader.onload = (e) => {
       const pdfData = new Uint8Array(e.target!.result as ArrayBuffer);
       getDocument(pdfData).promise.then((pdf: PDFDocumentProxy) => {
         this.pdf = pdf;
-        this.totalPages = pdf.numPages;
-        this.renderPage(this.currentPage);
+        this.pages = Array.from({ length: pdf.numPages }, (_, i) => i + 1);
+        this.renderAllPages();
       });
     };
     fileReader.readAsArrayBuffer(this.pdfData);
   }
 
-  renderPage(pageNum: number) {
-    if (this.isRendering) return;
-    this.isRendering = true;
+  renderAllPages(): void {
     if (this.pdf) {
-      this.pdf.getPage(pageNum).then((page: any) => {
-        const context = this.pdfCanvas.nativeElement.getContext('2d');
-        const viewport = page.getViewport({ scale: 1.5 });
-        this.pdfCanvas.nativeElement.height = viewport.height;
-        this.pdfCanvas.nativeElement.width = viewport.width;
+      this.pages.forEach((pageNum, index) => {
+        this.pdf?.getPage(pageNum).then((page) => {
+          const canvas = this.pdfCanvases.toArray()[index];
+          if (canvas && canvas.nativeElement) {
+            const context = canvas.nativeElement.getContext('2d');
+            if (context) {
+              const viewport = page.getViewport({ scale: this.currentScale });
+              canvas.nativeElement.height = viewport.height;
+              canvas.nativeElement.width = viewport.width;
 
-        const renderContext = {
-          canvasContext: context,
-          viewport: viewport
-        };
+              const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+              };
 
-        const renderTask = page.render(renderContext);
-        renderTask.promise.then(() => {
-          this.isRendering = false;
-        }).catch((error: any) => {
-          this.isRendering = false;
+              page.render(renderContext).promise.catch((error: any) => {
+                console.error(`Error rendering page ${pageNum}:`, error);
+              });
+            }
+          }
         });
       });
     }
   }
 
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.renderPage(this.currentPage);
+  zoomIn(): void {
+    this.currentScale += 0.2;
+    this.renderAllPages();
+  }
+
+  zoomOut(): void {
+    if (this.currentScale > 0.5) {
+      this.currentScale -= 0.2;
+      this.renderAllPages();
     }
   }
 
-  prevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.renderPage(this.currentPage);
+  closePopup(): void {
+    this.close.emit();
+  }
+
+
+  downloadFile(type: string) {
+    if (type == 'excel') {
+      this.commomFileService.downloadFile(this.xlsxId);
+    }
+    if (type == 'pdf') {
+      this.commomFileService.downloadFile(this.pdfId);
     }
   }
 }
+

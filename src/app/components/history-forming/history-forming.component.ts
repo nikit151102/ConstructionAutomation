@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
@@ -12,30 +12,28 @@ import { CommomFileService } from '../../services/file.service';
 import { PersonalAccountService } from '../../pages/personal-account/personal-account.service';
 import { AccordionModule } from 'primeng/accordion';
 import { SkeletonModule } from 'primeng/skeleton';
+import { PreviewPdfComponent } from '../preview-pdf/preview-pdf.component';
+import { dataDocs } from '../../interfaces/files';
 
-interface dataDocs {
-  statusCode: number,
-  FileName: string,
-  FileSize: string,
-  documentType: number,
-  InitDate: Date,
-  DocumentId: string
+
+interface Button {
+  label: string;
+  onClick: () => void;
 }
 
 @Component({
   selector: 'app-history-forming',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TagModule, ToastModule, ButtonModule, MenuModule, PopUpComponent, AccordionModule, SkeletonModule],
+  imports: [CommonModule, ButtonModule, TagModule, ToastModule, ButtonModule, MenuModule, PopUpComponent, AccordionModule, SkeletonModule, PreviewPdfComponent],
   templateUrl: './history-forming.component.html',
   styleUrl: './history-forming.component.scss'
 })
 
 export class HistoryFormingComponent implements OnInit {
-  docs!: dataDocs[];
+  historyDocs: dataDocs[] = [];
   filteredDocs: dataDocs[] = [];
   items: MenuItem[] | undefined;
   visiblePopUpPay: boolean = false;
-  fileMetadata: any;
   expandedDoc: any = null;
   typeDocs = [
     { name: 'Cопоставительная ведомость', code: '1' },
@@ -50,6 +48,48 @@ export class HistoryFormingComponent implements OnInit {
       ? `Выбрано ${this.selectedTypeDocs.length}`
       : 'Фильтр';
   }
+
+  fields = [
+    { key: 'statusCode', label: 'Статус' },
+    { key: 'FileName', label: 'Название файла' },
+    { key: 'FileSize', label: 'Размер' },
+    { key: 'InitDate', label: 'Дата' },
+    { key: 'DocumentId', label: '' }
+  ];
+
+  currentSortField: string = '';
+  isAscending: boolean = true;
+  
+  buttons: Button[] = [];
+
+  constructor(public historyFormingService: HistoryFormingService,
+    private currentUserService: CurrentUserService,
+    private commomFileService: CommomFileService,
+    private cdr: ChangeDetectorRef,
+    private personalAccountService: PersonalAccountService) { }
+
+  ngOnInit() {
+
+    this.historyFormingService.historyDocsState$.subscribe((value: any) => {
+      this.historyDocs = value.data
+      this.filterDocsByType();
+      this.cdr.detectChanges();
+    })
+
+    this.loadData();
+
+    this.filteredDocs = [...this.historyDocs];
+  }
+
+
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    const clickedInside = (event.target as HTMLElement).closest('.multiselect-container');
+    if (!clickedInside) {
+      this.dropdownOpen = false;
+    }
+  }
+
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
@@ -69,103 +109,30 @@ export class HistoryFormingComponent implements OnInit {
   }
 
   filterDocsByType(): void {
+    if (!Array.isArray(this.historyDocs)) {
+      this.filteredDocs = [];
+      return;
+    }
+
     if (this.selectedTypeDocs.length === 0) {
-      this.filteredDocs = [...this.docs];
+      this.filteredDocs = [...this.historyDocs];
     } else {
       const selectedCodes = this.selectedTypeDocs.map((type: any) => parseInt(type.code, 10));
-      this.filteredDocs = this.docs.filter(doc => selectedCodes.includes(doc.documentType));
+      this.filteredDocs = this.historyDocs.filter(doc => selectedCodes.includes(doc.documentType));
     }
   }
-
-  @HostListener('document:click', ['$event'])
-  onClick(event: MouseEvent) {
-    const clickedInside = (event.target as HTMLElement).closest('.multiselect-container');
-    if (!clickedInside) {
-      this.dropdownOpen = false;
-    }
-  }
-
 
   toggleAccordion(doc: any): void {
     this.expandedDoc = this.expandedDoc === doc ? null : doc;
   }
 
-
-  fields = [
-    { key: 'statusCode', label: 'Статус' },
-    { key: 'FileName', label: 'Название файла' },
-    { key: 'FileSize', label: 'Размер' },
-    { key: 'InitDate', label: 'Дата' },
-    { key: 'DocumentId', label: '' }
-  ];
-
-  currentSortField: string = '';
-  isAscending: boolean = true;
-
-  constructor(private historyFormingService: HistoryFormingService,
-    private currentUserService: CurrentUserService,
-    private commomFileService: CommomFileService,
-    private personalAccountService: PersonalAccountService) { }
-
-  ngOnInit() {
-    const userData = this.currentUserService.getUser()
-
-    //  this.loadData();
-
-    this.docs = [
-      {
-        statusCode: 1,
-        FileName: 'Document1.pdf',
-        FileSize: '2.4 MB',
-        documentType: 1,
-        InitDate: new Date('2024-01-15'),
-        DocumentId: 'DOC12345',
-      },
-      {
-        statusCode: 0,
-        FileName: 'Document2.pdf',
-        FileSize: '1.1 MB',
-        documentType: 3,
-        InitDate: new Date('2024-02-10'),
-        DocumentId: 'DOC67890',
-      },
-      {
-        statusCode: 2,
-        FileName: 'Report1.docx',
-        FileSize: '3.8 MB',
-        documentType: 2,
-        InitDate: new Date('2024-03-05'),
-        DocumentId: 'DOC11223',
-      },
-      {
-        statusCode: 1,
-        FileName: 'Presentation.pptx',
-        FileSize: '4.6 MB',
-        documentType: 1,
-        InitDate: new Date('2024-04-22'),
-        DocumentId: 'DOC44556',
-      },
-      {
-        statusCode: 4,
-        FileName: 'Notes.txt',
-        FileSize: '512 KB',
-        documentType: 3,
-        InitDate: new Date('2024-05-12'),
-        DocumentId: 'DOC77889',
-      },
-    ];
-    this.filteredDocs = [...this.docs];
-  }
-
   loadData() {
-    // this.historyFormingService.getHistoryForming().subscribe((response: any) => {
-    //   this.docs = response.data
-    // })
+    this.historyFormingService.getHistoryForming().subscribe((response: any) => {
+      this.historyFormingService.loadHistoryDocs(response.data)
+    })
   }
 
-
-
-  generateActions(statusCode: number): any[] {
+  generateActions(dataDoc: any, statusCode: number): any[] {
     if (statusCode === 0 || statusCode === 4) {
       return [];
     }
@@ -175,14 +142,19 @@ export class HistoryFormingComponent implements OnInit {
         {
           label: 'Оплатить',
           icon: 'pi pi-credit-card',
-          class: 'status-info', // изменен на status-info
-          command: () => (this.visiblePopUpPay = true)
+          class: 'status-info',
+          command: () => {this.visiblePopUpPay = true;
+            this.buttons = [
+              { label: 'ОК', onClick: () => this.onOk(dataDoc.id) },
+              { label: 'Отмена', onClick: this.onCancel.bind(this) }
+            ];
+          }
         },
         {
           label: 'Предпросмотр',
           icon: 'pi pi-eye',
-          class: 'status-preview', // изменен на status-preview
-          command: () => this.handlePreview()
+          class: 'status-preview',
+          command: () => this.handlePreview(dataDoc.documentPdfId)
         }
       ];
     }
@@ -192,20 +164,20 @@ export class HistoryFormingComponent implements OnInit {
         {
           label: 'Предпросмотр',
           icon: 'pi pi-eye',
-          class: 'status-preview', // изменен на status-preview
-          command: () => this.handlePreview()
+          class: 'status-preview',
+          command: () => this.handlePreview(dataDoc.DocumentPdfId)
         },
         {
           label: 'Excel',
           icon: 'pi pi-file-excel',
-          class: 'status-excel', // изменен на status-excel
-          command: () => this.downloadFile('excel')
+          class: 'status-excel',
+          command: () => this.downloadFile('excel', dataDoc.DocumentXlsxId)
         },
         {
           label: 'PDF',
           icon: 'pi pi-file-pdf',
-          class: 'status-pdf', // изменен на status-pdf
-          command: () => this.downloadFile('pdf')
+          class: 'status-pdf',
+          command: () => this.downloadFile('pdf', dataDoc.DocumentPdfId)
         }
       ];
     }
@@ -213,21 +185,36 @@ export class HistoryFormingComponent implements OnInit {
     return [];
   }
 
-
-  handlePreview(): void {
-    console.log('Предпросмотр открыт');
-    // Реализация логики для предпросмотра
+  getSizeInMB(size: number) {
+    return this.commomFileService.fileSizeInMB(size);
   }
 
-  downloadFile(type: string) {
+  pdfBlob!: Blob;
+  handlePreview(fileId: string): void {
+    this.commomFileService.previewfile(fileId).subscribe(
+      (blob: Blob) => {
+        if (blob) {
+          this.pdfBlob = blob;
+          this.historyFormingService.updateSelectExcelId('');
+          this.historyFormingService.updateSelectPdfId('');
+          this.historyFormingService.visiblePdf = true;
+        }
+      },
+      (error: any) => {
+        console.error('Ошибка при получении файла для предварительного просмотра:', error);
+        // this.toastService.showError('Ошибка!', 'Не удалось загрузить файл для предварительного просмотра');
+      }
+    );
+  }
+
+  downloadFile(type: string, fileId: string) {
     if (type == 'excel') {
-      this.commomFileService.downloadFile(this.fileMetadata.fullResultXlsx.id);
+      this.commomFileService.downloadFile(fileId);
     }
     if (type == 'pdf') {
-      this.commomFileService.downloadFile(this.fileMetadata.fullResultPdf.id);
+      this.commomFileService.downloadFile(fileId);
     }
   }
-
 
   sortDocs(field: string) {
     if (this.currentSortField === field) {
@@ -238,7 +225,7 @@ export class HistoryFormingComponent implements OnInit {
 
     this.currentSortField = field;
 
-    this.docs.sort((a, b) => {
+    this.historyDocs.sort((a, b) => {
       const valueA = a[field as keyof dataDocs];
       const valueB = b[field as keyof dataDocs];
 
@@ -265,14 +252,17 @@ export class HistoryFormingComponent implements OnInit {
   }
 
 
-  buttons = [
-    { label: 'ОК', onClick: this.onOk.bind(this) },
-    { label: 'Отмена', onClick: this.onCancel.bind(this) }
-  ];
 
-  onOk(): void {
+  onOk(id: string): void {
     this.visiblePopUpPay = false;
-    this.personalAccountService.changeBalance('900');
+    this.historyFormingService.makeTransaction(id).subscribe((response: any) => {
+      this.pdfBlob = this.commomFileService.createBlobFromData(response.file)
+      this.visiblePopUpPay = false;
+      this.personalAccountService.changeBalance(response.balance);
+      this.historyFormingService.updateSelectExcelId(response.resultXlsxId);
+      this.historyFormingService.updateSelectPdfId(response.resultPdfId);
+      this.historyFormingService.visiblePdf = true;
+    })
   }
 
   onCancel(): void {
@@ -283,6 +273,9 @@ export class HistoryFormingComponent implements OnInit {
     this.visiblePopUpPay = false;
   }
 
+  closePopup(): void {
+    this.historyFormingService.visiblePdf = false;
+  }
 
 
 }

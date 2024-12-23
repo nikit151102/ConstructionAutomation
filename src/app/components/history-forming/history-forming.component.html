@@ -12,8 +12,6 @@
         </div>
     </div>
 
-
-
     <!-- Названия полей -->
     <div class="doc-fields">
         <div *ngFor="let field of fields">
@@ -55,10 +53,13 @@
             <div class="skeleton skeleton-file-size"></div>
         </ng-container>
         <ng-container *ngIf="doc.statusCode !== 0">
-            <div>{{ doc.FileName }}</div>
-            <div>{{ doc.FileSize }}</div>
+            <div>{{ doc.fileName }}</div>
+            <div>
+                {{
+      getSizeInMB(doc.fileSize) }} Мб
+            </div>
         </ng-container>
-        <div>{{ doc.InitDate | date: 'dd-MM-yyyy' }}</div>
+        <div>{{ doc.initDate | date: 'dd-MM-yyyy' }}</div>
 
         <i class="pi" [ngClass]="{
                 'pi-angle-down': expandedDoc !== doc,
@@ -69,7 +70,7 @@
         <div *ngIf="expandedDoc === doc" class="card-details" (click)="$event.stopPropagation()">
             <p>Дополнительная информация:</p>
             <div class="actions">
-                <ng-container *ngFor="let action of generateActions(doc.statusCode)">
+                <ng-container *ngFor="let action of generateActions(doc, doc.statusCode)">
                     <button [ngClass]="'action-button ' + action.class" (click)="action.command()">
                         <i [class]="'pi ' + action.icon"></i>
                         <span class="action-label">{{ action.label }}</span>
@@ -81,10 +82,10 @@
     </div>
 </div>
 
-
 <p-toast />
-
 
 <app-pop-up *ngIf="visiblePopUpPay" [imageSrc]="'svg/pay.svg'" [title]="'Подтверждение оплаты'"
     [description]="'Вы уверены, что хотите оплатить?'" [buttons]="buttons" (close)="onPopupClose()">
 </app-pop-up>
+
+<app-preview-pdf *ngIf="historyFormingService.visiblePdf" [pdfData]="pdfBlob" (close)="closePopup()"></app-preview-pdf>

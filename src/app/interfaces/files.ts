@@ -8,3 +8,13 @@ export interface SelectedFiles {
     system: string;
 }
 
+export interface dataDocs {
+    id?: string,
+    statusCode: number,
+    fileName: string,
+    fileSize: number,
+    documentType: number,
+    initDate: Date,
+    documentPdfId: string,
+    documentXlsxId: string
+}
