@@ -71,7 +71,7 @@ export class HistoryFormingComponent implements OnInit {
   ngOnInit() {
 
     this.historyFormingService.historyDocsState$.subscribe((value: any) => {
-      this.historyDocs = value.data
+      this.historyDocs = value
       this.filterDocsByType();
       this.cdr.detectChanges();
     })
