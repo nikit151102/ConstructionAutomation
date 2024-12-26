@@ -63,6 +63,7 @@ export class DocumentComponent implements OnInit {
         statusCode: response.data.statusCode,
         statusDescriprion: response.data.statusDescriprion,
         fileName: response.data.fileName,
+        balance: 0,
         fileSize: response.data.fileSize,
         documentType: response.data.documentType,
         initDate:response.data.initDate,

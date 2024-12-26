@@ -15,6 +15,7 @@ export interface dataDocs {
     fileName: string,
     fileSize: number,
     documentType: number,
+    balance: number
     initDate: Date,
     documentPdfId: string,
     DocumentPdfShortId: string,
