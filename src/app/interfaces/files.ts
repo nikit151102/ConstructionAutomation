@@ -11,10 +11,15 @@ export interface SelectedFiles {
 export interface dataDocs {
     id?: string,
     statusCode: number,
+    statusDescriprion: string
     fileName: string,
     fileSize: number,
     documentType: number,
     initDate: Date,
     documentPdfId: string,
-    documentXlsxId: string
+    DocumentPdfShortId: string,
+    documentXlsxId: string,
+    createDateTime: string,
+    changeDateTime: string,
 }
+

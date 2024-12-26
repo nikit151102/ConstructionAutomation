@@ -1,5 +1,14 @@
 <div class="docs-container">
-
+    <div>
+        <a class="btnReload" (click)="loadData()">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width: 24px; fill:#fff">
+                <g id="reload">
+                    <path
+                        d="M18,4A12,12,0,0,0,6.05,15H3a1,1,0,0,0-.88.53,1,1,0,0,0,0,1l4,6a1,1,0,0,0,1.66,0l4-6a1,1,0,0,0,.05-1A1,1,0,0,0,11,15H8.05A10,10,0,1,1,18,26a1,1,0,0,0,0,2A12,12,0,0,0,18,4Z" />
+                </g>
+            </svg>
+        </a>
+    </div>
     <div class="multiselect-container">
         <div class="multiselect-placeholder" (click)="toggleDropdown()">
             {{ selectedDocsLabel }}
@@ -36,7 +45,7 @@
                 <i class="pi pi-spin pi-spinner"></i> Загрузка
             </div>
             <div *ngIf="doc.statusCode === 1" class="status status-unpaid">
-                <i class="pi pi-info-circle"></i> Не оплачено
+                <i class="pi pi-info-circle"></i> Не оплачен
             </div>
             <div *ngIf="doc.statusCode === 2" class="status status-success">
                 <i class="pi pi-check"></i> Оплачен
@@ -56,7 +65,7 @@
             <div>{{ doc.fileName }}</div>
             <div>
                 {{
-      getSizeInMB(doc.fileSize) }} Мб
+                getSizeInMB(doc.fileSize) }} Мб
             </div>
         </ng-container>
         <div>{{ doc.initDate | date: 'dd-MM-yyyy' }}</div>
@@ -69,6 +78,9 @@
         <!-- Детали карточки -->
         <div *ngIf="expandedDoc === doc" class="card-details" (click)="$event.stopPropagation()">
             <p>Дополнительная информация:</p>
+            <p>
+                {{doc.statusDescriprion}}
+            </p>
             <div class="actions">
                 <ng-container *ngFor="let action of generateActions(doc, doc.statusCode)">
                     <button [ngClass]="'action-button ' + action.class" (click)="action.command()">

@@ -61,12 +61,16 @@ export class DocumentComponent implements OnInit {
       this.historyFormingService.setHistoryDocsValue({
         id: response.data.id,
         statusCode: response.data.statusCode,
+        statusDescriprion: response.data.statusDescriprion,
         fileName: response.data.fileName,
         fileSize: response.data.fileSize,
         documentType: response.data.documentType,
         initDate:response.data.initDate,
         documentPdfId: response.data.documentPdfId,
-        documentXlsxId: response.data.documentXlsxId
+        documentXlsxId: response.data.documentXlsxId,
+        DocumentPdfShortId: response.data.DocumentPdfShortId,
+        createDateTime: response.data.createDateTime,
+        changeDateTime: response.data.changeDateTime,
       })
       this.historyFormingService.selectExcel = response.documentMetadata.fullResultXlsx
       this.historyFormingService.selectpdf = response.documentMetadata.fullResultPdf
