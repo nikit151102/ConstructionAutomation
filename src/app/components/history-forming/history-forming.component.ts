@@ -154,7 +154,7 @@ export class HistoryFormingComponent implements OnInit {
           label: 'Предпросмотр',
           icon: 'pi pi-eye',
           class: 'status-preview',
-          command: () => this.handlePreview(dataDoc.documentPdfId)
+          command: () => this.handlePreview(dataDoc.DocumentPdfShortId)
         }
       ];
     }
@@ -165,7 +165,7 @@ export class HistoryFormingComponent implements OnInit {
           label: 'Предпросмотр',
           icon: 'pi pi-eye',
           class: 'status-preview',
-          command: () => this.handlePreview(dataDoc.DocumentPdfId)
+          command: () => this.handlePreview(dataDoc.DocumentPdfShortId)
         },
         {
           label: 'Excel',

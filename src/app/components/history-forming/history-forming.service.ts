@@ -72,10 +72,12 @@ export class HistoryFormingService {
   // }
 
   getHistoryForming(): Observable<any> {
+    const token = localStorage.getItem('YXV0aFRva2Vu');
     return this.http.get(`${environment.apiUrl}/api/Profile/HistoryDocumentGenerate`, {
 
       headers: new HttpHeaders({
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
       })
     });
   }
@@ -95,9 +97,11 @@ export class HistoryFormingService {
   // }
 
   makeTransaction(id: string): Observable<any> {
+    const token = localStorage.getItem('YXV0aFRva2Vu');
     return this.http.post(`${environment.apiUrl}/api/User/MakeTransaction/${id}`, {
       headers: new HttpHeaders({
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
       })
     });
   }
