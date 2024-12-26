@@ -154,7 +154,7 @@ export class HistoryFormingComponent implements OnInit {
           label: 'Предпросмотр',
           icon: 'pi pi-eye',
           class: 'status-preview',
-          command: () => this.handlePreview(dataDoc.DocumentPdfShortId)
+          command: () => this.handlePreview(dataDoc.documentPdfShortId)
         }
       ];
     }
@@ -165,19 +165,19 @@ export class HistoryFormingComponent implements OnInit {
           label: 'Предпросмотр',
           icon: 'pi pi-eye',
           class: 'status-preview',
-          command: () => this.handlePreview(dataDoc.DocumentPdfShortId)
+          command: () => this.handlePreview(dataDoc.documentPdfShortId)
         },
         {
           label: 'Excel',
           icon: 'pi pi-file-excel',
           class: 'status-excel',
-          command: () => this.downloadFile('excel', dataDoc.DocumentXlsxId)
+          command: () => this.downloadFile('excel', dataDoc.documentXlsxId)
         },
         {
           label: 'PDF',
           icon: 'pi pi-file-pdf',
           class: 'status-pdf',
-          command: () => this.downloadFile('pdf', dataDoc.DocumentPdfId)
+          command: () => this.downloadFile('pdf', dataDoc.documentPdfId)
         }
       ];
     }

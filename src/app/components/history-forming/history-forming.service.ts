@@ -98,7 +98,10 @@ export class HistoryFormingService {
 
   makeTransaction(id: string): Observable<any> {
     const token = localStorage.getItem('YXV0aFRva2Vu');
-    return this.http.post(`${environment.apiUrl}/api/User/MakeTransaction/${id}`, {
+    return this.http.put(`${environment.apiUrl}/api/User/MakeTransaction`,{
+       "delta": -100,
+      "userInstanceId": id
+    }, {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Authorization': `Bearer ${token}`,
