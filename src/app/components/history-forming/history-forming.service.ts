@@ -72,7 +72,7 @@ export class HistoryFormingService {
   // }
 
   getHistoryForming(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/`, {
+    return this.http.get(`${environment.apiUrl}/api/Profile/HistoryDocumentGenerate`, {
 
       headers: new HttpHeaders({
         'Accept': 'application/json'
