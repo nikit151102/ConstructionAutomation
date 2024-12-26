@@ -61,7 +61,7 @@ export class DocumentComponent implements OnInit {
       this.historyFormingService.setHistoryDocsValue({
         id: response.data.id,
         statusCode: response.data.statusCode,
-        statusDescriprion: response.data.statusDescriprion,
+        statusDescription: response.data.statusDescription,
         fileName: response.data.fileName,
         balance: 0,
         fileSize: response.data.fileSize,

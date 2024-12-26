@@ -79,7 +79,7 @@
         <div *ngIf="expandedDoc === doc" class="card-details" (click)="$event.stopPropagation()">
             <p>Дополнительная информация:</p>
             <p>
-                {{doc.statusDescriprion}}
+                {{doc.statusDescription}}
             </p>
             <div class="actions">
                 <ng-container *ngFor="let action of generateActions(doc, doc.statusCode)">

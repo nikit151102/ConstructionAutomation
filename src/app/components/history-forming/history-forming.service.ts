@@ -98,9 +98,9 @@ export class HistoryFormingService {
 
   makeTransaction(id: string): Observable<any> {
     const token = localStorage.getItem('YXV0aFRva2Vu');
-    return this.http.put(`${environment.apiUrl}/api/User/ConfirmDocumentGenerate`,{
+    return this.http.put(`${environment.apiUrl}/api/Profile/ConfirmDocumentGenerate`,{
        "delta": -100,
-       "DocumentInstanceId": id
+       "documentInstanceId": id
     }, {
       headers: new HttpHeaders({
         'Accept': 'application/json',

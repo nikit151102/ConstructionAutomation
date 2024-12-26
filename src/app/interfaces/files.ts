@@ -11,7 +11,7 @@ export interface SelectedFiles {
 export interface dataDocs {
     id?: string,
     statusCode: number,
-    statusDescriprion: string
+    statusDescription: string
     fileName: string,
     fileSize: number,
     documentType: number,
