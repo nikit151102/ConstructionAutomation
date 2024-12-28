@@ -99,7 +99,6 @@ export class HistoryFormingService {
   makeTransaction(id: string): Observable<any> {
     const token = localStorage.getItem('YXV0aFRva2Vu');
     return this.http.put(`${environment.apiUrl}/api/Profile/ConfirmDocumentGenerate`,{
-       "delta": -100,
        "documentInstanceId": id
     }, {
       headers: new HttpHeaders({
