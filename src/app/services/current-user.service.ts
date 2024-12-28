@@ -75,7 +75,7 @@ export class CurrentUserService {
   getUserData(): Observable<User> {
     return this.UserData().pipe(
       map((data) => {
-        this.saveUser(data);
+        this.saveUser(data.data);
         return data; 
       }),
       catchError((error) => {

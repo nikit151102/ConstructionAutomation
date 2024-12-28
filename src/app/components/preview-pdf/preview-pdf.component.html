@@ -1,10 +1,22 @@
-<div class="pdf-viewer-container">
-  <div class="pdf-container">
-    <canvas *ngFor="let page of pages; let i = index" #pdfCanvas></canvas>
-  </div>
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-container" (click)="$event.stopPropagation()">
+    <div class="pdf-viewer-container">
+      <div class="pdf-container">
+        <canvas *ngFor="let page of pages; let i = index" #pdfCanvas></canvas>
+      </div>
 
-  <div class="zoom-controls">
-    <button (click)="zoomOut()">-</button>
-    <button (click)="zoomIn()">+</button>
+      <div class="zoom-controls">
+        <button (click)="zoomOut()">-</button>
+        <button (click)="zoomIn()">+</button>
+      </div>
+      <ng-container *ngIf="xlsxId">
+        <a onclick="downloadFile('excel')">excel</a>
+      </ng-container>
+      <ng-container *ngIf="pdfId">
+        <a onclick="downloadFile('pdf')">pdf</a>
+      </ng-container>
+
+    </div>
+    <a class="close-btn" (click)="closePopup()">X</a>
   </div>
 </div>

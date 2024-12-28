@@ -1,0 +1,103 @@
+<div class="docs-container">
+    <div>
+        <a class="btnReload" (click)="loadData()">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width: 24px; fill:#fff">
+                <g id="reload">
+                    <path
+                        d="M18,4A12,12,0,0,0,6.05,15H3a1,1,0,0,0-.88.53,1,1,0,0,0,0,1l4,6a1,1,0,0,0,1.66,0l4-6a1,1,0,0,0,.05-1A1,1,0,0,0,11,15H8.05A10,10,0,1,1,18,26a1,1,0,0,0,0,2A12,12,0,0,0,18,4Z" />
+                </g>
+            </svg>
+        </a>
+    </div>
+    <div class="multiselect-container">
+        <div class="multiselect-placeholder" (click)="toggleDropdown()">
+            {{ selectedDocsLabel }}
+        </div>
+        <div class="multiselect-dropdown" *ngIf="dropdownOpen">
+            <label *ngFor="let option of typeDocs" class="multiselect-option">
+                <input type="checkbox" [checked]="isSelected(option)" (change)="toggleSelection(option)" />
+                {{ option.name }}
+            </label>
+        </div>
+    </div>
+
+    <!-- Названия полей -->
+    <div class="doc-fields">
+        <div *ngFor="let field of fields">
+            <div *ngIf="field.label" (click)="sortDocs(field.key)">
+                {{ field.label }}
+                <i class="pi" [ngClass]="{
+                  'pi-sort-alt': currentSortField !== field.key,
+                  'pi-sort-amount-up': currentSortField === field.key && isAscending,
+                  'pi-sort-amount-up-alt': currentSortField === field.key && !isAscending
+                }"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Карточки -->
+    <div *ngFor="let doc of filteredDocs" class="doc-card" [class.not-found]="doc.statusCode === 404"
+        (click)="toggleAccordion(doc)">
+
+        <div style="padding-left: 17px;">
+
+            <div *ngIf="doc.statusCode === 0" class="status status-loading">
+                <i class="pi pi-spin pi-spinner"></i> Загрузка
+            </div>
+            <div *ngIf="doc.statusCode === 1" class="status status-unpaid">
+                <i class="pi pi-info-circle"></i> Не оплачен
+            </div>
+            <div *ngIf="doc.statusCode === 2" class="status status-success">
+                <i class="pi pi-check"></i> Оплачен
+            </div>
+            <div *ngIf="doc.statusCode === 3" class="status status-danger">
+                <i class="pi pi-times"></i> Ошибка
+            </div>
+            <div *ngIf="doc.statusCode === 4" class="status status-secondary">
+                <i class="pi pi-ban"></i> Отменён
+            </div>
+        </div>
+        <ng-container *ngIf="doc.statusCode === 0">
+            <div class="skeleton skeleton-file-name"></div>
+            <div class="skeleton skeleton-file-size"></div>
+        </ng-container>
+        <ng-container *ngIf="doc.statusCode !== 0">
+            <div>{{ doc.fileName }}</div>
+            <div>
+                {{
+                getSizeInMB(doc.fileSize) }} Мб
+            </div>
+        </ng-container>
+        <div>{{ doc.initDate | date: 'dd-MM-yyyy' }}</div>
+
+        <i class="pi" [ngClass]="{
+                'pi-angle-down': expandedDoc !== doc,
+                'pi-angle-up': expandedDoc === doc
+              }" style="font-size: 1.5rem; cursor: pointer;"></i>
+
+        <!-- Детали карточки -->
+        <div *ngIf="expandedDoc === doc" class="card-details" (click)="$event.stopPropagation()">
+            <p>Дополнительная информация:</p>
+            <p>
+                {{doc.statusDescription}}
+            </p>
+            <div class="actions">
+                <ng-container *ngFor="let action of generateActions(doc, doc.statusCode)">
+                    <button [ngClass]="'action-button ' + action.class" (click)="action.command()">
+                        <i [class]="'pi ' + action.icon"></i>
+                        <span class="action-label">{{ action.label }}</span>
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<p-toast />
+
+<app-pop-up *ngIf="visiblePopUpPay" [imageSrc]="'svg/pay.svg'" [title]="'Подтверждение оплаты'"
+    [description]="'Вы уверены, что хотите оплатить?'" [buttons]="buttons" (close)="onPopupClose()">
+</app-pop-up>
+
+<app-preview-pdf *ngIf="historyFormingService.visiblePdf" [pdfData]="pdfBlob" (close)="closePopup()"></app-preview-pdf>

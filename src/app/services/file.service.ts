@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastService } from './toast.service';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environment';
 
@@ -13,20 +13,29 @@ export class CommomFileService {
 
   fileSizeInMB(fileSizeInBits: string | number): string {
     let bits: number;
-  
+
     if (typeof fileSizeInBits === 'string') {
       bits = parseFloat(fileSizeInBits);
     } else {
       bits = fileSizeInBits;
     }
-  
+
     if (isNaN(bits) || bits < 0) {
       return '0.00';
     }
-  
+
     return (bits / 1024 / 1024).toFixed(2);
   }
+
+  previewfile(fileId: string): Observable<Blob> {
+    return this.download(fileId).pipe(
+      map((response: { file: any; documentMetadata: any }) => {
+        return this.createBlobFromData(response.file); 
+      })
+    );
+  }
   
+
   downloadFile(fileId: string) {
 
     this.download(fileId).subscribe((response: { file: any; documentMetadata: any }) => {
@@ -54,7 +63,7 @@ export class CommomFileService {
     });
   }
 
-  private createBlobFromData(fileData: any): Blob {
+  createBlobFromData(fileData: any): Blob {
     if (!fileData.fileContents) {
       console.error('Отсутствуют данные файла для преобразования в Blob.');
       return new Blob(); // Возвращаем пустой Blob, если данных нет.
@@ -77,10 +86,10 @@ export class CommomFileService {
 
   createBlob(fileData: any): Blob {
     return this.createBlobFromData(fileData);
-    
+
   }
   createBlobUrl(blob: any): any {
-    return window.URL.createObjectURL(blob); 
+    return window.URL.createObjectURL(blob);
   }
 
   download(id: string): Observable<any> {

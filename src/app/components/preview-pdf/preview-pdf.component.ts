@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnInit, ViewChildren, QueryList } from '@angular/core';
-import { GlobalWorkerOptions, getDocument, PDFDocumentProxy } from 'pdfjs-dist';
+import { Component, ElementRef, Input, OnInit, ViewChild, ViewChildren, QueryList, EventEmitter, Output, SimpleChanges } from '@angular/core';
+import { GlobalWorkerOptions, getDocument, PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
+import { HistoryFormingService } from '../history-forming/history-forming.service';
+import { CommomFileService } from '../../services/file.service';
 
 @Component({
   selector: 'app-preview-pdf',
@@ -12,26 +14,49 @@ import { GlobalWorkerOptions, getDocument, PDFDocumentProxy } from 'pdfjs-dist';
 export class PreviewPdfComponent implements OnInit {
   @ViewChildren('pdfCanvas') pdfCanvases!: QueryList<ElementRef<HTMLCanvasElement>>;
   @Input() pdfData!: Blob;
+  @Output() close = new EventEmitter<void>();
+  xlsxId: string = '';
+  pdfId: string = '';
   pdf: PDFDocumentProxy | null = null;
-  pages: number[] = []; 
-  currentScale: number = 1.5; 
+  pages: number[] = [];
+  currentScale: number = 1.5;
   isRendering: boolean = false;
+  isPopupVisible: boolean = false;
 
-  constructor() {
+  constructor(private historyFormingService: HistoryFormingService,
+    private commomFileService:CommomFileService
+  ) {
     GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.preview.mjs';
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['pdfData'] && this.pdfData) {
+      this.loadPdf();
+    }
+  }
+
   ngOnInit(): void {
-    this.loadPdf();
+    if (this.pdfData) {
+      this.loadPdf();
+    }
+    
+    this.historyFormingService.selectExcelIdState$.subscribe((value:string)=>{
+      this.xlsxId = value;
+    })
+
+    this.historyFormingService.selectpdfIdState$.subscribe((value:string)=>{
+      this.pdfId = value;
+    })
   }
 
   loadPdf(): void {
+
     const fileReader = new FileReader();
     fileReader.onload = (e) => {
       const pdfData = new Uint8Array(e.target!.result as ArrayBuffer);
       getDocument(pdfData).promise.then((pdf: PDFDocumentProxy) => {
         this.pdf = pdf;
-        this.pages = Array.from({ length: pdf.numPages }, (_, i) => i + 1); 
+        this.pages = Array.from({ length: pdf.numPages }, (_, i) => i + 1);
         this.renderAllPages();
       });
     };
@@ -45,8 +70,8 @@ export class PreviewPdfComponent implements OnInit {
           const canvas = this.pdfCanvases.toArray()[index];
           if (canvas && canvas.nativeElement) {
             const context = canvas.nativeElement.getContext('2d');
-            if (context) { 
-              const viewport = page.getViewport({ scale: this.currentScale }); 
+            if (context) {
+              const viewport = page.getViewport({ scale: this.currentScale });
               canvas.nativeElement.height = viewport.height;
               canvas.nativeElement.width = viewport.width;
 
@@ -67,13 +92,28 @@ export class PreviewPdfComponent implements OnInit {
 
   zoomIn(): void {
     this.currentScale += 0.2;
-    this.renderAllPages(); 
+    this.renderAllPages();
   }
 
   zoomOut(): void {
-    if (this.currentScale > 0.5) { 
-      this.currentScale -= 0.2; 
-      this.renderAllPages(); 
+    if (this.currentScale > 0.5) {
+      this.currentScale -= 0.2;
+      this.renderAllPages();
+    }
+  }
+
+  closePopup(): void {
+    this.close.emit();
+  }
+
+
+  downloadFile(type: string) {
+    if (type == 'excel') {
+      this.commomFileService.downloadFile(this.xlsxId);
+    }
+    if (type == 'pdf') {
+      this.commomFileService.downloadFile(this.pdfId);
     }
   }
 }
+

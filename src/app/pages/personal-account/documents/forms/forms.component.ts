@@ -181,7 +181,6 @@ export class FormsComponent {
       appendedKeys.add('UserId'); 
     }
   
-    // Логирование FormData для проверки
     // console.log('Финальные данные формы:');
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);

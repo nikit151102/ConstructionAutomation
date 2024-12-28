@@ -12,11 +12,13 @@ import { ActivatedRoute } from '@angular/router';
 import { ConfigType, getFormConfig } from './confs';
 import { PersonalAccountService } from '../personal-account.service';
 import { PreviewPdfComponent } from '../../../components/preview-pdf/preview-pdf.component';
+import { HistoryFormingComponent } from '../../../components/history-forming/history-forming.component';
+import { HistoryFormingService } from '../../../components/history-forming/history-forming.service';
 
 @Component({
   selector: 'app-document',
   standalone: true,
-  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewPdfComponent],
+  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewPdfComponent, PreviewPdfComponent, HistoryFormingComponent],
   templateUrl: './document.component.html',
   styleUrl: './document.component.scss'
 })
@@ -24,20 +26,21 @@ export class DocumentComponent implements OnInit {
 
   config: any;
 
-  constructor(public documentsService: DocumentsService, private route: ActivatedRoute, 
+  constructor(public documentsService: DocumentsService, private route: ActivatedRoute,
     private personalAccountService: PersonalAccountService,
-    private cdr: ChangeDetectorRef) { }
+    private cdr: ChangeDetectorRef,
+    private historyFormingService: HistoryFormingService) { }
 
   ngOnInit(): void {
-    this.visiblePdf = false;
-    this.selectPdf = null;
+    this.documentsService.visiblePdf = false;
+    this.documentsService.selectPdf = null;
     this.route.paramMap.subscribe(params => {
       const configType = params.get('configType') as ConfigType | null;
 
       if (configType && ['comparativeStatement', 'materialSpecification', 'workSpecification'].includes(configType)) {
         this.config = getFormConfig(configType as ConfigType);
         this.personalAccountService.changeTitle(this.config.nameDoc)
-        this.cdr.detectChanges(); 
+        this.cdr.detectChanges();
       } else {
         console.error('Invalid configType:', configType);
       }
@@ -45,27 +48,43 @@ export class DocumentComponent implements OnInit {
 
   }
 
-  selectfile: any = null; 
+  selectfile: any = null;
   selectedSheet: string = '';
-  selectPdf:any;
-  visiblePdf:boolean = false;
+  visiblePdf: boolean = false;
+
 
 
   onUploadSuccess(response: any): void {
-  if(response){
-    this.documentsService.setSuccessDoc(response);
-    if(response.pdfFile){
-     const base64Data = response.pdfFile.fileContents;
-     const pdfBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
-     this.selectPdf = new Blob([pdfBytes], { type: 'application/pdf' });
-     this.visiblePdf = true;
+    if (response) {
+      this.documentsService.setSuccessDoc(response);
+      this.historyFormingService.setHistoryDocsValue({
+        id: response.data.id,
+        statusCode: response.data.statusCode,
+        statusDescription: response.data.statusDescription,
+        fileName: response.data.fileName,
+        balance: 0,
+        fileSize: response.data.fileSize,
+        documentType: response.data.documentType,
+        initDate:response.data.initDate,
+        documentPdfId: response.data.documentPdfId,
+        documentXlsxId: response.data.documentXlsxId,
+        DocumentPdfShortId: response.data.DocumentPdfShortId,
+        createDateTime: response.data.createDateTime,
+        changeDateTime: response.data.changeDateTime,
+      })
+      this.historyFormingService.selectExcel = response.documentMetadata.fullResultXlsx
+      this.historyFormingService.selectpdf = response.documentMetadata.fullResultPdf
+      if (response.pdfFile) {
+        const base64Data = response.pdfFile.fileContents;
+        const pdfBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+        this.historyFormingService.selectpdf = new Blob([pdfBytes], { type: 'application/pdf' });
+        this.documentsService.visiblePdf = false;
+      }
+    } else {
+      this.historyFormingService.selectpdf = null;
+      this.historyFormingService.visiblePdf = false;
     }
-  }else{
-    this.selectPdf = null;
-    this.visiblePdf = false;
 
-  }
-  
   }
 
 
@@ -75,6 +94,8 @@ export class DocumentComponent implements OnInit {
     this.isFullscreen = isFullscreen;
     console.log('Fullscreen state:', this.isFullscreen);
   }
+
+
 
 }
 
