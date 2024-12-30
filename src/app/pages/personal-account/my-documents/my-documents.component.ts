@@ -163,7 +163,7 @@ export class MyDocumentsComponent implements OnInit {
       const folder = this.moveDirectory;
       const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
       ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-      : null;
+      : "00000000-0000-0000-0000-000000000000";
       this.myDocumentsService.handleFolderMove(folder.id, idFolder, idFolder)
       this.moveDirectory = null;
     }
@@ -171,7 +171,7 @@ export class MyDocumentsComponent implements OnInit {
       const file = this.moveFile;
       const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
       ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-      : "";
+      : "00000000-0000-0000-0000-000000000000";
       this.myDocumentsService.handleFileMove(file.id, idFolder, idFolder)
       this.moveFile = null;
 

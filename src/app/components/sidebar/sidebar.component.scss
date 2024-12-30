@@ -75,20 +75,6 @@ $navbar-light-secondary: #343536;
   width: $navbar-width-min;
 }
 
-// // Обновляем стили для скрытия текста и иконок при закрытии
-// #nav-toggle:checked~#nav-content .nav-button span,
-// #nav-toggle:checked~#nav-footer #nav-footer-titlebox {
-//   opacity: 0;
-//   pointer-events: none;
-// }
-
-// // Обновляем стили для скрытия заголовка
-// #nav-toggle:checked~#nav-header #nav-title {
-//   opacity: 0;
-//   pointer-events: none;
-// }
-
-
 #nav-header {
   position: relative;
   width: 256px;
@@ -203,6 +189,7 @@ label[for="nav-toggle"] {
   span {
     font-size: 14px;
     transition: opacity 1s;
+    text-align: start;
   }
 
   .fas {
@@ -257,6 +244,7 @@ label[for="nav-toggle"] {
     span {
       font-size: 14px;
       transition: opacity 1s;
+      text-align: start;
     }
 
     .fas {

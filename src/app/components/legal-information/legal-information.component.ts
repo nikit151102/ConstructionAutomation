@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-legal-information',
@@ -10,13 +11,16 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class LegalInformationComponent {
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       const id = params['optionalParam'];
-      console.log(' parameter :', id);
     });
   }
-  
+
+  goBack(): void {
+    this.location.back();
+  }
+
 }
