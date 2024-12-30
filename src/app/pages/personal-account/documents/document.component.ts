@@ -72,6 +72,8 @@ export class DocumentComponent implements OnInit {
         createDateTime: response.data.createDateTime,
         changeDateTime: response.data.changeDateTime,
       })
+      
+      this.personalAccountService.changeBalance(response.storageInfo.storageVolumeUsage)
       this.historyFormingService.selectExcel = response.documentMetadata.fullResultXlsx
       this.historyFormingService.selectpdf = response.documentMetadata.fullResultPdf
       if (response.pdfFile) {
