@@ -30,6 +30,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         { label: 'Спецификация работ', command: () => this.executeDocs('workSpecification') }
       ]
     },
+    { label: 'Политика', icon: 'pi pi-cog', command: () =>  this.executeLegal(82913) },
     // { label: 'Настройки', icon: 'pi pi-cog', command: () => this.executeCommand('settings') },
     { label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit') },
   ];
@@ -108,6 +109,12 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+
+  executeLegal(idLegal:number){
+      if (idLegal) {
+        this.router.navigate([`legal/${idLegal}`]);
+      }
+  }
 
   executeDocs(commandName: string) {
     this.activatedRoute.paramMap.subscribe(params => {

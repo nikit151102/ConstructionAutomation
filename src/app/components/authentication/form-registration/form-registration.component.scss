@@ -14,6 +14,27 @@ h1 {
     align-items: center;
 }
 
+#checkboxLabel_1 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#checkboxInput_1 {
+    width: auto;
+    margin-right: 10px;
+}
+
+#legalLink_1 {
+    color: blue;
+    text-decoration: underline;
+}
+
+#legalLink_1:hover {
+    color: darkblue;
+}
+
+
 form {
     height: 100%;
     display: flex;
@@ -33,7 +54,7 @@ form {
 input {
     width: 100%;
     border-radius: 20px;
-    
+
 }
 
 input::placeholder {

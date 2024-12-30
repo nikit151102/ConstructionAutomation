@@ -13,6 +13,7 @@ import { CurrentUserService } from '../../../services/current-user.service';
 import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
 import { ProgressSpinnerService } from '../../progress-spinner/progress-spinner.service';
 import { ToastService } from '../../../services/toast.service';
+import { CookieConsentService } from '../../../services/cookie-consent.service';
 
 @Component({
   selector: 'app-form-authorization',
@@ -24,13 +25,14 @@ import { ToastService } from '../../../services/toast.service';
 export class FormAuthorizationComponent implements OnInit {
   signInForm: FormGroup;
 
-  constructor(private fb: FormBuilder, 
-    private AuthorizationService: FormAuthorizationService, 
-    private router: Router, 
-    private tokenService: TokenService, 
+  constructor(private fb: FormBuilder,
+    private AuthorizationService: FormAuthorizationService,
+    private router: Router,
+    private tokenService: TokenService,
     private progressSpinnerService: ProgressSpinnerService,
-    private toastService:ToastService,
-    private currentUserService:CurrentUserService
+    private toastService: ToastService,
+    private currentUserService: CurrentUserService,
+    private cookieConsentService: CookieConsentService
   ) {
     this.signInForm = this.fb.group({
       username: ['', Validators.required],
@@ -60,6 +62,12 @@ export class FormAuthorizationComponent implements OnInit {
 
     if (this.signInForm.valid) {
 
+      if (!this.cookieConsentService.hasConsented()) {
+        this.cookieConsentService.revokeConsent();
+        this.toastService.showWarn('Предупреждение', 'Вы должны согласиться на использование cookie');
+        return;
+      }
+
       this.progressSpinnerService.show();
 
       const formData = this.signInForm.value;
@@ -78,7 +86,7 @@ export class FormAuthorizationComponent implements OnInit {
             this.tokenService.setToken(response.data.token);
             this.router.navigate([`/${response.data.id}`]);
             localStorage.setItem('VXNlcklk', response.data.id);
-
+            
           }
 
         },

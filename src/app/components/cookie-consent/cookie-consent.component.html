@@ -1,0 +1,7 @@
+<div *ngIf="showCookieBanner" class="cookie-consent-banner">
+    <div class="cookie-consent-message">
+        <p>Этот сайт использует куки для улучшения работы. Мы не будем собирать данные без вашего согласия.</p>
+        <button (click)="acceptCookies()">Принять</button>
+        <button (click)="rejectCookies()">Отклонить</button>
+    </div>
+</div>

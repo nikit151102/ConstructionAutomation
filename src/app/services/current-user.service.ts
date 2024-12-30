@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class CurrentUserService {
 
-  private readonly storageKey = 'currentUser'; 
+  private readonly storageKey = 'currentUser';
 
   /**
    * Сохраняет объект пользователя в sessionStorage.
@@ -48,11 +48,22 @@ export class CurrentUserService {
   removeUser(): void {
     sessionStorage.removeItem(this.storageKey);
   }
-  
-  
 
-  constructor(private http: HttpClient, 
-    private tokenService: TokenService, 
+
+  /**
+ * Обновляет баланс пользователя в sessionStorage.
+ * @param newBalance Новый баланс пользователя.
+ */
+  updateUserBalance(newBalance: string): void {
+    const user = this.getUser();
+    if (user) {
+      user.balance = newBalance; // Обновляем баланс в объекте пользователя.
+      this.saveUser(user); // Сохраняем обновленного пользователя обратно в sessionStorage.
+    }
+  }
+
+  constructor(private http: HttpClient,
+    private tokenService: TokenService,
     private toastService: ToastService,
     private router: Router) { }
 
@@ -76,16 +87,16 @@ export class CurrentUserService {
     return this.UserData().pipe(
       map((data) => {
         this.saveUser(data.data);
-        return data; 
+        return data;
       }),
       catchError((error) => {
         console.error('Ошибка при получении данных пользователя:', error);
         this.toastService.showError('Сеанс истёк', 'Пожалуйста, выполните повторный вход');
         localStorage.removeItem('YXV0aFRva2Vu');
         this.router.navigate(['/login']);
-        return throwError(() => error); 
+        return throwError(() => error);
       })
     );
   }
-  
+
 }

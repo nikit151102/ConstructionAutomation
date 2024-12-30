@@ -14,6 +14,10 @@ export class PersonalAccountService {
   private userBalanceSubject = new BehaviorSubject<string>('');
   balance$ = this.userBalanceSubject.asObservable();
 
+  getCurrentBalance(): string {
+    return this.userBalanceSubject.value;
+  }
+  
   changeBalance(value: any) {
     this.userBalanceSubject.next(value);
   }

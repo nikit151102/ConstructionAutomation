@@ -27,7 +27,7 @@ const routes: Routes = [
       {
         path: ':configType', 
         loadChildren: () => import('./documents/documents.module').then(m => m.DocumentsModule) 
-      },
+      }
     ]
   },
 ];

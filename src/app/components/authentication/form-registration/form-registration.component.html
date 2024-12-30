@@ -28,6 +28,15 @@
         </div>
       </p-floatLabel>
     </div>
+
+    <div>
+      <label id="checkboxLabel_1">
+        <input type="checkbox" id="checkboxInput_1" formControlName="agreement" />
+        <a target="_blank"
+           style="text-decoration: none; color: inherit; font-size: 13px;">Я согласен (-на) на обработку  <a href="https://rebuildpro.ru/legal/82913" > персональных данных</a> </a>
+      </label>
+    </div>
+
     <div style="display: flex; flex-direction: column; gap: 10px;">
       <app-custom-button [backgroundColor]="'#28a745'" [hoverColor]="'#218838'" [textColor]="'#ffffff'"
         (buttonClick)="onSignUp()">
@@ -35,7 +44,6 @@
       </app-custom-button>
       <app-pop-up-entry [type]="'registration'"></app-pop-up-entry>
     </div>
-
 
   </form>
 

@@ -258,8 +258,10 @@ export class HistoryFormingComponent implements OnInit {
     this.historyFormingService.makeTransaction(id).subscribe((response: any) => {
       // this.pdfBlob = this.commomFileService.createBlobFromData(response.file)
       this.visiblePopUpPay = false;
-      this.personalAccountService.changeBalance(response.balance);
+      this.personalAccountService.changeBalance(String(response.data.balance));
+      this.currentUserService.updateUserBalance(String(response.data.balance))
       this.loadData()
+      
       // this.historyFormingService.updateSelectExcelId(response.resultXlsxId);
       // this.historyFormingService.updateSelectPdfId(response.resultPdfId);
       // this.historyFormingService.visiblePdf = true;
