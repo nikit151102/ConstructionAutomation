@@ -35,6 +35,7 @@ export class FormRegistrationComponent {
       agreement: [false, Validators.requiredTrue]
     });
   }
+
   onSignUp() {
 
     this.SignUpForm.markAllAsTouched();
@@ -66,6 +67,12 @@ export class FormRegistrationComponent {
       );
     } else {
       this.toastService.showWarn('Предупреждение', 'Форма невалидна')
+    }
+  }
+
+  handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.onSignUp();
     }
   }
 

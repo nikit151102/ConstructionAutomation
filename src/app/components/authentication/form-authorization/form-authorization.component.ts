@@ -100,4 +100,11 @@ export class FormAuthorizationComponent implements OnInit {
     }
   }
 
+
+  handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.onSignIn();
+    }
+  }
+
 }

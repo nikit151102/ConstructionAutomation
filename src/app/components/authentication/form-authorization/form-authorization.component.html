@@ -1,5 +1,5 @@
 <div class="container">
-  <form [formGroup]="signInForm" novalidate>
+  <form [formGroup]="signInForm" novalidate (keydown)="handleKeyDown($event)">
     <h1>Вход</h1>
     <div class="inputGroup">
       <p-floatLabel>
