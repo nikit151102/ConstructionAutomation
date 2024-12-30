@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PersonalAccountService } from '../personal-account.service';
 import { CommonModule } from '@angular/common';
 import { FileComponent } from './file/file.component';
@@ -18,7 +18,7 @@ import { ToastModule } from 'primeng/toast';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { DragDropModule } from 'primeng/dragdrop';
-import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
+import { ContextMenuModule } from 'primeng/contextmenu';
 
 @Component({
   selector: 'app-my-documents',
@@ -104,7 +104,6 @@ export class MyDocumentsComponent implements OnInit {
     this.subscribeToMoveEvents();
     this.testFiles = null;
     this.progressSpinnerService.show();
-    const userId = this.currentUserService.getUser();
     this.myDocumentsService.loadData('');
 
     this.totalSize = this.myDocumentsService.storageInfo.storageVolumeUsage;
@@ -130,7 +129,6 @@ export class MyDocumentsComponent implements OnInit {
   subscribeToMoveEvents(): void {
     this.myDocumentsService.moveFileObservable.subscribe((file) => {
       this.moveFile = file;
-      console.log('wdw', file)
       this.updateContextMenu();
     });
 
@@ -260,7 +258,6 @@ export class MyDocumentsComponent implements OnInit {
 
   }
 
-
   clearAllFiles(): void {
     this.uploadedFiles = [];
     const fileUpload: any = document.querySelector('p-fileUpload');
@@ -301,7 +298,6 @@ export class MyDocumentsComponent implements OnInit {
     this.cdRef.detectChanges();
   }
 
-
   draggedItem: any = null;
 
   onDragStart(event: DragEvent, item: any): void {
@@ -339,10 +335,6 @@ export class MyDocumentsComponent implements OnInit {
       ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
       : "";
   }
-
-
-
-
 
 
 }

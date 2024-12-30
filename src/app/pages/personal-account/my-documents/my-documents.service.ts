@@ -69,11 +69,6 @@ export class MyDocumentsService {
     const url = `${this.apiUrl}/api/Profile/Upload`;
     const formData = new FormData();
 
-    // const userId = localStorage.getItem('VXNlcklk');
-    // if (userId) {
-    //   formData.append('UserId', userId);
-    // }
-
     formData.append('DirectoryId', data.DirectoryId);
     data.files.forEach(file => {
       formData.append('Files', file);
@@ -232,7 +227,6 @@ export class MyDocumentsService {
 
       this.getAllUserDirectories().subscribe((data: any) => {
 
-        // this.storageInfo = data.storageInfo;
         this.storageInfo = { 'storageVolumeCopacity': 200000000, 'storageVolumeUsage': 5000000 };
         const files = data.data
           .filter((file: any) => file.type)
@@ -308,58 +302,32 @@ export class MyDocumentsService {
   elementMove:any;
 
   public handleFileMove(documentId: string, currentFolderId: string, targetFolderId: string): void {
-    const deleteData = { documentId, directoryId: currentFolderId };
     const addData = { documentId, directoryId: targetFolderId };
-  
-    console.log('Удаление файла из текущей папки:', deleteData);
-    console.log('Добавление файла в целевую папку:', addData);
-  
-    // this.removeFileMove(deleteData).pipe(
-    //   catchError(error => {
-    //     console.error('Ошибка при удалении файла:', error);
-    //     return throwError(() => error);
-    //   })
-    // ).subscribe(() => {
-    //   console.log('Файл успешно удалён из текущей папки');
+
       this.addFileMove(addData).pipe(
         catchError(error => {
           console.error('Ошибка при добавлении файла:', error);
           return throwError(() => error);
         })
       ).subscribe(() => {
-        // console.log('Файл успешно добавлен в целевую папку');
         this.loadData(currentFolderId);
       });
-    // });
   }
   
   public handleFolderMove(directoryId: string, currentFolderId: string|null, targetFolderId: string|null): void {
-    const deleteData = { documentId: directoryId, directoryId: currentFolderId };
     const addData = { documentId: directoryId, directoryId: targetFolderId };
-  
-    console.log('Удаление папки из текущей папки:', deleteData);
-    console.log('Добавление папки в целевую папку:', addData);
-  
-    // this.removeOrderMove(deleteData).pipe(
-    //   catchError(error => {
-    //     console.error('Ошибка при удалении папки:', error);
-    //     return throwError(() => error);
-    //   })
-    // ).subscribe(() => {
-    //   console.log('Папка успешно удалена из текущей папки');
+
       this.addOrderMove(addData).pipe(
         catchError(error => {
           console.error('Ошибка при добавлении папки:', error);
           return throwError(() => error);
         })
       ).subscribe(() => {
-        // console.log('Папка успешно добавлена в целевую папку');
         if(currentFolderId)
         this.loadData(currentFolderId);
         else
         this.loadData('');
       });
-    // });
   }
   
 }

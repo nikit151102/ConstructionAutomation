@@ -11,13 +11,10 @@ export class FormDeleteService {
   constructor(private http: HttpClient) { }
 
   deleteUser(userId: string): Observable<any> {
-
     const token = localStorage.getItem('YXV0aFRva2Vu');
-
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
     return this.http.delete<any>(`${environment.apiUrl}/api/Profile`, { headers });
   }
 

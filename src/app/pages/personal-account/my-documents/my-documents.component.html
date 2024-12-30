@@ -1,17 +1,9 @@
 <div class="breadcrumb">
   <div class="breadcrumb-navigation">
-
     <p-button icon="pi pi-chevron-left" class="breadcrumb-back-button" [rounded]="true" [text]="true" [raised]="true"
       *ngIf="currentFiles !== files" (click)="goBack()"></p-button>
     <p-breadcrumb class="max-w-full" [model]="myDocumentsService.BreadcrumbItems" [home]="home"></p-breadcrumb>
-    <!-- <ng-container *ngFor="let breadcrumb of breadcrumbs; let i = index">
-      <span class="breadcrumb-item" (click)="goToBreadcrumb(i)" [class.active]="i === breadcrumbs.length - 1">
-        {{ breadcrumb.label }}
-      </span>
-      <span class="breadcrumb-separator" *ngIf="i < breadcrumbs.length - 1">/</span>
-    </ng-container> -->
   </div>
-
 
   <div class="breadcrumb-info">
     <span class="storage-info">

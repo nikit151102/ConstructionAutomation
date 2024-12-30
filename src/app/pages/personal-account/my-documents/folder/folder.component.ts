@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
@@ -10,7 +10,6 @@ import { MyDocumentsService } from '../my-documents.service';
 import { MenuItem } from 'primeng/api';
 import { CommomFileService } from '../../../../services/file.service';
 import { ToastService } from '../../../../services/toast.service';
-import { FileService } from '../file/file.service';
 import { FolderService } from './folder.service';
 
 @Component({
@@ -32,7 +31,7 @@ export class FolderComponent implements OnInit {
   contextMenuItems: MenuItem[] = [
     {
       label: 'Открыть',
-      icon: 'pi pi-folder-open', 
+      icon: 'pi pi-folder-open',
       command: () => this.openFolder(),
     },
     {
@@ -52,9 +51,9 @@ export class FolderComponent implements OnInit {
     },
   ];
 
-  constructor(private myDocumentsService: MyDocumentsService, private toastService: ToastService, private commomFileService: CommomFileService, public folderService: FolderService) {
-
-  }
+  constructor(private myDocumentsService: MyDocumentsService,
+    private toastService: ToastService,
+    public folderService: FolderService) { }
 
 
   moveFolder(folder: any) {
@@ -98,8 +97,8 @@ export class FolderComponent implements OnInit {
     })
   }
 
-  moveFile:any;
-  moveDirectory:any;
+  moveFile: any;
+  moveDirectory: any;
   subscribeToMoveEvents(): void {
     this.myDocumentsService.moveFileObservable.subscribe((file) => {
       this.moveFile = file;
@@ -112,21 +111,16 @@ export class FolderComponent implements OnInit {
     });
   }
 
-
   openFolder() {
     if (!this.visibleShonRename)
       this.myDocumentsService.loadData(this.folder.id)
   }
 
-
-
   onEnter(): void {
-    console.log('Enter key pressed:', this.value);
     this.applyRename();
   }
 
   onEsc(): void {
-    console.log('Escape key pressed');
     this.cancelRename();
   }
 
@@ -145,13 +139,9 @@ export class FolderComponent implements OnInit {
   }
 
   cancelRename(): void {
-    // Логика для отмены ввода
-    console.log('Rename canceled');
-    this.value = ''; // Очистить поле или вернуть предыдущее значение
+    this.value = ''; 
     this.visibleShonRename = false;
   }
-
-
 
   onRightClick(event: MouseEvent, file: any) {
     this.folder = file;
@@ -160,7 +150,6 @@ export class FolderComponent implements OnInit {
     this.contextMenu.show(event);
   }
 
-
   handleClick() {
     if (this.folder.isFolder) {
       this.folderClick.emit();
@@ -168,7 +157,6 @@ export class FolderComponent implements OnInit {
   }
 
   deleteFolder(id: string) {
-    console.log('this.folder', this.folder)
     this.folderService.deleteFolder(this.folder.id).subscribe(
       (data: any) => {
         const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
@@ -179,7 +167,6 @@ export class FolderComponent implements OnInit {
         this.toastService.showSuccess('Успешно!', 'Операция выполнена успешно');
       },
       (error: any) => {
-        console.error('Ошибка при удалении файла:', error);
         this.toastService.showError('Ошибка!', 'Не удалось удалить файл');
       }
     );
@@ -187,7 +174,6 @@ export class FolderComponent implements OnInit {
 
   openDialogRename(fileName: string) {
     this.visibleShonRename = true;
-    console.log('fileName', fileName)
     this.value = fileName
   }
 
@@ -211,7 +197,6 @@ export class FolderComponent implements OnInit {
         this.toastService.showSuccess('Успех!', 'Файл переименован');
       },
       (error: any) => {
-        console.error('Ошибка при переименовании файла:', error);
         this.toastService.showError('Ошибка!', 'Не удалось переименовать файл');
       }
     );

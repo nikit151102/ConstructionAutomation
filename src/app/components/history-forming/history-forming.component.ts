@@ -202,7 +202,6 @@ export class HistoryFormingComponent implements OnInit {
       },
       (error: any) => {
         console.error('Ошибка при получении файла для предварительного просмотра:', error);
-        // this.toastService.showError('Ошибка!', 'Не удалось загрузить файл для предварительного просмотра');
       }
     );
   }
@@ -256,15 +255,10 @@ export class HistoryFormingComponent implements OnInit {
   onOk(id: string): void {
     this.visiblePopUpPay = false;
     this.historyFormingService.makeTransaction(id).subscribe((response: any) => {
-      // this.pdfBlob = this.commomFileService.createBlobFromData(response.file)
       this.visiblePopUpPay = false;
       this.personalAccountService.changeBalance(String(response.data.balance));
       this.currentUserService.updateUserBalance(String(response.data.balance))
       this.loadData()
-      
-      // this.historyFormingService.updateSelectExcelId(response.resultXlsxId);
-      // this.historyFormingService.updateSelectPdfId(response.resultPdfId);
-      // this.historyFormingService.visiblePdf = true;
     })
   }
 

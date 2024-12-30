@@ -35,7 +35,6 @@ export class ProfileComponent implements OnInit {
       });
     } else {
       this.currentUser = this.currentUserService.getUser();
-      console.log(' this.currentUser', this.currentUser)
     }
 
   }

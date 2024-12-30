@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnInit, ViewChild, ViewChildren, QueryList, EventEmitter, Output, SimpleChanges } from '@angular/core';
-import { GlobalWorkerOptions, getDocument, PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
+import { Component, ElementRef, Input, OnInit, ViewChildren, QueryList, EventEmitter, Output, SimpleChanges } from '@angular/core';
+import { GlobalWorkerOptions, getDocument, PDFDocumentProxy } from 'pdfjs-dist';
 import { HistoryFormingService } from '../history-forming/history-forming.service';
 import { CommomFileService } from '../../services/file.service';
 

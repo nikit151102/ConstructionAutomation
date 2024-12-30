@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import * as XLSX from 'xlsx';
-import { ExcelCell } from '../../services/excelFile';
 import { TableModule } from 'primeng/table';
 
 @Component({
@@ -23,10 +22,8 @@ export class ExcelViewerComponent implements OnChanges {
   selectedSheet: string = '';
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('blobblob',this.blob)
     if (changes['blob'] && this.blob) {
       this.processBlob(this.blob);
-      console.log('blobblobblob',this.blob)
     }
 
     if (changes['sheetName'] && this.workbook) {
@@ -41,7 +38,6 @@ export class ExcelViewerComponent implements OnChanges {
       const data = new Uint8Array((e.target as FileReader).result as ArrayBuffer);
       this.workbook = XLSX.read(data, { type: 'array' });
       this.sheetNames = this.workbook.SheetNames;
-
       this.selectedSheet = this.sheetName || this.sheetNames[0];
       this.loadSheetData(this.workbook, this.selectedSheet);
     };
@@ -52,7 +48,6 @@ export class ExcelViewerComponent implements OnChanges {
     try {
       const worksheet = workbook.Sheets[sheetName];
       if (!worksheet) {
-        console.error(`Worksheet ${sheetName} not found in workbook.`);
         return;
       }
 
@@ -93,8 +88,6 @@ export class ExcelViewerComponent implements OnChanges {
   }
 
   ngOnDestroy(): void {
-
-    // Освобождаем ресурсы
     this.blob = undefined;
     this.sheetName = '';
     this.excelData = [];

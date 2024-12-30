@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormDeleteService } from './form-delete.service';
@@ -17,7 +17,6 @@ export class FormDeleteComponent {
     private fb: FormBuilder,
     private router: Router,
     private formDeleteService: FormDeleteService,
-    private activatedRoute: ActivatedRoute,
   ) {
     this.deleteForm = this.fb.group({
       confirm: [false, Validators.requiredTrue]
@@ -27,7 +26,6 @@ export class FormDeleteComponent {
   onSubmit(): void {
     if (this.deleteForm.valid) {
       const id = localStorage.getItem('VXNlcklk');
-      console.log('id', id)
       if (id) {
         this.formDeleteService.deleteUser(id).subscribe(
           () => {
@@ -39,8 +37,6 @@ export class FormDeleteComponent {
             console.error('Error deleting account:', error);
           }
         );
-      } else {
-        console.warn('No user ID found in the route parameters.');
       }
     }
   }

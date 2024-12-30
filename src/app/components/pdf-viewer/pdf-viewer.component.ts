@@ -190,7 +190,6 @@ export class PdfViewerComponent implements OnInit {
       const context = this.pdfCanvas.nativeElement.getContext('2d');
 
       if (!context) {
-        console.error("Canvas context is null.");
         return;
       }
 
@@ -215,9 +214,6 @@ export class PdfViewerComponent implements OnInit {
             const adjustedY = this.finalStampPosition.y * scale;
             const adjustedWidth = this.stampSize.width * scale;
             const adjustedHeight = this.stampSize.height * scale;
-
-            console.log("Adjusted Coordinates:", adjustedX, adjustedY);
-            console.log("Adjusted Size:", adjustedWidth, adjustedHeight);
 
             // Отобразить штамп на холсте
             context.drawImage(img, adjustedX, adjustedY, adjustedWidth, adjustedHeight);

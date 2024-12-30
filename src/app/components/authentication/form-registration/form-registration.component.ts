@@ -54,57 +54,19 @@ export class FormRegistrationComponent {
         Password: formData.password,
       };
 
-      //   const Data  = {
-      //  FirstName: '',
-      //     LastName: '',
-      //     Hash: 'f45vfd7r98tfr8f4749v98g45',
-      //     UserName:  'Nikit',
-      //     Email: '',
-      //     Password: '', 
-      //     Roles: []
-      //   };
-
-      console.log('Форма отправлена:', Data);
-
       this.registrationService.signUn(Data).subscribe(
         (response) => {
-          console.log('Успешная регистрация:', response);
           this.currentUserService.saveUser(response.data);
           this.tokenService.setToken(response.data.token);
-          console.log('response.token:', response.data.token);
           this.router.navigate([`/${response.data.id}`]);
-          console.log('response.id:', response.data.id);
         },
         (error) => {
-          console.error('Ошибка при регистрации:', error);
           this.toastService.showError('Ошибка', 'Ошибка при регистрации')
         }
       );
     } else {
       this.toastService.showWarn('Предупреждение', 'Форма невалидна')
-      this.handleFormErrors();
     }
-  }
-
-  private handleFormErrors() {
-    Object.keys(this.SignUpForm.controls).forEach(controlName => {
-      const control = this.SignUpForm.get(controlName);
-      if (control && control.invalid) {
-        const errors = control.errors;
-        if (errors?.['required']) {
-          console.log(`${controlName} обязателен`);
-        }
-        if (errors?.['minlength']) {
-          console.log(`${controlName} должен содержать минимум ${errors['minlength'].requiredLength} символов`);
-        }
-        if (errors?.['email']) {
-          console.log(`${controlName} должен быть корректным email-адресом`);
-        }
-        if (errors?.['requiredTrue']) {
-          console.log(`${controlName} должен быть отмечен.`);
-        }
-      }
-    });
   }
 
 }

@@ -7,7 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { CurrentUserService } from '../../../../../services/current-user.service';
-import { UserData, UserUpdateRequest } from '../../../../../interfaces/user';
+import { UserData } from '../../../../../interfaces/user';
 import { FormUserService } from './form-user.service';
 
 @Component({
@@ -87,7 +87,6 @@ export class FormUserComponent implements OnInit {
 
   updateUser() {
     if (!this.currentUser.id) {
-      console.error("User ID is missing");
       return;
     }
 
@@ -96,12 +95,9 @@ export class FormUserComponent implements OnInit {
       firstName: this.userProfileForm.value.firstName,
       lastName: this.userProfileForm.value.lastName,
       patronymic: this.userProfileForm.value.patronymic,
-      // email: this.userProfileForm.value.email,
-      // userName: this.userProfileForm.value.tgUserName.replace('@', ''),
       roleIds: this.getRoleIds()
     };
 
-    // Нужно подправить
     this.formUserService.updateUserData(userUpdateRequest).subscribe((data: any) => {
       this.currentUserService.UserData().subscribe({
         next: (data) => {
@@ -117,7 +113,6 @@ export class FormUserComponent implements OnInit {
 
   getRoleIds(): string[] {
     if (!this.currentUser) {
-      console.error('Пользователь не найден');
       return [];
     }
     return this.currentUser.roles.map((role: any) => role.id);

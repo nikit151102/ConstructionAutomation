@@ -49,7 +49,10 @@ export class FileComponent implements OnInit {
     },
   ];
 
-  constructor(private myDocumentsService: MyDocumentsService, public fileService: FileService, private toastService: ToastService, private commomFileService: CommomFileService) {
+  constructor(private myDocumentsService: MyDocumentsService,
+    public fileService: FileService,
+    private toastService: ToastService,
+    private commomFileService: CommomFileService) {
 
   }
 
@@ -65,8 +68,8 @@ export class FileComponent implements OnInit {
     this.myDocumentsService.setMoveFile(file);
   }
 
-  visiblemoveFile:any;
-  moveDirectory:any;
+  visiblemoveFile: any;
+  moveDirectory: any;
   subscribeToMoveEvents(): void {
     this.myDocumentsService.moveFileObservable.subscribe((file) => {
       this.visiblemoveFile = file;
@@ -135,11 +138,8 @@ export class FileComponent implements OnInit {
     );
   }
 
-
   downloadFile(fileId: string) {
     this.commomFileService.downloadFile(fileId);
   }
-
-
 
 }

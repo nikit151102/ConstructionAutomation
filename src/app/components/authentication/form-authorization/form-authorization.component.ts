@@ -92,32 +92,12 @@ export class FormAuthorizationComponent implements OnInit {
         },
         (error) => {
           this.progressSpinnerService.hide();
-          console.error('Ошибка при входе:', error);
           this.toastService.showError('Ошибка', 'Ошибка при входе')
         }
       );
     } else {
-      console.log('Форма недействительна');
       this.toastService.showWarn('Предупреждение', 'Форма невалидна')
-      this.handleFormErrors();
     }
   }
-
-  private handleFormErrors() {
-    Object.keys(this.signInForm.controls).forEach(controlName => {
-      const control = this.signInForm.get(controlName);
-      if (control && control.invalid) {
-        const errors = control.errors;
-        if (errors?.['required']) {
-          console.log(`${controlName} обязателен для заполнения`);
-        }
-        if (errors?.['minlength']) {
-          console.log(`${controlName} должен содержать минимум ${errors['minlength'].requiredLength} символов`);
-        }
-      }
-    });
-  }
-
-
 
 }

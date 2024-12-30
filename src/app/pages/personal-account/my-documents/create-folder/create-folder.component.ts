@@ -5,7 +5,6 @@ import { DialogModule } from 'primeng/dialog';
 import { MyDocumentsService } from '../my-documents.service';
 import { FormsModule } from '@angular/forms';
 import { FolderService } from '../folder/folder.service';
-import { CurrentUserService } from '../../../../services/current-user.service';
 import { ToastService } from '../../../../services/toast.service';
 
 @Component({
@@ -21,7 +20,7 @@ export class CreateFolderComponent implements OnInit, AfterViewInit {
 
   @ViewChild('renameInput') renameInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private myDocumentsService: MyDocumentsService, private folderService: FolderService, private currentUserService: CurrentUserService, private toastService: ToastService) { }
+  constructor(private myDocumentsService: MyDocumentsService, private folderService: FolderService, private toastService: ToastService) { }
 
   ngOnInit(): void {
     this.myDocumentsService.isVertical$.subscribe((type: boolean) => {
@@ -52,7 +51,6 @@ export class CreateFolderComponent implements OnInit, AfterViewInit {
           this.value = '';
         },
         (error) => {
-          console.error('Ошибка при добавлении папки:', error);
           this.myDocumentsService.visibleCreateFolder = false;
           this.value = '';
           this.toastService.showError('Ошибка', 'Не удалось создать папку. Попробуйте снова.');
@@ -61,7 +59,6 @@ export class CreateFolderComponent implements OnInit, AfterViewInit {
     }
   }
   
-
   onEsc(): void {
     this.myDocumentsService.visibleCreateFolder = false;
     this.value = '';

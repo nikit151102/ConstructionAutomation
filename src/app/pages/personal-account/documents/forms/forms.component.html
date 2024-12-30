@@ -11,7 +11,7 @@
           [control]="getSafeFormControl(form, control.name)"></app-dropdown>
       </ng-container>
 
-      <!-- File Input with new 'isFileInput' check -->
+      <!-- File Input with new 'isFileInput'  -->
       <div *ngSwitchCase="'file'" class="file-input-container">
         <label>{{ control.label }}</label>
         <app-file-input [chooseLabel]="control.label" [chooseIcon]="'pi pi-upload'" [accept]="control.accept"
@@ -22,13 +22,6 @@
 
 
   <button (click)="onSubmit()">Сформировать</button>
-
-  <!-- File Download -->
-  <!-- <ng-container *ngIf="fileMetadata">
-    <button (click)="downloadFile('pdf')" *ngIf="fileMetadata.fullResultPdf">Скачать pdf</button>
-    <button (click)="downloadFile('excel')" *ngIf="fileMetadata.fullResultXlsx">Скачать  excel</button>
-
-  </ng-container> -->
   
   <ng-container *ngIf="fileMetadata?.divergenceList">
     <p [innerHTML]="getFormattedDivergenceList()">

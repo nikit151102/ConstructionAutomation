@@ -17,12 +17,8 @@ export class AuthenticationComponent {
     this.isRightPanelActive = isSignUp;
   }
 
-  onSignUp() {
+  onSignUp() {}
 
-  }
-
-  onSignIn() {
-
-  }
+  onSignIn() {}
 
 }

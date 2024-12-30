@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../../environment';
 import { CurrentUserService } from '../../../../services/current-user.service';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +29,6 @@ export class FolderService {
   constructor(private http: HttpClient, private currentUserService: CurrentUserService) { }
 
   renameFolder(idFolder: string, data: any) {
-    const userId = localStorage.getItem('VXNlcklk');
     const url = `${this.apiUrl}/Directories/${idFolder}`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
 
@@ -44,7 +41,6 @@ export class FolderService {
         }),
       });
   }
-
 
   deleteFolder(idFolder: string) {
     const url = `${this.apiUrl}/api/Profile/UserDirectories/${idFolder}`;
@@ -69,7 +65,6 @@ export class FolderService {
       }),
     });
   }
-
 
   addFolder(data: any) {
     const userId = this.currentUserService.getUser();

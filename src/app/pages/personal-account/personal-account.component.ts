@@ -25,7 +25,6 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   private screenSubscription!: Subscription;
 
   constructor(public sidebarService: SidebarService,
-    private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     public personalAccountService: PersonalAccountService,
     private currentUserService: CurrentUserService) { }
