@@ -8,7 +8,7 @@ export interface SelectedFiles {
     system: string;
 }
 
-export interface dataDocs {
+export interface DataDoc{
     id?: string,
     statusCode: number,
     statusDescription: string

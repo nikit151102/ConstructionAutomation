@@ -72,7 +72,7 @@ export class DocumentComponent implements OnInit {
       initDate: data.initDate,
       documentPdfId: data.documentPdfId,
       documentXlsxId: data.documentXlsxId,
-      DocumentPdfShortId: data.DocumentPdfShortId,
+      documentPdfShortId: data.DocumentPdfShortId,
       createDateTime: data.createDateTime,
       changeDateTime: data.changeDateTime,
     });

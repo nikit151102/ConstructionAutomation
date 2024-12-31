@@ -23,16 +23,4 @@
 
   <button (click)="onSubmit()">Сформировать</button>
   
-  <ng-container *ngIf="fileMetadata?.divergenceList">
-    <p [innerHTML]="getFormattedDivergenceList()">
-      {{fileMetadata?.divergenceList}}
-    </p>
-  </ng-container>
-  <br>
-  <ng-container *ngIf="fileMetadata?.errorListCipher ">
-    <p [innerHTML]="getFormattedErrorListCipher()">
-      {{fileMetadata?.errorListCipher}}
-    </p>
-  </ng-container>
-
 </form>

@@ -9,6 +9,8 @@ import { FormsService } from './forms.service';
 import { ToastService } from '../../../../services/toast.service';
 import { ProgressSpinnerService } from '../../../../components/progress-spinner/progress-spinner.service';
 import { CommomFileService } from '../../../../services/file.service';
+import { UploadData } from '../../../../interfaces/docs';
+import { Response } from '../../../../interfaces/common';
 
 @Component({
   selector: 'app-forms',
@@ -31,7 +33,6 @@ export class FormsComponent {
   }
 
   onConfigChange() {
-    this.fileMetadata = null;
     this.files = {}; // Сброс файлов
     this.sortedControls = [];
     this.initForm(); // Реинициализация формы с новым конфигом
@@ -55,7 +56,6 @@ export class FormsComponent {
   ) { }
 
   ngOnInit(): void {
-    this.fileMetadata = null;
     this.sortedControls = null;
     this.initForm();
     this.updateSortedControls();
@@ -146,10 +146,9 @@ export class FormsComponent {
     this.progressSpinnerService.show();
   
     this.formsService.uploadFiles(formData, this.config.endpoint).subscribe({
-      next: (response: any) => {
+      next: (response: Response<UploadData>) => {
         this.progressSpinnerService.hide();
         this.uploadSuccess.emit(response);
-        this.fileMetadata = response.documentMetadata;
       },
       error: (error: any) => {
         this.progressSpinnerService.hide();
@@ -157,25 +156,5 @@ export class FormsComponent {
       }
     });
   }  
- 
-  getFormattedDivergenceList(): string {
-    return this.fileMetadata?.divergenceList.replace(/\n/g, '<br>') || '';
-  }
-  
-  
-  getFormattedErrorListCipher(): string {
-    return this.fileMetadata?.errorListCipher.replace(/\n/g, '<br>') || '';
-  }
-  
-
-  fileMetadata:any = null;
-  downloadFile(type:string) {
-    if(type == 'excel'){
-      this.commomFileService.downloadFile(this.fileMetadata.fullResultXlsx.id);
-    }
-    if(type == 'pdf'){
-      this.commomFileService.downloadFile(this.fileMetadata.fullResultPdf.id);
-    }
-  }
 
 }

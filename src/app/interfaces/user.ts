@@ -1,8 +1,3 @@
-export interface Response<T = any> {
-    message: string;
-    status: number;
-    data: T;
-}
 export interface UserData {
     id: string;
     firstName: string;

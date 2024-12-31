@@ -2,7 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environment';
-import { dataDocs } from '../../interfaces/files';
+import { DocumentQueueItem, DocumentQueueResponse, TransactionResponse } from '../../interfaces/docs';
+import { Response } from '../../interfaces/common';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,8 @@ export class HistoryFormingService {
   private selectpdfIdSubject = new BehaviorSubject<string>('');
   selectpdfIdState$ = this.selectpdfIdSubject.asObservable();
 
+  private historyDocsSubject = new BehaviorSubject<DocumentQueueItem[]>([]);
+  historyDocsState$ = this.historyDocsSubject.asObservable();
 
   updateSelectExcelId(id: string): void {
     this.selectExcelIdSubject.next(id);
@@ -30,10 +33,7 @@ export class HistoryFormingService {
     this.selectpdfIdSubject.next(id);
   }
 
-  private historyDocsSubject = new BehaviorSubject<dataDocs[]>([]);
-  historyDocsState$ = this.historyDocsSubject.asObservable();
-
-  setHistoryDocsValue(doc: dataDocs): void {
+  setHistoryDocsValue(doc: DocumentQueueItem): void {
     const currentDocs = this.historyDocsSubject.value || [];
     this.historyDocsSubject.next([...currentDocs, doc]);
   }
@@ -42,38 +42,17 @@ export class HistoryFormingService {
     return this.historyDocsSubject.getValue();
   }
 
-  loadHistoryDocs(docs: dataDocs[]): void {
+  loadHistoryDocs(docs: DocumentQueueItem[]): void {
     if (Array.isArray(docs)) {
       this.historyDocsSubject.next(docs);
     }
   }
 
 
-
-
-// Эндпоинт для получения всех объектов очереди
-
-// response
-  //   {
-  //   status
-  //   message
-  //   data[ массив с объектами очереди
-  //  {
-  // id: string,
-  // statusCode: number,
-  // FileName: string,
-  // FileSize: number,
-  // documentType: number, 
-  // InitDate: Date,
-  // DocumentPdfId: string,
-  // DocumentXlsxId: string
-  // }
-  // ] 
-  // }
-
+  // Эндпоинт для получения всех объектов очереди
   getHistoryForming(): Observable<any> {
     const token = localStorage.getItem('YXV0aFRva2Vu');
-    return this.http.get(`${environment.apiUrl}/api/Profile/HistoryDocumentGenerate`, {
+    return this.http.get<Response<DocumentQueueResponse>>(`${environment.apiUrl}/api/Profile/HistoryDocumentGenerate`, {
 
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -83,23 +62,11 @@ export class HistoryFormingService {
   }
 
 
-
-// Эндпоинт для оплаты 
-
-// response
-  // {
-  // status
-  // message
-  // file файл пдф для предпросмотр без вложенных объектов файлов
-  // balance number 
-  // resultXlsxId string
-  // resultPdfId string
-  // }
-
+  // Эндпоинт для оплаты 
   makeTransaction(id: string): Observable<any> {
     const token = localStorage.getItem('YXV0aFRva2Vu');
-    return this.http.put(`${environment.apiUrl}/api/Profile/ConfirmDocumentGenerate`,{
-       "documentInstanceId": id
+    return this.http.put<Response<TransactionResponse>>(`${environment.apiUrl}/api/Profile/ConfirmDocumentGenerate`, {
+      "documentInstanceId": id
     }, {
       headers: new HttpHeaders({
         'Accept': 'application/json',

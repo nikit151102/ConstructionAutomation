@@ -81,9 +81,24 @@
             <p>
                 {{doc.statusDescription}}
             </p>
+
+            <!-- <ng-container *ngIf="fileMetadata?.divergenceList">
+                <p [innerHTML]="getFormattedDivergenceList()">
+                {{fileMetadata?.divergenceList}}
+                </p>
+            </ng-container>
+            <br>
+            <ng-container *ngIf="fileMetadata?.errorListCipher ">
+                <p [innerHTML]="getFormattedErrorListCipher()">
+                {{fileMetadata?.errorListCipher}}
+                </p>
+            </ng-container> -->
+
+
             <div class="actions">
                 <ng-container *ngFor="let action of generateActions(doc, doc.statusCode)">
-                    <button [ngClass]="'action-button ' + action.class" (click)="action.command()">
+                    <button [ngClass]="'action-button ' + (action['class'] || '')"
+                        (click)="action.command ? action.command({}) : null">
                         <i [class]="'pi ' + action.icon"></i>
                         <span class="action-label">{{ action.label }}</span>
                     </button>
