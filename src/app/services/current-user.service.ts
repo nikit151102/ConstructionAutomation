@@ -3,8 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environment';
-import { TokenService } from './token.service';
-import { User, UserData } from '../interfaces/user';
+import { User, UserUpdateRequest } from '../interfaces/user';
 import { ToastService } from './toast.service';
 import { Router } from '@angular/router';
 
@@ -14,6 +13,10 @@ import { Router } from '@angular/router';
 export class CurrentUserService {
 
   private readonly storageKey = 'currentUser';
+
+  constructor(private http: HttpClient,
+    private toastService: ToastService,
+    private router: Router) { }
 
   /**
    * Сохраняет объект пользователя в sessionStorage.
@@ -62,10 +65,6 @@ export class CurrentUserService {
     }
   }
 
-  constructor(private http: HttpClient,
-    private tokenService: TokenService,
-    private toastService: ToastService,
-    private router: Router) { }
 
   UserData(): Observable<User> {
     const token = localStorage.getItem('YXV0aFRva2Vu');
@@ -97,6 +96,25 @@ export class CurrentUserService {
         return throwError(() => error);
       })
     );
+  }
+
+  updateUserData(user: UserUpdateRequest): Observable<any> {
+
+    const token = localStorage.getItem('YXV0aFRva2Vu');
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.put<any>(`${environment.apiUrl}/api/Profile/`, user, { headers });
+  }
+
+  deleteUser(): Observable<any> {
+    const token = localStorage.getItem('YXV0aFRva2Vu');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.delete<any>(`${environment.apiUrl}/api/Profile`, { headers });
   }
 
 }

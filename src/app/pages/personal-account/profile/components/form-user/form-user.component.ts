@@ -8,7 +8,7 @@ import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { CurrentUserService } from '../../../../../services/current-user.service';
 import { UserData } from '../../../../../interfaces/user';
-import { FormUserService } from './form-user.service';
+import { ToastService } from '../../../../../services/toast.service';
 
 @Component({
   selector: 'app-form-user',
@@ -30,7 +30,9 @@ export class FormUserComponent implements OnInit {
   userProfileForm!: FormGroup;
   avatarPreviewUrl: string | null = null;
 
-  constructor(private fb: FormBuilder, public currentUserService: CurrentUserService, private formUserService: FormUserService) { }
+  constructor(private fb: FormBuilder, 
+    public currentUserService: CurrentUserService,
+        private toastService:ToastService) { }
 
   ngOnInit(): void {
     this.userProfileForm = this.fb.group({
@@ -98,14 +100,15 @@ export class FormUserComponent implements OnInit {
       roleIds: this.getRoleIds()
     };
 
-    this.formUserService.updateUserData(userUpdateRequest).subscribe((data: any) => {
+    this.currentUserService.updateUserData(userUpdateRequest).subscribe((data: any) => {
       this.currentUserService.UserData().subscribe({
         next: (data) => {
           this.currentUser = data.data;
           this.currentUserService.saveUser(data.data);
+          this.toastService.showSuccess('Успешно', 'Данные пользователя успешно обновлены');
         },
         error: (error) => {
-          console.error('Ошибка при получении данных пользователя:', error);
+          this.toastService.showError('Ошибка', 'Не удалось обновить данные пользователя');
         }
       });
     })
@@ -127,7 +130,6 @@ export class FormUserComponent implements OnInit {
       this.updateUser();
     } else {
       this.userProfileForm.markAllAsTouched();
-
     }
   }
 }

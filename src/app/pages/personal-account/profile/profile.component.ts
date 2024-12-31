@@ -5,6 +5,7 @@ import { FormUserComponent } from './components/form-user/form-user.component';
 import { FormDeleteComponent } from './components/form-delete/form-delete.component';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { PersonalAccountService } from '../personal-account.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,8 @@ import { PersonalAccountService } from '../personal-account.service';
 export class ProfileComponent implements OnInit {
 
   constructor(public currentUserService: CurrentUserService,
-    private personalAccountService: PersonalAccountService) {
+    private personalAccountService: PersonalAccountService,
+    private toastService:ToastService) {
     this.personalAccountService.changeTitle('Профиль')
   }
 
@@ -30,7 +32,7 @@ export class ProfileComponent implements OnInit {
           this.currentUserService.saveUser(userData.data)
         },
         error: (err) => {
-          console.error('Ошибка при загрузке данных пользователя:', err);
+          this.toastService.showError('Ошибка', 'Не удалось загрузить данные пользователя');
         },
       });
     } else {
