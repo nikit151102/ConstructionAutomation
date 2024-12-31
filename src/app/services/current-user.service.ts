@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environment';
-import { User, UserUpdateRequest } from '../interfaces/user';
+import { Response, UserData, UserUpdateRequest } from '../interfaces/user';
 import { ToastService } from './toast.service';
 import { Router } from '@angular/router';
 
@@ -66,55 +66,66 @@ export class CurrentUserService {
   }
 
 
-  UserData(): Observable<User> {
+
+
+
+
+  
+  // Получение заголовков с токеном
+  private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('YXV0aFRva2Vu');
     if (!token) {
-      return throwError(() => new Error('Token not found'));
+      throw new Error('Token not found');
     }
-    const idUser = localStorage.getItem('VXNlcklk');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    return this.http.get<User>(`${environment.apiUrl}/api/Profile`, { headers }).pipe(
-      map(response => response),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  getUserData(): Observable<User> {
-    return this.UserData().pipe(
-      map((data) => {
-        this.saveUser(data.data);
-        return data;
-      }),
-      catchError((error) => {
-        console.error('Ошибка при получении данных пользователя:', error);
-        this.toastService.showError('Сеанс истёк', 'Пожалуйста, выполните повторный вход');
-        localStorage.removeItem('YXV0aFRva2Vu');
-        this.router.navigate(['/login']);
-        return throwError(() => error);
-      })
-    );
+
+  // Общая обработка ошибок
+  private handleError(error: any): Observable<never> {
+    return throwError(() => error);
   }
 
+
+  // Получение данных пользователя
+  getUserData(): Observable<Response<UserData>> {
+    return this.http
+      .get<Response<UserData>>(`${environment.apiUrl}/api/Profile`, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(
+        map((response) => {
+          localStorage.setItem('VXNlcklk', response.data.id);
+          this.saveUser(response.data)
+          return response;
+        }),
+        catchError((error) => {
+          console.error('Ошибка при получении данных пользователя:', error);
+          this.toastService.showError('Сеанс истёк', 'Пожалуйста, выполните повторный вход');
+          localStorage.removeItem('YXV0aFRva2Vu');
+          this.router.navigate(['/login']);
+          return this.handleError(error);
+        })
+      );
+  }
+
+  // Обновление данных пользователя
   updateUserData(user: UserUpdateRequest): Observable<any> {
-
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http.put<any>(`${environment.apiUrl}/api/Profile/`, user, { headers });
+    return this.http
+      .put<any>(`${environment.apiUrl}/api/Profile`, user, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(catchError(this.handleError));
   }
 
+  // Удаление пользователя
   deleteUser(): Observable<any> {
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.delete<any>(`${environment.apiUrl}/api/Profile`, { headers });
+    return this.http
+      .delete<any>(`${environment.apiUrl}/api/Profile`, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(catchError(this.handleError));
   }
+
 
 }

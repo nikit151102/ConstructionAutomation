@@ -1,29 +1,37 @@
-export interface User {
+export interface Response<T = any> {
     message: string;
     status: number;
-    data: UserData;
+    data: T;
 }
-
 export interface UserData {
-    email: string;
+    id: string;
     firstName: string;
     lastName: string;
     patronymic: string;
-    id: string;
+    email: string;
     roles: Role[];
-    token?: string | null;
-    userName: string;
+    createDateTime: string;
+    changeDateTime: string;
+    balance: number;
+    refreshToken: string;
+    storageInfo: StorageInfo;
+    tgUserName: string | null;
 }
 
-interface Role {
+export interface Role {
     id: string;
     name: string;
     permissions: Permission[];
 }
 
-interface Permission {
+export interface Permission {
     id: string;
     name: string;
+}
+
+export interface StorageInfo {
+    storageVolumeCopacity: number; // Общая вместимость хранилища
+    storageVolumeUsage: number;   // Используемый объём хранилища
 }
 
 
@@ -35,5 +43,6 @@ export interface UserUpdateRequest {
     email: string;
     userName: string;
     roleIds: string[];
-  }
-  
+}
+
+

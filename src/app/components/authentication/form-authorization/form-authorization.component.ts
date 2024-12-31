@@ -77,18 +77,18 @@ export class FormAuthorizationComponent implements OnInit {
         Email: formData.username,
         Password: formData.password,
       };
-      console.log("Data", Data)
+
       this.AuthorizationService.signIn(Data).subscribe(
         (response) => {
           if (response.data) {
-            this.progressSpinnerService.hide();
-            this.currentUserService.getUserData();
             this.tokenService.setToken(response.data.token);
+            this.progressSpinnerService.hide();this.currentUserService.getUserData().subscribe({
+              next: (userData) =>{},
+              error: (error) => console.error('Ошибка при получении данных пользователя:', error)
+            });
             this.router.navigate([`/${response.data.id}`]);
             localStorage.setItem('VXNlcklk', response.data.id);
-            
           }
-
         },
         (error) => {
           this.progressSpinnerService.hide();

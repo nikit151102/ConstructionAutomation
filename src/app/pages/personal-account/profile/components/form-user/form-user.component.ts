@@ -45,8 +45,7 @@ export class FormUserComponent implements OnInit {
     });
 
     if (!this.currentUser) {
-      this.currentUserService.getUserData();
-      this.currentUserService.UserData().subscribe({
+      this.currentUserService.getUserData().subscribe({
         next: (userData) => this.fillForm(userData.data),
         error: (error) => console.error('Ошибка при получении данных пользователя:', error)
       });
@@ -62,7 +61,7 @@ export class FormUserComponent implements OnInit {
       lastName: userData.lastName,
       patronymic: userData.patronymic,
       email: userData.email,
-      tgUserName: userData.userName ? `@${userData.userName}` : '@',
+      tgUserName: userData.tgUserName ? `@${userData.tgUserName}` : '@',
     });
   }
 
@@ -101,7 +100,7 @@ export class FormUserComponent implements OnInit {
     };
 
     this.currentUserService.updateUserData(userUpdateRequest).subscribe((data: any) => {
-      this.currentUserService.UserData().subscribe({
+      this.currentUserService.getUserData().subscribe({
         next: (data) => {
           this.currentUser = data.data;
           this.currentUserService.saveUser(data.data);
