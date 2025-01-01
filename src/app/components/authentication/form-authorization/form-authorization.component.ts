@@ -1,10 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
 import { CustomButtonComponent } from '../../../ui-kit/custom-button/custom-button.component';
 import { FormAuthorizationService } from './form-authorization.service';
 import { Router } from '@angular/router';
@@ -14,16 +11,23 @@ import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
 import { ProgressSpinnerService } from '../../progress-spinner/progress-spinner.service';
 import { ToastService } from '../../../services/toast.service';
 import { CookieConsentService } from '../../../services/cookie-consent.service';
+import { CustomInputComponent } from '../../../ui-kit/custom-input/custom-input.component';
 
 @Component({
   selector: 'app-form-authorization',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputTextModule, FloatLabelModule, PasswordModule, CustomButtonComponent, PopUpEntryComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, CustomButtonComponent, PopUpEntryComponent, CustomInputComponent],
   templateUrl: './form-authorization.component.html',
   styleUrls: ['./form-authorization.component.scss']
 })
 export class FormAuthorizationComponent implements OnInit {
+  @Output() visibleBtns: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   signInForm: FormGroup;
+  currentUser: boolean = false;
+  dataCurrentUser: any;
+  private localStorageKey: string = 'ZW5jcnlwdGVkRW1haWw=';
+  public isMenuVisible: boolean = false;
 
   constructor(private fb: FormBuilder,
     private AuthorizationService: FormAuthorizationService,
@@ -41,6 +45,14 @@ export class FormAuthorizationComponent implements OnInit {
   }
 
   ngOnInit() {
+    const encryptedEmail = localStorage.getItem(this.localStorageKey);
+    if (encryptedEmail) {
+      this.dataCurrentUser = JSON.parse(atob(encryptedEmail));
+      this.signInForm.patchValue({ username: this.dataCurrentUser.email });
+      this.currentUser = true;
+      this.visibleBtns.emit(false);
+    }
+
     setTimeout(() => {
       const usernameInput = document.getElementById('username') as HTMLInputElement;
       const passwordInput = document.getElementById('password') as HTMLInputElement;
@@ -55,6 +67,30 @@ export class FormAuthorizationComponent implements OnInit {
         setTimeout(() => passwordInput.type = 'password', 100);
       }
     });
+  }
+
+  goBack(): void {
+    this.router.navigateByUrl('/');
+  }
+
+  toggleMenu() {
+    this.isMenuVisible = !this.isMenuVisible;
+  }
+
+  hideProfile() {
+    this.signInForm.patchValue({ username: '' });
+    localStorage.removeItem(this.localStorageKey);
+    this.currentUser = false;
+    this.visibleBtns.emit(true);
+    this.isMenuVisible = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const menuElement = document.querySelector('.dropdownMenu');
+    if (menuElement && !menuElement.contains(event.target as Node)) {
+      this.isMenuVisible = false;
+    }
   }
 
   onSignIn() {
@@ -82,8 +118,16 @@ export class FormAuthorizationComponent implements OnInit {
         (response) => {
           if (response.data) {
             this.tokenService.setToken(response.data.token);
-            this.progressSpinnerService.hide();this.currentUserService.getUserData().subscribe({
-              next: (userData) =>{},
+            this.progressSpinnerService.hide(); this.currentUserService.getUserData().subscribe({
+              next: (userData) => {
+                const dataStage = {
+                  userName: `${userData.data.lastName} ${userData.data.firstName}`,
+                  email: formData.username
+                };
+
+                localStorage.setItem(this.localStorageKey, btoa(JSON.stringify(dataStage)));
+
+              },
               error: (error) => console.error('Ошибка при получении данных пользователя:', error)
             });
             this.router.navigate([`/${response.data.id}`]);

@@ -12,13 +12,14 @@ import { FormRegistrationComponent } from './form-registration/form-registration
 })
 export class AuthenticationComponent {
   isRightPanelActive = false;
+  visibleBtns: boolean = true;
 
   togglePanel(isSignUp: boolean) {
     this.isRightPanelActive = isSignUp;
   }
 
-  onSignUp() {}
-
-  onSignIn() {}
+  onVisibleBtnsChange(value: boolean): void {
+    this.visibleBtns = value;
+  }
 
 }

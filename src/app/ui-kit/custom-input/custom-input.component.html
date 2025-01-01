@@ -1,0 +1,11 @@
+<div class="group">
+    <input [ngModel]="value" [type]="type" [placeholder]="placeholder" [required]="required" autocomplete="new-password"
+        (blur)="handleBlur()" (input)="handleInputChange($event)"
+        [ngClass]="{'invalid': touched && !value || formControl?.invalid}" />
+
+    <label [ngClass]="{'active': value || touched || formControl?.valid}">{{ label }}</label>
+
+    <div *ngIf="touched && errorMessage" class="error">
+        <small>{{ errorMessage }}</small>
+    </div>
+</div>

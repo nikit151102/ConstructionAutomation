@@ -6,8 +6,8 @@
     </div>
   </div>
   <div class="form-container sign-in-container" *ngIf="!isRightPanelActive">
-    <app-form-authorization></app-form-authorization>
-    <div class="additional-btns">
+    <app-form-authorization (visibleBtns)="onVisibleBtnsChange($event)"></app-form-authorization>
+    <div class="additional-btns" *ngIf="visibleBtns">
       <p>У вас нет учетной записи?</p><a (click)="togglePanel(true)">Зарегистрироваться</a>
     </div>
   </div>
