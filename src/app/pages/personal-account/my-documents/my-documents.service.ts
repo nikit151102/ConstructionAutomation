@@ -228,13 +228,13 @@ export class MyDocumentsService {
       this.getAllUserDirectories().subscribe((data: any) => {
 
         this.storageInfo = { 'storageVolumeCopacity': 200000000, 'storageVolumeUsage': 5000000 };
-        const files = data.data
-          .filter((file: any) => file.type)
-          .map((file: any) => ({
-            ...file,
-            icon: file.type === 'file' ? 'pngs/file.png' : file.type === "directory" ? 'pngs/folder.png' : ''
-          }));
-
+        const files = [...data.data.documents, ...data.data.subDirectories]
+        .filter((file: any) => file.type)
+        .map((file: any) => ({
+          ...file,
+          icon: file.type === 'file' ? 'pngs/file.png' : file.type === 'directory' ? 'pngs/folder.png' : ''
+        }));
+        
         this.setFiles(files);
         this.progressSpinnerService.hide();
       },
