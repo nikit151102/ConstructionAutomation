@@ -102,6 +102,19 @@ body {
         display: flex;
         justify-content: center;
         gap: 30px;
+        flex-wrap: wrap;
+
+        @media (max-width: 1024px) {
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            gap: 15px;
+        }
+
+        @media (max-width: 480px) {
+            gap: 10px;
+        }
     }
 
     &__card {
@@ -177,6 +190,20 @@ body {
             &:hover {
                 background-color: #7b889f;
             }
+        }
+
+        @media (max-width: 1024px) {
+            max-width: 300px;
+        }
+
+        @media (max-width: 768px) {
+            max-width: 250px;
+            padding: 20px;
+        }
+
+        @media (max-width: 480px) {
+            max-width: 100%;
+            padding: 15px;
         }
     }
 }
