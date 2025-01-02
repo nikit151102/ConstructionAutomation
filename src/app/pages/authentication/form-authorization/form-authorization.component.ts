@@ -8,10 +8,10 @@ import { Router } from '@angular/router';
 import { TokenService } from '../../../services/token.service';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
-import { ProgressSpinnerService } from '../../progress-spinner/progress-spinner.service';
 import { ToastService } from '../../../services/toast.service';
 import { CookieConsentService } from '../../../services/cookie-consent.service';
 import { CustomInputComponent } from '../../../ui-kit/custom-input/custom-input.component';
+import { ProgressSpinnerService } from '../../../components/progress-spinner/progress-spinner.service';
 
 @Component({
   selector: 'app-form-authorization',

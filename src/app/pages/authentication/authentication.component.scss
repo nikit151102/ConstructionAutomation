@@ -52,6 +52,14 @@ button.ghost {
 	border-color: #FFFFFF;
 }
 
+.content {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .container {
 	background-color: var(--color-white);
 	border-radius: 40px;
@@ -62,7 +70,7 @@ button.ghost {
 	overflow: hidden;
 	width: 768px;
 	max-width: 100%;
-	min-height: 480px;
+	min-height: 500px;
 
 	@media (max-width: 768px) {
 		width: 95vw;
@@ -90,7 +98,7 @@ button.ghost {
 				cursor: pointer;
 				color: #5652ff;
 
-				&:hover{
+				&:hover {
 					color: #4c4ad3;
 				}
 			}
@@ -140,9 +148,10 @@ button.ghost {
 
 @keyframes mobileShow {
 
-	0%{
+	0% {
 		opacity: 0;
 	}
+
 	49.99% {
 		opacity: 0.5;
 		z-index: 1;
@@ -153,6 +162,7 @@ button.ghost {
 		z-index: 5;
 	}
 }
+
 @keyframes show {
 
 	0%,
@@ -252,7 +262,7 @@ button.ghost {
 	width: 40px;
 }
 
-.additional-btns{
+.additional-btns {
 	display: none;
 
 	@media (max-width: 768px) {

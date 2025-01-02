@@ -186,7 +186,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (commandName === 'exit') {
       localStorage.removeItem('YXV0aFRva2Vu');
       this.currentUserService.removeUser();
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], { state: { isSessionExpired: false } });
     } else {
       this.activatedRoute.paramMap.subscribe(params => {
         const id = params.get('id');

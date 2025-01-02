@@ -7,7 +7,7 @@ export const routes: Routes = [
         path: '', component: HomeComponent
     },
     {
-        path: 'login', loadChildren: () => import('./pages/login-signup/login-signup.module').then(m => m.LoginSignupModule)
+        path: 'login', loadChildren: () => import('./pages/authentication/authentication.module').then(m => m.AuthenticationModule)
     },
     {
         path: 'legal/:optionalParam',
