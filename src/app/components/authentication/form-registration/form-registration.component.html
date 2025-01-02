@@ -1,4 +1,16 @@
 <div class="container">
+  <div class="headerBtns">
+    <div class="backButton" (click)="goBack()">
+      <svg class="icon-back">
+        <g transform="translate(4 4)">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M5.60948 8.00016L10.4716 3.13813L9.52879 2.19531L4.19527 7.52874C4.07024 7.65377 4 7.82334 4 8.00015C4 8.17696 4.07024 8.34653 4.19526 8.47156L9.5287 13.805L10.4715 12.8622L5.60948 8.00016Z">
+          </path>
+        </g>
+      </svg>
+      <span>Назад</span>
+    </div>
+  </div> 
   <form [formGroup]="SignUpForm" novalidate (keydown)="handleKeyDown($event)">
     <h1>Регистрация</h1>
     <div class="inputGroup">
@@ -38,7 +50,7 @@
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 10px;">
-      <app-custom-button [backgroundColor]="'#28a745'" [hoverColor]="'#218838'" [textColor]="'#ffffff'"
+      <app-custom-button [backgroundColor]="'#8e9aaf'" [hoverColor]="'#7b889f'" [textColor]="'#ffffff'"
         (buttonClick)="onSignUp()">
         Зарегистрироваться
       </app-custom-button>

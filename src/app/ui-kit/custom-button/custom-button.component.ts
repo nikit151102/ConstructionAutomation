@@ -30,9 +30,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 `]
 })
 export class CustomButtonComponent {
-  @Input() backgroundColor: string = '#007bff';
-  @Input() hoverColor: string = '#0056b3';
-  @Input() textColor: string = '#ffffff';
+  @Input() backgroundColor: string = '';
+  @Input() hoverColor: string = '';
+  @Input() textColor: string = '';
   @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
 
   handleClick() {

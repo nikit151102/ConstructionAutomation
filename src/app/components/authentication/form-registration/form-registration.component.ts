@@ -75,5 +75,10 @@ export class FormRegistrationComponent {
       this.onSignUp();
     }
   }
+  
+  goBack(): void {
+    this.router.navigateByUrl('/');
+  }
+
 
 }

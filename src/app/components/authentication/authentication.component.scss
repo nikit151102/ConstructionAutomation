@@ -188,7 +188,7 @@ button.ghost {
 }
 
 .overlay {
-	background-image: linear-gradient(to bottom right, #38A2D7, #561139);
+	background: linear-gradient(135deg, #8e9aaf, #cbc0d3);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
@@ -250,4 +250,12 @@ button.ghost {
 	margin: 0 5px;
 	height: 40px;
 	width: 40px;
+}
+
+.additional-btns{
+	display: none;
+
+	@media (max-width: 768px) {
+		display: block;
+	}
 }

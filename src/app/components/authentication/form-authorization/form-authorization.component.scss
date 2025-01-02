@@ -1,6 +1,32 @@
 .container {
-    height: 100%;
     padding: 20px;
+
+    .headerBtns {
+        display: flex;
+        justify-content: space-between;
+
+        .backButton {
+            display: flex;
+            padding: 10px;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100px;
+            border-radius: 20px;
+            transition: background 0.3s ease;
+
+            &:hover {
+                background: #f3f3f3;
+            }
+
+            .icon-back {
+                width: 24px;
+                height: 24px;
+                color: ghost;
+                fill: var(--color-typo-ghost);
+            }
+        }
+
+    }
 
     @media (max-width: 768px) {
         height: 90%;
