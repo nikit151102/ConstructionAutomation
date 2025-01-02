@@ -1,6 +1,5 @@
 <div class="container">
-    <app-header style="position: sticky;
-    top: 0;"></app-header>
+    <app-header style="position: sticky; top: 0; z-index: 1111;"></app-header>
 
     <header class="header">
         <div class="container">
@@ -208,6 +207,7 @@
     <footer class="footer">
         <div class="container">
             <p>© 2025 Автоматизация документов. Все права защищены.</p>
+            <a (click)="goToLegal()">Политика конфиденциальности</a>
         </div>
     </footer>
 </div>

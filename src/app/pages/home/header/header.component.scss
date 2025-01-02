@@ -41,6 +41,7 @@
                 padding: 0 20px;
                 border-radius: 20px;
                 transition: background-color 0.3s, color 0.3s;
+                cursor: pointer;
 
                 a {
                     padding: 12px 20px;
@@ -50,6 +51,7 @@
                     font-size: 14px;
                     color: #333;
                     transition: background-color 0.3s, color 0.3s;
+                    cursor: pointer;
                 }
 
                 &:not(:last-child) {
@@ -84,6 +86,7 @@
             height: 24px;
             cursor: pointer;
             transition: transform 0.3s;
+            cursor: pointer;
 
             span {
                 height: 3px;
@@ -91,6 +94,7 @@
                 background: #333;
                 border-radius: 2px;
                 transition: all 0.3s;
+                cursor: pointer;
             }
 
             &:hover {
@@ -141,11 +145,13 @@
                     margin: 0 15px;
                     padding: 10px 20px;
                     border-radius: 20px;
+                    cursor: pointer;
 
                     a {
                         font-size: 16px;
                         padding: 0;
                         color: #333;
+                        cursor: pointer;
 
                         &:hover {
                             color: #007BFF;

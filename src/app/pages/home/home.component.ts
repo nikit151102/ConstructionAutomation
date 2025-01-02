@@ -18,5 +18,9 @@ export class HomeComponent {
     this.router.navigate(['/login']);
   }
 
+
+  goToLegal(): void {
+    this.router.navigate(['/legal/82913']);
+  }
   
 }

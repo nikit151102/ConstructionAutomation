@@ -230,6 +230,7 @@ body {
     display: flex;
     gap: 20px;
     justify-items: center;
+    justify-content: center;
     margin-top: 40px;
 }
 
@@ -260,6 +261,7 @@ body {
     }
 
     .advantage-description {
+        padding: 0 10px;
         color: #555;
         font-size: 13px;
         margin-top: 10px;
@@ -358,6 +360,21 @@ body {
     padding: 20px;
     border-top: 2px solid #ddd;
     border-radius: 15px;
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        height: 60px;
+        align-items: center;
+
+        p {
+            margin: 0;
+        }
+
+        a{
+            cursor: pointer;
+        }
+    }
 }
 
 @media (max-width: 1024px) {

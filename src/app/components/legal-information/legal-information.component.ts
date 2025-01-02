@@ -14,6 +14,7 @@ export class LegalInformationComponent {
   constructor(private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.route.queryParams.subscribe(params => {
       const id = params['optionalParam'];
     });
