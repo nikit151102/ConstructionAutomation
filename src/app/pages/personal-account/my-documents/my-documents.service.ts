@@ -22,7 +22,7 @@ export class MyDocumentsService {
   private apiUrl = environment.apiUrl;
 
   BreadcrumbItems: MenuItem[] = [];
- 
+
   private moveFileSubject = new Subject<any>();
   private moveDirectorySubject = new Subject<any>();
 
@@ -36,7 +36,7 @@ export class MyDocumentsService {
   setMoveDirectory(directory: any): void {
     this.moveDirectorySubject.next(directory);
   }
-  
+
   visibleCreateFolder: boolean = false;
 
   private isVertical = new BehaviorSubject<boolean>(false);
@@ -174,7 +174,7 @@ export class MyDocumentsService {
       }),
     });
   }
-  
+
   removeFileMove(data: {
     documentId: string,
     directoryId: string
@@ -192,7 +192,7 @@ export class MyDocumentsService {
 
   addOrderMove(data: {
     documentId: string,
-    directoryId: string|null
+    directoryId: string | null
   }) {
     const url = `${this.apiUrl}/api/Profile/UserDirectories/AddDirectory`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
@@ -204,7 +204,7 @@ export class MyDocumentsService {
       }),
     });
   }
-  
+
   removeOrderMove(data: {
     documentId: string,
     directoryId: string
@@ -229,12 +229,12 @@ export class MyDocumentsService {
 
         this.storageInfo = { 'storageVolumeCopacity': 200000000, 'storageVolumeUsage': 5000000 };
         const files = [...data.data.documents, ...data.data.subDirectories]
-        .filter((file: any) => file.type)
-        .map((file: any) => ({
-          ...file,
-          icon: file.type === 'file' ? 'pngs/file.png' : file.type === 'directory' ? 'pngs/folder.png' : ''
-        }));
-        
+          .filter((file: any) => file.type)
+          .map((file: any) => ({
+            ...file,
+            icon: file.type === 'file' ? 'pngs/file.png' : file.type === 'directory' ? 'pngs/folder.png' : ''
+          }));
+
         this.setFiles(files);
         this.progressSpinnerService.hide();
       },
@@ -299,35 +299,48 @@ export class MyDocumentsService {
 
   }
 
-  elementMove:any;
+  elementMove: any;
 
   public handleFileMove(documentId: string, currentFolderId: string, targetFolderId: string): void {
     const addData = { documentId, directoryId: targetFolderId };
 
-      this.addFileMove(addData).pipe(
-        catchError(error => {
-          console.error('Ошибка при добавлении файла:', error);
-          return throwError(() => error);
-        })
-      ).subscribe(() => {
-        this.loadData(currentFolderId);
-      });
+    this.addFileMove(addData).pipe(
+      catchError(error => {
+        console.error('Ошибка при добавлении файла:', error);
+        return throwError(() => error);
+      })
+    ).subscribe((data: any) => {
+      this.storageInfo = { 'storageVolumeCopacity': 200000000, 'storageVolumeUsage': 5000000 };
+      const files = [...data.data.documents, ...data.data.subDirectories]
+        .filter((file: any) => file.type)
+        .map((file: any) => ({
+          ...file,
+          icon: file.type === 'file' ? 'pngs/file.png' : file.type === 'directory' ? 'pngs/folder.png' : ''
+        }));
+
+      this.setFiles(files);
+    });
   }
-  
-  public handleFolderMove(directoryId: string, currentFolderId: string|null, targetFolderId: string|null): void {
+
+  public handleFolderMove(directoryId: string, currentFolderId: string | null, targetFolderId: string | null): void {
     const addData = { documentId: directoryId, directoryId: targetFolderId };
 
-      this.addOrderMove(addData).pipe(
-        catchError(error => {
-          console.error('Ошибка при добавлении папки:', error);
-          return throwError(() => error);
-        })
-      ).subscribe(() => {
-        if(currentFolderId)
-        this.loadData(currentFolderId);
-        else
-        this.loadData('');
-      });
+    this.addOrderMove(addData).pipe(
+      catchError(error => {
+        console.error('Ошибка при добавлении папки:', error);
+        return throwError(() => error);
+      })
+    ).subscribe((data: any) => {
+      this.storageInfo = { 'storageVolumeCopacity': 200000000, 'storageVolumeUsage': 5000000 };
+      const files = [...data.data.documents, ...data.data.subDirectories]
+        .filter((file: any) => file.type)
+        .map((file: any) => ({
+          ...file,
+          icon: file.type === 'file' ? 'pngs/file.png' : file.type === 'directory' ? 'pngs/folder.png' : ''
+        }));
+
+      this.setFiles(files);
+    });
   }
-  
+
 }
