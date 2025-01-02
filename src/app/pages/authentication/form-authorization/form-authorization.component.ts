@@ -121,7 +121,7 @@ export class FormAuthorizationComponent implements OnInit {
             this.progressSpinnerService.hide(); this.currentUserService.getUserData().subscribe({
               next: (userData) => {
                 const dataStage = {
-                  userName: `${userData.data.lastName} ${userData.data.firstName}`,
+                  userName: `${userData.data.lastName ?? ''} ${userData.data.firstName ?? ''}`.trim(),
                   email: formData.username
                 };
 
