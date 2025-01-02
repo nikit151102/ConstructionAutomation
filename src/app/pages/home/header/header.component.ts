@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -23,10 +23,19 @@ export class HeaderComponent {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'center'});
     }
+    this.isMenuActive = false;
   }
 
   goToLogin(): void {
     this.router.navigate(['/login']);
   }
 
+  @HostListener('document:click', ['$event'])
+  closeMenu(event: MouseEvent): void {
+    const menuElement = document.querySelector('.menu');
+    if (menuElement && !menuElement.contains(event.target as Node)) {
+      this.isMenuActive = false; 
+    }
+  }
+  
 }
