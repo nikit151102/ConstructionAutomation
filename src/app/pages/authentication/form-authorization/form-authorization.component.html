@@ -74,8 +74,8 @@
         <circle cx="75" cy="120" r="50" fill="white" clip-path="url(#circular-border)" />
       </svg>
       <div id="dataUser">
-        <span class="userName">{{dataCurrentUser.userName}}</span>
-        <span class="email">{{dataCurrentUser.email}}</span>
+        <span class="userName" *ngIf="dataCurrentUser.userName">{{dataCurrentUser.userName}}</span>
+        <span class="email" *ngIf="dataCurrentUser.email">{{dataCurrentUser.email}}</span>        
       </div>
 
     </div>
