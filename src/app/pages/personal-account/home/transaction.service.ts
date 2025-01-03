@@ -34,6 +34,7 @@ export class TransactionService {
     })
       .pipe(
         tap((transactions) => {
+          console.log('transactions',transactions)
           this.transactionsSubject.next(transactions.data);
         })
       );

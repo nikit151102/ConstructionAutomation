@@ -98,7 +98,9 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
           this.personalAccountService.changeBalance(response.data.balance);
           this.showTopUp = false;
           this.topUpAmount = 0;
-          this.transactionService.getTransactions();
+      this.transactionService.getTransactions().subscribe({
+        error: (err) => console.error('Error loading transactions', err),
+      });
           this.currentUserService.updateUserBalance(response.data.balance)
           this.cdr.detectChanges();
         },
