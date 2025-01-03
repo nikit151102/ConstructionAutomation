@@ -48,6 +48,12 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     } else {
       this.currentUserService.getUserData().subscribe((data: any) => {
         this.userBalance = data.data.balance;
+        const dataStage = {
+          userName: `${data.data.lastName ?? ''} ${data.data.firstName ?? ''}`.trim(),
+          email: data.data.email
+        };
+
+        localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', btoa(JSON.stringify(dataStage)));
         this.cdr.detectChanges();
       });
     }
@@ -98,9 +104,9 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
           this.personalAccountService.changeBalance(response.data.balance);
           this.showTopUp = false;
           this.topUpAmount = 0;
-      this.transactionService.getTransactions().subscribe({
-        error: (err) => console.error('Error loading transactions', err),
-      });
+          this.transactionService.getTransactions().subscribe({
+            error: (err) => console.error('Error loading transactions', err),
+          });
           this.currentUserService.updateUserBalance(response.data.balance)
           this.cdr.detectChanges();
         },
@@ -111,7 +117,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
 
 
 }
