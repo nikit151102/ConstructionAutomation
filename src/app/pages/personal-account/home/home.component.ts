@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { PersonalAccountService } from '../personal-account.service';
 import { ExpenseChartComponent } from './expense-chart/expense-chart.component';
-import { FilesTreeComponent } from './files-tree/files-tree.component';
+import { TransactionHistoryComponent } from './transaction-history/transaction-history.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ExpenseChartComponent, FilesTreeComponent],
+  imports: [CommonModule, ExpenseChartComponent, TransactionHistoryComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

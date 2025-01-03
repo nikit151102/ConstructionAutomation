@@ -1,0 +1,22 @@
+<div *ngIf="transactions.length; else noData">
+    <table>
+      <thead>
+        <tr>
+          <th>Created At</th>
+          <th>Changed At</th>
+          <th>Delta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions">
+          <td>{{ transaction.createDateTime | date: 'short' }}</td>
+          <td>{{ transaction.changeDateTime | date: 'short' }}</td>
+          <td>{{ transaction.delta }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #noData>
+    <p>No transactions available.</p>
+  </ng-template>
+  

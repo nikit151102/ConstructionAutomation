@@ -64,3 +64,12 @@ export interface MenuItem {
     class: string;
     command: () => void;
 }
+
+
+
+export interface Transaction {
+    createDateTime: string;
+    changeDateTime: string;
+    delta: number;
+  }
+  
