@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { PersonalAccountService } from './personal-account.service';
 import { CurrentUserService } from '../../services/current-user.service';
 import { FormsModule } from '@angular/forms';
+import { TransactionService } from './home/transaction.service';
 
 @Component({
   selector: 'app-personal-account',
@@ -23,14 +24,15 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   tabTitle: string = '';
   userBalance: any = 0;
   showTopUp: boolean = false;
-  topUpAmount: number = 0; 
+  topUpAmount: number = 0;
 
   private screenSubscription!: Subscription;
 
   constructor(public sidebarService: SidebarService,
     private cdr: ChangeDetectorRef,
     public personalAccountService: PersonalAccountService,
-    private currentUserService: CurrentUserService) { }
+    private currentUserService: CurrentUserService,
+    private transactionService: TransactionService) { }
 
   ngOnInit(): void {
     this.personalAccountService.balance$.subscribe((value: string) => {
@@ -84,17 +86,18 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   }
 
   toggleTopUp(): void {
-    this.showTopUp = !this.showTopUp; 
-    console.log('this.showTopUp',this.showTopUp)
+    this.showTopUp = !this.showTopUp;
+    console.log('this.showTopUp', this.showTopUp)
   }
 
   confirmTopUp(): void {
     if (this.topUpAmount > 0) {
       this.personalAccountService.makeTransaction(this.topUpAmount).subscribe({
         next: (response: any) => {
-          this.personalAccountService.changeBalance(response.data.balance); 
-          this.showTopUp = false; 
-          this.topUpAmount = 0; 
+          this.personalAccountService.changeBalance(response.data.balance);
+          this.showTopUp = false;
+          this.topUpAmount = 0;
+          this.transactionService.getTransactions();
           this.cdr.detectChanges();
         },
         error: (error) => {
