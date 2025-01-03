@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
@@ -39,7 +39,7 @@ export class HistoryFormingComponent implements OnInit {
   pdfBlob!: Blob;
   typeDocs: TypeDoc[] = [
     { name: 'Cопоставительная ведомость', code: '1' },
-    { name: 'Спецификация на материалы', code: '2' },
+    { name: 'Спецификация на метериалы', code: '2' },
     { name: 'Спецификация работ', code: '3' },
   ];
   fields = [
@@ -49,6 +49,7 @@ export class HistoryFormingComponent implements OnInit {
     { key: 'InitDate', label: 'Дата' },
     { key: 'DocumentId', label: '' }
   ];
+  @Input() selectTypeDoc: string = ''
   selectedTypeDocs: TypeDoc[] = [];
   dropdownOpen: boolean = false;
   currentSortField: string = '';
@@ -61,6 +62,17 @@ export class HistoryFormingComponent implements OnInit {
       : 'Фильтр';
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectTypeDoc']) {
+      this.selectedTypeDocs = [];
+      const selectedDoc = this.typeDocs.find(doc => doc.name === this.selectTypeDoc);
+      if (selectedDoc) {
+        this.selectedTypeDocs.push(selectedDoc); 
+        this.filterDocsByType();
+      } 
+    }
+  }
+  
   constructor(
     public historyFormingService: HistoryFormingService,
     private currentUserService: CurrentUserService,
