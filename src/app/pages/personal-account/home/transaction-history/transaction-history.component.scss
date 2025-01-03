@@ -1,0 +1,141 @@
+.transactions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: calc(100vh - 365px);
+    height: 100%;
+    overflow-y: auto;
+}
+
+.transaction-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.transaction-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.transaction-date {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.transaction-delta {
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.transaction-delta.positive {
+    color: #28a745;
+}
+
+.transaction-delta.negative {
+    color: #dc3545;
+}
+
+.transaction-amount {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.transaction-amount.positive {
+    color: #28a745;
+}
+
+.transaction-amount.negative {
+    color: #dc3545;
+}
+
+.arrow {
+    font-size: 1rem;
+}
+
+.arrow.up {
+    color: #28a745;
+}
+
+.arrow.down {
+    color: #dc3545;
+}
+
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-box {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.filter-sort-container {
+    position: relative;
+}
+
+.dropdown-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdown-content {
+    display: flex;
+    position: absolute;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    z-index: 1;
+    padding: 10px 0;
+    margin-top: 5px;
+    flex-direction: column;
+}
+
+.dropdown-content button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.2s;
+}
+
+.dropdown-content button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.transactions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: calc(100vh - 365px);
+    height: 100%;
+    overflow-y: auto;
+}

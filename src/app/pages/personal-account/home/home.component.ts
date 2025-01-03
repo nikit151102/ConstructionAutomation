@@ -5,6 +5,7 @@ import { CurrentUserService } from '../../../services/current-user.service';
 import { PersonalAccountService } from '../personal-account.service';
 import { ExpenseChartComponent } from './expense-chart/expense-chart.component';
 import { TransactionHistoryComponent } from './transaction-history/transaction-history.component';
+import { TransactionService } from './transaction.service';
 
 @Component({
   selector: 'app-home',
@@ -17,11 +18,15 @@ export class HomeComponent implements OnInit {
 
   constructor(private router: Router,
     public currentUserService: CurrentUserService,
-    private personalAccountService: PersonalAccountService) {
+    private personalAccountService: PersonalAccountService,
+    private transactionService: TransactionService) {
     this.personalAccountService.changeTitle('Главная')
   }
 
   ngOnInit(): void {
+    this.transactionService.getTransactions().subscribe({
+      error: (err) => console.error('Error loading transactions', err),
+    });
   }
 
   statisticsCards = [

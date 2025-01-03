@@ -1,12 +1,13 @@
 <div class="p-d-flex p-ai-center p-flex-column" style="width: 100%">
     <div style="display: flex; flex-direction: row;">
-        <p-dropdown [options]="intervals" [(ngModel)]="selectedInterval" (onChange)="updateChart()"
-            placeholder="Выберите интервал" class="p-mb-3"></p-dropdown>
-
-        <p style=" width: 79%; text-align: center; margin: 0; color: #8392a5; font-size: 20px;">
-            Статистика расходов
-        </p>
+      <!-- <p-dropdown [options]="intervals" [(ngModel)]="selectedInterval" (onChange)="updateChart()"
+        placeholder="Выберите интервал" class="p-mb-3"></p-dropdown> -->
+  
+      <p style="width: 79%; text-align: center; margin: 0; color: #8392a5; font-size: 20px;">
+        Статистика транзакций
+      </p>
     </div>
-
-    <p-chart type="line" [data]="chartData" [options]="chartOptions" style="width: 100%; max-width: 800px;"></p-chart>
-</div>
+  
+    <p-chart type="bar" [data]="chartData" [options]="chartOptions" style="width: 100%; max-width: 800px;"></p-chart>
+  </div>
+  
