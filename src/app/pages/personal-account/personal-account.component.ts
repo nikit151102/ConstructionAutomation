@@ -94,10 +94,12 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     if (this.topUpAmount > 0) {
       this.personalAccountService.makeTransaction(this.topUpAmount).subscribe({
         next: (response: any) => {
+          this.userBalance = response.data.balance;
           this.personalAccountService.changeBalance(response.data.balance);
           this.showTopUp = false;
           this.topUpAmount = 0;
           this.transactionService.getTransactions();
+          this.currentUserService.updateUserBalance(response.data.balance)
           this.cdr.detectChanges();
         },
         error: (error) => {
