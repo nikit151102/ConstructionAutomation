@@ -15,7 +15,7 @@ import { TransactionService } from '../transaction.service';
 export class ExpenseChartComponent implements OnInit {
   chartData: any;
   chartOptions: any;
-  selectedInterval: string = 'month';
+  selectedInterval: string = 'all';
 
   transactions: any;
 
@@ -30,11 +30,37 @@ export class ExpenseChartComponent implements OnInit {
   ngOnInit(): void {
     this.transactionService.transactions$.subscribe({
       next: (data) => {
-        this.transactions = data;
+        this.transactions = data.map(transaction => {
+          const parsedDate = this.parseDate(transaction.createDateTime);
+          if (parsedDate !== null) {
+            transaction.createDateTime = parsedDate.toISOString();  
+          }
+          return transaction;
+        });
+
+        console.log('transactions Data', this.transactions);
         this.updateChart();
       }
     });
+
+    console.log('.getTransactionsSubject()', this.transactionService.getTransactionsSubject());
+    this.transactions = this.transactionService.getTransactionsSubject().map(transaction => {
+      const parsedDate = this.parseDate(transaction.createDateTime);
+      if (parsedDate !== null) {
+        transaction.createDateTime = parsedDate.toISOString(); 
+      }
+      return transaction;
+    });
     this.updateChart();
+  }
+
+  parseDate(dateString: string): Date | null {
+    const parsedDate = new Date(dateString);
+    if (isNaN(parsedDate.getTime())) {
+      console.error(`Некорректная дата: ${dateString}`);
+      return null;
+    }
+    return parsedDate;
   }
 
   getFilteredData() {
@@ -52,18 +78,24 @@ export class ExpenseChartComponent implements OnInit {
       case 'year':
         startDate = new Date(now.getFullYear(), 0, 1);
         break;
+        case 'all':
+          return this.transactions.sort((a: any, b: any) => new Date(a.createDateTime).getTime() - new Date(b.createDateTime).getTime());
       default:
         startDate = new Date(0);
     }
 
-    return this.transactions.filter((transaction: any) => transaction.createDateTime >= startDate);
+    return this.transactions.filter((transaction: any) => {
+      const createDateTime = transaction.createDateTime;
+      return new Date(createDateTime) >= startDate; // Преобразуем обратно в объект Date для сравнения
+    });
   }
 
   groupTransactionsByDate(filteredData: any[]) {
     const groupedData: { [key: string]: number } = {};
 
     filteredData.forEach(transaction => {
-      const dateString = transaction.createDateTime.toLocaleDateString();
+      // Преобразуем строку в объект Date, если это нужно
+      const dateString = new Date(transaction.createDateTime).toLocaleDateString();
       if (!groupedData[dateString]) {
         groupedData[dateString] = 0;
       }
