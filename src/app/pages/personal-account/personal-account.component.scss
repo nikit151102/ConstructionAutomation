@@ -38,7 +38,7 @@
         font-size: 18px;
     }
 
-    .balance{
+    .balance {
         margin: 0;
         font-size: 15px;
     }
@@ -76,4 +76,40 @@
 
 .btn-menu {
     padding-left: 15px;
+}
+
+.top-up {
+    display: flex;
+    gap: 5px;
+    position: absolute;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    z-index: 1;
+    padding: 10px;
+    margin-top: 1px;
+    flex-direction: column;
+    right: 15px;
+    top: 65px;
+
+    .top-up-input {
+        width: 150px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .top-up-button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #45a049;
+        }
+    }
 }

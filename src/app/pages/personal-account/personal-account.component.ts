@@ -7,11 +7,12 @@ import { SidebarService } from '../../components/sidebar/sidebar.service';
 import { Subscription } from 'rxjs';
 import { PersonalAccountService } from './personal-account.service';
 import { CurrentUserService } from '../../services/current-user.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-personal-account',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, SidebarComponent, ButtonModule],
+  imports: [CommonModule, RouterOutlet, SidebarComponent, ButtonModule, FormsModule],
   templateUrl: './personal-account.component.html',
   styleUrls: ['./personal-account.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default
@@ -21,6 +22,8 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   isSmallScreen = false;
   tabTitle: string = '';
   userBalance: any = 0;
+  showTopUp: boolean = false;
+  topUpAmount: number = 0; 
 
   private screenSubscription!: Subscription;
 
@@ -79,4 +82,26 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   private checkScreenSize(): void {
     this.isSmallScreen = window.innerWidth < 768;
   }
+
+  toggleTopUp(): void {
+    this.showTopUp = !this.showTopUp; 
+    console.log('this.showTopUp',this.showTopUp)
+  }
+
+  confirmTopUp(): void {
+    if (this.topUpAmount > 0) {
+      this.personalAccountService.makeTransaction(this.topUpAmount).subscribe({
+        next: (response: any) => {
+          this.personalAccountService.changeBalance(response.data.balance); 
+          this.showTopUp = false; 
+          this.topUpAmount = 0; 
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Ошибка при пополнении:', error);
+        }
+      });
+    }
+  }
+
 }

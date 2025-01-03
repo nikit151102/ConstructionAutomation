@@ -11,10 +11,27 @@
         {{tabTitle}}
       </p>
       
-      <p class="balance">
+      <p class="balance" (click)="toggleTopUp()">
         Баланс: {{ userBalance }} &#8381;
       </p>
 
+      
+
+    </div>
+
+    <div *ngIf="showTopUp" class="top-up">
+      <input 
+        type="number" 
+        [(ngModel)]="topUpAmount" 
+        placeholder="Введите сумму" 
+        class="top-up-input"
+      />
+      <p-button 
+        label="Пополнить" 
+        icon="pi pi-check" 
+        (click)="confirmTopUp()" 
+        styleClass="top-up-button"
+      ></p-button>
     </div>
     <router-outlet></router-outlet>
   </div>
