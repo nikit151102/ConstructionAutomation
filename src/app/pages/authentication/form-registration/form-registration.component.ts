@@ -53,6 +53,7 @@ export class FormRegistrationComponent {
         FirstName: formData.username,
         Email: formData.email,
         Password: formData.password,
+        isMailSend: false
       };
 
       this.registrationService.signUn(Data).subscribe(
