@@ -34,7 +34,7 @@ export class CreateFolderComponent implements OnInit, AfterViewInit {
 
   onEnter(): void {
     if (this.value.trim()) {
-  
+
       this.folderService.addFolder({
         "name": this.value,
         "userDocumentDirectoryId": this.myDocumentsService.BreadcrumbItems.length > 0
@@ -42,23 +42,18 @@ export class CreateFolderComponent implements OnInit, AfterViewInit {
           : null
       }).subscribe(
         (data: any) => {
-          const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
-            ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-            : "";
-
+          const idFolder = this.myDocumentsService.getIdFolder();
           this.myDocumentsService.loadData(idFolder);
-          this.myDocumentsService.visibleCreateFolder = false;
-          this.value = '';
+          this.onEsc()
         },
         (error) => {
-          this.myDocumentsService.visibleCreateFolder = false;
-          this.value = '';
+          this.onEsc();
           this.toastService.showError('Ошибка', 'Не удалось создать папку. Попробуйте снова.');
         }
       );
     }
   }
-  
+
   onEsc(): void {
     this.myDocumentsService.visibleCreateFolder = false;
     this.value = '';

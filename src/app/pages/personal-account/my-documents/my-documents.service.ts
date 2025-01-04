@@ -13,15 +13,23 @@ interface MenuItem {
   [key: string]: any;
 }
 
+interface Item {
+  documentId: string,
+  directoryId: string | null
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyDocumentsService {
 
-  private apiUrl = environment.apiUrl;
-
   BreadcrumbItems: MenuItem[] = [];
+
+  public getIdFolder(){
+    return this.BreadcrumbItems.length > 0
+    ? this.BreadcrumbItems[this.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+    : "";
+  }
 
   private moveFileSubject = new Subject<any>();
   private moveDirectorySubject = new Subject<any>();
@@ -64,9 +72,19 @@ export class MyDocumentsService {
 
   constructor(private http: HttpClient, private progressSpinnerService: ProgressSpinnerService, private toastService: ToastService) { }
 
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('YXV0aFRva2Vu');
+    if (!token) {
+      throw new Error('Token not found');
+    }
+    return new HttpHeaders()
+      .set('Accept', 'application/json')
+      .set('Authorization', `Bearer ${token}`);
+  }
+
+
 
   upload(data: { DirectoryId: string; files: File[] }): Observable<any> {
-    const url = `${this.apiUrl}/api/Profile/Upload`;
     const formData = new FormData();
 
     formData.append('DirectoryId', data.DirectoryId);
@@ -74,168 +92,91 @@ export class MyDocumentsService {
       formData.append('Files', file);
     });
 
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.post<any>(url, formData, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      }),
+    return this.http.post<any>(`${environment.apiUrl}/api/Profile/Upload`, formData, {
+      headers: this.getAuthHeaders()
     });
   }
 
   downloadFile(id: string): Observable<any> {
-    const url = `${this.apiUrl}/api/Profile/DownloadFile/${id}`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.get<Blob>(url, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }),
+    return this.http.get<Blob>(`${environment.apiUrl}/api/Profile/DownloadFile/${id}`, {
+      headers: this.getAuthHeaders(),
       responseType: 'json',
     });
   }
 
   getAllUserDirectories(): Observable<any[]> {
-    const userId = localStorage.getItem('VXNlcklk');
-    const url = `${this.apiUrl}/api/Profile/UserDirectories`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.get<any[]>(url, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }),
+    return this.http.get<any[]>(`${environment.apiUrl}/api/Profile/UserDirectories`, {
+      headers: this.getAuthHeaders()
     });
   }
 
   getAllFileOfDirectory(): Observable<any[]> {
-    const userId = localStorage.getItem('VXNlcklk');
-    const url = `${this.apiUrl}/api/Profile/UserDirectories`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.get<any[]>(url, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }),
+    return this.http.get<any[]>(`${environment.apiUrl}/api/Profile/UserDirectories`, {
+      headers: this.getAuthHeaders()
     });
   }
 
   deleteFile(id: string): Observable<any> {
-    const url = `${this.apiUrl}/api/Profile/${id}`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.delete<any>(url, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      })
+    return this.http.delete<any>(`${environment.apiUrl}/api/Profile/${id}`, {
+      headers: this.getAuthHeaders()
     });
   }
 
   renameFile(id: string, data: any): Observable<any> {
-    const url = `${this.apiUrl}/api/Profile/UpdateUserFile`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.put<any>(url, data, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      })
+    return this.http.put<any>(`${environment.apiUrl}/api/Profile/UpdateUserFile`, data, {
+      headers: this.getAuthHeaders()
     });
   }
 
 
   openFolder(idFolder: string) {
-    const url = `${this.apiUrl}/api/Profile/UserDirectories/${idFolder}`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.get<any[]>(url, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }),
+    return this.http.get<any[]>(`${environment.apiUrl}/api/Profile/UserDirectories/${idFolder}`, {
+      headers: this.getAuthHeaders()
     });
   }
 
-  addFileMove(data: {
-    documentId: string,
-    directoryId: string
-  }) {
-    const url = `${this.apiUrl}/api/Profile/UserDirectories/Add`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.post<any[]>(url, data, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }),
+  addFileMove(data: Item) {
+    return this.http.post<any[]>(`${environment.apiUrl}/api/Profile/UserDirectories/Add`, data, {
+      headers: this.getAuthHeaders()
     });
   }
 
-  removeFileMove(data: {
-    documentId: string,
-    directoryId: string
-  }) {
-    const url = `${this.apiUrl}/api/Profile/UserDirectories/Remove`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.post<any[]>(url, data, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }),
+  removeFileMove(data: Item) {
+    return this.http.post<any[]>(`${environment.apiUrl}/api/Profile/UserDirectories/Remove`, data, {
+      headers: this.getAuthHeaders()
     });
   }
 
-  addOrderMove(data: {
-    documentId: string,
-    directoryId: string | null
-  }) {
-    const url = `${this.apiUrl}/api/Profile/UserDirectories/AddDirectory`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.post<any[]>(url, data, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }),
+  addOrderMove(data: Item) {
+    return this.http.post<any[]>(`${environment.apiUrl}/api/Profile/UserDirectories/AddDirectory`, data, {
+      headers: this.getAuthHeaders()
     });
   }
 
-  removeOrderMove(data: {
-    documentId: string,
-    directoryId: string
-  }) {
-    const url = `${this.apiUrl}/api/Profile/UserDirectories/RemoveDirectory`;
-    const token = localStorage.getItem('YXV0aFRva2Vu');
-
-    return this.http.post<any[]>(url, data, {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }),
+  removeOrderMove(data: Item) {
+    return this.http.post<any[]>(`${environment.apiUrl}/api/Profile/UserDirectories/RemoveDirectory`, data, {
+      headers: this.getAuthHeaders()
     });
   }
 
 
-  loadData(idFolder: string) {
-
-    if (this.BreadcrumbItems.length < 1 && idFolder == '') {
-
-      this.getAllUserDirectories().subscribe((data: any) => {
-
-        this.storageInfo = { 'storageVolumeCopacity': 200000000, 'storageVolumeUsage': 5000000 };
-        const files = [...data.data.documents, ...data.data.subDirectories]
+private filterData(data:any){
+  return  [...data.documents, ...data.subDirectories]
           .filter((file: any) => file.type)
           .map((file: any) => ({
             ...file,
             icon: file.type === 'file' ? 'pngs/file.png' : file.type === 'directory' ? 'pngs/folder.png' : ''
           }));
 
-        this.setFiles(files);
+}
+
+  loadData(idFolder: string) {
+
+    if (this.BreadcrumbItems.length < 1 && idFolder == '') {
+
+      this.getAllUserDirectories().subscribe((data: any) => {
+        this.storageInfo = { 'storageVolumeCopacity': 200000000, 'storageVolumeUsage': 5000000 };
+        this.setFiles(this.filterData(data.data));
         this.progressSpinnerService.hide();
       },
         (error) => {
@@ -311,14 +252,7 @@ export class MyDocumentsService {
       })
     ).subscribe((data: any) => {
       this.storageInfo = { 'storageVolumeCopacity': 200000000, 'storageVolumeUsage': 5000000 };
-      const files = [...data.data.documents, ...data.data.subDirectories]
-        .filter((file: any) => file.type)
-        .map((file: any) => ({
-          ...file,
-          icon: file.type === 'file' ? 'pngs/file.png' : file.type === 'directory' ? 'pngs/folder.png' : ''
-        }));
-
-      this.setFiles(files);
+      this.setFiles(this.filterData(data.data));
     });
   }
 
@@ -332,14 +266,7 @@ export class MyDocumentsService {
       })
     ).subscribe((data: any) => {
       this.storageInfo = { 'storageVolumeCopacity': 200000000, 'storageVolumeUsage': 5000000 };
-      const files = [...data.data.documents, ...data.data.subDirectories]
-        .filter((file: any) => file.type)
-        .map((file: any) => ({
-          ...file,
-          icon: file.type === 'file' ? 'pngs/file.png' : file.type === 'directory' ? 'pngs/folder.png' : ''
-        }));
-
-      this.setFiles(files);
+      this.setFiles(this.filterData(data.data));
     });
   }
 

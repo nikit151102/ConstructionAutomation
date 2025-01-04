@@ -22,7 +22,7 @@ import { FolderService } from './folder.service';
 export class FolderComponent implements OnInit {
 
   @Input() folder!: any;
-  @Input() isdelete: boolean = false;
+  // @Input() isdelete: boolean = false;
   @Output() folderClick = new EventEmitter<void>();
   @ViewChild('cm') contextMenu!: ContextMenu;
   visibleShonRename: boolean = false;

@@ -23,14 +23,17 @@ export class FileComponent implements OnInit {
 
   @Input() file!: any;
   @Input() isdelete: boolean = false;
-  @Output() folderClick = new EventEmitter<void>();
+  // @Output() folderClick = new EventEmitter<void>();
   @ViewChild('cm') contextMenu!: ContextMenu;
   value!: string;
+  isVertical: boolean = false;
+  visiblemoveFile: any;
+  // moveDirectory: any;
   contextMenuItems: MenuItem[] = [
     {
       label: 'Скачать',
       icon: 'pi pi-download',
-      command: () => this.downloadFile(this.file.id),
+      command: () => this.commomFileService.downloadFile(this.file.id),
     },
     {
       label: 'Переименовать',
@@ -56,7 +59,6 @@ export class FileComponent implements OnInit {
 
   }
 
-  isVertical: boolean = false;
   ngOnInit(): void {
     this.myDocumentsService.isVertical$.subscribe((type: boolean) => {
       this.isVertical = type;
@@ -68,8 +70,6 @@ export class FileComponent implements OnInit {
     this.myDocumentsService.setMoveFile(file);
   }
 
-  visiblemoveFile: any;
-  moveDirectory: any;
   subscribeToMoveEvents(): void {
     this.myDocumentsService.moveFileObservable.subscribe((file) => {
       this.visiblemoveFile = file;
@@ -85,23 +85,20 @@ export class FileComponent implements OnInit {
   }
 
 
-  handleClick() {
-    if (this.file.isFolder) {
-      this.folderClick.emit();
-    }
-  }
+  // handleClick() {
+  //   if (this.file.isFolder) {
+  //     this.folderClick.emit();
+  //   }
+  // }
 
   deleteFile(id: string) {
     this.myDocumentsService.deleteFile(id).subscribe(
       (data: any) => {
-        const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
-          ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-          : "";
+        const idFolder = this.myDocumentsService.getIdFolder();
         this.myDocumentsService.loadData(idFolder);
         this.toastService.showSuccess('Успешно!', 'Операция выполнена успешно');
       },
       (error: any) => {
-        console.error('Ошибка при удалении файла:', error);
         this.toastService.showError('Ошибка!', 'Не удалось удалить файл');
       }
     );
@@ -125,21 +122,14 @@ export class FileComponent implements OnInit {
     this.myDocumentsService.renameFile(this.file.id, data).subscribe(
       (data: any) => {
         this.closeDialogRename();
-        const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
-          ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-          : "";
+        const idFolder = this.myDocumentsService.getIdFolder();
         this.myDocumentsService.loadData(idFolder);
-        this.toastService.showSuccess('Успех!', 'Файл переименован');
+        this.toastService.showSuccess('Успешно!', 'Файл переименован');
       },
       (error: any) => {
-        console.error('Ошибка при переименовании файла:', error);
         this.toastService.showError('Ошибка!', 'Не удалось переименовать файл');
       }
     );
-  }
-
-  downloadFile(fileId: string) {
-    this.commomFileService.downloadFile(fileId);
   }
 
 }
