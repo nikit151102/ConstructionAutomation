@@ -6,6 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DialogStorageService {
 
+  currentAction: string = ''
+
   constructor() { }
 
   private isListFiles = new BehaviorSubject<boolean>(false);
@@ -25,7 +27,6 @@ export class DialogStorageService {
   }
 
 
-  currentAction:string = ''
   private isVisibleDialog = new BehaviorSubject<boolean>(false);
   isVisibleDialog$ = this.isVisibleDialog.asObservable();
 
@@ -37,5 +38,16 @@ export class DialogStorageService {
     return this.isVisibleDialog.getValue();
   }
 
+  
+  private isfileAction = new BehaviorSubject<string>('');
+  isfileAction$ = this.isfileAction.asObservable();
+
+  setFileAction(value: string): void {
+    this.isfileAction.next(value);
+  }
+
+  getFileAction(): string {
+    return this.isfileAction.getValue();
+  }
 
 }

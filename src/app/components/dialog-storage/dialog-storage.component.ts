@@ -32,6 +32,7 @@ export class DialogStorageComponent {
   visibleDialog: boolean = false;
   Files: any;
   selectFile: any;
+  fileAction:string = '';
   stateOptions = [
     { label: 'Плитка', value: true },
     { label: 'Список', value: false },
@@ -44,6 +45,7 @@ export class DialogStorageComponent {
     this.subscribeToFileListVisibility();
     this.subscribeToViewType();
     this.fetchUserDocuments();
+    this.subscribeToFileAction();
   }
 
   private subscribeToViewType(): void {
@@ -51,6 +53,13 @@ export class DialogStorageComponent {
       this.isVertical = isVertical;
     });
   }
+
+  private subscribeToFileAction(): void {
+    this.dialogStorageService.isfileAction$.subscribe((action) => {
+      this.fileAction = action;
+    });
+  }
+
 
   private subscribeToFileListVisibility(): void {
     this.dialogStorageService.isListFilesVisible$.subscribe((visible) => {

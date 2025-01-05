@@ -52,6 +52,9 @@ export class FormsComponent {
   onOpenDialog(fileInput: FileInputComponent | null, action: string): void {
     if (fileInput) {
       this.activeFileInput = fileInput; // Сохраняем ссылку на текущий file-input
+      this.dialogStorageService.setFileAction('select')
+    }else{
+      this.dialogStorageService.setFileAction('click')
     }
     this.dialogStorageService.currentAction = action;
     this.dialogStorageService.setIsVisibleDialog(true); // Открываем диалог

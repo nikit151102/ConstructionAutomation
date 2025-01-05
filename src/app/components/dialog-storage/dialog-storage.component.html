@@ -16,7 +16,7 @@
         <!-- Файлы -->
         <ng-container *ngFor="let file of Files">
           <div *ngIf="file.type === 'file'">
-            <app-file [file]="file" [action]="'select'"  (selectFile)="setSelectFile($event)"></app-file>
+            <app-file [file]="file" [action]="fileAction"  (selectFile)="setSelectFile($event)"></app-file>
           </div>
         </ng-container>
   
