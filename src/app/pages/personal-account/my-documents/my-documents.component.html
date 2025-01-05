@@ -58,7 +58,7 @@
     <ng-container *ngFor="let file of testFiles">
       <div *ngIf="file.type === 'file'" [attr.data-id]="file.id" class="draggable-item" draggable="true"
         (dragstart)="onDragStart($event, file)">
-        <app-file [file]="file" [action]="'select'"></app-file>
+        <app-file [file]="file" [action]="'click'"></app-file>
       </div>
     </ng-container>
 
