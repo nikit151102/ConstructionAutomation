@@ -91,7 +91,7 @@ export class DialogStorageComponent {
 
   DirectorySelection(){
     const lastBreadcrumbItem = this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1];
-    this.confirm.emit({confirm: lastBreadcrumbItem.idFolder, type:'selectDirectory'});
+    this.confirm.emit({confirm: lastBreadcrumbItem, type:'selectDirectory'});
   }
 
   setSelectFile(event:any){

@@ -34,6 +34,8 @@ export class FormsComponent {
     return this._config;
   }
 
+  selectedFolder: string = '';
+
   onConfigChange() {
     this.files = {}; // Сброс файлов
     this.sortedControls = [];
@@ -41,6 +43,7 @@ export class FormsComponent {
     this.form.reset(); // Сбрасываем все значения формы
     this.updateSortedControls();
     this.cdr.detectChanges();
+     this.selectedFolder = `${this._config.nameDoc}`
 
   }
 
@@ -53,7 +56,7 @@ export class FormsComponent {
     if (fileInput) {
       this.activeFileInput = fileInput; // Сохраняем ссылку на текущий file-input
       this.dialogStorageService.setFileAction('select')
-    }else{
+    } else {
       this.dialogStorageService.setFileAction('click')
     }
     this.dialogStorageService.currentAction = action;
@@ -65,10 +68,11 @@ export class FormsComponent {
     if (this.activeFileInput && event.type === 'selectFile') {
       this.activeFileInput.confirmSelection(event.confirm); // Вызываем метод file-input
     } else if (event.type === 'selectDirectory') {
-      console.log('event.confirm', event.confirm)
       this.form.patchValue({
-        directoryId: event.confirm
+        directoryId: event.confirm.idFolder
       });
+
+      this.selectedFolder = event.confirm.label
     }
   }
 
@@ -88,6 +92,7 @@ export class FormsComponent {
     this.dialogStorageService.setIsVisibleDialog(false);
     this.initForm();
     this.updateSortedControls();
+   
   }
 
   updateSortedControls() {
