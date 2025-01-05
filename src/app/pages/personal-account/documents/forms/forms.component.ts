@@ -49,16 +49,23 @@ export class FormsComponent {
 
   activeFileInput!: FileInputComponent; // Хранит ссылку на текущий FileInputComponent
 
-  onOpenDialog(fileInput: FileInputComponent): void {
-    this.activeFileInput = fileInput; // Сохраняем ссылку на текущий file-input
+  onOpenDialog(fileInput: FileInputComponent | null, action: string): void {
+    if (fileInput) {
+      this.activeFileInput = fileInput; // Сохраняем ссылку на текущий file-input
+    }
+    this.dialogStorageService.currentAction = action;
     this.dialogStorageService.setIsVisibleDialog(true); // Открываем диалог
   }
 
 
   onDialogConfirm(event: any) {
-    console.log('event', event)
-    if (this.activeFileInput) {
-      this.activeFileInput.confirmSelection(event); // Вызываем метод file-input
+    if (this.activeFileInput && event.type === 'selectFile') {
+      this.activeFileInput.confirmSelection(event.confirm); // Вызываем метод file-input
+    } else if (event.type === 'selectDirectory') {
+      console.log('event.confirm', event.confirm)
+      this.form.patchValue({
+        directoryId: event.confirm
+      });
     }
   }
 
@@ -94,7 +101,7 @@ export class FormsComponent {
         control.validators || [],
       ];
     });
-
+    formControls['directoryId'] = ["00000000-0000-0000-0000-000000000000", []];
     this.form = this.fb.group(formControls);
   }
 
@@ -136,26 +143,26 @@ export class FormsComponent {
     // Обработка обычных полей
     this.config.controls.forEach((control: any) => {
       const value = this.form.get(control.name)?.value;
-    
+
       if (control.type === 'dropdown' && control.isFileInput) {
         const fileControlName = control.name.replace('ListName', '');
         const fileData = this.files[fileControlName];
-    
+
         if (fileData && fileData.sheetName && !fileData.fileId) {
           addFieldToFormData(control.name, fileData.sheetName);
         }
       } else if (control.type === 'file' && this.files[control.name]) {
         const fileData = this.files[control.name];
-    
+
         if (fileData) {
           const fileId = fileData.fileId;
-    
+
           if (fileId) {
             // Если fileId присутствует, добавляем его в форму как отдельное поле с суффиксом Id
             addFieldToFormData(`${control.name}Id`, fileId);
             if (fileData.file && fileData.file.name) {
               addFieldToFormData(`${control.name}ListName`, fileData.sheetName); // Добавляем имя файла
-    
+
             }
           } else {
             // Если fileId нет, добавляем файл в форму
@@ -169,7 +176,13 @@ export class FormsComponent {
         addFieldToFormData(control.name, value);
       }
     });
-    
+
+
+    // Добавление поля directoryId
+    const directoryId = this.form.get('directoryId')?.value;
+    if (directoryId !== undefined) {
+      addFieldToFormData('directoryId', directoryId); // Добавляем поле directoryId
+    }
 
     // Добавление UserId, если оно доступно
     const userId = localStorage.getItem('VXNlcklk');

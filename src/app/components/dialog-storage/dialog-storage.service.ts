@@ -25,7 +25,7 @@ export class DialogStorageService {
   }
 
 
-
+  currentAction:string = ''
   private isVisibleDialog = new BehaviorSubject<boolean>(false);
   isVisibleDialog$ = this.isVisibleDialog.asObservable();
 

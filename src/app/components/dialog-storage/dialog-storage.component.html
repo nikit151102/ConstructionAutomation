@@ -31,6 +31,16 @@
   
     <div class="sticky-footer">
       <p-button label="Отмена" class="button" severity="secondary" (onClick)="visibleDialog = false"></p-button>
-      <p-button label="Добавить" (onClick)="visibleDialog = false; confirmSelection()"></p-button>
+      
+      <ng-container [ngSwitch]="dialogStorageService.currentAction">
+        <!-- Кнопка для добавления -->
+        <ng-container *ngSwitchCase="'add'">
+          <p-button label="Добавить" (onClick)="visibleDialog = false; confirmSelection()"></p-button>
+        </ng-container>
+        <!-- Кнопка для сохранения -->
+        <ng-container *ngSwitchCase="'save'">
+          <p-button label="Сохранить" (onClick)="visibleDialog = false; DirectorySelection()"></p-button>
+        </ng-container>
+      </ng-container>
     </div>
   </p-dialog>

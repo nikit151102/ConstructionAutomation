@@ -15,12 +15,11 @@
       <div *ngSwitchCase="'file'" class="file-input-container">
         <label>{{ control.label }}</label>
         <app-file-input [chooseLabel]="control.label" [chooseIcon]="'pi pi-upload'" [accept]="control.accept"
-          (onSelect)="onFileSelect($event, control.name)" (confirm)="onOpenDialog($event)"></app-file-input>
+          (onSelect)="onFileSelect($event, control.name)" (confirm)="onOpenDialog($event, 'add')"></app-file-input>
       </div>
     </ng-container>
   </div>
-
-
+<a (click)="onOpenDialog(null, 'save')">Выбрать папку</a>
   <button (click)="onSubmit()">Сформировать</button>
   
 </form>

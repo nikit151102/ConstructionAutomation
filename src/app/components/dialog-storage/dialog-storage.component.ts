@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class DialogStorageComponent {
 
-  @Output() confirm = new EventEmitter<void>();
+  @Output() confirm = new EventEmitter();
   visible: boolean = false;
   isVertical: boolean = false;
   visibleDialog: boolean = false;
@@ -37,7 +37,7 @@ export class DialogStorageComponent {
     { label: 'Список', value: false },
   ];
 
-  constructor(private dialogStorageService: DialogStorageService, private myDocumentsService: MyDocumentsService) { }
+  constructor(public dialogStorageService: DialogStorageService, private myDocumentsService: MyDocumentsService) { }
 
   ngOnInit(): void {
     this.subscribeToDialogVisibility();
@@ -77,11 +77,15 @@ export class DialogStorageComponent {
   }
 
   confirmSelection() {
-    this.confirm.emit(this.selectFile);
+    this.confirm.emit({confirm: this.selectFile, type:'selectFile'});
+  }
+
+  DirectorySelection(){
+    const lastBreadcrumbItem = this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1];
+    this.confirm.emit({confirm: lastBreadcrumbItem.idFolder, type:'selectDirectory'});
   }
 
   setSelectFile(event:any){
-    console.log('setSelectFile',event)
     this.selectFile = event;
   }
 
