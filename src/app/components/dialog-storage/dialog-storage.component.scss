@@ -1,0 +1,26 @@
+.sticky-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 10;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+app-breadcrumb {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.file-list {
+    margin-top: 60px;
+    padding-bottom: 70px;
+}

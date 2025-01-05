@@ -1,7 +1,7 @@
 <p-dialog header="Выберите файл" [modal]="true" [(visible)]="visibleDialog" [style]="{ width: '60%' }">
-    <p-selectButton [options]="stateOptions" [(ngModel)]="isVertical" (onChange)="onChangeType($event.value)"
+    <!-- <p-selectButton [options]="stateOptions" [(ngModel)]="isVertical" (onChange)="onChangeType($event.value)"
       optionLabel="label" optionValue="value">
-    </p-selectButton>
+    </p-selectButton> -->
     <app-breadcrumb></app-breadcrumb>
     <div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
       <ng-container *ngIf="Files && Files.length > 0; else noFiles">

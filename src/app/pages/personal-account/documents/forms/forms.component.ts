@@ -85,6 +85,7 @@ export class FormsComponent {
 
   ngOnInit(): void {
     this.sortedControls = null;
+    this.dialogStorageService.setIsVisibleDialog(false);
     this.initForm();
     this.updateSortedControls();
   }
@@ -209,4 +210,7 @@ export class FormsComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    this.dialogStorageService.setIsVisibleDialog(false);
+  }
 }
