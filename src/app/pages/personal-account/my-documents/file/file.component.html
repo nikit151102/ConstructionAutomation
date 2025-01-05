@@ -1,8 +1,17 @@
 <p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
 
+<ng-container *ngIf="action === 'select'">
+  <input
+  type="checkbox"
+  class="file-checkbox"
+  [checked]="isSelected"
+  (change)="toggleSelection()"
+  />
+</ng-container>
+
 <div class="file-item" [ngClass]="isVertical ? 'file-item--vertical' : 'file-item--horizontal'"
-  [pTooltip]="file.fileName" tooltipPosition="bottom" (click)="onRightClick($event, file)"
-  (contextmenu)="onRightClick($event, file)">
+  [pTooltip]="file.fileName" tooltipPosition="bottom" (click)="handleAction($event)"
+  (contextmenu)="onRightClick($event)">
 
   <img [src]="file.icon" alt="File Icon" class="file-icon" />
   <div class="file-details">

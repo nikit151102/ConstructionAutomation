@@ -1,0 +1,36 @@
+<p-dialog header="Выберите файл" [modal]="true" [(visible)]="visibleDialog" [style]="{ width: '60%' }">
+    <p-selectButton [options]="stateOptions" [(ngModel)]="isVertical" (onChange)="onChangeType($event.value)"
+      optionLabel="label" optionValue="value">
+    </p-selectButton>
+    <app-breadcrumb></app-breadcrumb>
+    <div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
+      <ng-container *ngIf="Files && Files.length > 0; else noFiles">
+  
+        <!-- Папки -->
+        <ng-container *ngFor="let folder of Files">
+          <div *ngIf="folder.type === 'directory'">
+            <app-folder [folder]="folder"></app-folder>
+          </div>
+        </ng-container>
+  
+        <!-- Файлы -->
+        <ng-container *ngFor="let file of Files">
+          <div *ngIf="file.type === 'file'">
+            <app-file [file]="file" [action]="'select'"  (selectFile)="setSelectFile($event)"></app-file>
+          </div>
+        </ng-container>
+  
+      </ng-container>
+    </div>
+  
+    <ng-template #noFiles>
+      <div class="no-files">
+        Добавьте первый файл, чтобы он появился здесь
+      </div>
+    </ng-template>
+  
+    <div class="sticky-footer">
+      <p-button label="Отмена" class="button" severity="secondary" (onClick)="visibleDialog = false"></p-button>
+      <p-button label="Добавить" (onClick)="visibleDialog = false; confirmSelection()"></p-button>
+    </div>
+  </p-dialog>

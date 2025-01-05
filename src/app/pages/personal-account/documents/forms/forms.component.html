@@ -15,7 +15,7 @@
       <div *ngSwitchCase="'file'" class="file-input-container">
         <label>{{ control.label }}</label>
         <app-file-input [chooseLabel]="control.label" [chooseIcon]="'pi pi-upload'" [accept]="control.accept"
-          (onSelect)="onFileSelect($event, control.name)"></app-file-input>
+          (onSelect)="onFileSelect($event, control.name)" (confirm)="onOpenDialog($event)"></app-file-input>
       </div>
     </ng-container>
   </div>
@@ -24,3 +24,5 @@
   <button (click)="onSubmit()">Сформировать</button>
   
 </form>
+
+<app-dialog-storage (confirm)="onDialogConfirm($event)"></app-dialog-storage>

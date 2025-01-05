@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilesListService } from './files-list.service';
+import { DialogStorageService } from './dialog-storage.service';
 
-describe('FilesListService', () => {
-  let service: FilesListService;
+describe('DialogStorageService', () => {
+  let service: DialogStorageService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FilesListService);
+    service = TestBed.inject(DialogStorageService);
   });
 
   it('should be created', () => {

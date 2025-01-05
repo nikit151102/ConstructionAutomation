@@ -1,13 +1,12 @@
 <div class="container">
 
   <div class="field-input">
-    <p-button (onClick)="showDialog()" icon="pi pi-file-export" text="true" />
+    <p-button (onClick)="confSelection()" icon="pi pi-file-export" text="true" />
     <p-fileUpload mode="basic" class="custom-width" #fileUpload [chooseLabel]="chooseLabel" [chooseIcon]="chooseIcon"
-    [chooseLabel]="fileName ? fileName : chooseLabel"   
-    [accept]="accept" [multiple]="false" (onSelect)="handleSelect($event)">
+      [chooseLabel]="fileName ? fileName : chooseLabel" [accept]="accept" [multiple]="false"
+      (onSelect)="handleSelect($event)">
     </p-fileUpload>
-    <p-button icon="pi pi-times" [text]="true" severity="danger" *ngIf="visibleDelete"
-      (click)="clearFile()" />
+    <p-button icon="pi pi-times" [text]="true" severity="danger" *ngIf="visibleDelete" (click)="clearFile()" />
 
   </div>
 
@@ -16,37 +15,7 @@
     <select id="sheetName" [(ngModel)]="sheetName" (change)="onSheetSelect(sheetName)">
       <option *ngFor="let sheet of sheetNames" [value]="sheet">{{ sheet }}</option>
     </select>
-  </div> 
+  </div>
 
 </div>
 
-<p-dialog header="Выберите файл" [modal]="true" [(visible)]="visibleDialog" [style]="{ width: '60%' }">
-  <p-selectButton 
-    [options]="stateOptions" 
-    [(ngModel)]="isVertical" 
-    (onChange)="onChangeType($event.value)"
-    optionLabel="label" 
-    optionValue="value">
-  </p-selectButton>
-
-  <div class="file-list" [ngClass]="{ 'file-list--vertical': isVertical, 'file-list--horizontal': !isVertical }">
-    <ng-container *ngIf="testFiles && testFiles.length > 0; else noFiles">
-      <app-select-file 
-      *ngFor="let file of testFiles" 
-      [file]="file" 
-      (selectFile)="onChangeSelectFile($event)">
-    </app-select-file>
-    </ng-container>
-  </div>
-  
-  <ng-template #noFiles>
-    <div class="no-files">
-      Добавьте первый файл, чтобы он появился здесь
-    </div>
-  </ng-template>
-
-  <div class="sticky-footer">
-    <p-button label="Отмена" class="button" severity="secondary" (onClick)="visibleDialog = false"></p-button>
-    <p-button label="Добавить" (onClick)="visibleDialog = false; confirmSelection()"></p-button>
-  </div>
-</p-dialog>

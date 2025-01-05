@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'root'
 })
-export class FilesListService {
+export class DialogStorageService {
 
   constructor() { }
 
@@ -26,7 +26,16 @@ export class FilesListService {
 
 
 
+  private isVisibleDialog = new BehaviorSubject<boolean>(false);
+  isVisibleDialog$ = this.isVisibleDialog.asObservable();
 
-  
+  setIsVisibleDialog(value: boolean): void {
+    this.isVisibleDialog.next(value);
+  }
+
+  getIsVisibleDialog(): boolean {
+    return this.isVisibleDialog.getValue();
+  }
+
 
 }

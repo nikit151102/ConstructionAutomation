@@ -1,19 +1,4 @@
-<div class="breadcrumb">
-  <div class="breadcrumb-navigation">
-    <p-button icon="pi pi-chevron-left" class="breadcrumb-back-button" [rounded]="true" [text]="true" [raised]="true"
-      *ngIf="currentFiles !== files" (click)="goBack()"></p-button>
-    <p-breadcrumb class="max-w-full" [model]="myDocumentsService.BreadcrumbItems" [home]="home"></p-breadcrumb>
-  </div>
-
-  <div class="breadcrumb-info">
-    <span class="storage-info">
-      {{ getSizeInMB(myDocumentsService.storageInfo.storageVolumeUsage) }} из {{
-      getSizeInMB(myDocumentsService.storageInfo.storageVolumeCopacity) }} Мб
-    </span>
-  </div>
-
-</div>
-
+<app-breadcrumb></app-breadcrumb>
 <div class="breadcrumb-navigation">
 
   <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" [text]="true" />
@@ -73,7 +58,7 @@
     <ng-container *ngFor="let file of testFiles">
       <div *ngIf="file.type === 'file'" [attr.data-id]="file.id" class="draggable-item" draggable="true"
         (dragstart)="onDragStart($event, file)">
-        <app-file [file]="file"></app-file>
+        <app-file [file]="file" [action]="'select'"></app-file>
       </div>
     </ng-container>
 

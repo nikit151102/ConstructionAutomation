@@ -7,9 +7,8 @@ import * as XLSX from 'xlsx';
 import { DialogModule } from 'primeng/dialog';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { MyDocumentsService } from '../../../my-documents/my-documents.service';
-import { SelectFileComponent } from './select-file/select-file.component';
-import { FilesListService } from './files-list.service';
 import { CurrentUserService } from '../../../../../services/current-user.service';
+import { DialogStorageService } from '../../../../../components/dialog-storage/dialog-storage.service';
 
 @Component({
   selector: 'app-file-input',
@@ -21,8 +20,8 @@ import { CurrentUserService } from '../../../../../services/current-user.service
     FileUploadModule,
     FormsModule,
     DialogModule,
-    SelectFileComponent,
     SelectButtonModule,
+
   ],
   templateUrl: './file-input.component.html',
   styleUrls: ['./file-input.component.scss'],
@@ -33,31 +32,28 @@ export class FileInputComponent implements OnInit, OnDestroy {
   @Input() accept = '';
   @Input() showSheetSelection = false;
   @Output() onSelect = new EventEmitter<{ event?: FileSelectEvent; file: File; sheetName?: string; fileId: string }>();
+  @Output() confirm = new EventEmitter<FileInputComponent>();
 
+  confSelection() {
+    this.confirm.emit(this); // Уведомляем родителя о подтверждении
+  }
   @ViewChild('fileUpload') fileUpload: any;
 
   visible = false;
-  isVertical = false;
   visibleDelete = false;
-  visibleDialog = false;
 
   fileName = '';
   sheetName = '';
   sheetNames: string[] = [];
   selectFile!: File;
   selectEvent!: FileSelectEvent;
-  testFiles: any;
   fileId: string = '';
-  stateOptions = [
-    { label: 'Плитка', value: true },
-    { label: 'Список', value: false },
-  ];
 
   constructor(
-    private filesListService: FilesListService,
     private myDocumentsService: MyDocumentsService,
     private cdr: ChangeDetectorRef,
-    private currentUserService:CurrentUserService
+    private currentUserService: CurrentUserService,
+    public dialogStorageService: DialogStorageService
   ) { }
   ngOnDestroy(): void {
     this.resetFileSelection();
@@ -66,55 +62,22 @@ export class FileInputComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.resetFileSelection();
-    this.subscribeToFileListVisibility();
-    this.fetchUserDocuments();
-    this.subscribeToViewType();
   }
 
-  private subscribeToFileListVisibility(): void {
-    this.filesListService.isListFilesVisible$.subscribe((visible) => {
-      this.visible = visible;
-    });
-  }
 
-  private fetchUserDocuments(): void {
-    this.myDocumentsService.getAllUserDirectories().subscribe({
-      next: (data: any) => {
-        if(data)
-        this.testFiles = data.userDocument?.map((file: any) => ({
-          ...file,
-          icon: 'pngs/file.png'
-        }));
-
-      },
-      error: (error) => {
-        console.error('Failed to fetch documents:', error);
-      },
-    });
-  }
-
-  private subscribeToViewType(): void {
-    this.filesListService.isVertical$.subscribe((isVertical) => {
-      this.isVertical = isVertical;
-    });
-  }
-
-  showDialog(): void {
-    this.visibleDialog = true;
-  }
 
   handleSelect(event: FileSelectEvent): void {
-  
+
     const file = event.files[0];
     this.fileName = file?.name || '';
-  
+
     if (file?.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
       const reader = new FileReader();
       reader.onload = (e: any) => this.processExcelFile(e.target.result, file, event);
       reader.readAsBinaryString(file);
     }
   }
-  
+
   private processExcelFile(data: ArrayBuffer, file: File, event: FileSelectEvent): void {
     try {
       const reader = new FileReader();
@@ -136,7 +99,7 @@ export class FileInputComponent implements OnInit, OnDestroy {
           this.visibleDelete = true;
           this.showSheetSelection = true;
           this.cdr.detectChanges();
-          console.log('this.showSheetSelection',this.showSheetSelection)
+          console.log('this.showSheetSelection', this.showSheetSelection)
           if (this.sheetNames.length === 1) {
             console.error(' Excel file length === 1');
             this.emitSelection(event, file, this.sheetNames[0], this.fileId);
@@ -160,7 +123,7 @@ export class FileInputComponent implements OnInit, OnDestroy {
     this.resetFileSelection();
   }
 
-  
+
   private resetFileSelection(): void {
     this.selectFile = null!;
     this.selectEvent = null!;
@@ -171,16 +134,18 @@ export class FileInputComponent implements OnInit, OnDestroy {
     this.showSheetSelection = false;
     this.visibleDelete = false;
   }
-  
+
   onSheetSelect(selectedSheet: string): void {
     this.sheetName = selectedSheet;
+    console.log(' this.fileId', this.fileId)
     this.emitSelection(this.selectEvent, this.selectFile, selectedSheet, this.fileId);
   }
 
   private emitSelection(event: FileSelectEvent, file: File, sheetName: string, fileId: string): void {
-    this.onSelect.emit({ event, file, sheetName, fileId});
-   
+    this.onSelect.emit({ event, file, sheetName, fileId });
+
   }
+
 
   ismyDownloadFile: any;
 
@@ -284,13 +249,9 @@ export class FileInputComponent implements OnInit, OnDestroy {
     this.handleSelect(eventMock);
   }
 
-  onChangeType(isVertical: boolean): void {
-    this.filesListService.setTypeView(isVertical);
-  }
 
-
-  confirmSelection(): void {
-    this.setCurrentFile(this.ismyDownloadFile);
+  confirmSelection(file:any): void {
+    this.setCurrentFile(file);
   }
 
 }

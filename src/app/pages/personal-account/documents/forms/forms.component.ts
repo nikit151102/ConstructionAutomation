@@ -11,11 +11,13 @@ import { ProgressSpinnerService } from '../../../../components/progress-spinner/
 import { CommomFileService } from '../../../../services/file.service';
 import { UploadData } from '../../../../interfaces/docs';
 import { Response } from '../../../../interfaces/common';
+import { DialogStorageComponent } from '../../../../components/dialog-storage/dialog-storage.component';
+import { DialogStorageService } from '../../../../components/dialog-storage/dialog-storage.service';
 
 @Component({
   selector: 'app-forms',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, DropdownComponent, FileInputComponent, TextInputComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, DropdownComponent, FileInputComponent, TextInputComponent, DialogStorageComponent],
   templateUrl: './forms.component.html',
   styleUrl: './forms.component.scss'
 })
@@ -26,7 +28,7 @@ export class FormsComponent {
   @Input()
   set config(value: any) {
     this._config = value;
-    this.onConfigChange(); 
+    this.onConfigChange();
   }
   get config(): any {
     return this._config;
@@ -41,9 +43,24 @@ export class FormsComponent {
     this.cdr.detectChanges();
 
   }
-  
+
   @Output() onSelect = new EventEmitter<{ event?: FileSelectEvent; file: File, sheetName?: string }>();
   @Output() uploadSuccess = new EventEmitter<any>();
+
+  activeFileInput!: FileInputComponent; // Хранит ссылку на текущий FileInputComponent
+
+  onOpenDialog(fileInput: FileInputComponent): void {
+    this.activeFileInput = fileInput; // Сохраняем ссылку на текущий file-input
+    this.dialogStorageService.setIsVisibleDialog(true); // Открываем диалог
+  }
+
+
+  onDialogConfirm(event: any) {
+    console.log('event', event)
+    if (this.activeFileInput) {
+      this.activeFileInput.confirmSelection(event); // Вызываем метод file-input
+    }
+  }
 
   form!: FormGroup;
   files: { [key: string]: { file: File; sheetName?: string; fileId?: string } } = {};
@@ -52,7 +69,8 @@ export class FormsComponent {
     private toastService: ToastService,
     private progressSpinnerService: ProgressSpinnerService,
     private commomFileService: CommomFileService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public dialogStorageService: DialogStorageService
   ) { }
 
   ngOnInit(): void {
@@ -61,11 +79,11 @@ export class FormsComponent {
     this.updateSortedControls();
   }
 
-  updateSortedControls(){
+  updateSortedControls() {
     this.sortedControls = [...this.config.controls]
-    .filter(control => control.order !== 0) // Исключаем элементы с order === 0
-    .sort((a, b) => (a.order || Number.MAX_SAFE_INTEGER) - (b.order || Number.MAX_SAFE_INTEGER)); // Сортируем остальные
-  
+      .filter(control => control.order !== 0) // Исключаем элементы с order === 0
+      .sort((a, b) => (a.order || Number.MAX_SAFE_INTEGER) - (b.order || Number.MAX_SAFE_INTEGER)); // Сортируем остальные
+
   }
 
   initForm() {
@@ -76,10 +94,10 @@ export class FormsComponent {
         control.validators || [],
       ];
     });
-  
+
     this.form = this.fb.group(formControls);
   }
-  
+
 
   getSafeFormControl(group: FormGroup, controlName: string): FormControl {
     const control = group.get(controlName);
@@ -90,18 +108,19 @@ export class FormsComponent {
   }
 
 
-  onFileSelect(data: { event?: FileSelectEvent; file: File; sheetName?: string; fileId: string  }, key: string) {
+  onFileSelect(data: { event?: FileSelectEvent; file: File; sheetName?: string; fileId: string }, key: string) {
     const file = data.file;
+    console.log('onFileSelect data.fileId ', data.fileId)
     if (file) {
       this.files[key] = { file, sheetName: data.sheetName, fileId: data.fileId };
     }
     this.cdr.detectChanges();
   }
-  
+
   onSubmit() {
     const formData = new FormData();
     const appendedKeys = new Set<string>(); // Для отслеживания добавленных ключей
-  
+
     // Вспомогательная функция для добавления поля в FormData
     const addFieldToFormData = (name: string, value: any) => {
       if (value !== undefined) {
@@ -113,38 +132,55 @@ export class FormsComponent {
         appendedKeys.add(name);
       }
     };
-  
+
     // Обработка обычных полей
     this.config.controls.forEach((control: any) => {
       const value = this.form.get(control.name)?.value;
-  
+    
       if (control.type === 'dropdown' && control.isFileInput) {
         const fileControlName = control.name.replace('ListName', '');
         const fileData = this.files[fileControlName];
-        
+    
         if (fileData && fileData.sheetName && !fileData.fileId) {
           addFieldToFormData(control.name, fileData.sheetName);
         }
       } else if (control.type === 'file' && this.files[control.name]) {
-        const file = this.files[control.name]?.file;
-        if (file) {
-          addFieldToFormData(control.name, file);
+        const fileData = this.files[control.name];
+    
+        if (fileData) {
+          const fileId = fileData.fileId;
+    
+          if (fileId) {
+            // Если fileId присутствует, добавляем его в форму как отдельное поле с суффиксом Id
+            addFieldToFormData(`${control.name}Id`, fileId);
+            if (fileData.file && fileData.file.name) {
+              addFieldToFormData(`${control.name}ListName`, fileData.sheetName); // Добавляем имя файла
+    
+            }
+          } else {
+            // Если fileId нет, добавляем файл в форму
+            const file = fileData.file;
+            if (file) {
+              addFieldToFormData(control.name, file);
+            }
+          }
         }
       } else {
         addFieldToFormData(control.name, value);
       }
     });
-  
+    
+
     // Добавление UserId, если оно доступно
     const userId = localStorage.getItem('VXNlcklk');
     if (userId) {
       addFieldToFormData('UserId', userId);
     }
-  
+
     // Отправка данных
     this.uploadSuccess.emit(null);
     this.progressSpinnerService.show();
-  
+
     this.formsService.uploadFiles(formData, this.config.endpoint).subscribe({
       next: (response: Response<UploadData>) => {
         this.progressSpinnerService.hide();
@@ -155,6 +191,6 @@ export class FormsComponent {
         this.toastService.showError('Ошибка', 'Не удалось сформировать документ');
       }
     });
-  }  
+  }
 
 }

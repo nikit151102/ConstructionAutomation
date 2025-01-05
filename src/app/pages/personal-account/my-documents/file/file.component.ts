@@ -23,12 +23,12 @@ export class FileComponent implements OnInit {
 
   @Input() file!: any;
   @Input() isdelete: boolean = false;
-  // @Output() folderClick = new EventEmitter<void>();
+  @Input() action: string = '';
+  @Output() selectFile = new EventEmitter<any>();
   @ViewChild('cm') contextMenu!: ContextMenu;
   value!: string;
   isVertical: boolean = false;
   visiblemoveFile: any;
-  // moveDirectory: any;
   contextMenuItems: MenuItem[] = [
     {
       label: 'Скачать',
@@ -43,7 +43,7 @@ export class FileComponent implements OnInit {
     {
       label: 'Переместить',
       icon: 'pi pi-arrow-right',
-      command: () => this.moveFile(this.file),
+      command: () => this.moveFile(),
     },
     {
       label: 'Удалить',
@@ -55,9 +55,7 @@ export class FileComponent implements OnInit {
   constructor(private myDocumentsService: MyDocumentsService,
     public fileService: FileService,
     private toastService: ToastService,
-    private commomFileService: CommomFileService) {
-
-  }
+    private commomFileService: CommomFileService) {}
 
   ngOnInit(): void {
     this.myDocumentsService.isVertical$.subscribe((type: boolean) => {
@@ -65,31 +63,43 @@ export class FileComponent implements OnInit {
     })
   }
 
-  moveFile(file: any) {
-    this.visiblemoveFile = file;
-    this.myDocumentsService.setMoveFile(file);
+  handleAction(event: any): void {
+    if (this.action === 'click') {
+      this.onRightClick(event)
+    } else if (this.action === 'select') {
+      this.toggleSelection();
+    }
+  }
+
+  isSelected: boolean = false;
+
+  toggleSelection(): void {
+    this.isSelected = !this.isSelected;
+    if (this.isSelected) {
+      console.log("this.file toggleSelection",this.file)
+      this.selectFile.emit(this.file);
+    }
+  }
+
+  onRightClick(event: MouseEvent) {
+    if(this.action === 'click'){
+    event.preventDefault();
+    this.fileService.setMenu(this.contextMenu);
+    this.contextMenu.show(event);
+    }
+
+  }
+
+  moveFile() {
+    this.visiblemoveFile = this.file;
+    this.myDocumentsService.setMoveFile(this.file);
   }
 
   subscribeToMoveEvents(): void {
     this.myDocumentsService.moveFileObservable.subscribe((file) => {
       this.visiblemoveFile = file;
     });
-
   }
-
-  onRightClick(event: MouseEvent, file: any) {
-    this.file = file;
-    event.preventDefault();
-    this.fileService.setMenu(this.contextMenu);
-    this.contextMenu.show(event);
-  }
-
-
-  // handleClick() {
-  //   if (this.file.isFolder) {
-  //     this.folderClick.emit();
-  //   }
-  // }
 
   deleteFile(id: string) {
     this.myDocumentsService.deleteFile(id).subscribe(

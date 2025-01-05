@@ -16,28 +16,20 @@ import { CurrentUserService } from '../../../services/current-user.service';
 import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
-import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { DragDropModule } from 'primeng/dragdrop';
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { BreadcrumbComponent } from '../../../components/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-my-documents',
   standalone: true,
-  imports: [CommonModule, FileComponent, ButtonModule, FileUploadModule, SelectButtonModule, FormsModule, FolderComponent, MenuModule, ToastModule, CreateFolderComponent, BreadcrumbModule, DragDropModule, ContextMenuModule],
+  imports: [CommonModule, FileComponent, ButtonModule, FileUploadModule, SelectButtonModule, FormsModule, FolderComponent, MenuModule, ToastModule, CreateFolderComponent, DragDropModule, ContextMenuModule,BreadcrumbComponent],
   templateUrl: './my-documents.component.html',
   styleUrls: ['./my-documents.component.scss'],
 })
 export class MyDocumentsComponent implements OnInit {
 
   files: any = [];
-
-  home = {
-    icon: 'pi pi-home',
-    command: () => {
-      this.myDocumentsService.BreadcrumbItems = [];
-      this.myDocumentsService.loadData('');
-    }
-  };
 
   items: MenuItem[] | undefined = [
     {
@@ -181,10 +173,6 @@ export class MyDocumentsComponent implements OnInit {
 
   onChangeType(isVertical: boolean) {
     this.myDocumentsService.setTypeView(isVertical);
-  }
-
-  getSizeInMB(size: number) {
-    return this.commomFileService.fileSizeInMB(size);
   }
 
   currentFiles = this.files;
