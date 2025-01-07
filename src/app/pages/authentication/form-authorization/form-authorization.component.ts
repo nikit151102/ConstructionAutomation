@@ -101,6 +101,7 @@ export class FormAuthorizationComponent implements OnInit {
       if (!this.cookieConsentService.hasConsented()) {
         this.cookieConsentService.revokeConsent();
         this.toastService.showWarn('Предупреждение', 'Вы должны согласиться на использование cookie');
+        this.cookieConsentService.openConsent()
         return;
       }
 
