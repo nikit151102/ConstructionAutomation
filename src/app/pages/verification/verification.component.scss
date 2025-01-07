@@ -1,0 +1,114 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    background-color: #f4f7fa;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.verification-container {
+    background: #ffffff;
+    border-radius: 30px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.verification-message {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 30px;
+    color: #333;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+}
+
+.success-message {
+    color: #4caf50;
+    font-size: 1.5rem;
+    font-weight: bold;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.error-message {
+    color: #f44336;
+    font-size: 1.5rem;
+    font-weight: bold;
+    animation: fadeIn 0.5s ease-in;
+}
+
+button {
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:hover {
+    background-color: #3700b3;
+    transform: translateY(-3px);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+.wrapper--check {
+    margin-top: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+.wrapper--check svg {
+    width: 84px;
+    height: 84px;
+    transition: transform 0.5s ease;
+    transform: scale(1.1);
+}
+
+
+/* Анимация плавного появления */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Кастомизация цветовых схем */
+:root {
+    --primary-color: #6200ea;
+    --success-color: #4caf50;
+    --error-color: #f44336;
+    --neutral-color: #f4f7fa;
+}
+
+body {
+    background-color: var(--neutral-color);
+}
+
+.success-message {
+    color: var(--success-color);
+}
+
+.error-message {
+    color: var(--error-color);
+}

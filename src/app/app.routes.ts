@@ -14,8 +14,12 @@ export const routes: Routes = [
         loadChildren: () => import('./components/legal-information/legal-information.module').then(m => m.LegalInformationModule)
     },
     {
+        path: 'verification/:optionalParam', loadChildren: () => import('./pages/verification/verification.module').then(m => m.VerificationModule)
+    },
+    {
         // canActivate: [AuthGuard]
         path: ':id', loadChildren: () => import('./pages/personal-account/personal-account.module').then(m => m.PersonalAccountModule)
-    }
+    },
+
 
 ];
