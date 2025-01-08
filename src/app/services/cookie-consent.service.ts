@@ -32,4 +32,8 @@ export class CookieConsentService {
   openConsent(){
     this.consentSubject.next(true); 
   }
+
+  closeConsent(){
+    this.consentSubject.next(false); 
+  }
 }
