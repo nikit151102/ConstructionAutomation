@@ -19,11 +19,6 @@ export class AuthGuard implements CanActivate {
     const cookieConsent = localStorage.getItem('Y29va2llQ29uc2VudA==');
     const idUser = localStorage.getItem('VXNlcklk');
 
-    if (!token) {
-      this.handleUnauthorizedAccess('Сеанс истек. Пожалуйста, войдите снова.');
-      return of(false);
-    }
-
     if (cookieConsent !== 'true') {
       this.handleUnauthorizedAccess('Вы должны согласиться на использование cookie.');
       return of(false);
