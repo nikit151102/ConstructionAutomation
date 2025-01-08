@@ -56,6 +56,11 @@ export class HistoryFormingComponent implements OnInit {
   isAscending: boolean = true;
   buttons: Button[] = [];
 
+  currentPage: number = 0;
+  pageSize: number = 10;
+  isLoading: boolean = false;
+  totalPages: number | null = null;
+
   get selectedDocsLabel(): string {
     return this.selectedTypeDocs.length > 0
       ? `Выбрано ${this.selectedTypeDocs.length}`
@@ -88,7 +93,7 @@ export class HistoryFormingComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
-    this.loadData();
+    this.loadData(this.currentPage);
     this.filteredDocs = [...this.historyDocs];
   }
 
@@ -128,10 +133,34 @@ export class HistoryFormingComponent implements OnInit {
     this.expandedDoc = this.expandedDoc === doc ? null : doc;
   }
 
-  loadData() {
-    this.historyFormingService.getHistoryForming().subscribe((response: any) => {
-      this.historyFormingService.loadHistoryDocs(response.data);
-    });
+  loadData(page: number) {
+    if (this.isLoading || (this.totalPages && page > this.totalPages)) return;
+
+    this.isLoading = true;
+
+    this.historyFormingService.getHistoryForming(page, this.pageSize).subscribe(
+      (response: any) => {
+        this.historyFormingService.loadHistoryDocs(response.data);
+
+        if (response.totalPages) {
+          this.totalPages = response.totalPages;
+        }
+
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Ошибка при загрузке данных:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  @HostListener('window:scroll', [])
+  onScroll() {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.isLoading) {
+      this.currentPage++;
+      this.loadData(this.currentPage);
+    }
   }
 
 
@@ -241,7 +270,7 @@ export class HistoryFormingComponent implements OnInit {
       this.visiblePopUpPay = false;
       this.personalAccountService.changeBalance(String(response.data.balance));
       this.currentUserService.updateUserBalance(String(response.data.balance));
-      this.loadData();
+      // this.loadData();
     });
   }
 

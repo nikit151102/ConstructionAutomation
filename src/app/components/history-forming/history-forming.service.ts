@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environment';
@@ -41,26 +41,31 @@ export class HistoryFormingService {
   getHistoryDocsValue(): any {
     return this.historyDocsSubject.getValue();
   }
-
+  
   loadHistoryDocs(docs: DocumentQueueItem[]): void {
     if (Array.isArray(docs)) {
-      this.historyDocsSubject.next(docs);
+      const currentDocs = this.historyDocsSubject.value || [];
+      this.historyDocsSubject.next([...currentDocs, ...docs]);
     }
   }
 
-
   // Эндпоинт для получения всех объектов очереди
-  getHistoryForming(): Observable<any> {
+  getHistoryForming(page: number = 1, pageSize: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
     const token = localStorage.getItem('YXV0aFRva2Vu');
-    return this.http.get<Response<DocumentQueueResponse>>(`${environment.apiUrl}/api/Profile/HistoryDocumentGenerate`, {
-
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      })
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
     });
-  }
 
+    return this.http.get<Response<DocumentQueueResponse>>(
+      `${environment.apiUrl}/api/Profile/HistoryDocumentGenerate`,
+      { params, headers }
+    );
+  }
 
   // Эндпоинт для оплаты 
   makeTransaction(id: string): Observable<any> {
