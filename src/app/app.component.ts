@@ -43,6 +43,8 @@ export class AppComponent implements AfterViewInit{
     if (!consent || consent === 'false') {
       this.cookieConsentService.openConsent();
       this.cdr.detectChanges();
+    }else if (consent === 'true') {
+      this.cookieConsentService.closeConsent();
     }
   }
 
