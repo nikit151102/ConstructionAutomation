@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener, NgZone, ChangeDetectionStrategy } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { ButtonModule } from 'primeng/button';
 import { SidebarService } from '../../components/sidebar/sidebar.service';
@@ -9,6 +9,7 @@ import { PersonalAccountService } from './personal-account.service';
 import { CurrentUserService } from '../../services/current-user.service';
 import { FormsModule } from '@angular/forms';
 import { TransactionService } from './home/transaction.service';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-personal-account',
@@ -35,6 +36,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     private transactionService: TransactionService) { }
 
   ngOnInit(): void {
+
     this.personalAccountService.balance$.subscribe((value: string) => {
       this.userBalance = value;
       this.cdr.detectChanges();
