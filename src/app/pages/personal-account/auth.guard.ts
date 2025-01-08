@@ -33,9 +33,10 @@ export class AuthGuard implements CanActivate {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get<any>(`${environment.apiUrl}/api/User/${idUser}`, { headers }).pipe(
+    return this.http.get<any>(`${environment.apiUrl}api/Profile`, { headers }).pipe(
       map(() => true),
       catchError(() => {
+        console.log('Сеанс истек')
         this.handleUnauthorizedAccess('Сеанс истек. Пожалуйста, войдите снова.');
         this.router.navigate(['/login']);
         return of(false);
