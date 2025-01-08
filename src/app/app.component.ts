@@ -6,6 +6,7 @@ import { ProgressSpinnerComponent } from './components/progress-spinner/progress
 import { ProgressSpinnerService } from './components/progress-spinner/progress-spinner.service';
 import { CommonModule } from '@angular/common';
 import { CookieConsentComponent } from './components/cookie-consent/cookie-consent.component';
+import { CookieConsentService } from './services/cookie-consent.service';
 
 @Component({
   selector: 'app-root',
@@ -19,9 +20,9 @@ export class AppComponent {
   title = 'ConstructionAutomation';
   isLoading: boolean = false;
   constructor(public spinnerService: ProgressSpinnerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private cookieConsentService:CookieConsentService
   ) {
-
 
   }
 
@@ -30,6 +31,17 @@ export class AppComponent {
       this.isLoading = data
       this.cdr.detectChanges(); 
     })
+
+    const key = 'Y29va2llQ29uc2VudA==';
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, 'false');
+      this.cookieConsentService.openConsent();
+    }
+    else if (localStorage.getItem(key) === 'false') {
+      this.cookieConsentService.openConsent();
+    }
+    
+
   }
 
 
