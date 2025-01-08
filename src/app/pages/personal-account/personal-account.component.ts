@@ -38,7 +38,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
 
-    
+
     this.personalAccountService.balance$.subscribe((value: string) => {
       this.userBalance = value;
       this.cdr.detectChanges();
@@ -48,10 +48,16 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     if (userData) {
       this.userBalance = userData.balance;
       this.personalAccountService.changeBalance(userData.balance);
+      const dataStage = {
+        userName: `${userData.lastName ?? ''} ${userData.firstName ?? ''}`.trim(),
+        email: userData.email
+      };
+      localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', btoa(JSON.stringify(dataStage)));
       this.cdr.detectChanges();
     } else {
       this.currentUserService.getUserData().subscribe((data: any) => {
         this.userBalance = data.data.balance;
+        this.personalAccountService.changeBalance(data.data.balance);
         const dataStage = {
           userName: `${data.data.lastName ?? ''} ${data.data.firstName ?? ''}`.trim(),
           email: data.data.email
