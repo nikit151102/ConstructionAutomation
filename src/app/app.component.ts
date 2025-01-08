@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
@@ -14,7 +14,7 @@ import { CookieConsentService } from './services/cookie-consent.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit{
 
   isLoading: boolean = false;
   constructor(public spinnerService: ProgressSpinnerService,
@@ -24,21 +24,26 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.spinnerService.isLoading$.subscribe(data => {
-      this.isLoading = data
+      this.isLoading = data;
       this.cdr.detectChanges(); 
-    })
+    });
 
     const key = 'Y29va2llQ29uc2VudA==';
     const consent = localStorage.getItem(key);
     
     if (!consent || consent === 'false') {
       localStorage.setItem(key, 'false');
-      this.cookieConsentService.openConsent();
-    } else if(consent === 'true'){
+    } else if (consent === 'true') {
       this.cookieConsentService.closeConsent();
     }
-    
+  }
 
+  ngAfterViewInit(): void {
+    const consent = localStorage.getItem('Y29va2llQ29uc2VudA==');
+    if (!consent || consent === 'false') {
+      this.cookieConsentService.openConsent();
+      this.cdr.detectChanges();
+    }
   }
 
 
