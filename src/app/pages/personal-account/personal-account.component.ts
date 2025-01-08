@@ -37,6 +37,8 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+
+    
     this.personalAccountService.balance$.subscribe((value: string) => {
       this.userBalance = value;
       this.cdr.detectChanges();
