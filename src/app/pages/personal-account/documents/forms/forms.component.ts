@@ -190,7 +190,11 @@ export class FormsComponent {
     // Добавление поля directoryId
     const directoryId = this.form.get('directoryId')?.value;
     if (directoryId !== undefined) {
-      addFieldToFormData('directoryId', directoryId); // Добавляем поле directoryId
+      if(directoryId === null){
+        addFieldToFormData('directoryId', "00000000-0000-0000-0000-000000000000"); // Добавляем поле directoryId  
+      }else{
+        addFieldToFormData('directoryId', directoryId); // Добавляем поле directoryId
+      }
     }
 
     // Добавление UserId, если оно доступно

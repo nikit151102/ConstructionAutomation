@@ -28,4 +28,12 @@ export class CookieConsentService {
     localStorage.removeItem(this.consentKey);
     this.consentSubject.next(false);  
   }
+
+  openConsent(){
+    this.consentSubject.next(true); 
+  }
+
+  closeConsent(){
+    this.consentSubject.next(false); 
+  }
 }

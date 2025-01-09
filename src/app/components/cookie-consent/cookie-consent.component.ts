@@ -19,7 +19,7 @@ export class CookieConsentComponent implements OnInit {
 
   ngOnInit(): void {
     this.consentSubscription = this.cookieConsentService.consentStatus$.subscribe(consentGiven => {
-      this.showCookieBanner = !consentGiven; 
+      this.showCookieBanner = consentGiven; 
     });
   }
 
