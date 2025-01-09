@@ -45,7 +45,7 @@ export class FormRegistrationComponent {
   private englishLettersOnlyValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
-      if (value && !/^[A-Za-z]*$/.test(value)) {
+      if (value && !/^[A-Za-z0-9!@#$%^&*(),.?":{}|<>]*$/.test(value)) {
         return { englishLettersOnly: true }; 
       }
       return null; 
