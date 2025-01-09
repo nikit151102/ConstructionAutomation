@@ -111,6 +111,13 @@ export class FormRegistrationComponent {
           this.tokenService.setToken(response.data.token);
           // this.router.navigate([`/${response.data.id}`]);
           this.popUpConfirmEmailService.showPopup();
+          const dataStage = {
+            userName: `${response.data.lastName ?? ''} ${response.data.firstName ?? ''}`.trim(),
+            email: response.data.email
+          };
+  
+          localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', this.utf8ToBase64(JSON.stringify(dataStage)));
+
         },
         (error) => {
           this.toastService.showError('Ошибка', 'Ошибка при регистрации')
@@ -121,6 +128,15 @@ export class FormRegistrationComponent {
     }
   }
 
+  private utf8ToBase64(str: string): string {
+    const utf8Bytes = new TextEncoder().encode(str);
+    let binary = '';
+    utf8Bytes.forEach(byte => {
+      binary += String.fromCharCode(byte);
+    });
+    return btoa(binary);  
+  }
+  
   handleKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
       this.onSignUp();
