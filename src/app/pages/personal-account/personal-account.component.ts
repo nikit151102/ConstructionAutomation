@@ -52,7 +52,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
         userName: `${userData.lastName ?? ''} ${userData.firstName ?? ''}`.trim(),
         email: userData.email
       };
-      localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', btoa(JSON.stringify(dataStage)));
+      localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', this.utf8ToBase64(JSON.stringify(dataStage)));
       this.cdr.detectChanges();
     } else {
       this.currentUserService.getUserData().subscribe((data: any) => {
@@ -63,7 +63,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
           email: data.data.email
         };
 
-        localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', btoa(JSON.stringify(dataStage)));
+        localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', this.utf8ToBase64(JSON.stringify(dataStage)));
         this.cdr.detectChanges();
       });
     }
@@ -81,6 +81,12 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     this.checkScreenSize();
   }
 
+  private utf8ToBase64(str: string): string {
+    const utf8Bytes = new TextEncoder().encode(str);  
+    const binaryString = String.fromCharCode(...utf8Bytes);  
+    return btoa(binaryString); 
+  }
+  
   ngOnDestroy(): void {
     if (this.screenSubscription) {
       this.screenSubscription.unsubscribe();

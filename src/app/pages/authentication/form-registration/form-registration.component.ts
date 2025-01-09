@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -22,6 +22,12 @@ import { CookieConsentService } from '../../../services/cookie-consent.service';
 })
 export class FormRegistrationComponent {
   SignUpForm: FormGroup;
+  passwordConditions = {
+    minLength: false,
+    hasUpperCase: false,
+  };
+  isPasswordFocused: boolean = false;
+  isEmailFocused: boolean = false;
 
   constructor(private fb: FormBuilder, private registrationService: FormRegistrationService,
     private router: Router, private tokenService: TokenService,
@@ -30,11 +36,52 @@ export class FormRegistrationComponent {
     private cookieConsentService: CookieConsentService) {
     this.SignUpForm = this.fb.group({
       username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email,this.englishLettersOnlyValidator()]],
+      password: ['', [Validators.required, Validators.minLength(6), this.englishLettersOnlyValidator()]],
       agreement: [false, Validators.requiredTrue]
     });
   }
+
+  private englishLettersOnlyValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (value && !/^[A-Za-z]*$/.test(value)) {
+        return { englishLettersOnly: true }; 
+      }
+      return null; 
+    };
+  }
+
+  checkPasswordConditions(password: string): void {
+    this.passwordConditions.minLength = password.length >= 6;
+    this.passwordConditions.hasUpperCase = /[A-Z]/.test(password);
+  }
+
+  handlePasswordInput(event: Event): void {
+    const password = (event.target as HTMLInputElement).value;
+    this.checkPasswordConditions(password);
+    //  const input = event.target as HTMLInputElement;
+  // // Заменяем все символы, кроме латинских букв
+  // input.value = input.value.replace(/[^A-Za-z]/g, ''); // Убираем все символы, кроме английских букв
+  // this.SignUpForm.get('password')?.setValue(input.value); // Применяем новое значение в форме
+  }
+
+  handlePasswordFocus(): void {
+    this.isPasswordFocused = true;
+    console.log('this.isPasswordFocused',this.isPasswordFocused)
+  }
+
+  handlePasswordBlur(): void {
+    this.isPasswordFocused = false;
+  }
+  
+
+  handleEmailInput(event: Event): void {
+    const email = (event.target as HTMLInputElement).value;
+    this.SignUpForm.get('email')?.markAsDirty();
+    this.SignUpForm.get('email')?.updateValueAndValidity(); 
+  }
+  
 
   onSignUp() {
 

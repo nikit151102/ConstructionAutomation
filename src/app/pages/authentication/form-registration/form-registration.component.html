@@ -10,7 +10,7 @@
       </svg>
       <span>Назад</span>
     </div>
-  </div> 
+  </div>
   <form [formGroup]="SignUpForm" novalidate (keydown)="handleKeyDown($event)">
     <h1>Регистрация</h1>
     <div class="inputGroup">
@@ -22,21 +22,44 @@
         </div>
       </p-floatLabel>
       <p-floatLabel>
-        <input pInputText id="email" formControlName="email" autocomplete="new-email" />
+        <input 
+        pInputText id="email" 
+        formControlName="email" 
+        autocomplete="new-email"
+        (input)="handleEmailInput($event)"
+        />
         <label for="email">Электронная почта</label>
-        <div *ngIf="SignUpForm.get('email')?.touched && SignUpForm.get('email')?.invalid" class="error">
+
+        <div *ngIf="SignUpForm.get('email')?.dirty && SignUpForm.get('email')?.invalid" class="error" style="display: flex; flex-direction: column;">
           <small *ngIf="SignUpForm.get('email')?.errors?.['required']">Электронная почта обязательна.</small>
           <small *ngIf="SignUpForm.get('email')?.errors?.['email']">Некорректный формат электронной почты.</small>
+          <small *ngIf="SignUpForm.get('email')?.errors?.['englishLettersOnly']">
+            Только английские буквы
+          </small>
         </div>
+        
       </p-floatLabel>
       <p-floatLabel>
-        <p-password formControlName="password" [feedback]="false" [toggleMask]="true"
-          autocomplete="new-password"></p-password>
+        <p-password formControlName="password" [feedback]="false" [toggleMask]="true" autocomplete="new-password"
+          (input)="handlePasswordInput($event)" (onFocus)="handlePasswordFocus()"
+          (onBlur)="handlePasswordBlur()"></p-password>
         <label for="password">Пароль</label>
+
+        <div class="password-conditions" *ngIf="isPasswordFocused">
+          <p [class.valid]="passwordConditions.minLength">Не менее 6 символов</p>
+          <p [class.valid]="passwordConditions.hasUpperCase">Содержит заглавные буквы</p>
+          <p *ngIf="SignUpForm.get('password')?.value && SignUpForm.get('password')?.errors?.['englishLettersOnly']"
+            [class.error]="SignUpForm.get('password')?.errors?.['englishLettersOnly']">
+            Только английские буквы
+          </p>
+        </div>
+
         <div *ngIf="SignUpForm.get('password')?.touched && SignUpForm.get('password')?.invalid" class="error">
           <small *ngIf="SignUpForm.get('password')?.errors?.['required']">Пароль обязателен.</small>
           <small *ngIf="SignUpForm.get('password')?.errors?.['minlength']">Пароль должен содержать не менее 6
             символов.</small>
+          <small *ngIf="SignUpForm.get('password')?.errors?.['englishLettersOnly']">Пароль должен содержать только
+            английские буквы.</small>
         </div>
       </p-floatLabel>
     </div>
@@ -44,8 +67,8 @@
     <div>
       <label id="checkboxLabel_1">
         <input type="checkbox" id="checkboxInput_1" formControlName="agreement" />
-        <a target="_blank"
-           style="text-decoration: none; color: inherit; font-size: 13px;">Я согласен (-на) на обработку  <a href="https://rebuildpro.ru/legal/82913" > персональных данных</a> </a>
+        <a target="_blank" style="text-decoration: none; color: inherit; font-size: 13px;">Я согласен (-на) на обработку
+          <a href="https://rebuildpro.ru/legal/82913"> персональных данных</a> </a>
       </label>
     </div>
 

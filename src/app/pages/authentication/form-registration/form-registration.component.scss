@@ -102,3 +102,33 @@ input::placeholder {
     color: red;
     font-size: 12px;
 }
+
+
+.password-conditions {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 20px;
+    z-index: 10;
+    box-sizing: border-box;
+  }
+  
+  .password-conditions p {
+    margin: 5px 0;
+    color: gray;
+    font-size: 14px;
+  }
+  
+  .password-conditions p.valid {
+    color: green;
+  }
+  
+  .password-conditions p.error {
+    color: red;
+    font-size: 14px;
+  }
+  
