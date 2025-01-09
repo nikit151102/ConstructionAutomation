@@ -44,10 +44,18 @@ export class FormAuthorizationComponent implements OnInit {
     });
   }
 
+  private safeBtoa(input: string): string {
+    return btoa(unescape(encodeURIComponent(input)));
+  }
+
+  private safeAtob(input: string): string {
+    return decodeURIComponent(escape(atob(input)));
+  }
+
   ngOnInit() {
     const encryptedEmail = localStorage.getItem(this.localStorageKey);
     if (encryptedEmail) {
-      this.dataCurrentUser = JSON.parse(atob(encryptedEmail));
+      this.dataCurrentUser = JSON.parse(this.safeAtob(encryptedEmail));
       this.signInForm.patchValue({ username: this.dataCurrentUser.email });
       this.currentUser = true;
       this.visibleBtns.emit(false);
