@@ -1,0 +1,16 @@
+<div class="popup-overlay" *ngIf="isVisible">
+    <div class="popup-container">
+        <div class="popup-header">
+            <h2>Подтвердите свой email</h2>
+            <button class="close-btn" (click)="closePopup()">×</button>
+        </div>
+        <div class="popup-content">
+            <p>Спасибо за регистрацию! Мы отправили письмо на ваш email. Пожалуйста, подтвердите свою почту, чтобы
+                завершить процесс регистрации.</p>
+            <div class="actions">
+                <!-- <button class="resend-btn" (click)="resendEmail()">Отправить повторно</button> -->
+                <button class="continue-btn" (click)="continue()">Продолжить</button>
+            </div>
+        </div>
+    </div>
+</div>

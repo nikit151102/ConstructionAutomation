@@ -112,3 +112,23 @@ body {
 .error-message {
     color: var(--error-color);
 }
+
+
+.signIn {
+    a {
+        text-decoration: none;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+        background: #cbc0d3;
+
+        &:hover {
+            background: #b2a0c3;
+        }
+  
+    }
+}

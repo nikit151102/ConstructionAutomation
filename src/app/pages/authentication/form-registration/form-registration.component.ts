@@ -12,6 +12,7 @@ import { CurrentUserService } from '../../../services/current-user.service';
 import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
 import { ToastService } from '../../../services/toast.service';
 import { CookieConsentService } from '../../../services/cookie-consent.service';
+import { PopUpConfirmEmailService } from '../pop-up-confirm-email/pop-up-confirm-email.service';
 
 @Component({
   selector: 'app-form-registration',
@@ -33,10 +34,11 @@ export class FormRegistrationComponent {
     private router: Router, private tokenService: TokenService,
     private currentUserService: CurrentUserService,
     private toastService: ToastService,
-    private cookieConsentService: CookieConsentService) {
+    private cookieConsentService: CookieConsentService,
+    private popUpConfirmEmailService: PopUpConfirmEmailService) {
     this.SignUpForm = this.fb.group({
       username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email,this.englishLettersOnlyValidator()]],
+      email: ['', [Validators.required, Validators.email, this.englishLettersOnlyValidator()]],
       password: ['', [Validators.required, Validators.minLength(6), this.englishLettersOnlyValidator()]],
       agreement: [false, Validators.requiredTrue]
     });
@@ -46,9 +48,9 @@ export class FormRegistrationComponent {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
       if (value && !/^[A-Za-z0-9!@#$%^&*(),.?":{}|<>]*$/.test(value)) {
-        return { englishLettersOnly: true }; 
+        return { englishLettersOnly: true };
       }
-      return null; 
+      return null;
     };
   }
 
@@ -61,34 +63,34 @@ export class FormRegistrationComponent {
     const password = (event.target as HTMLInputElement).value;
     this.checkPasswordConditions(password);
     //  const input = event.target as HTMLInputElement;
-  // // Заменяем все символы, кроме латинских букв
-  // input.value = input.value.replace(/[^A-Za-z]/g, ''); // Убираем все символы, кроме английских букв
-  // this.SignUpForm.get('password')?.setValue(input.value); // Применяем новое значение в форме
+    // // Заменяем все символы, кроме латинских букв
+    // input.value = input.value.replace(/[^A-Za-z]/g, ''); // Убираем все символы, кроме английских букв
+    // this.SignUpForm.get('password')?.setValue(input.value); // Применяем новое значение в форме
   }
 
   handlePasswordFocus(): void {
     this.isPasswordFocused = true;
-    console.log('this.isPasswordFocused',this.isPasswordFocused)
+    console.log('this.isPasswordFocused', this.isPasswordFocused)
   }
 
   handlePasswordBlur(): void {
     this.isPasswordFocused = false;
   }
-  
+
 
   handleEmailInput(event: Event): void {
     const email = (event.target as HTMLInputElement).value;
     this.SignUpForm.get('email')?.markAsDirty();
-    this.SignUpForm.get('email')?.updateValueAndValidity(); 
+    this.SignUpForm.get('email')?.updateValueAndValidity();
   }
-  
+
 
   onSignUp() {
 
     this.SignUpForm.markAllAsTouched();
 
     if (this.SignUpForm.valid) {
-      if(!this.cookieConsentService.hasConsented()){
+      if (!this.cookieConsentService.hasConsented()) {
         this.cookieConsentService.revokeConsent();
         this.toastService.showWarn('Предупреждение', 'Вы должны согласиться на использование cookie');
         return;
@@ -107,7 +109,8 @@ export class FormRegistrationComponent {
         (response) => {
           this.currentUserService.saveUser(response.data);
           this.tokenService.setToken(response.data.token);
-          this.router.navigate([`/${response.data.id}`]);
+          // this.router.navigate([`/${response.data.id}`]);
+          this.popUpConfirmEmailService.showPopup();
         },
         (error) => {
           this.toastService.showError('Ошибка', 'Ошибка при регистрации')
@@ -123,7 +126,7 @@ export class FormRegistrationComponent {
       this.onSignUp();
     }
   }
-  
+
   goBack(): void {
     this.router.navigateByUrl('/');
   }

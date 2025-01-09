@@ -19,10 +19,9 @@ export class VerificationComponent implements OnInit {
     private route: ActivatedRoute,
     private verificationService: VerificationService, // сервис для связи с сервером
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    // Получаем параметр id из URL
     this.id = this.route.snapshot.paramMap.get('optionalParam');
 
     if (this.id) {
@@ -30,19 +29,25 @@ export class VerificationComponent implements OnInit {
     }
   }
 
+  goToLogin(): void {
+    this.router.navigate(['/login'], { state: { isSessionExpired: false } });
+  }
+
   checkEmailVerification(): void {
     this.verificationService.verifyEmail(this.id!).subscribe(
       (response) => {
-        if (response.success) {
-          this.verificationMessage = 'Почта успешно подтверждена!';
-          this.verificationStatus = true;
-        } else {
-          this.verificationMessage = 'Вы уже подтвердили свою почту.';
-          this.verificationStatus = false;
-        }
+        this.verificationMessage = 'Почта успешно подтверждена!';
+        this.verificationStatus = true;
       },
       (error) => {
-        this.verificationMessage = 'Произошла ошибка. Попробуйте снова позже.';
+        console.log('error',error)
+        // if (error. === 412) {
+        //   this.verificationMessage = 'Вы уже подтвердили свою почту.';
+        //   this.verificationStatus = false;
+        // } else {
+        //   this.verificationMessage = 'Произошла ошибка. Попробуйте снова позже.';
+        // }
+
       }
     );
   }
