@@ -41,12 +41,12 @@ export class VerificationComponent implements OnInit {
       },
       (error) => {
         console.log('error',error)
-        // if (error. === 412) {
-        //   this.verificationMessage = 'Вы уже подтвердили свою почту.';
-        //   this.verificationStatus = false;
-        // } else {
-        //   this.verificationMessage = 'Произошла ошибка. Попробуйте снова позже.';
-        // }
+        if (error.status === 412) {
+          this.verificationMessage = 'Вы уже подтвердили свою почту.';
+          this.verificationStatus = false;
+        } else {
+          this.verificationMessage = 'Произошла ошибка. Попробуйте снова позже.';
+        }
 
       }
     );
