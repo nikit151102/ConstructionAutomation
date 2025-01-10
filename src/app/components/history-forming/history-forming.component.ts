@@ -134,6 +134,7 @@ export class HistoryFormingComponent implements OnInit {
   }
 
   loadData(page: number) {
+    if(page === 0) this.historyFormingService.clearHistoryDocs();
     if (this.isLoading || (this.totalPages && page > this.totalPages)) return;
 
     this.isLoading = true;

@@ -48,6 +48,10 @@ export class HistoryFormingService {
       this.historyDocsSubject.next([...currentDocs, ...docs]);
     }
   }
+  
+  clearHistoryDocs(): void {
+    this.historyDocsSubject.next([]);
+  }  
 
   // Эндпоинт для получения всех объектов очереди
   getHistoryForming(page: number = 1, pageSize: number = 10) {
