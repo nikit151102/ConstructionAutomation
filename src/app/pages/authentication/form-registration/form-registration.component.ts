@@ -47,12 +47,14 @@ export class FormRegistrationComponent {
   private englishLettersOnlyValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
-      if (value && !/^[A-Za-z0-9\W]*$/.test(value)) {
-        return { englishLettersOnly: true };
+      // Разрешаем только английские и русские буквы, а также специальные символы
+      if (value && !/^[A-Za-zА-Яа-я!"№;%:?*()_+]*$/.test(value)) {
+        return { invalidCharacters: true }; // Возвращаем ошибку, если ввод не соответствует шаблону
       }
-      return null;
+      return null; // Валидация прошла успешно
     };
   }
+  
 
   passwordValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
