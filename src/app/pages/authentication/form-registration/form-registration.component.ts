@@ -38,22 +38,33 @@ export class FormRegistrationComponent {
     private popUpConfirmEmailService: PopUpConfirmEmailService) {
     this.SignUpForm = this.fb.group({
       username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email, this.englishLettersOnlyValidator()]],
+      email: ['', [Validators.required, Validators.email, this.emailAndEnglishLettersValidator()]],
       password: ['', [Validators.required, Validators.minLength(6), this.passwordValidator()]],
       agreement: [false, Validators.requiredTrue]
     });
   }
 
-  private englishLettersOnlyValidator(): ValidatorFn {
+  private emailAndEnglishLettersValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
-      // Разрешаем только английские и русские буквы, а также специальные символы
-      if (value && !/^[A-Za-zА-Яа-я!"№;%:?*()_+]*$/.test(value)) {
-        return { invalidCharacters: true }; // Возвращаем ошибку, если ввод не соответствует шаблону
+  
+      // Проверка на формат электронной почты
+      const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      if (value && !emailPattern.test(value)) {
+        return { email: true }; // Некорректный формат электронной почты
       }
+  
+      // Проверка на разрешённые символы
+      const specialCharsPattern = /^[A-Za-zА-Яа-я0-9!"№;%:?*()_+,.<>[\]{}|^&$#@`~\\/=]*$/;
+      if (value && !specialCharsPattern.test(value)) {
+        return { englishLettersOnly: true }; // Ошибка, если ввод содержит неподдерживаемые символы
+      }
+  
       return null; // Валидация прошла успешно
     };
   }
+  
+  
   
 
   passwordValidator(): ValidatorFn {
