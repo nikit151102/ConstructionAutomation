@@ -160,7 +160,6 @@ body {
         padding: 30px;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        max-width: 350px;
         text-align: center;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -214,6 +213,10 @@ body {
             }
         }
 
+        #details{
+            text-align: start;
+        }
+        
         .btn-primary {
             padding: 12px 25px;
             font-size: 1.1rem;
