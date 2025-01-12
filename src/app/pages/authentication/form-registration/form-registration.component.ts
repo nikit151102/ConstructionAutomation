@@ -49,13 +49,14 @@ export class FormRegistrationComponent {
       const value = control.value;
   
       // Проверка на формат электронной почты
-      const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      const emailPattern = /^[A-Za-z0-9!"№;%:?*()_+,.<>[\]{}|^&$#@`~\\/=<>-]*$/;
+
       if (value && !emailPattern.test(value)) {
         return { email: true }; // Некорректный формат электронной почты
       }
   
       // Проверка на разрешённые символы
-      const specialCharsPattern = /^[A-Za-zА-Яа-я0-9!"№;%:?*()_+,.<>[\]{}|^&$#@`~\\/=]*$/;
+      const specialCharsPattern = /^[A-Za-zА-Яа-я0-9!"№;%:?*()_+,.<>[\]{}|^&$#@`~\\/=<>-]*$/;
       if (value && !specialCharsPattern.test(value)) {
         return { englishLettersOnly: true }; // Ошибка, если ввод содержит неподдерживаемые символы
       }
@@ -73,7 +74,7 @@ export class FormRegistrationComponent {
       if (!value) {
         return null; 
       }
-      const passwordPattern = /^[A-Za-z0-9!"№;%\(\)_\*\?:%;№]+$/; 
+      const passwordPattern = /^[A-Za-z0-9!"№;%:?*()_+,.<>[\]{}|^&$#@`~\\/=<>]*$/;
       return passwordPattern.test(value) ? null : { invalidPassword: true };
     };
   }
