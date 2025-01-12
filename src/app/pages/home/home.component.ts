@@ -23,4 +23,7 @@ export class HomeComponent {
     this.router.navigate(['/legal/82913']);
   }
   
+  goToOffert(): void {
+    this.router.navigate(['/offerInformation']);
+  }
 }
