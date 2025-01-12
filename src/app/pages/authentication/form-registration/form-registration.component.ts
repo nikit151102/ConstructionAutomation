@@ -39,7 +39,7 @@ export class FormRegistrationComponent {
     this.SignUpForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email, this.englishLettersOnlyValidator()]],
-      password: ['', [Validators.required, Validators.minLength(6), this.englishLettersOnlyValidator()]],
+      password: ['', [Validators.required, Validators.minLength(6), this.passwordValidator()]],
       agreement: [false, Validators.requiredTrue]
     });
   }
@@ -54,20 +54,24 @@ export class FormRegistrationComponent {
     };
   }
 
-  checkPasswordConditions(password: string): void {
-    this.passwordConditions.minLength = password.length >= 6;
-    this.passwordConditions.hasUpperCase = /[A-Z]/.test(password);
+  passwordValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) {
+        return null; 
+      }
+      const passwordPattern = /^[A-Za-z0-9!"№;%\(\)_\*\?:%;№]+$/; 
+      return passwordPattern.test(value) ? null : { invalidPassword: true };
+    };
   }
+  
 
+  
   handlePasswordInput(event: Event): void {
-    const password = (event.target as HTMLInputElement).value;
-    this.checkPasswordConditions(password);
-    //  const input = event.target as HTMLInputElement;
-    // // Заменяем все символы, кроме латинских букв
-    // input.value = input.value.replace(/[^A-Za-z]/g, ''); // Убираем все символы, кроме английских букв
-    // this.SignUpForm.get('password')?.setValue(input.value); // Применяем новое значение в форме
+    this.passwordConditions.minLength = this.SignUpForm.get('password')?.value.length >= 6;
+    this.passwordConditions.hasUpperCase = /[A-Z]/.test(this.SignUpForm.get('password')?.value);
   }
-
+  
   handlePasswordFocus(): void {
     this.isPasswordFocused = true;
     console.log('this.isPasswordFocused', this.isPasswordFocused)

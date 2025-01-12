@@ -48,18 +48,19 @@
         <div class="password-conditions" *ngIf="isPasswordFocused">
           <p [class.valid]="passwordConditions.minLength">Не менее 6 символов</p>
           <p [class.valid]="passwordConditions.hasUpperCase">Содержит заглавные буквы</p>
-          <p *ngIf="SignUpForm.get('password')?.value && SignUpForm.get('password')?.errors?.['englishLettersOnly']"
-            [class.error]="SignUpForm.get('password')?.errors?.['englishLettersOnly']">
-            Только английские буквы
-          </p>
+
+          <p  [class.error]="SignUpForm.get('password')?.errors?.['invalidPassword']" *ngIf="SignUpForm.get('password')?.errors?.['invalidPassword']">
+            Пароль должен содержать только английские буквы, цифры или допустимые специальные символы.
+        </p>
         </div>
 
         <div *ngIf="SignUpForm.get('password')?.touched && SignUpForm.get('password')?.invalid" class="error">
           <small *ngIf="SignUpForm.get('password')?.errors?.['required']">Пароль обязателен.</small>
           <small *ngIf="SignUpForm.get('password')?.errors?.['minlength']">Пароль должен содержать не менее 6
             символов.</small>
-          <small *ngIf="SignUpForm.get('password')?.errors?.['englishLettersOnly']">Пароль должен содержать только
-            английские буквы.</small>
+            <small *ngIf="SignUpForm.get('password')?.errors?.['invalidPassword']">
+              Пароль должен содержать только английские буквы, цифры или допустимые специальные символы.
+            </small>
         </div>
       </p-floatLabel>
     </div>
