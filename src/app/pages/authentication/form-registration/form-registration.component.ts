@@ -120,15 +120,15 @@ export class FormRegistrationComponent {
         FirstName: formData.username,
         Email: formData.email,
         Password: formData.password,
-        isMailSend: true
+        isMailSend: false
       };
 
       this.registrationService.signUn(Data).subscribe(
         (response) => {
           this.currentUserService.saveUser(response.data);
           this.tokenService.setToken(response.data.token);
-          // this.router.navigate([`/${response.data.id}`]);
-          this.popUpConfirmEmailService.showPopup();
+          this.router.navigate([`/${response.data.id}`]);
+          // this.popUpConfirmEmailService.showPopup();
           const dataStage = {
             userName: `${response.data.lastName ?? ''} ${response.data.firstName ?? ''}`.trim(),
             email: response.data.email
