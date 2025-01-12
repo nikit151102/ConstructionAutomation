@@ -30,6 +30,9 @@ export class HeaderComponent {
     this.router.navigate(['/login'], { state: { isSessionExpired: false } });
   }
 
+  goToContacts(): void {
+    this.router.navigate(['/contacts']);
+  }
   @HostListener('document:click', ['$event'])
   closeMenu(event: MouseEvent): void {
     const menuElement = document.querySelector('.menu');
