@@ -10,6 +10,7 @@ export function getFormConfig(type: keyof typeof formConfig) {
 export const formConfig = {
   comparativeStatement: {
     nameDoc: 'Cопоставительная ведомость',
+    fileInstruction:'comparativeStatement.html',
     endpoint: 'ComparativeStatement',
     controls: [
       {
@@ -51,6 +52,7 @@ export const formConfig = {
   materialSpecification: {
     nameDoc: 'Спецификация на метериалы',
     endpoint: 'MaterialSpecification',
+    fileInstruction:'materialSpecification.html',
     controls: [
       {
         name: 'SummaryFileListName',
@@ -74,6 +76,7 @@ export const formConfig = {
   workSpecification: {
     nameDoc: 'Спецификация работ',
     endpoint: 'WorkSpecification',
+    fileInstruction:'workSpecification.html',
     controls: [
       {
         name: 'SummaryFileListName',

@@ -39,7 +39,14 @@
     </a>
   </div>
   <button (click)="onSubmit()">Сформировать</button>
+<<<<<<< HEAD
 <span style="font-size: 14px;">Наш сервис находится в режиме тестирования. Если результат не появляется, пожалуйста, обновите очередь печати или перезапустите страницу. Мы работаем над улучшением стабильности и благодарим за понимание!</span>
+=======
+  <a (click)="instructionsService.openInstruction()" style="    color: #847a8b;
+    text-decoration: underline;">Инструкция</a>
+>>>>>>> develop
 </form>
 
 <app-dialog-storage (confirm)="onDialogConfirm($event)"></app-dialog-storage>
+
+<app-instructions [getInstruction]="fileInstruction"></app-instructions>

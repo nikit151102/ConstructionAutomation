@@ -13,11 +13,13 @@ import { UploadData } from '../../../../interfaces/docs';
 import { Response } from '../../../../interfaces/common';
 import { DialogStorageComponent } from '../../../../components/dialog-storage/dialog-storage.component';
 import { DialogStorageService } from '../../../../components/dialog-storage/dialog-storage.service';
+import { InstructionsComponent } from '../../../../components/instructions/instructions.component';
+import { InstructionsService } from '../../../../components/instructions/instructions.service';
 
 @Component({
   selector: 'app-forms',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, DropdownComponent, FileInputComponent, TextInputComponent, DialogStorageComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, DropdownComponent, FileInputComponent, TextInputComponent, DialogStorageComponent, InstructionsComponent],
   templateUrl: './forms.component.html',
   styleUrl: './forms.component.scss'
 })
@@ -28,6 +30,7 @@ export class FormsComponent {
   @Input()
   set config(value: any) {
     this._config = value;
+    this.fileInstruction = `${this._config.fileInstruction}`
     this.onConfigChange();
   }
   get config(): any {
@@ -35,6 +38,7 @@ export class FormsComponent {
   }
 
   selectedFolder: string = '';
+  fileInstruction: string = '';
 
   onConfigChange() {
     this.files = {}; // Сброс файлов
@@ -43,7 +47,8 @@ export class FormsComponent {
     this.form.reset(); // Сбрасываем все значения формы
     this.updateSortedControls();
     this.cdr.detectChanges();
-     this.selectedFolder = `${this._config.nameDoc}`
+    this.selectedFolder = `${this._config.nameDoc}`;
+    this.fileInstruction = `${this._config.fileInstruction}`
 
   }
 
@@ -84,7 +89,8 @@ export class FormsComponent {
     private progressSpinnerService: ProgressSpinnerService,
     private commomFileService: CommomFileService,
     private cdr: ChangeDetectorRef,
-    public dialogStorageService: DialogStorageService
+    public dialogStorageService: DialogStorageService,
+    public instructionsService:InstructionsService
   ) { }
 
   ngOnInit(): void {
@@ -92,14 +98,12 @@ export class FormsComponent {
     this.dialogStorageService.setIsVisibleDialog(false);
     this.initForm();
     this.updateSortedControls();
-   
   }
 
   updateSortedControls() {
     this.sortedControls = [...this.config.controls]
       .filter(control => control.order !== 0) // Исключаем элементы с order === 0
       .sort((a, b) => (a.order || Number.MAX_SAFE_INTEGER) - (b.order || Number.MAX_SAFE_INTEGER)); // Сортируем остальные
-
   }
 
   initForm() {
@@ -190,9 +194,9 @@ export class FormsComponent {
     // Добавление поля directoryId
     const directoryId = this.form.get('directoryId')?.value;
     if (directoryId !== undefined) {
-      if(directoryId === null){
+      if (directoryId === null) {
         addFieldToFormData('directoryId', "00000000-0000-0000-0000-000000000000"); // Добавляем поле directoryId  
-      }else{
+      } else {
         addFieldToFormData('directoryId', directoryId); // Добавляем поле directoryId
       }
     }

@@ -1,0 +1,10 @@
+
+<div class="popup-overlay" (click)="instructionsService.closeInstruction()" *ngIf="instructionsService.visibleInstruction">
+    <div class="popup-content" (click)="$event.stopPropagation()">
+        <button class="popup-close" (click)="instructionsService.closeInstruction()">×</button>
+
+        <div *ngIf="instructionContent" class="instruction-content"  style="overflow-y: scroll;" [innerHTML]="instructionContent"></div>
+<div *ngIf="!instructionContent" class="loading-message">Загрузка инструкции...</div>
+
+    </div>
+</div>
