@@ -39,7 +39,8 @@
     </a>
   </div>
   <button (click)="onSubmit()">Сформировать</button>
-  <a (click)="instructionsService.openInstruction()">Инструкция</a>
+  <a (click)="instructionsService.openInstruction()" style="    color: #847a8b;
+    text-decoration: underline;">Инструкция</a>
 </form>
 
 <app-dialog-storage (confirm)="onDialogConfirm($event)"></app-dialog-storage>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { InstructionsService } from './instructions.service';
 import { CommonModule } from '@angular/common';
 
@@ -17,6 +17,12 @@ export class InstructionsComponent implements OnInit {
 
   constructor(public instructionsService:InstructionsService) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['getInstruction'] && !changes['getInstruction'].isFirstChange()) {
+      this.loadInstruction(changes['getInstruction'].currentValue);
+    }
+  }
+  
   ngOnInit(): void {
     this.loadInstruction(this.getInstruction); 
   }
