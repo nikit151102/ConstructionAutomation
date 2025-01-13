@@ -95,7 +95,8 @@ export class HistoryFormingService {
 
   connectToWebSocket(): void {
     const token = localStorage.getItem('YXV0aFRva2Vu');
-    const url = `${environment.apiUrl}/api/Profile/HistoryUpdates?token=${token}`;
+    const url = `ws://localhost:5001/`;
+    // const url = `${environment.apiUrl}/api/Profile/HistoryUpdates?token=${token}`;
     this.socket = new WebSocket(url);
 
     this.socket.onopen = () => {
