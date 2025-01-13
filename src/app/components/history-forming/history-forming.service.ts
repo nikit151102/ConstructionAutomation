@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { environment } from '../../../environment';
 import { DocumentQueueItem, DocumentQueueResponse, TransactionResponse } from '../../interfaces/docs';
 import { Response } from '../../interfaces/common';
@@ -83,5 +83,45 @@ export class HistoryFormingService {
       })
     });
   }
+
+
+
+
+
+
+  private socket!: WebSocket;
+  private messagesSubject = new Subject<any>();
+  messages$ = this.messagesSubject.asObservable();
+
+  connectToWebSocket(): void {
+    const token = localStorage.getItem('YXV0aFRva2Vu');
+    const url = `${environment.apiUrl}/api/Profile/HistoryUpdates?token=${token}`;
+    this.socket = new WebSocket(url);
+
+    this.socket.onopen = () => {
+      console.log('WebSocket connection established.');
+    };
+
+    this.socket.onmessage = (event) => {
+      console.log('WebSocket onmessage.');
+      const data = JSON.parse(event.data);
+      this.messagesSubject.next(data);
+    };
+
+    this.socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    this.socket.onclose = () => {
+      console.log('WebSocket connection closed.');
+    };
+  }
+
+  disconnectWebSocket(): void {
+    if (this.socket) {
+      this.socket.close();
+    }
+  }
+  
 
 }

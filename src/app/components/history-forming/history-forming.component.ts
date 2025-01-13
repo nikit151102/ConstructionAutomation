@@ -16,6 +16,7 @@ import { PreviewPdfComponent } from '../preview-pdf/preview-pdf.component';
 import { DocumentQueueItem, TransactionResponse } from '../../interfaces/docs';
 import { Response } from '../../interfaces/common';
 import { TypeDoc } from '../../interfaces/docs'
+import { Subscription } from 'rxjs';
 
 interface Button {
   label: string;
@@ -86,6 +87,9 @@ export class HistoryFormingComponent implements OnInit {
     private personalAccountService: PersonalAccountService
   ) { }
 
+  private subscriptions: Subscription = new Subscription();
+  receivedData: any[] = [];
+  
   ngOnInit() {
     this.historyFormingService.historyDocsState$.subscribe((value: DocumentQueueItem[]) => {
       this.historyDocs = value;
@@ -93,8 +97,16 @@ export class HistoryFormingComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
-    this.loadData(this.currentPage);
-    this.filteredDocs = [...this.historyDocs];
+    this.historyFormingService.connectToWebSocket();
+    this.subscriptions.add(
+      this.historyFormingService.messages$.subscribe((data) => {
+        this.receivedData.push(data); // Сохраняем данные
+        console.log('New data:', data);
+      })
+    );
+
+    // this.loadData(this.currentPage);
+    // this.filteredDocs = [...this.historyDocs];
   }
 
   @HostListener('document:click', ['$event'])
@@ -296,5 +308,12 @@ export class HistoryFormingComponent implements OnInit {
   //   return this.fileMetadata?.errorListCipher.replace(/\n/g, '<br>') || '';
   // }
 
+
+  ngOnDestroy(): void {
+    this.historyFormingService.disconnectWebSocket();
+    this.subscriptions.unsubscribe();
+  }
+  
 }
+
 
