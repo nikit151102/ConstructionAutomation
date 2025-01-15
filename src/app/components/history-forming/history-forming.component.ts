@@ -113,6 +113,8 @@ export class HistoryFormingComponent implements OnInit {
           console.log(`Добавление нового элемента в начало historyDocs: ${data}`);
           this.historyDocs.unshift(data);
         }
+
+        this.historyDocs = [...this.historyDocs];
     
         // Обновление filteredDocs
         const existingIndexInFiltered = this.filteredDocs.findIndex(doc => doc.id === data.id);
@@ -125,6 +127,8 @@ export class HistoryFormingComponent implements OnInit {
           console.log('Применение фильтрации для обновления filteredDocs.');
           this.filterDocsByType();
         }
+
+        this.filteredDocs = [...this.filteredDocs];
   
         console.log('Обновление отображения ChangeDetectorRef.');
         this.cdr.detectChanges();
