@@ -142,10 +142,11 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   // Функция для создания платежа через ЮKassa API
   async createPayment() {
     const url = 'https://api.yookassa.ru/v3/payments';
-    const shopId = '1015225';  // Идентификатор магазина ЮKassa
+    const shopId = '1015227';  // Идентификатор магазина ЮKassa
     //const secretKey = 'live_A0z7snNh-Wu2vSg0T33gXFz_blH-4cVmocnX3_VmZFo'; // Секретный ключ магазина
-    const secretKey = 'test_HT9wnrVlQ5Qhc0--SAqIj3sTFLnRwiaXFnkEG3Wz-0c'; // Секретный ключ магазина
-
+    const secretKey = 'test_mTsXdhSifwi6cApEwep6R0hMRMOHqWcGaWv3CrDSVis'; // Секретный ключ магазина
+    
+    
 
     const paymentData = {
       amount: {
