@@ -88,7 +88,6 @@ export class HistoryFormingComponent implements OnInit {
   ) { }
 
   private subscriptions: Subscription = new Subscription();
-  receivedData: any[] = [];
   
   ngOnInit() {
     this.historyFormingService.historyDocsState$.subscribe((value: DocumentQueueItem[]) => {
@@ -97,14 +96,21 @@ export class HistoryFormingComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
+    this.loadData(0);
     this.historyFormingService.connectToWebSocket();
+   
     this.subscriptions.add(
       this.historyFormingService.messages$.subscribe((data) => {
-        this.receivedData.push(data); // Сохраняем данные
-        console.log('New data:', data);
+        const existingIndex = this.historyDocs.findIndex(doc => doc.id === data.id);
+        if (existingIndex !== -1) {
+          this.historyDocs[existingIndex] = data;
+        } else {
+          this.historyDocs.unshift(data);
+        }
+        this.cdr.detectChanges();
       })
     );
-
+    
     // this.loadData(this.currentPage);
     // this.filteredDocs = [...this.historyDocs];
   }
