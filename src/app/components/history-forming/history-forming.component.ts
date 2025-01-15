@@ -102,26 +102,35 @@ export class HistoryFormingComponent implements OnInit {
     
     this.subscriptions.add(
       this.historyFormingService.messages$.subscribe((data) => {
+        console.log('Получение нового объекта:', data);
+    
         // Обновление historyDocs
         const existingIndexInHistory = this.historyDocs.findIndex(doc => doc.id === data.id);
         if (existingIndexInHistory !== -1) {
+          console.log(`Обновление существующего элемента в historyDocs: ${data}`);
           this.historyDocs[existingIndexInHistory] = data;
         } else {
+          console.log(`Добавление нового элемента в начало historyDocs: ${data}`);
           this.historyDocs.unshift(data);
         }
     
         // Обновление filteredDocs
         const existingIndexInFiltered = this.filteredDocs.findIndex(doc => doc.id === data.id);
         if (existingIndexInFiltered !== -1) {
+          console.log(`Обновление существующего элемента в filteredDocs: ${data}`);
           this.filteredDocs[existingIndexInFiltered] = data;
         } else {
+          console.log(`Добавление нового элемента в начало filteredDocs: ${data}`);
           this.filteredDocs.unshift(data);
+          console.log('Применение фильтрации для обновления filteredDocs.');
           this.filterDocsByType();
         }
-    
+  
+        console.log('Обновление отображения ChangeDetectorRef.');
         this.cdr.detectChanges();
       })
     );
+    
     
     
     // this.loadData(this.currentPage);
