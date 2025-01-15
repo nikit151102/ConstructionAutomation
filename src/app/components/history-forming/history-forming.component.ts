@@ -107,6 +107,7 @@ export class HistoryFormingComponent implements OnInit {
         } else {
           this.historyDocs.unshift(data);
         }
+        this.cdr.detectChanges();
       })
     );
     
