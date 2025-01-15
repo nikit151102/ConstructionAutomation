@@ -114,9 +114,10 @@ export class HistoryFormingComponent implements OnInit {
           console.log(`Добавление нового элемента в начало historyDocs: ${data}`);
           this.historyDocs.unshift(data);
         }
+        
         console.log(`Обновление historyDocs в сервисе: ${data}`);
         this.historyFormingService.setNewHistoryDocsValue(this.historyDocs)
-        
+        this.filterDocsByType();
         // // Обновление filteredDocs
         // const existingIndexInFiltered = this.filteredDocs.findIndex(doc => doc.id === data.id);
         // if (existingIndexInFiltered !== -1) {
