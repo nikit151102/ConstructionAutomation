@@ -25,6 +25,7 @@
         cursor: pointer;
         transition: background 0.3s;
         background: #cbc0d3;">Пополнить</a>
+
       </div>
       
 
@@ -40,7 +41,7 @@
       <p-button 
         label="Пополнить" 
         icon="pi pi-check" 
-        (click)="confirmTopUp()" 
+        (click)="openPaymentWidget()" 
         styleClass="top-up-button"
       ></p-button>
     </div>
@@ -48,3 +49,7 @@
   </div>
 
 </div>
+
+
+
+<!-- (click)="confirmTopUp()" -->

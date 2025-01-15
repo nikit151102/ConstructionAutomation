@@ -140,4 +140,35 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
 
 
 
+  openPaymentWidget() {
+    const confirmationToken = 'your-confirmation-token'; // Укажите полученный токен
+    const returnUrl = 'https://example.com'; // Укажите URL для завершения оплаты
+
+    // Убедитесь, что объект `window.YooMoneyCheckoutWidget` доступен
+    if ((window as any).YooMoneyCheckoutWidget) {
+      const checkout = new (window as any).YooMoneyCheckoutWidget({
+        confirmation_token: confirmationToken,
+        return_url: returnUrl,
+        customization: {
+          modal: true // Открытие виджета в модальном окне
+        },
+        error_callback: function (error: any) {
+          console.error('Ошибка инициализации виджета оплаты:', error);
+        }
+      });
+
+      // Отображение виджета
+      checkout.render()
+        .then(() => {
+          console.log('Платежная форма успешно загружена');
+        })
+        .catch((error: any) => {
+          console.error('Ошибка отображения платежной формы:', error);
+        });
+    } else {
+      console.error('Скрипт виджета оплаты не подключен.');
+    }
+  }
+
+
 }
