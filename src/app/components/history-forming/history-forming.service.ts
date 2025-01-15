@@ -38,6 +38,10 @@ export class HistoryFormingService {
     this.historyDocsSubject.next([...currentDocs, doc]);
   }
 
+  setNewHistoryDocsValue(docs: DocumentQueueItem[]): void {
+    this.historyDocsSubject.next(docs);
+  }
+
   getHistoryDocsValue(): any {
     return this.historyDocsSubject.getValue();
   }

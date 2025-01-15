@@ -73,12 +73,12 @@ export class HistoryFormingComponent implements OnInit {
       this.selectedTypeDocs = [];
       const selectedDoc = this.typeDocs.find(doc => doc.name === this.selectTypeDoc);
       if (selectedDoc) {
-        this.selectedTypeDocs.push(selectedDoc); 
+        this.selectedTypeDocs.push(selectedDoc);
         this.filterDocsByType();
-      } 
+      }
     }
   }
-  
+
   constructor(
     public historyFormingService: HistoryFormingService,
     private currentUserService: CurrentUserService,
@@ -88,10 +88,11 @@ export class HistoryFormingComponent implements OnInit {
   ) { }
 
   private subscriptions: Subscription = new Subscription();
-  
+
   ngOnInit() {
     this.historyFormingService.historyDocsState$.subscribe((value: DocumentQueueItem[]) => {
       this.historyDocs = value;
+      console.log(`Обновление historyDocs в компоненте :`, value);
       this.filterDocsByType();
       this.cdr.detectChanges();
     });
@@ -99,11 +100,11 @@ export class HistoryFormingComponent implements OnInit {
     this.loadData(0);
     this.filteredDocs = [...this.historyDocs];
     this.historyFormingService.connectToWebSocket();
-    
+
     this.subscriptions.add(
       this.historyFormingService.messages$.subscribe((data) => {
         console.log('Получение нового объекта:', data);
-    
+
         // Обновление historyDocs
         const existingIndexInHistory = this.historyDocs.findIndex(doc => doc.id === data.id);
         if (existingIndexInHistory !== -1) {
@@ -113,30 +114,30 @@ export class HistoryFormingComponent implements OnInit {
           console.log(`Добавление нового элемента в начало historyDocs: ${data}`);
           this.historyDocs.unshift(data);
         }
+        console.log(`Обновление historyDocs в сервисе: ${data}`);
+        this.historyFormingService.setNewHistoryDocsValue(this.historyDocs)
+        
+        // // Обновление filteredDocs
+        // const existingIndexInFiltered = this.filteredDocs.findIndex(doc => doc.id === data.id);
+        // if (existingIndexInFiltered !== -1) {
+        //   console.log(`Обновление существующего элемента в filteredDocs: ${data}`);
+        //   this.filteredDocs[existingIndexInFiltered] = data;
+        // } else {
+        //   console.log(`Добавление нового элемента в начало filteredDocs: ${data}`);
+        //   this.filteredDocs.unshift(data);
+        //   console.log('Применение фильтрации для обновления filteredDocs.');
+        //   this.filterDocsByType();
+        // }
 
-        this.historyDocs = [...this.historyDocs];
-    
-        // Обновление filteredDocs
-        const existingIndexInFiltered = this.filteredDocs.findIndex(doc => doc.id === data.id);
-        if (existingIndexInFiltered !== -1) {
-          console.log(`Обновление существующего элемента в filteredDocs: ${data}`);
-          this.filteredDocs[existingIndexInFiltered] = data;
-        } else {
-          console.log(`Добавление нового элемента в начало filteredDocs: ${data}`);
-          this.filteredDocs.unshift(data);
-          console.log('Применение фильтрации для обновления filteredDocs.');
-          this.filterDocsByType();
-        }
+        // this.filteredDocs = [...this.filteredDocs];
 
-        this.filteredDocs = [...this.filteredDocs];
-  
         console.log('Обновление отображения ChangeDetectorRef.');
         this.cdr.detectChanges();
       })
     );
-    
-    
-    
+
+
+
     // this.loadData(this.currentPage);
     // this.filteredDocs = [...this.historyDocs];
   }
@@ -178,7 +179,7 @@ export class HistoryFormingComponent implements OnInit {
   }
 
   loadData(page: number) {
-    if(page === 0) this.historyFormingService.clearHistoryDocs();
+    if (page === 0) this.historyFormingService.clearHistoryDocs();
     // if (this.isLoading || (this.totalPages && page > this.totalPages)) return;
 
     this.isLoading = true;
@@ -247,7 +248,7 @@ export class HistoryFormingComponent implements OnInit {
 
     const actions = statusActionsMap[statusCode] ? [...statusActionsMap[statusCode]] : [];
 
-    return [ ...commonActions, ...actions];
+    return [...commonActions, ...actions];
   }
 
 
@@ -345,7 +346,7 @@ export class HistoryFormingComponent implements OnInit {
     this.historyFormingService.disconnectWebSocket();
     this.subscriptions.unsubscribe();
   }
-  
+
 }
 
 
