@@ -97,19 +97,32 @@ export class HistoryFormingComponent implements OnInit {
     });
 
     this.loadData(0);
+    this.filteredDocs = [...this.historyDocs];
     this.historyFormingService.connectToWebSocket();
-   
+    
     this.subscriptions.add(
       this.historyFormingService.messages$.subscribe((data) => {
-        const existingIndex = this.historyDocs.findIndex(doc => doc.id === data.id);
-        if (existingIndex !== -1) {
-          this.historyDocs[existingIndex] = data;
+        // Обновление historyDocs
+        const existingIndexInHistory = this.historyDocs.findIndex(doc => doc.id === data.id);
+        if (existingIndexInHistory !== -1) {
+          this.historyDocs[existingIndexInHistory] = data;
         } else {
           this.historyDocs.unshift(data);
         }
+    
+        // Обновление filteredDocs
+        const existingIndexInFiltered = this.filteredDocs.findIndex(doc => doc.id === data.id);
+        if (existingIndexInFiltered !== -1) {
+          this.filteredDocs[existingIndexInFiltered] = data;
+        } else {
+          this.filteredDocs.unshift(data);
+          this.filterDocsByType();
+        }
+    
         this.cdr.detectChanges();
       })
     );
+    
     
     // this.loadData(this.currentPage);
     // this.filteredDocs = [...this.historyDocs];
