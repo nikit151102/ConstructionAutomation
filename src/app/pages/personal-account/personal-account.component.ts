@@ -87,10 +87,10 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     utf8Bytes.forEach(byte => {
       binary += String.fromCharCode(byte);
     });
-    return btoa(binary);  
+    return btoa(binary);
   }
-  
-  
+
+
   ngOnDestroy(): void {
     if (this.screenSubscription) {
       this.screenSubscription.unsubscribe();
@@ -139,9 +139,53 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
 
 
 
+  // Функция для создания платежа через ЮKassa API
+   async createPayment() {
+    const url = 'https://api.yookassa.ru/v3/payments';
+    const shopId = '1011761';  // Идентификатор магазина ЮKassa
+    const secretKey = 'live_A0z7snNh-Wu2vSg0T33gXFz_blH-4cVmocnX3_VmZFo'; // Секретный ключ магазина
 
-  openPaymentWidget() {
-    const confirmationToken = 'your-confirmation-token'; // Укажите полученный токен
+    const paymentData = {
+      amount: {
+        value: '2.00', // Сумма платежа
+        currency: 'RUB', // Валюта
+      },
+      confirmation: {
+        type: 'embedded', // Тип подтверждения платежа (embedded для встраивания виджета)
+      },
+      capture: true, // Указываем, что нужно захватить платеж
+      description: 'Заказ №72', // Описание платежа
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${btoa(shopId + ':' + secretKey)}`, // Аутентификация
+         
+        },
+        body: JSON.stringify(paymentData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // Получаем confirmation_token из ответа
+        const confirmationToken = result.confirmation.confirmation_token;
+        console.log('Confirmation token:', confirmationToken);
+
+        // После этого вызовем функцию для открытия виджета
+        this.openPaymentWidget(confirmationToken);
+      } else {
+        console.error('Ошибка при создании платежа:', result);
+      }
+    } catch (error) {
+      console.error('Ошибка при запросе к ЮKassa API:', error);
+    }
+  }
+
+  openPaymentWidget(confirmationToken: string) {
     const returnUrl = 'https://example.com'; // Укажите URL для завершения оплаты
 
     // Убедитесь, что объект `window.YooMoneyCheckoutWidget` доступен
