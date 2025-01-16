@@ -108,29 +108,25 @@ export class HistoryFormingComponent implements OnInit {
         // Обновление historyDocs
         const existingIndexInHistory = this.historyDocs.findIndex(doc => doc.id === data.id);
         if (existingIndexInHistory !== -1) {
-          console.log(`Обновление существующего элемента в historyDocs: ${data}`);
-          this.historyDocs[existingIndexInHistory] = data;
+          this.historyDocs = this.historyDocs.map(doc => doc.id === data.id ? data : doc);
         } else {
-          console.log(`Добавление нового элемента в начало historyDocs: ${data}`);
-          this.historyDocs.unshift(data);
+          this.historyDocs = [data, ...this.historyDocs];
         }
         
+        
         console.log(`Обновление historyDocs в сервисе: ${data}`);
-        this.historyFormingService.setNewHistoryDocsValue(this.historyDocs)
-        this.filterDocsByType();
-        // // Обновление filteredDocs
-        // const existingIndexInFiltered = this.filteredDocs.findIndex(doc => doc.id === data.id);
-        // if (existingIndexInFiltered !== -1) {
-        //   console.log(`Обновление существующего элемента в filteredDocs: ${data}`);
-        //   this.filteredDocs[existingIndexInFiltered] = data;
-        // } else {
-        //   console.log(`Добавление нового элемента в начало filteredDocs: ${data}`);
-        //   this.filteredDocs.unshift(data);
-        //   console.log('Применение фильтрации для обновления filteredDocs.');
-        //   this.filterDocsByType();
-        // }
+        // this.historyFormingService.setNewHistoryDocsValue(this.historyDocs)
+        // this.filterDocsByType();
+        // Обновление filteredDocs
+        const existingIndexInFiltered = this.filteredDocs.findIndex(doc => doc.id === data.id);
+        if (existingIndexInFiltered !== -1) {
+          this.filteredDocs = this.filteredDocs.map(doc => doc.id === data.id ? data : doc);
+        } else {
+          this.filteredDocs = [data, ...this.filteredDocs];
+        }
+        
 
-        // this.filteredDocs = [...this.filteredDocs];
+        this.filteredDocs = [...this.filteredDocs];
 
         console.log('Обновление отображения ChangeDetectorRef.');
         this.cdr.detectChanges();
