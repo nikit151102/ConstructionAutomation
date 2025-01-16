@@ -89,54 +89,35 @@ export class HistoryFormingComponent implements OnInit {
 
   private subscriptions: Subscription = new Subscription();
 
+  trackById(index: number, item: DocumentQueueItem): string {
+    return item.id;
+}
+
   ngOnInit() {
     this.historyFormingService.historyDocsState$.subscribe((value: DocumentQueueItem[]) => {
       this.historyDocs = value;
       console.log(`Обновление historyDocs в компоненте :`, value);
       this.filterDocsByType();
-      this.cdr.detectChanges();
+      this.filteredDocs = [...this.filteredDocs];
+      this.cdr.markForCheck();
     });
 
-    this.loadData(0);
-    this.filteredDocs = [...this.historyDocs];
-    this.historyFormingService.connectToWebSocket();
-
+   
     this.subscriptions.add(
       this.historyFormingService.messages$.subscribe((data) => {
         console.log('Получение нового объекта:', data);
 
-        // Обновление historyDocs
-        const existingIndexInHistory = this.historyDocs.findIndex(doc => doc.id === data.id);
-        if (existingIndexInHistory !== -1) {
-          this.historyDocs = this.historyDocs.map(doc => doc.id === data.id ? data : doc);
-        } else {
-          this.historyDocs = [data, ...this.historyDocs];
-        }
-        
-        
-        console.log(`Обновление historyDocs в сервисе: ${data}`);
-        // this.historyFormingService.setNewHistoryDocsValue(this.historyDocs)
-        // this.filterDocsByType();
-        // Обновление filteredDocs
-        const existingIndexInFiltered = this.filteredDocs.findIndex(doc => doc.id === data.id);
-        if (existingIndexInFiltered !== -1) {
-          this.filteredDocs = this.filteredDocs.map(doc => doc.id === data.id ? data : doc);
-        } else {
-          this.filteredDocs = [data, ...this.filteredDocs];
-        }
-        
-
-        this.filteredDocs = [...this.filteredDocs];
+        this.historyFormingService.setNewHistoryDocsValue(data);
 
         console.log('Обновление отображения ChangeDetectorRef.');
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       })
     );
 
-
-
-    // this.loadData(this.currentPage);
-    // this.filteredDocs = [...this.historyDocs];
+    this.loadData(0);
+    this.filteredDocs = [...this.historyDocs];
+    this.historyFormingService.connectToWebSocket();
+    
   }
 
   @HostListener('document:click', ['$event'])

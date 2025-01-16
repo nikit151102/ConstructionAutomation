@@ -36,7 +36,7 @@
     </div>
 
     <!-- Карточки -->
-    <div *ngFor="let doc of filteredDocs" class="doc-card" [class.not-found]="doc.statusCode === 404"
+    <div *ngFor="let doc of filteredDocs; trackBy: trackById" class="doc-card" [class.not-found]="doc.statusCode === 404"
         (click)="toggleAccordion(doc)">
 
         <div style="padding-left: 17px;">
