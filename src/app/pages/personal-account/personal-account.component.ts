@@ -140,49 +140,51 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
 
 
   // Функция для создания платежа через ЮKassa API
-   async createPayment() {
+  async createPayment() {
     const url = 'https://api.yookassa.ru/v3/payments';
     const shopId = '1011761';  // Идентификатор магазина ЮKassa
     const secretKey = 'live_A0z7snNh-Wu2vSg0T33gXFz_blH-4cVmocnX3_VmZFo'; // Секретный ключ магазина
-    //const secretKey = 'test_mTsXdhSifwi6cApEwep6R0hMRMOHqWcGaWv3CrDSVis'; // Секретный ключ магазина
-    
-    
-    const paymentData = {
-      amount: {
-        value: '2.00', // Сумма платежа
-        currency: 'RUB', // Валюта
-      },
-      confirmation: {
-        type: 'embedded', // Тип подтверждения платежа (embedded для встраивания виджета)
-      },
-      capture: true, // Указываем, что нужно захватить платеж
-      description: 'Заказ №72', // Описание платежа
-    };
+    //const secretKey = 'test_HT9wnrVlQ5Qhc0--SAqIj3sTFLnRwiaXFnkEG3Wz-0c'; // Секретный ключ магазина
 
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Basic ${btoa(shopId + ':' + secretKey)}`, // Аутентификация
+    if (this.topUpAmount > 0) {
+      
+      const paymentData = {
+        amount: {
+          value: `${this.topUpAmount}`, // Сумма платежа
+          currency: 'RUB', // Валюта
         },
-        body: JSON.stringify(paymentData),
-      });
+        confirmation: {
+          type: 'embedded', // Тип подтверждения платежа (embedded для встраивания виджета)
+        },
+        capture: true, // Указываем, что нужно захватить платеж
+        description: 'Заказ №72', // Описание платежа
+      };
 
-      const result = await response.json();
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${btoa(shopId + ':' + secretKey)}`, // Аутентификация
+          },
+          body: JSON.stringify(paymentData),
+        });
 
-      if (response.ok) {
-        // Получаем confirmation_token из ответа
-        const confirmationToken = result.confirmation.confirmation_token;
-        console.log('Confirmation token:', confirmationToken);
+        const result = await response.json();
 
-        // После этого вызовем функцию для открытия виджета
-        this.openPaymentWidget(confirmationToken);
-      } else {
-        console.error('Ошибка при создании платежа:', result);
+        if (response.ok) {
+          // Получаем confirmation_token из ответа
+          const confirmationToken = result.confirmation.confirmation_token;
+          console.log('Confirmation token:', confirmationToken);
+
+          // После этого вызовем функцию для открытия виджета
+          this.openPaymentWidget(confirmationToken);
+        } else {
+          console.error('Ошибка при создании платежа:', result);
+        }
+      } catch (error) {
+        console.error('Ошибка при запросе к ЮKassa API:', error);
       }
-    } catch (error) {
-      console.error('Ошибка при запросе к ЮKassa API:', error);
     }
   }
 
