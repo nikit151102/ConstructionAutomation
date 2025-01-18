@@ -201,11 +201,11 @@ export class FormsComponent {
       }
     }
 
-    // Добавление UserId, если оно доступно
-    const userId = localStorage.getItem('VXNlcklk');
-    if (userId) {
-      addFieldToFormData('UserId', userId);
-    }
+    // // Добавление UserId, если оно доступно
+    // const userId = localStorage.getItem('VXNlcklk');
+    // if (userId) {
+    //   addFieldToFormData('UserId', userId);
+    // }
 
     // Отправка данных
     this.uploadSuccess.emit(null);

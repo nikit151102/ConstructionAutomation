@@ -1,6 +1,6 @@
 import { Validators } from "@angular/forms";
 
-export type ConfigType = 'comparativeStatement' | 'materialSpecification' | 'workSpecification';
+export type ConfigType = 'comparativeStatement' | 'materialSpecification' | 'workSpecification' | 'actHideWorksRequest';
 
 
 export function getFormConfig(type: keyof typeof formConfig) {
@@ -96,7 +96,48 @@ export const formConfig = {
         order: 1
       },
     ],
-  }
+  }, 
+  actHideWorksRequest: {
+    nameDoc: 'Акты скрытых работ',
+    endpoint: 'ActHideWorks',
+    fileInstruction:'materialSpecification.html',
+    controls: [
+      {
+        name: 'SummaryFile',
+        type: 'file',
+        label: 'КС-2',
+        accept: '.xls, .xlsx',
+        validators: [Validators.required],
+        order: 1
+      },
+      {
+        name: 'SummaryFileListName',
+        type: 'dropdown',
+        label: 'Выберите лист',
+        options: [],
+        validators: [Validators.required],
+        isFileInput: true,
+        order: 0
+      },
+      {
+        name: 'Inn',
+        type: 'text',
+        label: 'ИНН',
+        options: [],
+        validators: [Validators.required,
+          Validators.pattern('^[0-9]+$')],
+        order: 2
+      },
+      {
+        name: 'Address',
+        type: 'text',
+        label: 'Адрес',
+        options: [],
+        validators: [Validators.required],
+        order: 3
+      },
+    ],
+  },
 };
 
 

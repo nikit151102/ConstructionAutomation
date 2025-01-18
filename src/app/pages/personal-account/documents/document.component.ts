@@ -37,7 +37,7 @@ export class DocumentComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const configType = params.get('configType') as ConfigType | null;
 
-      if (configType && ['comparativeStatement', 'materialSpecification', 'workSpecification'].includes(configType)) {
+      if (configType && ['comparativeStatement', 'materialSpecification', 'workSpecification','actHideWorksRequest'].includes(configType)) {
         this.config = getFormConfig(configType as ConfigType);
         this.personalAccountService.changeTitle(this.config.nameDoc)
         this.cdr.detectChanges();
