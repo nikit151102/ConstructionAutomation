@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, HostListener, Input, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
@@ -58,7 +58,7 @@ export class HistoryFormingComponent implements OnInit {
   buttons: Button[] = [];
 
   currentPage: number = 0;
-  pageSize: number = 10;
+  pageSize: number = 7;
   isLoading: boolean = false;
   totalPages: number | null = null;
 
@@ -66,6 +66,30 @@ export class HistoryFormingComponent implements OnInit {
     return this.selectedTypeDocs.length > 0
       ? `Выбрано ${this.selectedTypeDocs.length}`
       : 'Фильтр';
+  }
+
+
+  @ViewChild('docsContainer') docsContainer!: ElementRef;
+
+  ngAfterViewInit() {
+    if (this.docsContainer) {
+      this.docsContainer.nativeElement.addEventListener('scroll', this.onScroll.bind(this));
+    } else {
+      console.error('docsContainer not found!');
+    }
+  }
+  
+
+  onScroll() {
+    const element = this.docsContainer.nativeElement;
+    const scrollTop = element.scrollTop;
+    const scrollHeight = element.scrollHeight;
+    const clientHeight = element.clientHeight;
+
+    if (scrollTop + clientHeight >= scrollHeight - 10 && !this.isLoading) {
+      this.currentPage++;
+      this.loadData(this.currentPage);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -91,7 +115,7 @@ export class HistoryFormingComponent implements OnInit {
 
   trackById(index: number, item: DocumentQueueItem): string {
     return item.id;
-}
+  }
 
   ngOnInit() {
     this.historyFormingService.historyDocsState$.subscribe((value: DocumentQueueItem[]) => {
@@ -102,7 +126,7 @@ export class HistoryFormingComponent implements OnInit {
       this.cdr.markForCheck();
     });
 
-   
+
     this.subscriptions.add(
       this.historyFormingService.messages$.subscribe((data) => {
         console.log('Получение нового объекта:', data);
@@ -117,7 +141,7 @@ export class HistoryFormingComponent implements OnInit {
     this.loadData(0);
     this.filteredDocs = [...this.historyDocs];
     this.historyFormingService.connectToWebSocket();
-    
+
   }
 
   @HostListener('document:click', ['$event'])
@@ -158,7 +182,7 @@ export class HistoryFormingComponent implements OnInit {
 
   loadData(page: number) {
     if (page === 0) this.historyFormingService.clearHistoryDocs();
-    // if (this.isLoading || (this.totalPages && page > this.totalPages)) return;
+    if (this.isLoading || (this.totalPages && page > this.totalPages)) return;
 
     this.isLoading = true;
 
@@ -177,14 +201,6 @@ export class HistoryFormingComponent implements OnInit {
         this.isLoading = false;
       }
     );
-  }
-
-  @HostListener('window:scroll', [])
-  onScroll() {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.isLoading) {
-      this.currentPage++;
-      this.loadData(this.currentPage);
-    }
   }
 
 
@@ -326,5 +342,3 @@ export class HistoryFormingComponent implements OnInit {
   }
 
 }
-
-
