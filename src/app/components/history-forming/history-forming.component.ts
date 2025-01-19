@@ -58,7 +58,7 @@ export class HistoryFormingComponent implements OnInit {
   buttons: Button[] = [];
 
   currentPage: number = 0;
-  pageSize: number = 7;
+  pageSize: number = 20;
   isLoading: boolean = false;
   totalPages: number | null = null;
 
