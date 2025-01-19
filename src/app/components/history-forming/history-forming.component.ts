@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, HostListener, Input, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
@@ -16,6 +16,7 @@ import { PreviewPdfComponent } from '../preview-pdf/preview-pdf.component';
 import { DocumentQueueItem, TransactionResponse } from '../../interfaces/docs';
 import { Response } from '../../interfaces/common';
 import { TypeDoc } from '../../interfaces/docs'
+import { Subscription } from 'rxjs';
 
 interface Button {
   label: string;
@@ -57,7 +58,7 @@ export class HistoryFormingComponent implements OnInit {
   buttons: Button[] = [];
 
   currentPage: number = 0;
-  pageSize: number = 10;
+  pageSize: number = 7;
   isLoading: boolean = false;
   totalPages: number | null = null;
 
@@ -67,17 +68,41 @@ export class HistoryFormingComponent implements OnInit {
       : 'Фильтр';
   }
 
+
+  @ViewChild('docsContainer') docsContainer!: ElementRef;
+
+  ngAfterViewInit() {
+    if (this.docsContainer) {
+      this.docsContainer.nativeElement.addEventListener('scroll', this.onScroll.bind(this));
+    } else {
+      console.error('docsContainer not found!');
+    }
+  }
+  
+
+  onScroll() {
+    const element = this.docsContainer.nativeElement;
+    const scrollTop = element.scrollTop;
+    const scrollHeight = element.scrollHeight;
+    const clientHeight = element.clientHeight;
+
+    if (scrollTop + clientHeight >= scrollHeight - 10 && !this.isLoading) {
+      this.currentPage++;
+      this.loadData(this.currentPage);
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectTypeDoc']) {
       this.selectedTypeDocs = [];
       const selectedDoc = this.typeDocs.find(doc => doc.name === this.selectTypeDoc);
       if (selectedDoc) {
-        this.selectedTypeDocs.push(selectedDoc); 
+        this.selectedTypeDocs.push(selectedDoc);
         this.filterDocsByType();
-      } 
+      }
     }
   }
-  
+
   constructor(
     public historyFormingService: HistoryFormingService,
     private currentUserService: CurrentUserService,
@@ -86,15 +111,37 @@ export class HistoryFormingComponent implements OnInit {
     private personalAccountService: PersonalAccountService
   ) { }
 
+  private subscriptions: Subscription = new Subscription();
+
+  trackById(index: number, item: DocumentQueueItem): string {
+    return item.id;
+  }
+
   ngOnInit() {
     this.historyFormingService.historyDocsState$.subscribe((value: DocumentQueueItem[]) => {
       this.historyDocs = value;
+      console.log(`Обновление historyDocs в компоненте :`, value);
       this.filterDocsByType();
-      this.cdr.detectChanges();
+      this.filteredDocs = [...this.filteredDocs];
+      this.cdr.markForCheck();
     });
 
-    this.loadData(this.currentPage);
+
+    this.subscriptions.add(
+      this.historyFormingService.messages$.subscribe((data) => {
+        console.log('Получение нового объекта:', data);
+
+        this.historyFormingService.setNewHistoryDocsValue(data);
+
+        console.log('Обновление отображения ChangeDetectorRef.');
+        this.cdr.markForCheck();
+      })
+    );
+
+    this.loadData(0);
     this.filteredDocs = [...this.historyDocs];
+    this.historyFormingService.connectToWebSocket();
+
   }
 
   @HostListener('document:click', ['$event'])
@@ -134,8 +181,8 @@ export class HistoryFormingComponent implements OnInit {
   }
 
   loadData(page: number) {
-    if(page === 0) this.historyFormingService.clearHistoryDocs();
-    // if (this.isLoading || (this.totalPages && page > this.totalPages)) return;
+    if (page === 0) this.historyFormingService.clearHistoryDocs();
+    if (this.isLoading || (this.totalPages && page > this.totalPages)) return;
 
     this.isLoading = true;
 
@@ -154,14 +201,6 @@ export class HistoryFormingComponent implements OnInit {
         this.isLoading = false;
       }
     );
-  }
-
-  @HostListener('window:scroll', [])
-  onScroll() {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.isLoading) {
-      this.currentPage++;
-      this.loadData(this.currentPage);
-    }
   }
 
 
@@ -203,7 +242,7 @@ export class HistoryFormingComponent implements OnInit {
 
     const actions = statusActionsMap[statusCode] ? [...statusActionsMap[statusCode]] : [];
 
-    return [ ...commonActions, ...actions];
+    return [...commonActions, ...actions];
   }
 
 
@@ -296,5 +335,10 @@ export class HistoryFormingComponent implements OnInit {
   //   return this.fileMetadata?.errorListCipher.replace(/\n/g, '<br>') || '';
   // }
 
-}
 
+  ngOnDestroy(): void {
+    this.historyFormingService.disconnectWebSocket();
+    this.subscriptions.unsubscribe();
+  }
+
+}
