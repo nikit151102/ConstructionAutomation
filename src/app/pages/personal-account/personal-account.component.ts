@@ -10,6 +10,7 @@ import { CurrentUserService } from '../../services/current-user.service';
 import { FormsModule } from '@angular/forms';
 import { TransactionService } from './home/transaction.service';
 import { TokenService } from '../../services/token.service';
+import { environment } from '../../../environment';
 
 @Component({
   selector: 'app-personal-account',
@@ -113,7 +114,6 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
 
   toggleTopUp(): void {
     this.showTopUp = !this.showTopUp;
-    console.log('this.showTopUp', this.showTopUp)
   }
 
   confirmTopUp(): void {
@@ -124,6 +124,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
           this.personalAccountService.changeBalance(response.data.balance);
           this.showTopUp = false;
           this.topUpAmount = 0;
+          this.openPaymentWidget(response.data.confirmationToken);
           this.transactionService.getTransactions().subscribe({
             error: (err) => console.error('Error loading transactions', err),
           });
@@ -138,67 +139,14 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   }
 
 
-
-  // Функция для создания платежа через ЮKassa API
-  async createPayment() {
-    const url = 'https://api.yookassa.ru/v3/payments';
-    const shopId = '1015227';  // Идентификатор магазина ЮKassa
-    const secretKey = 'test_mTsXdhSifwi6cApEwep6R0hMRMOHqWcGaWv3CrDSVis'; // Секретный ключ магазина
-    //const secretKey = 'test_HT9wnrVlQ5Qhc0--SAqIj3sTFLnRwiaXFnkEG3Wz-0c'; // Секретный ключ магазина
-    
-    
-    if (this.topUpAmount > 0) {
-      
-      const paymentData = {
-        amount: {
-          value: `${this.topUpAmount}`, // Сумма платежа
-          currency: 'RUB', // Валюта
-        },
-        confirmation: {
-          type: 'embedded', // Тип подтверждения платежа (embedded для встраивания виджета)
-        },
-        capture: true, // Указываем, что нужно захватить платеж
-        description: 'Заказ №72', // Описание платежа
-      };
-
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Basic ${btoa(shopId + ':' + secretKey)}`, // Аутентификация
-          },
-          body: JSON.stringify(paymentData),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          // Получаем confirmation_token из ответа
-          const confirmationToken = result.confirmation.confirmation_token;
-          console.log('Confirmation token:', confirmationToken);
-
-          // После этого вызовем функцию для открытия виджета
-          this.openPaymentWidget(confirmationToken);
-        } else {
-          console.error('Ошибка при создании платежа:', result);
-        }
-      } catch (error) {
-        console.error('Ошибка при запросе к ЮKassa API:', error);
-      }
-    }
-  }
-
-  openPaymentWidget(confirmationToken: string) {
-    const returnUrl = 'https://example.com'; // Укажите URL для завершения оплаты
-
-    // Убедитесь, что объект `window.YooMoneyCheckoutWidget` доступен
+  openPaymentWidget(confirmationToken: any) {
+    const userId = localStorage.getItem('VXNlcklk')
     if ((window as any).YooMoneyCheckoutWidget) {
       const checkout = new (window as any).YooMoneyCheckoutWidget({
         confirmation_token: confirmationToken,
-        return_url: returnUrl,
+        return_url: `${environment.domain}/${userId}/thanks`,
         customization: {
-          modal: true // Открытие виджета в модальном окне
+          modal: true, // Открытие виджета в модальном окне
         },
         error_callback: function (error: any) {
           console.error('Ошибка инициализации виджета оплаты:', error);

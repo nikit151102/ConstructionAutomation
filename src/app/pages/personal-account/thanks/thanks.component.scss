@@ -1,0 +1,74 @@
+$primary-color: #4caf50;
+$secondary-color: #f3f3f3;
+$text-color: #333;
+$button-color: #007bff;
+$button-hover-color: #0056b3;
+
+.thank-you-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: $secondary-color;
+    margin: 0;
+}
+
+.thank-you-content {
+    text-align: center;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+
+    h1 {
+        color: $primary-color;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    p {
+        color: $text-color;
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+
+    .home-button {
+        padding: 12px 24px;
+        font-size: 1rem;
+        color: white;
+        background-color: $button-color;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: $button-hover-color;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+// Адаптивные стили
+@media (max-width: 600px) {
+    .thank-you-content {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+
+    .home-button {
+        padding: 10px 20px;
+    }
+}

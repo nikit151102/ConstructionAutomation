@@ -1,9 +1,9 @@
 export const environment = {
     //apiUrl: 'https://rebuildpro.ru:5001',
     apiUrl: 'https://dev.rebuildpro.ru:5001',
-    // apiUrl: 'http://vm-c86b4df8.na4u.ru:5000',
     // apiUrl: 'http://localhost:5182',
-    userNameBot: 'etgrrisTESTING_bot'
+    userNameBot: 'etgrrisTESTING_bot',
+    domain: 'https://dev.rebuildpro.ru'
 };
 
 // authToken   Base64 YXV0aFRva2Vu

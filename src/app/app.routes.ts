@@ -8,7 +8,7 @@ export const routes: Routes = [
         path: '', component: HomeComponent
     },
     {
-        path: 'contacts', loadChildren: () => import('./pages//contacts/contacts.module').then(m => m.ContactsModule)
+        path: 'contacts', loadChildren: () => import('./pages/contacts/contacts.module').then(m => m.ContactsModule)
     },
     {
         path: 'login', loadChildren: () => import('./pages/authentication/authentication.module').then(m => m.AuthenticationModule)
@@ -17,7 +17,6 @@ export const routes: Routes = [
         path: 'legal/:optionalParam',
         loadChildren: () => import('./components/legal-information/legal-information.module').then(m => m.LegalInformationModule)
     },
-    
     {
         path: 'verification/:optionalParam', loadChildren: () => import('./pages/verification/verification.module').then(m => m.VerificationModule)
     },
