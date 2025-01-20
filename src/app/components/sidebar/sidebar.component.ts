@@ -27,8 +27,8 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       items: [
         { label: 'Cопоставительная ведомость', command: () => this.executeDocs('comparativeStatement') },
         { label: 'Спецификация на метериалы', command: () => this.executeDocs('materialSpecification') },
-        { label: 'Спецификация работ', command: () => this.executeDocs('workSpecification') },
-        { label: 'акты освидетельствования скрытых работ', command: () => this.executeDocs('actHideWorksRequest') },
+        { label: 'Ведомость объемов работ', command: () => this.executeDocs('workSpecification') },
+        { label: 'Акты освидетельствования скрытых работ', command: () => this.executeDocs('actHideWorksRequest') },
         
       ]
     },
