@@ -188,9 +188,11 @@ body {
         }
 
         .pricing__plan-title {
+            display: flex;
+            align-items: center;
             font-size: 1.8rem;
             font-weight: bold;
-            margin-bottom: 15px;
+            height: 99px
         }
 
         .pricing__price {
@@ -213,10 +215,10 @@ body {
             }
         }
 
-        #details{
+        #details {
             text-align: start;
         }
-        
+
         .btn-primary {
             padding: 12px 25px;
             font-size: 1.1rem;
