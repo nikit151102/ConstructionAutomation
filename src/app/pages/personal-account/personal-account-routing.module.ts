@@ -25,12 +25,16 @@ const routes: Routes = [
         loadChildren: () => import('./my-documents/my-documents.module').then(m => m.MyDocumentsModule) 
       },
       {
+        path:'referenceBook/:id',
+        loadChildren: () => import('./reference-book/reference-book.module').then(m => m.ReferenceBookModule)
+      },
+      {
         path: ':configType', 
         loadChildren: () => import('./documents/documents.module').then(m => m.DocumentsModule) 
       },
       {
         path: 'thanks', loadChildren: () => import('./thanks/thanks.module').then(m => m.ThanksModule)
-    },
+      },
     ]
   },
 ];
