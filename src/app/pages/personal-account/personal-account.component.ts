@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { TransactionService } from './home/transaction.service';
 import { TokenService } from '../../services/token.service';
 import { environment } from '../../../environment';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-personal-account',
@@ -34,7 +35,8 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     public personalAccountService: PersonalAccountService,
     private currentUserService: CurrentUserService,
-    private transactionService: TransactionService) { }
+    private transactionService: TransactionService,
+    private toastService: ToastService) { }
 
   ngOnInit(): void {
 
@@ -120,8 +122,6 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     if (this.topUpAmount > 0) {
       this.personalAccountService.makeTransaction(this.topUpAmount).subscribe({
         next: (response: any) => {
-          this.userBalance = response.data.balance;
-          this.personalAccountService.changeBalance(response.data.balance);
           this.showTopUp = false;
           this.topUpAmount = 0;
           this.openPaymentWidget(response.data.confirmationToken);
@@ -140,23 +140,40 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
 
 
   openPaymentWidget(confirmationToken: any) {
-    const userId = localStorage.getItem('VXNlcklk')
+    const userId = localStorage.getItem('VXNlcklk');
     if ((window as any).YooMoneyCheckoutWidget) {
       const checkout = new (window as any).YooMoneyCheckoutWidget({
         confirmation_token: confirmationToken,
-        return_url: `${environment.domain}/${userId}/thanks`,
         customization: {
-          modal: true, // Открытие виджета в модальном окне
+          modal: true,
         },
         error_callback: function (error: any) {
           console.error('Ошибка инициализации виджета оплаты:', error);
         }
       });
 
-      // Отображение виджета
       checkout.render()
         .then(() => {
           console.log('Платежная форма успешно загружена');
+
+          checkout.on('success', () => {
+            console.log('Оплата прошла успешно');
+            this.personalAccountService.checkoutTransaction(confirmationToken).subscribe((response: any) => {
+              this.userBalance = response.data.balance;
+              this.personalAccountService.changeBalance(response.data.balance);
+              this.toastService.showSuccess('Успех!', 'Платеж успешно выполнен.');
+              this.cdr.detectChanges();
+              checkout.destroy();
+            })
+          });
+
+          checkout.on('fail', () => {
+            console.error('Оплата не удалась');
+            this.toastService.showError('Ошибка', 'Произошла ошибка при выполнении платежа. Попробуйте снова.');
+            this.personalAccountService.checkoutTransaction(confirmationToken).subscribe((response: any) => {
+              checkout.destroy();
+            })
+          });
         })
         .catch((error: any) => {
           console.error('Ошибка отображения платежной формы:', error);
@@ -165,6 +182,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
       console.error('Скрипт виджета оплаты не подключен.');
     }
   }
+
 
 
 }
