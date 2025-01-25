@@ -1,1 +1,52 @@
-<p>reference-book works!</p>
+<div class="container">
+    <h1 class="text-center my-4">{{ pageTitle }}</h1>
+
+    <!-- Кнопка для создания новой записи -->
+    <button class="btn btn-primary mb-4" (click)="openCreateModal()">Создать запись</button>
+
+    <div class="list">
+        <div class="list-header">
+            <div class="list-header-item" *ngFor="let column of columns">
+                {{ column.label }}
+            </div>
+        </div>
+        <div class="list-item" *ngFor="let item of data">
+            <div class="list-item-cell" *ngFor="let column of columns">
+                {{ item[column.field] }}
+            </div>
+            <div class="list-item-actions">
+                <!-- Кнопки редактирования и удаления -->
+                <button class="btn btn-warning" (click)="openEditModal(item)">Редактировать</button>
+                <button class="btn btn-danger" (click)="deleteRecord(item.id)">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для создания и редактирования -->
+    <div class="modal" *ngIf="isModalOpen">
+        <div class="modal-content">
+            <span class="close-btn" (click)="closeModal()">×</span>
+            <h2>{{ modalTitle }}</h2>
+
+            <form (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="name">Название:</label>
+                    <input id="name" [(ngModel)]="modalData.name" name="name" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="type">Тип:</label>
+                    <input id="type" [(ngModel)]="modalData.type" name="type" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="createdAt">Дата создания:</label>
+                    <input id="createdAt" [(ngModel)]="modalData.createdAt" name="createdAt" type="date"
+                        class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn btn-success">{{ modalAction }}</button>
+            </form>
+        </div>
+    </div>
+</div>
