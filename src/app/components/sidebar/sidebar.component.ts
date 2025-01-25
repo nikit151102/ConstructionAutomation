@@ -32,6 +32,13 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         
       ]
     },
+    {
+      label: 'Справочники', icon: 'pi pi-file', command: () => this.toggleSidebar(),
+      items: [
+        { label: 'Должности', command: () => this.executeReference('030521') },
+        { label: 'Сотрудники', command: () => this.executeReference('161283') },
+      ]
+    },
     { label: 'Политика конфиденциальности ', icon: 'pi pi-cog', command: () =>  this.executeLegal(82913) },
     // { label: 'Настройки', icon: 'pi pi-cog', command: () => this.executeCommand('settings') },
     { label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit') },
@@ -143,6 +150,28 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
+  executeReference(type: string){
+    this.activatedRoute.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.router.navigate([`${id}/referenceBook/${type}`]);
+      }
+    });
+
+    if (!this.sidebarService.fixedSlidebar) {
+      this.toggleSidebar();
+    }
+    if (this.sidebarService.fixedSlidebar && this.isSidebarOpen) {
+      document.querySelectorAll('#nav-header label .pi-chevron-left').forEach((el: any) => {
+        Object.assign(el.style, { transform: 'rotate(0deg)' });
+      });
+    }
+    else{
+      document.querySelectorAll('#nav-header label .pi-chevron-left').forEach((el: any) => {
+        Object.assign(el.style, { transform: 'rotate(180deg)' });
+      });
+    }
+  }
 
   updateSidebarStyles(): void {
     const styles = this.isSidebarOpen ? { opacity: '1', pointerEvents: 'auto' } : { opacity: '0', pointerEvents: 'none' };

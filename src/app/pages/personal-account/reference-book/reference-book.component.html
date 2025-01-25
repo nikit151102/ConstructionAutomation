@@ -1,52 +1,82 @@
 <div class="container">
-    <h1 class="text-center my-4">{{ pageTitle }}</h1>
+    <h1 class="text-center my-4">{{ currentConfig.pageTitle }}</h1>
 
-    <!-- Кнопка для создания новой записи -->
-    <button class="btn btn-primary mb-4" (click)="openCreateModal()">Создать запись</button>
+    <button class="btn btn-primary mb-4" (click)="openCreateModal(currentConfig.endpoint)">Создать запись</button>
 
     <div class="list">
         <div class="list-header">
-            <div class="list-header-item" *ngFor="let column of columns">
+            <div class="list-header-item" *ngFor="let column of currentConfig.tableColumns">
                 {{ column.label }}
             </div>
         </div>
         <div class="list-item" *ngFor="let item of data">
-            <div class="list-item-cell" *ngFor="let column of columns">
-                {{ item[column.field] }}
+            <div class="list-item-cell" *ngFor="let column of currentConfig.tableColumns">
+                <span *ngIf="column.field.includes('.')">
+                    {{ getNestedValue(item, column.field) }}
+                </span>
+                <span *ngIf="!column.field.includes('.')">
+                    {{ item[column.field] }}
+                </span>
             </div>
             <div class="list-item-actions">
-                <!-- Кнопки редактирования и удаления -->
-                <button class="btn btn-warning" (click)="openEditModal(item)">Редактировать</button>
-                <button class="btn btn-danger" (click)="deleteRecord(item.id)">Удалить</button>
+                <button class="btn btn-warning"
+                    (click)="openEditModal(currentConfig.endpoint,item)">Редактировать</button>
+                <button class="btn btn-danger" (click)="deleteRecord(currentConfig.endpoint,item.id)">Удалить</button>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для создания и редактирования -->
-    <div class="modal" *ngIf="isModalOpen">
+
+    <div class="modal" *ngIf="isModalOpen" [ngClass]="{ 'open': isModalOpen }">
         <div class="modal-content">
             <span class="close-btn" (click)="closeModal()">×</span>
             <h2>{{ modalTitle }}</h2>
 
-            <form (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                    <label for="name">Название:</label>
-                    <input id="name" [(ngModel)]="modalData.name" name="name" class="form-control" required />
+            <form>
+                <div class="form-group-container" [ngClass]="{'two-columns': formFields.length > 4}">
+                    <div class="form-group" *ngFor="let field of formFields">
+                        <label [for]="field.field">{{ field.label }}:</label>
+                        <input *ngIf="field.type === 'text'" id="{{ field.field }}" [(ngModel)]="modalData[field.field]"
+                            name="{{ field.field }}" class="form-control" required type="text" />
+
+                        <input *ngIf="field.type === 'date'" id="{{ field.field }}" [(ngModel)]="modalData[field.field]"
+                            name="{{ field.field }}" class="form-control" required type="date" />
+
+                        <input *ngIf="field.type === 'number'" id="{{ field.field }}"
+                            [(ngModel)]="modalData[field.field]" name="{{ field.field }}" class="form-control" required
+                            type="number" />
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="type">Тип:</label>
-                    <input id="type" [(ngModel)]="modalData.type" name="type" class="form-control" required />
-                </div>
-
-                <div class="form-group">
-                    <label for="createdAt">Дата создания:</label>
-                    <input id="createdAt" [(ngModel)]="modalData.createdAt" name="createdAt" type="date"
-                        class="form-control" required />
-                </div>
-
-                <button type="submit" class="btn btn-success">{{ modalAction }}</button>
+                <ng-container *ngIf="currentConfig.connectionReference">
+                    <div class="form-group">
+                        <label>{{ currentConfig.connectionReference.field }}:</label>
+                        <!-- <button class="btn btn-primary mb-4" (click)="openCreateModal(currentConfig.endpoint)">Создать запись</button> -->
+                        <div class="list">
+                            <div class="list-header">
+                                <div class="list-header-item" *ngFor="let column of connectionReferenceColumns">
+                                    {{ column.label }}
+                                </div>
+                            </div>
+                            <div class="list-item" *ngFor="let item of connectionReferenceData">
+                                <div class="list-item-cell" *ngFor="let column of connectionReferenceColumns">
+                                    <span *ngIf="column.field.includes('.')">
+                                        {{ getNestedValue(item, column.field) }}
+                                    </span>
+                                    <span *ngIf="!column.field.includes('.')">
+                                        {{ item[column.field] }}
+                                    </span>
+                                </div>
+                                <div class="list-item-actions">
+                                    <button class="btn btn-primary" (click)="selectReference(item)">Выбрать</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <button (click)="onSubmit(currentConfig.endpoint)" type="submit" class="btn btn-success">{{ modalAction }}</button>
             </form>
+
         </div>
     </div>
 </div>

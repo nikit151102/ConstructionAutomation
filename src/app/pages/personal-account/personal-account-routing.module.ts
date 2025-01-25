@@ -25,7 +25,7 @@ const routes: Routes = [
         loadChildren: () => import('./my-documents/my-documents.module').then(m => m.MyDocumentsModule) 
       },
       {
-        path:'referenceBook/:id',
+        path:'referenceBook/:typeId',
         loadChildren: () => import('./reference-book/reference-book.module').then(m => m.ReferenceBookModule)
       },
       {

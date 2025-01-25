@@ -8,37 +8,36 @@ import { environment } from '../../../../environment';
 })
 export class ReferenceBookService {
 
-  public endpoint: string = '';
   constructor(private http: HttpClient) { }
 
-  getHeader(){
-    const token = localStorage.getItem('YXV0aFRva2Vu'); 
-    return  new HttpHeaders({
-      'Authorization': `Bearer ${token}` 
+  getHeader() {
+    const token = localStorage.getItem('YXV0aFRva2Vu');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
     });
   }
   // Получение всех записей
-  getRecords(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}/api/Profile/UserEntities/Organization/${this.endpoint}`, { headers: this.getHeader() });
+  getRecords(endpoint: string): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/api/Profile/UserEntities/Organization/${endpoint}`, { headers: this.getHeader() });
   }
 
   // Получение конкретной записи по ID
-  getRecord(id: string): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/api/Profile/UserEntities/Organization/${this.endpoint}/${id}`, { headers: this.getHeader() });
+  getRecord(endpoint: string, id: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/api/Profile/UserEntities/Organization/${endpoint}/${id}`, { headers: this.getHeader() });
   }
 
   // Создание новой записи
-  newRecord(record: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/api/Profile/UserEntities/Organization/${this.endpoint}`, record, { headers: this.getHeader() });
+  newRecord(endpoint: string, record: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/api/Profile/UserEntities/Organization/${endpoint}`, record, { headers: this.getHeader() });
   }
 
   // Обновление существующей записи
-  updateRecord(id: number, record: any): Observable<any> {
-    return this.http.put<any>(`${environment.apiUrl}/api/Profile/UserEntities/Organization/${this.endpoint}/${id}`, record, { headers: this.getHeader() });
+  updateRecord(endpoint: string, id: number, record: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}/api/Profile/UserEntities/Organization/${endpoint}/${id}`, record, { headers: this.getHeader() });
   }
 
   // Удаление записи
-  deleteRecord(id: number): Observable<any> {
-    return this.http.delete<any>(`${environment.apiUrl}/api/Profile/UserEntities/Organization/${this.endpoint}/${id}`, { headers: this.getHeader() });
+  deleteRecord(endpoint: string, id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/api/Profile/UserEntities/Organization/${endpoint}/${id}`, { headers: this.getHeader() });
   }
 }
