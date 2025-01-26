@@ -47,4 +47,16 @@ export class PersonalAccountService {
     });
   }
 
+  checkoutTransaction(confirmationToken: string){
+    const url = `${environment.apiUrl}/api/Profile/MakeTransaction`;
+    const token = localStorage.getItem('YXV0aFRva2Vu');
+
+    return this.http.post(url, {token: confirmationToken},{
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }),
+    });
+  }
+
 }
