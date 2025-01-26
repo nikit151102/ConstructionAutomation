@@ -28,35 +28,29 @@
 
 <div *ngIf="filteredTransactions.length; else noData" class="transactions-container">
   <div *ngFor="let transaction of filteredTransactions" class="transaction-card">
-    <div class="transaction-info">
-      <span class="transaction-date">{{ transaction.createDateTime | date: 'd-M-yyyy, H:mm' }}</span>
-      <span class="transaction-delta"
+    <div style="    display: flex;
+        width: 100%;
+        justify-content: space-between;">
+      <div class="transaction-info">
+        <span class="transaction-date">
+          {{ transaction.createDateTime | date: 'd-M-yyyy H:mm' }}
+        </span>
+        <div class="transaction-status" [ngClass]="getPaymentStatusClass(transaction.paymentStatus)">
+          {{ getPaymentStatusLabel(transaction.paymentStatus) }}
+        </div>
+      </div>
+
+      <div class="transaction-amount"
         [ngClass]="{ 'positive': transaction.delta > 0, 'negative': transaction.delta < 0 }">
-        <ng-container *ngIf="transaction.delta > 0">
-          <svg class="arrow up" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-              d="M8 2a.5.5 0 0 1 .374.168l4.5 5.5a.5.5 0 0 1-.748.664L8 3.334 3.874 8.332a.5.5 0 1 1-.748-.664l4.5-5.5A.5.5 0 0 1 8 2z" />
-          </svg>
-          Пополнение
-        </ng-container>
-        <ng-container *ngIf="transaction.delta < 0">
-          <svg class="arrow down" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-              d="M8 14a.5.5 0 0 1-.374-.168l-4.5-5.5a.5.5 0 0 1 .748-.664L8 12.666l4.126-4.998a.5.5 0 1 1 .748.664l-4.5 5.5A.5.5 0 0 1 8 14z" />
-          </svg>
-          Списание
-        </ng-container>
-        <ng-container *ngIf="transaction.delta === 0">
-          Нет изменений
-        </ng-container>
-      </span>
+        {{ transaction.delta | number: '1.2-2' }}
+      </div>
     </div>
-    <div class="transaction-amount"
-      [ngClass]="{ 'positive': transaction.delta > 0, 'negative': transaction.delta < 0 }">
-      {{ transaction.delta }}
-    </div>
+
+
+    <span style="    width: 100%;
+    padding-top: 10px;
+    font-size: 14px;
+    color: #7d7a7a;">{{transaction.description}}</span>
   </div>
 </div>
 

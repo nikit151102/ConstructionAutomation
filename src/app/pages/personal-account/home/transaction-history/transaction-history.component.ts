@@ -26,6 +26,7 @@ export class TransactionHistoryComponent {
   constructor(private transactionService: TransactionService) { }
 
   ngOnInit(): void {
+    
     this.transactionService.transactions$.subscribe({
       next: (data) => {
         this.transactions = data;
@@ -90,4 +91,25 @@ export class TransactionHistoryComponent {
     }
   }
 
+  getPaymentStatusLabel(status: number): string {
+    const statuses: { [key: number]: string } = {
+      1: 'Рассматривается',
+      2: 'Подтверждено',
+      3: 'Отменена',
+      4: 'Не подтвержден',
+    };
+    return statuses[status] || 'Неизвестный статус';
+  }
+  
+  getPaymentStatusClass(status: number): string {
+    const statusClasses: { [key: number]: string } = {
+      1: 'status-info',
+      2: 'status-success',
+      3: 'status-danger',
+      4: 'status-secondary',
+    };
+    return statusClasses[status] || 'status-secondary';
+  }
+
+  
 }

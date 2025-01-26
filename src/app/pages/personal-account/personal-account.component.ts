@@ -125,10 +125,14 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
           this.showTopUp = false;
           this.topUpAmount = 0;
           this.openPaymentWidget(response.data.confirmationToken);
-          this.transactionService.getTransactions().subscribe({
-            error: (err) => console.error('Error loading transactions', err),
-          });
-          this.currentUserService.updateUserBalance(response.data.balance)
+          const transaction = {
+            createDateTime: response.data.createDateTime,
+            changeDateTime: response.data.changeDateTime,
+            delta: response.data.delta,
+            paymentStatus: response.data.paymentStatus,
+            description: response.data.description
+          }
+          this.transactionService.addTransactionToBeginning(transaction);
           this.cdr.detectChanges();
         },
         error: (error) => {
@@ -159,6 +163,15 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
           checkout.on('success', () => {
             console.log('Оплата прошла успешно');
             this.personalAccountService.checkoutTransaction(confirmationToken).subscribe((response: any) => {
+              const transaction = {
+                createDateTime: response.data.createDateTime,
+                changeDateTime: response.data.changeDateTime,
+                delta: response.data.delta,
+                paymentStatus: response.data.paymentStatus,
+                description: response.data.description
+              }
+              this.transactionService.updateTransactionById(response.data.id, transaction);
+
               this.userBalance = response.data.balance;
               this.personalAccountService.changeBalance(response.data.balance);
               this.toastService.showSuccess('Успех!', 'Платеж успешно выполнен.');

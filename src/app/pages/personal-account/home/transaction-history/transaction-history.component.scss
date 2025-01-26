@@ -9,37 +9,97 @@
 
 .transaction-card {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    transition: box-shadow 0.2s ease-in-out;
-}
-
-.transaction-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .transaction-info {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
 }
 
 .transaction-date {
-    font-size: 0.9rem;
-    color: #666;
+    font-size: 0.875rem;
+    color: #6c757d;
 }
 
 .transaction-delta {
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+
+    &.positive {
+        color: #28a745;
+    }
+
+    &.negative {
+        color: #dc3545;
+    }
 }
+
+.transaction-status {
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+
+    &.status-info {
+        background-color: #e6f7ff;
+        color: #1890ff;
+    }
+
+    &.status-success {
+        background-color: #e6ffed;
+        color: #52c41a;
+    }
+
+    &.status-danger {
+        background-color: #fff1f0;
+        color: #f5222d;
+    }
+
+    &.status-secondary {
+        background-color: #fafafa;
+        color: #8c8c8c;
+    }
+}
+
+.transaction-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    &.positive {
+        color: #28a745;
+    }
+
+    &.negative {
+        color: #dc3545;
+    }
+}
+
+.arrow {
+    font-size: 1rem;
+
+    &.up {
+        color: #28a745;
+    }
+
+    &.down {
+        color: #dc3545;
+    }
+}
+
 
 .transaction-delta.positive {
     color: #28a745;

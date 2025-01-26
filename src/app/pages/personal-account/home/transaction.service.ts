@@ -19,6 +19,22 @@ export class TransactionService {
     return this.transactionsSubject.getValue();
   }
   
+  addTransactionToBeginning(transaction: Transaction): void {
+    const currentTransactions = this.transactionsSubject.value;
+    this.transactionsSubject.next([transaction, ...currentTransactions]);
+  }
+
+  updateTransactionById(id: string, updatedTransaction: Transaction): void {
+    const currentTransactions = this.transactionsSubject.value;
+    const transactionIndex = currentTransactions.findIndex((t:any) => t.id === id);
+
+    if (transactionIndex !== -1) {
+      const updatedTransactions = [...currentTransactions];
+      updatedTransactions[transactionIndex] = updatedTransaction;
+      this.transactionsSubject.next(updatedTransactions);
+    }
+  }
+
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('YXV0aFRva2Vu');
     if (!token) {

@@ -71,5 +71,6 @@ export interface Transaction {
     createDateTime: string;
     changeDateTime: string;
     delta: number;
-  }
-  
+    paymentStatus: number;
+    description: string;
+}
