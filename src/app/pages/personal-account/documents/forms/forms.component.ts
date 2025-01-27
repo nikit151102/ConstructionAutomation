@@ -15,11 +15,13 @@ import { DialogStorageComponent } from '../../../../components/dialog-storage/di
 import { DialogStorageService } from '../../../../components/dialog-storage/dialog-storage.service';
 import { InstructionsComponent } from '../../../../components/instructions/instructions.component';
 import { InstructionsService } from '../../../../components/instructions/instructions.service';
+import { ReferenceComponent } from './reference/reference.component';
+import { DateComponent } from './date/date.component';
 
 @Component({
   selector: 'app-forms',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, DropdownComponent, FileInputComponent, TextInputComponent, DialogStorageComponent, InstructionsComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, DropdownComponent, FileInputComponent, TextInputComponent, DialogStorageComponent, InstructionsComponent, ReferenceComponent, DateComponent],
   templateUrl: './forms.component.html',
   styleUrl: './forms.component.scss'
 })
@@ -136,6 +138,17 @@ export class FormsComponent {
     }
     this.cdr.detectChanges();
   }
+
+  onReferenceSelected(name: string, selectedId: string): void {
+    this.form.get(name)?.setValue(selectedId);
+    console.log('selectedId', this.form.value)
+  }
+
+  handleDateChange(name: string, selectedDate: string): void {
+    this.form.get(name)?.setValue(selectedDate);
+    console.log('selectedId', this.form.value)
+  }
+  
 
   onSubmit() {
     const formData = new FormData();

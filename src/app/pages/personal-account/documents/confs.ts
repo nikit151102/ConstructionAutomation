@@ -129,12 +129,60 @@ export const formConfig = {
         order: 2
       },
       {
-        name: 'Address',
-        type: 'text',
-        label: 'Адрес',
-        options: [],
+        name: 'beginDateTime',
+        type: 'date',
+        label: 'Выберите дату',
         validators: [Validators.required],
         order: 3
+      },
+      {
+        name: 'endDateTime',
+        type: 'date',
+        label: 'Выберите дату',
+        validators: [Validators.required],
+        order: 4
+      },
+      {
+        name: 'CustomerBuidingManagerId',
+        type: 'reference',
+        label: 'Представитель технического заказчика по вопросам строительного контроля',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 5
+      },
+      {
+        name: 'BuiderPersonId',
+        type: 'reference',
+        label: 'Представитель лица, осуществляющего строительство',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 6
+      },
+      {
+        name: 'DocumentWriterId',
+        type: 'reference',
+        label: 'Представитель лица, осуществляющего подготовку проектной документации',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 7
       },
     ],
   },

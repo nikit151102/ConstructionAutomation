@@ -1,0 +1,43 @@
+.date-picker {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    label {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+
+    input[type="date"] {
+        padding: 9px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        background-color: #fff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+        &:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        &.error {
+            border-color: #f44336;
+            box-shadow: 0 0 5px rgba(244, 67, 54, 0.5);
+        }
+
+        width: 100%;
+        max-width: 300px;
+    }
+
+    @media (max-width: 600px) {
+        input[type="date"] {
+            max-width: 100%;
+        }
+    }
+}

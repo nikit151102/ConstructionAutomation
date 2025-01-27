@@ -1,6 +1,7 @@
 <form [formGroup]="form">
   <div *ngFor="let control of sortedControls">
     <ng-container [ngSwitch]="control.type">
+
       <!-- Text input -->
       <app-text-input *ngSwitchCase="'text'" [id]="control.name" [label]="control.label"
         [control]="getSafeFormControl(form, control.name)"></app-text-input>
@@ -17,6 +18,19 @@
         <app-file-input [chooseLabel]="control.label" [chooseIcon]="'pi pi-upload'" [accept]="control.accept"
           (onSelect)="onFileSelect($event, control.name)" (confirm)="onOpenDialog($event, 'add')"></app-file-input>
       </div>
+
+      <div *ngSwitchCase="'reference'" class="file-input-container">
+        <label>{{ control.label }}</label>
+        <app-reference [label]="control.label" [endpoint]="control.endpoint" [name]="control.name"
+          [fields]="control.fields" (selectedId)="onReferenceSelected(control.name, $event)"></app-reference>
+      </div>
+
+      <div *ngSwitchCase="'date'" class="file-input-container">
+        <label>{{ control.label }}</label>
+        <app-date [name]="control.name" [label]="control.label" (selectedDate)="handleDateChange(control.name, $event)">
+        </app-date>
+      </div>
+
     </ng-container>
   </div>
 
@@ -39,11 +53,13 @@
     </a>
   </div>
   <button (click)="onSubmit()">Сформировать</button>
-  
+
   <a (click)="instructionsService.openInstruction()" style="    color: #847a8b;
     text-decoration: underline;">Инструкция</a>
 
-<span style="font-size: 14px;">Наш сервис находится в режиме тестирования. Если результат не появляется, пожалуйста, обновите очередь печати или перезапустите страницу. Мы работаем над улучшением стабильности и благодарим за понимание!</span>
+  <span style="font-size: 14px;">Наш сервис находится в режиме тестирования. Если результат не появляется, пожалуйста,
+    обновите очередь печати или перезапустите страницу. Мы работаем над улучшением стабильности и благодарим за
+    понимание!</span>
 
 </form>
 

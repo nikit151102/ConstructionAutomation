@@ -1,8 +1,9 @@
 form {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 15px;
     max-width: 600px;
+    flex-wrap: wrap;
 }
 
 .p-field {
@@ -69,3 +70,9 @@ app-file-input {
     margin-top: 5px;
 }
 
+.ng-star-inserted {
+    &:has(app-text-input) {
+      width: 100%; 
+    }
+  }
+  
