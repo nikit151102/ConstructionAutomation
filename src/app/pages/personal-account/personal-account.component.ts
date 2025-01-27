@@ -163,6 +163,11 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
           checkout.on('success', () => {
             console.log('Оплата прошла успешно');
             this.personalAccountService.checkoutTransaction(confirmationToken).subscribe((response: any) => {
+              let userData = this.currentUserService.getUser();
+              if (userData) {
+                userData.balance = response.data.balance; 
+                this.currentUserService.saveUser(userData);
+              }
               const transaction = {
                 createDateTime: response.data.createDateTime,
                 changeDateTime: response.data.changeDateTime,
