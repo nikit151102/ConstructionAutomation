@@ -28,9 +28,16 @@ const routes: Routes = [
       },
 
       {
+        path:'referenceBook/:typeId',
+        loadChildren: () => import('./reference-book/reference-book.module').then(m => m.ReferenceBookModule)
+      },
+      {
         path: ':configType', 
         loadChildren: () => import('./documents/documents.module').then(m => m.DocumentsModule) 
-      }
+      },
+      {
+        path: 'thanks', loadChildren: () => import('./thanks/thanks.module').then(m => m.ThanksModule)
+      },
     ]
   },
 ];
