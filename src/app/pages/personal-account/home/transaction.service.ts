@@ -27,11 +27,12 @@ export class TransactionService {
   updateTransactionById(id: string, updatedTransaction: Transaction): void {
     const currentTransactions = this.transactionsSubject.value;
     const transactionIndex = currentTransactions.findIndex((t:any) => t.id === id);
-
+    console.log('updateTransactionById')
     if (transactionIndex !== -1) {
       const updatedTransactions = [...currentTransactions];
       updatedTransactions[transactionIndex] = updatedTransaction;
       this.transactionsSubject.next(updatedTransactions);
+      console.log('save transactionIndex')
     }
   }
 
