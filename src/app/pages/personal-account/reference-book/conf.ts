@@ -31,7 +31,7 @@ export const referenceConfig = [
             { label: 'Отчество', field: 'patronymic', type: 'text' },
             { label: 'Документ о представительстве', field: 'representationOrder', type: 'text' },
         ],
-        connectionReference: { typeId: '030521', label: 'должность', fieldName: 'position', field: 'positionId', }
+        connectionReference: { typeId: '030521', label: 'Должность', fieldName: 'position', field: 'positionId', }
     }
 ]
 

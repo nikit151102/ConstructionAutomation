@@ -79,22 +79,31 @@ export class ReferenceBookComponent implements OnInit {
   // Открытие модального окна для редактирования записи
   openEditModal(currentEndpoint: string, item: any): void {
     if (this.currentConfig.connectionReference) {
-      this.loadConnectionReferenceData()
-      const field = this.currentConfig.connectionReference.field;
-      const positionField = this.currentConfig.connectionReference.fieldName;
-      this.modalData = { ...item, [field]: item[positionField]?.id };
-    } else {
-      this.modalData = { ...item }
-    }
-    this.modalTitle = 'Редактировать запись';
-    this.modalAction = 'Обновить';
+      // Загружаем данные для связи, если они есть
+      this.loadConnectionReferenceData().then(() => {
+        const field = this.currentConfig.connectionReference.field;
+        const positionField = this.currentConfig.connectionReference.fieldName;
 
-    this.currentConfig = referenceConfig.find(config => config.endpoint === currentEndpoint);
-    if (this.currentConfig) {
-      this.formFields = this.currentConfig.formFields;
+        // Устанавливаем модальные данные, включая связанные поля
+        this.modalData = { ...item, [field]: item[positionField]?.id };
+
+        // Устанавливаем выбранный элемент, используя данные из записи
+        const selectedItem = this.connectionReferenceData.find(referenceItem => referenceItem.id === item[positionField]?.id);
+        this.selectedReference = selectedItem || null;
+
+        this.modalTitle = 'Редактировать запись';
+        this.modalAction = 'Обновить';
+        this.isModalOpen = true;
+      });
+    } else {
+      this.modalData = { ...item };
+      this.modalTitle = 'Редактировать запись';
+      this.modalAction = 'Обновить';
+      this.isModalOpen = true;
     }
-    this.isModalOpen = true;
   }
+
+
 
   // Закрытие модального окна
   closeModal(): void {
@@ -208,29 +217,58 @@ export class ReferenceBookComponent implements OnInit {
   connectionReferenceColumns: any[] = []; // Столбцы для отображения связи
 
   // Загрузка данных для связи (например, должности для сотрудников)
-  loadConnectionReferenceData(): void {
-    const connectionConfig = referenceConfig.find(
-      (config) => config.typeId === this.currentConfig.connectionReference.typeId
-    );
-    if (connectionConfig) {
-      this.referenceBookService.getRecords(connectionConfig.endpoint).subscribe(
-        (response: any) => {
-          if (response && response.data) {
-            this.connectionReferenceData = response.data;
-            this.connectionReferenceColumns = connectionConfig.tableColumns;
-          }
-        },
-        (error) => {
-          console.error('Ошибка при загрузке данных для связи:', error);
-        }
+  loadConnectionReferenceData(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const connectionConfig = referenceConfig.find(
+        (config) => config.typeId === this.currentConfig.connectionReference.typeId
       );
-    }
+      if (connectionConfig) {
+        this.referenceBookService.getRecords(connectionConfig.endpoint).subscribe(
+          (response: any) => {
+            if (response && response.data) {
+              this.connectionReferenceData = response.data;
+              this.connectionReferenceColumns = connectionConfig.tableColumns;
+              resolve();
+            } else {
+              reject('Данные не найдены');
+            }
+          },
+          (error) => {
+            console.error('Ошибка при загрузке данных для связи:', error);
+            reject(error);
+          }
+        );
+      } else {
+        reject('Конфигурация для связи не найдена');
+      }
+    });
   }
 
-  // Выбор записи для связи
+  // Текущий выбранный элемент
+  selectedReference: any;
+  dropdownVisible: boolean = false;
+
+  // При клике на поле ввода отображаем или скрываем список
+  toggleDropdown(): void {
+    this.dropdownVisible = !this.dropdownVisible;
+  }
+
+  // Выбор элемента
   selectReference(item: any): void {
     const field = this.currentConfig.connectionReference.field;
     this.modalData[field] = item.id;
+    this.selectedReference = item; 
+    this.dropdownVisible = false; 
+  }
+
+  // Получение значения для отображения выбранного элемента
+  getSelectedDisplayValue(): string {
+    if (this.selectedReference) {
+      return this.connectionReferenceColumns.map(column => {
+        return this.getNestedValue(this.selectedReference, column.field);
+      }).join(' - ');
+    }
+    return 'Не выбрано';
   }
 
 }
