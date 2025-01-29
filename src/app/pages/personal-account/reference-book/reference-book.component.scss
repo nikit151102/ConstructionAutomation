@@ -10,6 +10,8 @@
 .list {
     border-collapse: collapse;
     margin-top: 20px;
+    height: 400px;
+    overflow-y: auto;
 }
 
 .list-header {

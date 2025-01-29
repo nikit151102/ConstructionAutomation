@@ -22,11 +22,14 @@ export const referenceConfig = [
             { label: 'Фамилия', field: 'lastName' },
             { label: 'Отчество', field: 'patronymic' },
             { label: 'Дожность', field: 'position.name' },
+            { label: 'Документ о представительстве', field: 'representationOrder' },
+            { label: '', field: '' },
         ],
         formFields: [
             { label: 'Имя', field: 'firstName', type: 'text' },
             { label: 'Фамилия', field: 'lastName', type: 'text' },
             { label: 'Отчество', field: 'patronymic', type: 'text' },
+            { label: 'Документ о представительстве', field: 'representationOrder', type: 'text' },
         ],
         connectionReference: { typeId: '030521', label: 'должность', fieldName: 'position', field: 'positionId', }
     }
