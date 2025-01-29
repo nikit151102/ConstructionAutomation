@@ -3,7 +3,7 @@
     <ng-container [ngSwitch]="control.type">
 
       <!-- Text input -->
-      <app-text-input *ngSwitchCase="'text'" [id]="control.name" [label]="control.label"
+      <app-text-input *ngSwitchCase="'text'" [id]="control.name" [label]="control.label" 
         [control]="getSafeFormControl(form, control.name)"></app-text-input>
 
       <!-- Dropdown -->

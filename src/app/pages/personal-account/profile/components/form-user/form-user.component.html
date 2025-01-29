@@ -43,6 +43,11 @@
         </div>
 
         <div class="flex flex-column gap-2">
+            <label for="patronymic">ИНН</label>
+            <input pInputText id="patronymic" formControlName="inn" />
+        </div>
+
+        <div class="flex flex-column gap-2">
             <label for="email">Почта</label>
             <input pInputText id="email" formControlName="email" />
             <p-message *ngIf="formControls['email'].errors?.['required'] && formControls['email'].touched"
