@@ -100,7 +100,7 @@ export const formConfig = {
   actHideWorksRequest: {
     nameDoc: 'Акты освидетельствования скрытых работ',
     endpoint: 'ActHideWorks',
-    fileInstruction:'materialSpecification.html',
+    fileInstruction:'ActHideWorks.html',
     controls: [
       {
         name: 'SummaryFile',

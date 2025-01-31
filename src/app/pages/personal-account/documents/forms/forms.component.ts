@@ -236,6 +236,12 @@ export class FormsComponent {
     });
   }
 
+  openInstruction(){
+    this.instructionsService.openInstruction();
+    this.cdr.detectChanges();
+  }
+ 
+
   ngOnDestroy(): void {
     this.dialogStorageService.setIsVisibleDialog(false);
   }
