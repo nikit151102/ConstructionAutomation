@@ -64,14 +64,21 @@ export class FileInputComponent implements OnInit, OnDestroy {
     this.resetFileSelection();
   }
 
-
+  private updateButtonText(value:string): void {
+    if (this.fileUpload) {
+      const buttonLabelElement = this.fileUpload.el.nativeElement.querySelector('.p-button-label');
+      if (buttonLabelElement) {
+        buttonLabelElement.textContent = value; 
+      }
+    }
+  }
 
   handleSelect(event: FileSelectEvent): void {
 
     const file = event.files[0];
-    this.fileName = file?.name || '';
 
     if (file?.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      this.updateButtonText('Файл выбран');
       const reader = new FileReader();
       reader.onload = (e: any) => this.processExcelFile(e.target.result, file, event);
       reader.readAsBinaryString(file);
@@ -121,6 +128,7 @@ export class FileInputComponent implements OnInit, OnDestroy {
   clearFile(): void {
     this.fileUpload.clear();
     this.resetFileSelection();
+    this.updateButtonText(this.chooseLabel);
   }
 
 

@@ -3,9 +3,10 @@
   <div class="field-input">
     <p-button (onClick)="confSelection()" icon="pi pi-file-export" text="true" />
     <p-fileUpload mode="basic" class="custom-width" #fileUpload [chooseLabel]="chooseLabel" [chooseIcon]="chooseIcon"
-      [chooseLabel]="fileName ? fileName : chooseLabel" [accept]="accept" [multiple]="false"
-      (onSelect)="handleSelect($event)">
-    </p-fileUpload>
+    [chooseLabel]="fileName || chooseLabel" [accept]="accept" [multiple]="false"
+    (onSelect)="handleSelect($event)">
+  </p-fileUpload>
+  
     <p-button icon="pi pi-times" [text]="true" severity="danger" *ngIf="visibleDelete" (click)="clearFile()" />
 
   </div>
