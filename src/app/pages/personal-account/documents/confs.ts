@@ -12,6 +12,7 @@ export const formConfig = {
     nameDoc: 'Cопоставительная ведомость',
     fileInstruction:'comparativeStatement.html',
     endpoint: 'ComparativeStatement',
+    price:'4500',
     controls: [
       {
         name: 'planFileListName',
@@ -50,9 +51,10 @@ export const formConfig = {
     ],
   },
   materialSpecification: {
-    nameDoc: 'Спецификация на метериалы',
+    nameDoc: 'Ведомость объёмов материалов',
     endpoint: 'MaterialSpecification',
     fileInstruction:'materialSpecification.html',
+    price:'1150',
     controls: [
       {
         name: 'SummaryFileListName',
@@ -77,6 +79,7 @@ export const formConfig = {
     nameDoc: 'Ведомость объемов работ',
     endpoint: 'WorkSpecification',
     fileInstruction:'workSpecification.html',
+    price:'1150',
     controls: [
       {
         name: 'SummaryFileListName',
@@ -101,6 +104,7 @@ export const formConfig = {
     nameDoc: 'Акты освидетельствования скрытых работ',
     endpoint: 'ActHideWorks',
     fileInstruction:'ActHideWorks.html',
+    price:'8500',
     controls: [
       {
         name: 'SummaryFile',
