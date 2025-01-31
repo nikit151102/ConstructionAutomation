@@ -74,40 +74,49 @@ export class ReferenceBookComponent implements OnInit {
       this.formFields = this.currentConfig.formFields;
     }
     this.isModalOpen = true;
+    this.cdr.detectChanges();
   }
 
-  // Открытие модального окна для редактирования записи
-  openEditModal(currentEndpoint: string, item: any): void {
-    if (this.currentConfig.connectionReference) {
-      // Загружаем данные для связи, если они есть
-      this.loadConnectionReferenceData().then(() => {
-        const field = this.currentConfig.connectionReference.field;
-        const positionField = this.currentConfig.connectionReference.fieldName;
+// Открытие модального окна для редактирования записи
+async openEditModal(currentEndpoint: string, item: any): Promise<void> {
 
-        // Устанавливаем модальные данные, включая связанные поля
-        this.modalData = { ...item, [field]: item[positionField]?.id };
+  if (this.currentConfig.connectionReference) {
+    try {
+      await this.loadConnectionReferenceData();
+      
+      const field = this.currentConfig.connectionReference.field;
+      const positionField = this.currentConfig.connectionReference.fieldName;
 
-        // Устанавливаем выбранный элемент, используя данные из записи
-        const selectedItem = this.connectionReferenceData.find(referenceItem => referenceItem.id === item[positionField]?.id);
-        this.selectedReference = selectedItem || null;
+      this.modalData = { ...item, [field]: item[positionField]?.id };
 
-        this.modalTitle = 'Редактировать запись';
-        this.modalAction = 'Обновить';
-        this.isModalOpen = true;
-      });
-    } else {
-      this.modalData = { ...item };
+      const selectedItem = this.connectionReferenceData.find(referenceItem => referenceItem.id === item[positionField]?.id);
+      this.selectedReference = selectedItem || null;
+
       this.modalTitle = 'Редактировать запись';
       this.modalAction = 'Обновить';
       this.isModalOpen = true;
+
+      this.cdr.detectChanges();
+      
+    } catch (error) {
+      console.error('Ошибка при загрузке данных для связи', error);
+      this.toastService.showError('Ошибка', 'Ошибка при загрузке данных для связи');
     }
+  } else {
+    this.modalData = { ...item };
+    this.modalTitle = 'Редактировать запись';
+    this.modalAction = 'Обновить';
+    this.isModalOpen = true;
+    this.cdr.detectChanges();
   }
+}
 
 
 
   // Закрытие модального окна
   closeModal(): void {
     this.isModalOpen = false;
+    this.cdr.detectChanges();
   }
 
   // Отправка формы (создание/редактирование)
