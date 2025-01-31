@@ -74,7 +74,7 @@ export const formConfig = {
     ],
   },
   workSpecification: {
-    nameDoc: 'Спецификация работ',
+    nameDoc: 'Ведомость объемов работ',
     endpoint: 'WorkSpecification',
     fileInstruction:'workSpecification.html',
     controls: [
@@ -98,7 +98,7 @@ export const formConfig = {
     ],
   }, 
   actHideWorksRequest: {
-    nameDoc: 'Акты скрытых работ',
+    nameDoc: 'Акты освидетельствования скрытых работ',
     endpoint: 'ActHideWorks',
     fileInstruction:'materialSpecification.html',
     controls: [
@@ -131,14 +131,14 @@ export const formConfig = {
       {
         name: 'beginDateTime',
         type: 'date',
-        label: 'Выберите дату',
+        label: 'Дата начала работ',
         validators: [Validators.required],
         order: 3
       },
       {
         name: 'endDateTime',
         type: 'date',
-        label: 'Выберите дату',
+        label: 'Дата окончания работ',
         validators: [Validators.required],
         order: 4
       },
