@@ -18,16 +18,16 @@ export const referenceConfig = [
         endpoint: 'Employees',
         pageTitle: 'Сотрудники',
         tableColumns: [
-            { label: 'Имя', field: 'firstName' },
             { label: 'Фамилия', field: 'lastName' },
+            { label: 'Имя', field: 'firstName' },
             { label: 'Отчество', field: 'patronymic' },
             { label: 'Дожность', field: 'position.name' },
             { label: 'Документ о представительстве', field: 'representationOrder' },
             { label: '', field: '' },
         ],
         formFields: [
-            { label: 'Имя', field: 'firstName', type: 'text' },
             { label: 'Фамилия', field: 'lastName', type: 'text' },
+            { label: 'Имя', field: 'firstName', type: 'text' },
             { label: 'Отчество', field: 'patronymic', type: 'text' },
             { label: 'Документ о представительстве', field: 'representationOrder', type: 'text' },
         ],
