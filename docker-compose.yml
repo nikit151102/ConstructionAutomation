@@ -10,8 +10,6 @@ services:
     volumes:
       - /app
       - /app/node_modules
-    environment:
-      - API_URL=http://backend:5000
     networks:
       - constructionAutomation
     

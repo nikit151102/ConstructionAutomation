@@ -1,5 +1,5 @@
 export const environment = {
-    apiUrl: 'https://rebuildpro.ru:5001',
+    apiUrl: 'https://rebuildpro.ru:5001/api',
     //apiUrl: 'https://dev.rebuildpro.ru:5001',
     // apiUrl: 'http://localhost:5182',
     userNameBot: 'etgrrisTESTING_bot',
