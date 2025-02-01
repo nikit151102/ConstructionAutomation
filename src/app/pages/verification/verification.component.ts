@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VerificationService } from './verification.service';
 import { CommonModule } from '@angular/common';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-verification',
@@ -18,7 +19,8 @@ export class VerificationComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private verificationService: VerificationService, // сервис для связи с сервером
-    private router: Router
+    private router: Router,
+    private toastService:ToastService
   ) { }
 
   ngOnInit(): void {
@@ -40,14 +42,14 @@ export class VerificationComponent implements OnInit {
         this.verificationStatus = true;
       },
       (error) => {
-        console.log('error',error)
-        if (error.status === 412) {
+        if (error.error.status === 422) {
+          this.toastService.showError('Ошибка', error.error.Message);
           this.verificationMessage = 'Вы уже подтвердили свою почту.';
           this.verificationStatus = false;
         } else {
+          this.toastService.showError('Ошибка', error.error.Message);
           this.verificationMessage = 'Произошла ошибка. Попробуйте снова позже.';
         }
-
       }
     );
   }

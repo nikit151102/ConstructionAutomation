@@ -92,7 +92,7 @@ export class FormsComponent {
     private commomFileService: CommomFileService,
     private cdr: ChangeDetectorRef,
     public dialogStorageService: DialogStorageService,
-    public instructionsService:InstructionsService
+    public instructionsService: InstructionsService
   ) { }
 
   ngOnInit(): void {
@@ -148,7 +148,7 @@ export class FormsComponent {
     this.form.get(name)?.setValue(selectedDate);
     console.log('selectedId', this.form.value)
   }
-  
+
 
   onSubmit() {
     const formData = new FormData();
@@ -229,18 +229,19 @@ export class FormsComponent {
         this.progressSpinnerService.hide();
         this.uploadSuccess.emit(response);
       },
-      error: (error: any) => {
+      error: (error) => {
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
         this.progressSpinnerService.hide();
-        this.toastService.showError('Ошибка', 'Не удалось сформировать документ');
       }
     });
   }
 
-  openInstruction(){
+  openInstruction() {
     this.instructionsService.openInstruction();
     this.cdr.detectChanges();
   }
- 
+
 
   ngOnDestroy(): void {
     this.dialogStorageService.setIsVisibleDialog(false);

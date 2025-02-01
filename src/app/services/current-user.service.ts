@@ -109,14 +109,14 @@ export class CurrentUserService {
         })
       );
   }
-
+ 
   // Обновление данных пользователя
   updateUserData(user: UserUpdateRequest): Observable<any> {
     return this.http
       .put<any>(`${environment.apiUrl}/api/Profile`, user, {
         headers: this.getAuthHeaders(),
       })
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError))
   }
 
   // Удаление пользователя

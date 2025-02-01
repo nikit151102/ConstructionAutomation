@@ -47,8 +47,9 @@ export class CreateFolderComponent implements OnInit, AfterViewInit {
           this.onEsc()
         },
         (error) => {
+          const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+          this.toastService.showError('Ошибка', errorMessage);
           this.onEsc();
-          this.toastService.showError('Ошибка', 'Не удалось создать папку. Попробуйте снова.');
         }
       );
     }

@@ -108,8 +108,9 @@ export class FileComponent implements OnInit {
         this.myDocumentsService.loadData(idFolder);
         this.toastService.showSuccess('Успешно!', 'Операция выполнена успешно');
       },
-      (error: any) => {
-        this.toastService.showError('Ошибка!', 'Не удалось удалить файл');
+      (error) => {
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
       }
     );
   }
@@ -136,8 +137,9 @@ export class FileComponent implements OnInit {
         this.myDocumentsService.loadData(idFolder);
         this.toastService.showSuccess('Успешно!', 'Файл переименован');
       },
-      (error: any) => {
-        this.toastService.showError('Ошибка!', 'Не удалось переименовать файл');
+      (error) => {
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
       }
     );
   }

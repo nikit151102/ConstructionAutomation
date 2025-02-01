@@ -44,7 +44,8 @@ export class FormDeleteComponent {
         this.router.navigate(['/login']);
       },
       (error) => {
-        this.toastService.showError('Ошибка', 'Не удалось удалить аккаунт. Пожалуйста, попробуйте снова позже.');
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
       }
     );
   }

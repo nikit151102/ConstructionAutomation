@@ -48,7 +48,10 @@ export class FormUserComponent implements OnInit {
     if (!this.currentUser) {
       this.currentUserService.getUserData().subscribe({
         next: (userData) => this.fillForm(userData.data),
-        error: (error) => console.error('Ошибка при получении данных пользователя:', error)
+        error: (error) => {
+          const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+          this.toastService.showError('Ошибка', errorMessage);
+        }
       });
     } else {
       this.fillForm(this.currentUser);
@@ -110,7 +113,8 @@ export class FormUserComponent implements OnInit {
           this.toastService.showSuccess('Успешно', 'Данные пользователя успешно обновлены');
         },
         error: (error) => {
-          this.toastService.showError('Ошибка', 'Не удалось обновить данные пользователя');
+          const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+          this.toastService.showError('Ошибка', errorMessage);
         }
       });
     })

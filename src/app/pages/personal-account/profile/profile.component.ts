@@ -32,7 +32,8 @@ export class ProfileComponent implements OnInit {
           this.currentUserService.saveUser(userData.data)
         },
         error: (err) => {
-          this.toastService.showError('Ошибка', 'Не удалось загрузить данные пользователя');
+            const errorMessage = err?.error?.Message || 'Произошла неизвестная ошибка';
+            this.toastService.showError('Ошибка', errorMessage);
         },
       });
     } else {

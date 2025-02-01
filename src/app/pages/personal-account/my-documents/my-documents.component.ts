@@ -23,7 +23,7 @@ import { BreadcrumbComponent } from '../../../components/breadcrumb/breadcrumb.c
 @Component({
   selector: 'app-my-documents',
   standalone: true,
-  imports: [CommonModule, FileComponent, ButtonModule, FileUploadModule, SelectButtonModule, FormsModule, FolderComponent, MenuModule, ToastModule, CreateFolderComponent, DragDropModule, ContextMenuModule,BreadcrumbComponent],
+  imports: [CommonModule, FileComponent, ButtonModule, FileUploadModule, SelectButtonModule, FormsModule, FolderComponent, MenuModule, ToastModule, CreateFolderComponent, DragDropModule, ContextMenuModule, BreadcrumbComponent],
   templateUrl: './my-documents.component.html',
   styleUrls: ['./my-documents.component.scss'],
 })
@@ -105,10 +105,12 @@ export class MyDocumentsComponent implements OnInit {
 
         this.progressSpinnerService.hide();
       },
-      error: (error) => {
-        this.toastService.showError('Ошибка', 'Не удалось загрузить данные');
-        this.progressSpinnerService.hide();
-      },
+      error:
+        (error) => {
+          const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+          this.toastService.showError('Ошибка', errorMessage);
+          this.progressSpinnerService.hide();
+        }
     });
     this.myDocumentsService.isVertical$.subscribe((type: boolean) => {
       this.isVertical = type;
@@ -154,16 +156,16 @@ export class MyDocumentsComponent implements OnInit {
     if (this.moveDirectory) {
       const folder = this.moveDirectory;
       const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
-      ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-      : "00000000-0000-0000-0000-000000000000";
+        ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+        : "00000000-0000-0000-0000-000000000000";
       this.myDocumentsService.handleFolderMove(folder.id, idFolder, idFolder)
       this.moveDirectory = null;
     }
     else if (this.moveFile) {
       const file = this.moveFile;
       const idFolder = this.myDocumentsService.BreadcrumbItems.length > 0
-      ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
-      : "00000000-0000-0000-0000-000000000000";
+        ? this.myDocumentsService.BreadcrumbItems[this.myDocumentsService.BreadcrumbItems.length - 1]['idFolder'] ?? ""
+        : "00000000-0000-0000-0000-000000000000";
       this.myDocumentsService.handleFileMove(file.id, idFolder, idFolder)
       this.moveFile = null;
 
@@ -271,9 +273,9 @@ export class MyDocumentsComponent implements OnInit {
           this.toastService.showSuccess('Загрузка завершена', 'Файлы успешно загружены');
         },
         error: (error) => {
-          console.error('Upload failed:', error);
-          this.toastService.showError('Ошибка', 'Не удалось загрузить файлы');
-        },
+          const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+          this.toastService.showError('Ошибка', errorMessage);
+        }
       });
     } else {
       this.toastService.showWarn('Предупреждение', 'Нет файлов для загрузки');

@@ -9,6 +9,7 @@ import { PersonalAccountService } from '../../pages/personal-account/personal-ac
 import { CurrentUserService } from '../../services/current-user.service'
 import { DocumentsService } from '../../pages/personal-account/documents/documents.service';
 import { formConfig } from '../../pages/personal-account/documents/confs';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -58,7 +59,8 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     private personalAccountService: PersonalAccountService,
     private activatedRoute: ActivatedRoute,
     public currentUserService: CurrentUserService,
-    private documentsService: DocumentsService
+    private documentsService: DocumentsService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -79,9 +81,10 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
           this.currentUser = userData.data;
           this.currentUserService.saveUser(userData.data)
         },
-        error: (err) => {
-          console.error('Ошибка при загрузке данных пользователя:', err);
-        },
+        error: (error) => {
+          const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+          this.toastService.showError('Ошибка', errorMessage);
+        }
       });
     } else {
       this.currentUser = this.currentUserService.getUser();

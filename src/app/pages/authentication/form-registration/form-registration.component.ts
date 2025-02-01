@@ -138,7 +138,8 @@ export class FormRegistrationComponent {
 
         },
         (error) => {
-          this.toastService.showError('Ошибка', 'Ошибка при регистрации')
+          const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+          this.toastService.showError('Ошибка', errorMessage);
         }
       );
     } else {

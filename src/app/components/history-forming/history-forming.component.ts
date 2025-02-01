@@ -17,6 +17,7 @@ import { DocumentQueueItem, TransactionResponse } from '../../interfaces/docs';
 import { Response } from '../../interfaces/common';
 import { TypeDoc } from '../../interfaces/docs'
 import { Subscription } from 'rxjs';
+import { ToastService } from '../../services/toast.service';
 
 interface Button {
   label: string;
@@ -108,7 +109,8 @@ export class HistoryFormingComponent implements OnInit {
     private currentUserService: CurrentUserService,
     private commomFileService: CommomFileService,
     private cdr: ChangeDetectorRef,
-    private personalAccountService: PersonalAccountService
+    private personalAccountService: PersonalAccountService,
+    private toastService: ToastService
   ) { }
 
   private subscriptions: Subscription = new Subscription();
@@ -197,8 +199,8 @@ export class HistoryFormingComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Ошибка при загрузке данных:', error);
-        this.isLoading = false;
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
       }
     );
   }
@@ -269,8 +271,9 @@ export class HistoryFormingComponent implements OnInit {
           this.historyFormingService.visiblePdf = true;
         }
       },
-      (error: any) => {
-        console.error('Ошибка при получении файла для предварительного просмотра:', error);
+      (error) => {
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
       }
     );
   }

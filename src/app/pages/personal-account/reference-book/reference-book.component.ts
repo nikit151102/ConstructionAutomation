@@ -36,10 +36,8 @@ export class ReferenceBookComponent implements OnInit {
 
       if (this.currentConfig) {
         this.formFields = this.currentConfig.formFields;
-      } else {
-        console.error('Не найден объект с указанным typeId');
-        this.toastService.showError('Ошибка', 'Не найден объект с указанным typeId');
       }
+
       this.loadData();
     });
   }
@@ -57,9 +55,9 @@ export class ReferenceBookComponent implements OnInit {
         }
       },
       (error) => {
-        console.error('Ошибка при загрузке данных:', error);
-        this.toastService.showError('Ошибка', 'Ошибка при загрузке данных');
-      }
+         const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+         this.toastService.showError('Ошибка', errorMessage);
+       }
     );
   }
 
@@ -178,9 +176,9 @@ async openEditModal(currentEndpoint: string, item: any): Promise<void> {
         this.toastService.showSuccess('Успех', 'Запись успешно создана');
       },
       (error) => {
-        console.error('Ошибка при создании записи:', error);
-        this.toastService.showError('Ошибка', 'Ошибка при создании записи');
-      }
+         const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+         this.toastService.showError('Ошибка', errorMessage);
+       }
     );
   }
 
@@ -195,9 +193,9 @@ async openEditModal(currentEndpoint: string, item: any): Promise<void> {
         }
       },
       (error) => {
-        console.error('Ошибка при обновлении записи:', error);
-        this.toastService.showError('Ошибка', 'Ошибка при обновлении записи');
-      }
+         const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+         this.toastService.showError('Ошибка', errorMessage);
+       }
     );
   }
 
@@ -209,9 +207,9 @@ async openEditModal(currentEndpoint: string, item: any): Promise<void> {
         this.toastService.showSuccess('Успех', 'Запись успешно удалена');
       },
       (error) => {
-        console.error('Ошибка при удалении записи:', error);
-        this.toastService.showError('Ошибка', 'Ошибка при удалении записи');
-      }
+         const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+         this.toastService.showError('Ошибка', errorMessage);
+       }
     );
   }
 
@@ -242,10 +240,11 @@ async openEditModal(currentEndpoint: string, item: any): Promise<void> {
               reject('Данные не найдены');
             }
           },
-          (error) => {
-            console.error('Ошибка при загрузке данных для связи:', error);
-            reject(error);
-          }
+           (error) => {
+              const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+              this.toastService.showError('Ошибка', errorMessage);
+              reject(error);
+            }
         );
       } else {
         reject('Конфигурация для связи не найдена');

@@ -30,11 +30,11 @@ export class CommomFileService {
   previewfile(fileId: string): Observable<Blob> {
     return this.download(fileId).pipe(
       map((response: { file: any; documentMetadata: any }) => {
-        return this.createBlobFromData(response.file); 
+        return this.createBlobFromData(response.file);
       })
     );
   }
-  
+
 
   downloadFile(fileId: string) {
 
@@ -57,10 +57,11 @@ export class CommomFileService {
         this.toastService.showError('Ошибка!', 'Нет файла для скачивания');
       }
 
-    }, (error: any) => {
-      console.error('Ошибка при скачивании файла:', error);
-      this.toastService.showError('Ошибка!', 'Не удалось скачать файл');
-    });
+    },
+      (error) => {
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
+      });
   }
 
   createBlobFromData(fileData: any): Blob {

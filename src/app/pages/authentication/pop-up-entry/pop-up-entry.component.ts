@@ -10,6 +10,7 @@ import { TokenService } from '../../../services/token.service';
 import { environment } from '../../../../environment';
 import { FormAuthorizationService } from '../form-authorization/form-authorization.service';
 import { FormRegistrationService } from '../form-registration/form-registration.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-pop-up-entry',
@@ -25,7 +26,8 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
     private tokenService: TokenService,
     private router: Router,
     private formAuthorizationService: FormAuthorizationService,
-    private formRegistrationService: FormRegistrationService
+    private formRegistrationService: FormRegistrationService,
+    private toastService:ToastService
   ) { }
 
   @Input() type: string = ''
@@ -90,6 +92,10 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
         this.userAuthenticated = true;
         this.tokenService.setToken(response.data.token);
         this.router.navigate([`/${response.data.id}`]);
+      },
+      (error) => {
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
       });
     } else {
       Data = {
@@ -101,6 +107,10 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
         this.userAuthenticated = true;
         this.tokenService.setToken(response.data.token);
         this.router.navigate([`/${response.data.id}`]);
+      },
+      (error) => {
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
       });
     }
 
@@ -116,7 +126,8 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
         this.popUpEntryService.visible = false;
       },
       (error) => {
-        console.error('Error fetching user data:', error);
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
       }
     );
 
