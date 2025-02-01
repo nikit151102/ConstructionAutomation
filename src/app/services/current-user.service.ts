@@ -67,11 +67,6 @@ export class CurrentUserService {
   }
 
 
-
-
-
-
-
   // Получение заголовков с токеном
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('YXV0aFRva2Vu');
@@ -101,7 +96,6 @@ export class CurrentUserService {
           return response;
         }),
         catchError((error) => {
-          console.error('Ошибка при получении данных пользователя:', error);
           this.toastService.showError('Сеанс истёк', 'Пожалуйста, выполните повторный вход');
           localStorage.removeItem('YXV0aFRva2Vu');
           this.router.navigate(['/login']);

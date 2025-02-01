@@ -6,6 +6,7 @@ import { PersonalAccountService } from '../personal-account.service';
 import { ExpenseChartComponent } from './expense-chart/expense-chart.component';
 import { TransactionHistoryComponent } from './transaction-history/transaction-history.component';
 import { TransactionService } from './transaction.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-home',
@@ -19,13 +20,17 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,
     public currentUserService: CurrentUserService,
     private personalAccountService: PersonalAccountService,
-    private transactionService: TransactionService) {
+    private transactionService: TransactionService,
+    private toastService: ToastService) {
     this.personalAccountService.changeTitle('Главная')
   }
 
   ngOnInit(): void {
     this.transactionService.getTransactions().subscribe({
-      error: (err) => console.error('Error loading transactions', err),
+      error: (error) => {
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
+      }
     });
   }
 
@@ -37,13 +42,11 @@ export class HomeComponent implements OnInit {
   ];
 
   executeCommand(item: string) {
-    console.log("item", item)
     if (item === 'exit') {
       localStorage.removeItem('YXV0aEFkbWluVG9rZW4=');
       localStorage.removeItem('idAdmin');
       this.router.navigate(['/'])
     } else {
-      console.log(localStorage.getItem('YXV0aEFkbWluVG9rZW4='));
       this.router.navigate([`/admin/${localStorage.getItem('YXV0aEFkbWluVG9rZW4=')}/${item}`]);
     }
   }

@@ -8,7 +8,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 import { MyDocumentsService } from '../my-documents.service';
 import { MenuItem } from 'primeng/api';
-import { CommomFileService } from '../../../../services/file.service';
 import { ToastService } from '../../../../services/toast.service';
 import { FolderService } from './folder.service';
 
@@ -22,7 +21,6 @@ import { FolderService } from './folder.service';
 export class FolderComponent implements OnInit {
 
   @Input() folder!: any;
-  // @Input() isdelete: boolean = false;
   @Output() folderClick = new EventEmitter<void>();
   @ViewChild('cm') contextMenu!: ContextMenu;
   visibleShonRename: boolean = false;
@@ -125,14 +123,11 @@ export class FolderComponent implements OnInit {
   }
 
   applyRename(): void {
-    // Логика для подтверждения ввода
-    console.log('Rename applied:', this.value);
     const data = {
       "id": this.folder.id,
       "name": this.value
     }
     this.folderService.renameFolder(this.folder.id, data).subscribe((data: any) => {
-      console.log('data', data)
       this.folder = { ...data.data, icon: data.data.type === 'file' ? 'pngs/file.png' : data.data.type === "directory" ? 'pngs/folder.png' : '' }
     })
     this.visibleShonRename = false;

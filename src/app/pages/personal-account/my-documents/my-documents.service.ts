@@ -167,7 +167,6 @@ private filterData(data:any){
             ...file,
             icon: file.type === 'file' ? 'pngs/file.png' : file.type === 'directory' ? 'pngs/folder.png' : ''
           }));
-
 }
 
   loadData(idFolder: string) {
@@ -247,7 +246,8 @@ private filterData(data:any){
 
     this.addFileMove(addData).pipe(
       catchError(error => {
-        console.error('Ошибка при добавлении файла:', error);
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
         return throwError(() => error);
       })
     ).subscribe((data: any) => {
@@ -261,7 +261,8 @@ private filterData(data:any){
 
     this.addOrderMove(addData).pipe(
       catchError(error => {
-        console.error('Ошибка при добавлении папки:', error);
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
         return throwError(() => error);
       })
     ).subscribe((data: any) => {

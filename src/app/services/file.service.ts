@@ -66,7 +66,6 @@ export class CommomFileService {
 
   createBlobFromData(fileData: any): Blob {
     if (!fileData.fileContents) {
-      console.error('Отсутствуют данные файла для преобразования в Blob.');
       return new Blob(); // Возвращаем пустой Blob, если данных нет.
     }
 

@@ -12,7 +12,6 @@ import { ToastService } from '../../../services/toast.service';
 import { ProgressSpinnerService } from '../../../components/progress-spinner/progress-spinner.service';
 import { CommomFileService } from '../../../services/file.service';
 import { FolderComponent } from './folder/folder.component';
-import { CurrentUserService } from '../../../services/current-user.service';
 import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
@@ -79,7 +78,6 @@ export class MyDocumentsComponent implements OnInit {
     private toastService: ToastService,
     private progressSpinnerService: ProgressSpinnerService,
     private commomFileService: CommomFileService,
-    private currentUserService: CurrentUserService,
     private cdr: ChangeDetectorRef
   ) {
     this.personalAccountService.changeTitle('Мои документы');
@@ -219,9 +217,7 @@ export class MyDocumentsComponent implements OnInit {
   onUpload(event: any): void {
     if (event.files && event.files.length > 0) {
       this.uploadedFiles = event.files;
-    } else {
-      console.log('No files selected.');
-    }
+    } else {}
   }
 
   totalSize: number = 0;
@@ -235,7 +231,6 @@ export class MyDocumentsComponent implements OnInit {
 
       if (this.totalSize > this.myDocumentsService.storageInfo.storageVolumeCopacity) {
         this.errorMessage = `Файлы превышают доступную память. Лимит: ${this.commomFileService.fileSizeInMB(this.myDocumentsService.storageInfo.storageVolumeCopacity)} MB`;
-        console.log('return')
         this.disabledUploadBtn = true;
       }
     }

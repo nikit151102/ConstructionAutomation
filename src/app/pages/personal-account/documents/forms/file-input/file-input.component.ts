@@ -7,7 +7,6 @@ import * as XLSX from 'xlsx';
 import { DialogModule } from 'primeng/dialog';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { MyDocumentsService } from '../../../my-documents/my-documents.service';
-import { CurrentUserService } from '../../../../../services/current-user.service';
 import { DialogStorageService } from '../../../../../components/dialog-storage/dialog-storage.service';
 
 @Component({
@@ -52,7 +51,6 @@ export class FileInputComponent implements OnInit, OnDestroy {
   constructor(
     private myDocumentsService: MyDocumentsService,
     private cdr: ChangeDetectorRef,
-    private currentUserService: CurrentUserService,
     public dialogStorageService: DialogStorageService
   ) { }
   ngOnDestroy(): void {
@@ -106,7 +104,6 @@ export class FileInputComponent implements OnInit, OnDestroy {
           this.visibleDelete = true;
           this.showSheetSelection = true;
           this.cdr.detectChanges();
-          console.log('this.showSheetSelection', this.showSheetSelection)
           if (this.sheetNames.length === 1) {
             console.error(' Excel file length === 1');
             this.emitSelection(event, file, this.sheetNames[0], this.fileId);
@@ -145,7 +142,6 @@ export class FileInputComponent implements OnInit, OnDestroy {
 
   onSheetSelect(selectedSheet: string): void {
     this.sheetName = selectedSheet;
-    console.log(' this.fileId', this.fileId)
     this.emitSelection(this.selectEvent, this.selectFile, selectedSheet, this.fileId);
   }
 
@@ -160,7 +156,6 @@ export class FileInputComponent implements OnInit, OnDestroy {
   onChangeSelectFile(event: any): void {
 
     if (!event?.id) {
-      console.error('No file ID provided');
       return;
     }
 
@@ -208,7 +203,6 @@ export class FileInputComponent implements OnInit, OnDestroy {
               this.sheetNames = workbook.SheetNames;
 
               if (!this.sheetNames.length) {
-                console.error('No sheets found in the file');
                 return;
               }
 

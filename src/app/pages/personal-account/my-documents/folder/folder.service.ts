@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../../environment';
-import { CurrentUserService } from '../../../../services/current-user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +25,7 @@ export class FolderService {
     this.currentMenu = null;
   }
 
-  constructor(private http: HttpClient, private currentUserService: CurrentUserService) { }
+  constructor(private http: HttpClient) { }
 
   renameFolder(idFolder: string, data: any) {
     const url = `${this.apiUrl}/Directories/${idFolder}`;
@@ -67,7 +66,6 @@ export class FolderService {
   }
 
   addFolder(data: any) {
-    const userId = this.currentUserService.getUser();
     const url = `${this.apiUrl}/api/Profile/UserDirectories`;
     const token = localStorage.getItem('YXV0aFRva2Vu');
 

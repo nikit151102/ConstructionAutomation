@@ -1,6 +1,5 @@
 import { Component, AfterViewInit, OnDestroy, OnInit, Input } from '@angular/core';
 import { PopUpEntryService } from './pop-up-entry.service';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -87,7 +86,6 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
         Password: '',
       };
       this.formAuthorizationService.signIn(Data).subscribe((response: any) => {
-        console.log('Успешный вход:', response);
         this.tokenService.setToken(response.data.token);
         this.userAuthenticated = true;
         this.tokenService.setToken(response.data.token);
@@ -139,14 +137,5 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
     this.removeTelegramWidget();
   }
 
-  clearCookies() {
-    const cookies = document.cookie.split(';');
-
-    for (let cookie of cookies) {
-      const eqPos = cookie.indexOf('=');
-      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-    }
-  }
 
 }

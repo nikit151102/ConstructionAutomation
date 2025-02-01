@@ -6,7 +6,6 @@ import { CustomButtonComponent } from '../../../ui-kit/custom-button/custom-butt
 import { FormAuthorizationService } from './form-authorization.service';
 import { Router } from '@angular/router';
 import { TokenService } from '../../../services/token.service';
-import { CurrentUserService } from '../../../services/current-user.service';
 import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
 import { ToastService } from '../../../services/toast.service';
 import { CookieConsentService } from '../../../services/cookie-consent.service';
@@ -35,7 +34,6 @@ export class FormAuthorizationComponent implements OnInit {
     private tokenService: TokenService,
     private progressSpinnerService: ProgressSpinnerService,
     private toastService: ToastService,
-    private currentUserService: CurrentUserService,
     private cookieConsentService: CookieConsentService
   ) {
     this.signInForm = this.fb.group({

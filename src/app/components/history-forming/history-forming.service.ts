@@ -123,9 +123,6 @@ export class HistoryFormingService {
 
 
 
-
-
-
   private socket!: WebSocket;
   private messagesSubject = new Subject<any>();
   messages$ = this.messagesSubject.asObservable();
@@ -136,14 +133,11 @@ export class HistoryFormingService {
     this.socket = new WebSocket(url);
 
     this.socket.onopen = () => {
-      console.log('WebSocket connection established.');
     };
 
     this.socket.onmessage = (event) => {
-      console.log('WebSocket onmessage.');
       try {
         const data = JSON.parse(event.data);
-        console.log('Parsed data:', data);
         this.messagesSubject.next(data);
       } catch (e) {
         console.error('Error parsing WebSocket message:', e);
@@ -156,7 +150,6 @@ export class HistoryFormingService {
     };
 
     this.socket.onclose = () => {
-      console.log('WebSocket connection closed.');
     };
   }
 

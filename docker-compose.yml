@@ -1,11 +1,12 @@
 services:
 
   frontend:
+    container_name: frontend_1
     build:
       context: ./
       dockerfile: Dockerfile-frontend
     ports:
-      - 8020:8020
+      - 80:80
     volumes:
       - /app
       - /app/node_modules

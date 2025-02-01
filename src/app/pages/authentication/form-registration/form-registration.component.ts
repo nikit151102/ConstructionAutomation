@@ -47,45 +47,40 @@ export class FormRegistrationComponent {
   private emailAndEnglishLettersValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
-  
+
       // Проверка на формат электронной почты
       const emailPattern = /^[A-Za-z0-9!"№;%:?*()_+,.<>[\]{}|^&$#@`~\\/=<>-]*$/;
 
       if (value && !emailPattern.test(value)) {
         return { email: true }; // Некорректный формат электронной почты
       }
-  
+
       // Проверка на разрешённые символы
       const specialCharsPattern = /^[A-Za-zА-Яа-я0-9!"№;%:?*()_+,.<>[\]{}|^&$#@`~\\/=<>-]*$/;
       if (value && !specialCharsPattern.test(value)) {
         return { englishLettersOnly: true }; // Ошибка, если ввод содержит неподдерживаемые символы
       }
-  
+
       return null; // Валидация прошла успешно
     };
   }
-  
-  
-  
 
   passwordValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
       if (!value) {
-        return null; 
+        return null;
       }
       const passwordPattern = /^[A-Za-z0-9!"№;%:?*()_+,.<>[\]{}|^&$#@`~\\/=<>]*$/;
       return passwordPattern.test(value) ? null : { invalidPassword: true };
     };
   }
-  
 
-  
   handlePasswordInput(event: Event): void {
     this.passwordConditions.minLength = this.SignUpForm.get('password')?.value.length >= 6;
     this.passwordConditions.hasUpperCase = /[A-Z]/.test(this.SignUpForm.get('password')?.value);
   }
-  
+
   handlePasswordFocus(): void {
     this.isPasswordFocused = true;
     console.log('this.isPasswordFocused', this.isPasswordFocused)
@@ -95,13 +90,11 @@ export class FormRegistrationComponent {
     this.isPasswordFocused = false;
   }
 
-
   handleEmailInput(event: Event): void {
     const email = (event.target as HTMLInputElement).value;
     this.SignUpForm.get('email')?.markAsDirty();
     this.SignUpForm.get('email')?.updateValueAndValidity();
   }
-
 
   onSignUp() {
 
@@ -133,7 +126,7 @@ export class FormRegistrationComponent {
             userName: `${response.data.lastName ?? ''} ${response.data.firstName ?? ''}`.trim(),
             email: response.data.email
           };
-  
+
           localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', this.utf8ToBase64(JSON.stringify(dataStage)));
 
         },
@@ -153,9 +146,9 @@ export class FormRegistrationComponent {
     utf8Bytes.forEach(byte => {
       binary += String.fromCharCode(byte);
     });
-    return btoa(binary);  
+    return btoa(binary);
   }
-  
+
   handleKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
       this.onSignUp();

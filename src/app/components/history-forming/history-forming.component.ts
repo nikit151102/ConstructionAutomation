@@ -122,7 +122,6 @@ export class HistoryFormingComponent implements OnInit {
   ngOnInit() {
     this.historyFormingService.historyDocsState$.subscribe((value: DocumentQueueItem[]) => {
       this.historyDocs = value;
-      console.log(`Обновление historyDocs в компоненте :`, value);
       this.filterDocsByType();
       this.filteredDocs = [...this.filteredDocs];
       this.cdr.markForCheck();
@@ -131,11 +130,7 @@ export class HistoryFormingComponent implements OnInit {
 
     this.subscriptions.add(
       this.historyFormingService.messages$.subscribe((data) => {
-        console.log('Получение нового объекта:', data);
-
         this.historyFormingService.setNewHistoryDocsValue(data);
-
-        console.log('Обновление отображения ChangeDetectorRef.');
         this.cdr.markForCheck();
       })
     );
@@ -313,7 +308,6 @@ export class HistoryFormingComponent implements OnInit {
       this.visiblePopUpPay = false;
       this.personalAccountService.changeBalance(String(response.data.balance));
       this.currentUserService.updateUserBalance(String(response.data.balance));
-      // this.loadData();
     });
   }
 

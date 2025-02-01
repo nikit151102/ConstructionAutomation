@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
 import { FormsService } from './forms.service';
 import { ToastService } from '../../../../services/toast.service';
 import { ProgressSpinnerService } from '../../../../components/progress-spinner/progress-spinner.service';
-import { CommomFileService } from '../../../../services/file.service';
 import { UploadData } from '../../../../interfaces/docs';
 import { Response } from '../../../../interfaces/common';
 import { DialogStorageComponent } from '../../../../components/dialog-storage/dialog-storage.component';
@@ -89,7 +88,6 @@ export class FormsComponent {
   constructor(private fb: FormBuilder, private formsService: FormsService,
     private toastService: ToastService,
     private progressSpinnerService: ProgressSpinnerService,
-    private commomFileService: CommomFileService,
     private cdr: ChangeDetectorRef,
     public dialogStorageService: DialogStorageService,
     public instructionsService: InstructionsService
@@ -141,12 +139,10 @@ export class FormsComponent {
 
   onReferenceSelected(name: string, selectedId: string): void {
     this.form.get(name)?.setValue(selectedId);
-    console.log('selectedId', this.form.value)
   }
 
   handleDateChange(name: string, selectedDate: string): void {
     this.form.get(name)?.setValue(selectedDate);
-    console.log('selectedId', this.form.value)
   }
 
 

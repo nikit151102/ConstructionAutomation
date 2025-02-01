@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener, NgZone, ChangeDetectionStrategy } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener, ChangeDetectionStrategy } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { ButtonModule } from 'primeng/button';
 import { SidebarService } from '../../components/sidebar/sidebar.service';
@@ -9,8 +9,6 @@ import { PersonalAccountService } from './personal-account.service';
 import { CurrentUserService } from '../../services/current-user.service';
 import { FormsModule } from '@angular/forms';
 import { TransactionService } from './home/transaction.service';
-import { TokenService } from '../../services/token.service';
-import { environment } from '../../../environment';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
@@ -39,9 +37,6 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     private toastService: ToastService) { }
 
   ngOnInit(): void {
-
-
-
     this.personalAccountService.balance$.subscribe((value: string) => {
       this.userBalance = value;
       this.cdr.detectChanges();
@@ -186,7 +181,6 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
           });
 
           checkout.on('fail', () => {
-            console.error('Оплата не удалась');
             this.toastService.showError('Ошибка', 'Произошла ошибка при выполнении платежа. Попробуйте снова.');
             this.personalAccountService.checkoutTransaction(confirmationToken).subscribe((response: any) => {
               checkout.destroy();

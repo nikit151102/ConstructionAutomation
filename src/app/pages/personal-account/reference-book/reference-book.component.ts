@@ -50,7 +50,6 @@ export class ReferenceBookComponent implements OnInit {
           this.data = response.data;
           this.cdr.detectChanges();
         } else {
-          console.error('Ошибка: данные не найдены в ответе.');
           this.toastService.showError('Ошибка', 'Данные не найдены в ответе.');
         }
       },

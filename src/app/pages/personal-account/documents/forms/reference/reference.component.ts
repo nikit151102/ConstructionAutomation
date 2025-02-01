@@ -41,7 +41,6 @@ export class ReferenceComponent {
           this.options = response.data;
         }
       }, error => {
-        console.error('HTTP request failed:', error);
         this.options = [];
       });
     }
