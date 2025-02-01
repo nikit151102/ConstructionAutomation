@@ -133,8 +133,11 @@ export class FormAuthorizationComponent implements OnInit {
           }
         },
         (error) => {
+          console.log('error',error)
           this.progressSpinnerService.hide();
-          this.toastService.showError('Ошибка', 'Ошибка при входе')
+          const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+
+          this.toastService.showError('Ошибка', errorMessage);
         }
       );
     } else {
