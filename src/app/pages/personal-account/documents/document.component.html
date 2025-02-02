@@ -7,12 +7,12 @@
 
 
 <app-pop-up
-  *ngIf="showPopup"
+  *ngIf="documentsService.showPopupErrorForming"
   [offerInformation]="false"
   [imageSrc]="'svg/error.svg'"
   [title]="'Лимит формирований достигнут'"
   [description]="documentsService.descriptionPopupErrorForming"
-  [buttons]="documentsService.buttons"
+  [buttons]="documentsService.buttons(cdr)"
   (close)="documentsService.showPopupErrorForming = false"
 ></app-pop-up>
 

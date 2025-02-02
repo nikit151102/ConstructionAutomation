@@ -8,24 +8,30 @@ import { environment } from '../../../../environment';
 })
 export class DocumentsService {
 
+
   selectConf: any;
   visiblePdf:boolean = false;
   selectPdf:any;
   
-  public showPopupErrorForming: boolean = true;
+  public showPopupErrorForming: boolean = false;
   public descriptionPopupErrorForming: string = '';
-  buttons = [
-    { label: 'Продолжить', onClick: () =>{
-      this.showPopupErrorForming = false;
-      this.cdr.detectChanges();
-    } },
+
+  buttons(cdr: ChangeDetectorRef) {
+    return [
+      { label: 'Продолжить', onClick: () => {
+          this.showPopupErrorForming = false;
+          cdr.detectChanges(); 
+        } 
+      },
+      
   ];
+}
 
   private isselectConfSubject = new BehaviorSubject<any>('');
 
   isSelectConfState$ = this.isselectConfSubject.asObservable();
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
+  constructor(private http: HttpClient) { }
 
   setSelectConfValue(newValue: any): void {
     this.isselectConfSubject.next(newValue);

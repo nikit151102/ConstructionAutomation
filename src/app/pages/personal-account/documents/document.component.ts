@@ -29,7 +29,7 @@ export class DocumentComponent implements OnInit {
 
   constructor(public documentsService: DocumentsService, private route: ActivatedRoute,
     private personalAccountService: PersonalAccountService,
-    private cdr: ChangeDetectorRef,
+    public cdr: ChangeDetectorRef,
     private historyFormingService: HistoryFormingService) { }
 
   ngOnInit(): void {
