@@ -230,7 +230,8 @@ export class FormsComponent {
       error: (error) => {
         if (error?.error?.Status == 701) {
           this.documentsService.descriptionPopupErrorForming = error?.error?.Message || '';
-          this.documentsService.showPopupErrorForming = false;
+          this.documentsService.showPopupErrorForming = true;
+          this.progressSpinnerService.hide();
           this.cdr.detectChanges();
         }else{
           const errorMessage = error?.error?.Message || 'Максимум 3 формирования одновременно. Подождите или отмените одно.';
