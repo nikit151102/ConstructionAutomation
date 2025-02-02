@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../../environment';
 
@@ -8,10 +8,25 @@ import { environment } from '../../../../environment';
 })
 export class DocumentsService {
 
+
   selectConf: any;
   visiblePdf:boolean = false;
   selectPdf:any;
   
+  public showPopupErrorForming: boolean = false;
+  public descriptionPopupErrorForming: string = '';
+
+  buttons(cdr: ChangeDetectorRef) {
+    return [
+      { label: 'Продолжить', onClick: () => {
+          this.showPopupErrorForming = false;
+          cdr.detectChanges(); 
+        } 
+      },
+      
+  ];
+}
+
   private isselectConfSubject = new BehaviorSubject<any>('');
 
   isSelectConfState$ = this.isselectConfSubject.asObservable();

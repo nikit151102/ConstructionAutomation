@@ -4,3 +4,15 @@
   </div>
   <app-history-forming style="width: calc(100% - 400px);" [selectTypeDoc]="config.nameDoc"></app-history-forming>
 </div>
+
+
+<app-pop-up
+  *ngIf="documentsService.showPopupErrorForming"
+  [offerInformation]="false"
+  [imageSrc]="'svg/error.svg'"
+  [title]="'Лимит формирований достигнут'"
+  [description]="documentsService.descriptionPopupErrorForming"
+  [buttons]="documentsService.buttons(cdr)"
+  (close)="documentsService.showPopupErrorForming = false"
+></app-pop-up>
+
