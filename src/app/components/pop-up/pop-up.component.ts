@@ -12,6 +12,7 @@ export class PopUpComponent {
   @Input() imageSrc: string = '';
   @Input() title: string = '';
   @Input() description: string = '';
+  @Input() offerInformation: boolean = true;
   @Input() buttons: { label: string, onClick: () => void }[] = [];
   @Output() close = new EventEmitter<void>();
 

@@ -19,8 +19,8 @@
     padding: 40px;
     border-radius: 40px;
     width: 100%;
-    max-width: 1000px;
-    max-height: 700px;
+    max-width: 800px;
+    max-height: 550px;
     height: 100%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     position: relative;
@@ -37,9 +37,15 @@
 }
 
 .popup-header img {
-    max-width: 350px;
+    max-width: 250px;
     border-radius: 4px;
     margin-bottom: 10px;
+}
+
+.popup-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .popup-footer button {

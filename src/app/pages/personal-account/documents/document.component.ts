@@ -14,11 +14,12 @@ import { PersonalAccountService } from '../personal-account.service';
 import { PreviewPdfComponent } from '../../../components/preview-pdf/preview-pdf.component';
 import { HistoryFormingComponent } from '../../../components/history-forming/history-forming.component';
 import { HistoryFormingService } from '../../../components/history-forming/history-forming.service';
+import { PopUpComponent } from '../../../components/pop-up/pop-up.component';
 
 @Component({
   selector: 'app-document',
   standalone: true,
-  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewPdfComponent, PreviewPdfComponent, HistoryFormingComponent],
+  imports: [CommonModule, FileUploadModule, ToastModule, ReactiveFormsModule, FormsModule, DropdownModule, CalendarModule, SelectButtonModule, FormsComponent, PreviewPdfComponent, PreviewPdfComponent, HistoryFormingComponent, PopUpComponent],
   templateUrl: './document.component.html',
   styleUrl: './document.component.scss'
 })
@@ -37,7 +38,7 @@ export class DocumentComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const configType = params.get('configType') as ConfigType | null;
 
-      if (configType && ['comparativeStatement', 'materialSpecification', 'workSpecification','actHideWorksRequest'].includes(configType)) {
+      if (configType && ['comparativeStatement', 'materialSpecification', 'workSpecification', 'actHideWorksRequest'].includes(configType)) {
         this.config = getFormConfig(configType as ConfigType);
         this.personalAccountService.changeTitle(this.config.nameDoc)
         this.cdr.detectChanges();
@@ -57,9 +58,9 @@ export class DocumentComponent implements OnInit {
       this.historyFormingService.visiblePdf = false;
       return;
     }
-  
+
     const { data, documentMetadata, pdfFile, storageInfo } = response;
-  
+
     this.documentsService.setSuccessDoc(response);
     this.historyFormingService.setHistoryDocsValue({
       id: data.id,
@@ -76,26 +77,28 @@ export class DocumentComponent implements OnInit {
       createDateTime: data.createDateTime,
       changeDateTime: data.changeDateTime,
     });
-  
+
     this.historyFormingService.selectExcel = documentMetadata.fullResultXlsx;
     this.historyFormingService.selectpdf = documentMetadata.fullResultPdf;
-  
+
     if (pdfFile) {
       this.setPdfFile(pdfFile.fileContents);
     }
   }
-  
+
   private setPdfFile(base64Data: string): void {
     const pdfBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
     this.historyFormingService.selectpdf = new Blob([pdfBytes], { type: 'application/pdf' });
     this.documentsService.visiblePdf = false;
   }
-  
+
   isFullscreen = false;
 
   toggleFullscreen(isFullscreen: boolean) {
     this.isFullscreen = isFullscreen;
   }
+
+
 
 }
 

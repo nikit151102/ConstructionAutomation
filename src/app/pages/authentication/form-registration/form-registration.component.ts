@@ -114,7 +114,7 @@ export class FormRegistrationComponent {
         Email: formData.email,
         Password: formData.password,
         isMailSend: true
-      };
+      }; 
 
       this.registrationService.signUn(Data).subscribe(
         (response) => {

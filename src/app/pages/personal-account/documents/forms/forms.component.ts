@@ -16,6 +16,7 @@ import { InstructionsComponent } from '../../../../components/instructions/instr
 import { InstructionsService } from '../../../../components/instructions/instructions.service';
 import { ReferenceComponent } from './reference/reference.component';
 import { DateComponent } from './date/date.component';
+import { DocumentsService } from '../documents.service';
 
 @Component({
   selector: 'app-forms',
@@ -90,7 +91,8 @@ export class FormsComponent {
     private progressSpinnerService: ProgressSpinnerService,
     private cdr: ChangeDetectorRef,
     public dialogStorageService: DialogStorageService,
-    public instructionsService: InstructionsService
+    public instructionsService: InstructionsService,
+    private documentsService: DocumentsService
   ) { }
 
   ngOnInit(): void {
@@ -226,9 +228,15 @@ export class FormsComponent {
         this.uploadSuccess.emit(response);
       },
       error: (error) => {
-        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
-        this.toastService.showError('Ошибка', errorMessage);
-        this.progressSpinnerService.hide();
+        if (error?.error?.status == '') {
+          this.documentsService.descriptionPopupErrorForming = error?.error?.Message || '';
+          this.documentsService.showPopupErrorForming = false;
+          this.cdr.detectChanges();
+        }else{
+          const errorMessage = error?.error?.Message || 'Максимум 3 формирования одновременно. Подождите или отмените одно.';
+          this.toastService.showError('Ошибка', errorMessage);
+          this.progressSpinnerService.hide();
+        }
       }
     });
   }
