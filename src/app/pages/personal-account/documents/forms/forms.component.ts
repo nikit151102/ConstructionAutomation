@@ -228,7 +228,7 @@ export class FormsComponent {
         this.uploadSuccess.emit(response);
       },
       error: (error) => {
-        if (error?.error?.status == '') {
+        if (error?.error?.status == 701) {
           this.documentsService.descriptionPopupErrorForming = error?.error?.Message || '';
           this.documentsService.showPopupErrorForming = false;
           this.cdr.detectChanges();
