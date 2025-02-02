@@ -28,6 +28,13 @@ export class TextInputComponent implements AfterViewInit{
           this.control.setValue(currentUserData.inn);
         }
       }
+      else if (this.id === 'registerNumber') {
+        const currentUserData = this.currentUserService.getUser();
+        if (currentUserData && currentUserData.registerNumber) {
+          this.control.setValue(currentUserData.registerNumber);
+        }
+      }
+      
     });
   }
   

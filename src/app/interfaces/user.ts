@@ -5,6 +5,7 @@ export interface UserData {
     patronymic: string;
     email: string;
     inn: string;
+    registerNumber: string;
     roles: Role[];
     createDateTime: string;
     changeDateTime: string;

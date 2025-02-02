@@ -40,6 +40,7 @@ export class FormUserComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       patronymic: [''],
       inn: [''],
+      registerNumber: [''],
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       tgUserName: [{ value: '@', disabled: true }, [Validators.required]],
       avatar: [null],
@@ -66,6 +67,7 @@ export class FormUserComponent implements OnInit {
       patronymic: userData.patronymic,
       email: userData.email,
       inn: userData.inn,
+      registerNumber: userData.registerNumber,
       tgUserName: userData.tgUserName ? `@${userData.tgUserName}` : '@',
     });
   }
@@ -102,6 +104,7 @@ export class FormUserComponent implements OnInit {
       lastName: this.userProfileForm.value.lastName,
       patronymic: this.userProfileForm.value.patronymic,
       inn: this.userProfileForm.value.inn,
+      registerNumber: this.userProfileForm.value.registerNumber,
       roleIds: this.getRoleIds()
     };
 
