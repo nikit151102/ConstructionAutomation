@@ -211,13 +211,26 @@ export class HistoryFormingComponent implements OnInit {
         command: () => this.handlePreview(dataDoc.documentPdfShortId),
       }
     ];
-
     const statusActionsMap: { [key: number]: MenuItem[] } = {
+      0: [
+        {
+          label: 'Отмена',
+          icon: '',
+          class: 'status-cancel',
+          command: () => this.showCancel(dataDoc,'CancelDocumentGenerate'),
+        }
+      ],
       1: [
+        {
+          label: 'Удалить',
+          icon: '',
+          class: 'status-danger',
+          command: () => this.showCancel(dataDoc,'DeleteDocumentGenerate'),
+        },
         {
           label: 'Оплатить',
           icon: 'pi pi-credit-card',
-          class: 'status-info',
+          class: 'status-success',
           command: () => this.showPaymentPopup(dataDoc),
         }
       ],
@@ -234,7 +247,15 @@ export class HistoryFormingComponent implements OnInit {
           class: 'status-pdf',
           command: () => this.downloadFile('pdf', dataDoc.documentPdfId),
         }
-      ]
+      ],
+      3: [
+        {
+          label: 'Удалить',
+          icon: '',
+          class: 'status-danger',
+          command: () => this.showCancel(dataDoc,'DeleteDocumentGenerate'),
+        },
+      ],
     };
 
     const actions = statusActionsMap[statusCode] ? [...statusActionsMap[statusCode]] : [];
@@ -250,6 +271,14 @@ export class HistoryFormingComponent implements OnInit {
       { label: 'ОК', onClick: () => this.onOk(dataDoc.id) },
       { label: 'Отмена', onClick: this.onCancel.bind(this) },
     ];
+  }
+  
+  showCancel(data:any, endpoint:string){
+    this.historyFormingService.makeCancelDelete(data.id,endpoint).subscribe((response: Response<TransactionResponse>) => {
+      this.visiblePopUpPay = false;
+      this.personalAccountService.changeBalance(String(response.data.balance));
+      this.currentUserService.updateUserBalance(String(response.data.balance));
+    });
   }
 
   getSizeInMB(size: number): string {

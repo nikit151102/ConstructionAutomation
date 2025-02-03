@@ -114,6 +114,18 @@
             }
         }
 
+
+        &.status-cancel {
+            background-color: #e6f7ff;
+            color: #1890ff;
+            border-color: #1890ff;
+
+            &:hover {
+                background-color: #cceaff;
+                border-color: #1890ff;
+            }
+        }
+
         // Стиль для информационного статуса (Info)
         &.status-info {
             background-color: #e6f7ff;

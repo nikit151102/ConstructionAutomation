@@ -122,6 +122,18 @@ export class HistoryFormingService {
   }
 
 
+  makeCancelDelete(id: string, endpoint:string): Observable<any> {
+    const token = localStorage.getItem('YXV0aFRva2Vu');
+    return this.http.put(`${environment.apiUrl}/api/Profile/${endpoint}`, {
+      "documentInstanceId": id
+    }, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      })
+    });
+  }
+
 
   private socket!: WebSocket;
   private messagesSubject = new Subject<any>();
@@ -158,6 +170,8 @@ export class HistoryFormingService {
       this.socket.close();
     }
   }
+
+
 
 
 }
