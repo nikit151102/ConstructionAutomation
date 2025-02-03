@@ -2,7 +2,7 @@
   <select [formControl]="control" [id]="name" class="reference-select">
     <option value="" disabled selected>Выбрать</option>
     <option *ngIf="showDefault" disabled>
-      Добавить сотрудника 
+      Список сотрудников пуст.
     </option>
 
     <ng-container *ngIf="!showDefault">

@@ -233,7 +233,8 @@ export class ReferenceBookComponent implements OnInit {
           (response: any) => {
             if (response && response.data) {
               this.connectionReferenceData = response.data;
-              this.connectionReferenceColumns = connectionConfig.tableColumns;
+              this.connectionReferenceColumns = connectionConfig.tableColumns.filter(column => column.field !== 'code');
+
               resolve();
             } else {
               reject('Данные не найдены');
@@ -273,6 +274,7 @@ export class ReferenceBookComponent implements OnInit {
     this.modalData[field] = item.id;
     this.selectedReference = item;
     this.dropdownVisible = false;
+    this.cdr.detectChanges();
   }
 
   // Ловим клики вне выпадающего списка

@@ -25,8 +25,7 @@ export class ReferenceComponent {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    console.log('endpoint', this.endpoint);
-    console.log('fields',this.fields)
+
     if (this.endpoint) {
       this.loadData();
     }
@@ -50,17 +49,20 @@ export class ReferenceComponent {
       `${environment.apiUrl}${this.endpoint}`,
       { headers }
     ).subscribe(response => {
-      if (response.data && Array.isArray(response.data)) {
-        if(response.data.length > 0){
-          this.showDefault = false;
-        }else{
-          this.showDefault = true;
+      setTimeout(() => {
+        if (response.data && Array.isArray(response.data)) {
+          if (response.data.length > 0) {
+            this.showDefault = false;
+          } else {
+            this.showDefault = true;
+          }
+          this.options = response.data;
         }
-        this.options = response.data;
-      }
+      }, 100);
     }, error => {
       this.options = [];
     });
   }
+  
 
 }
