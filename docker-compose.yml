@@ -12,8 +12,6 @@ services:
       - /app/node_modules
     networks:
       - constructionAutomation
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     
   
 networks:
