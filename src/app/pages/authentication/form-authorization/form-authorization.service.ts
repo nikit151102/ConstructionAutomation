@@ -16,6 +16,7 @@ export class FormAuthorizationService {
     Email: string;
     Password: string;
   }): Observable<any> {
+    console.log('apiUrl', environment.apiUrl)
     return this.http.post(`${environment.apiUrl}/auth/authentication`, formData);
   }
 
