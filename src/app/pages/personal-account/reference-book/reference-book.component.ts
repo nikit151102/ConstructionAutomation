@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { referenceConfig } from './conf';
 import { ReferenceBookService } from './reference-book.service';
 import { CommonModule } from '@angular/common';
@@ -54,9 +54,9 @@ export class ReferenceBookComponent implements OnInit {
         }
       },
       (error) => {
-         const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
-         this.toastService.showError('Ошибка', errorMessage);
-       }
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
+      }
     );
   }
 
@@ -74,39 +74,39 @@ export class ReferenceBookComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-// Открытие модального окна для редактирования записи
-async openEditModal(currentEndpoint: string, item: any): Promise<void> {
+  // Открытие модального окна для редактирования записи
+  async openEditModal(currentEndpoint: string, item: any): Promise<void> {
 
-  if (this.currentConfig.connectionReference) {
-    try {
-      await this.loadConnectionReferenceData();
-      
-      const field = this.currentConfig.connectionReference.field;
-      const positionField = this.currentConfig.connectionReference.fieldName;
+    if (this.currentConfig.connectionReference) {
+      try {
+        await this.loadConnectionReferenceData();
 
-      this.modalData = { ...item, [field]: item[positionField]?.id };
+        const field = this.currentConfig.connectionReference.field;
+        const positionField = this.currentConfig.connectionReference.fieldName;
 
-      const selectedItem = this.connectionReferenceData.find(referenceItem => referenceItem.id === item[positionField]?.id);
-      this.selectedReference = selectedItem || null;
+        this.modalData = { ...item, [field]: item[positionField]?.id };
 
+        const selectedItem = this.connectionReferenceData.find(referenceItem => referenceItem.id === item[positionField]?.id);
+        this.selectedReference = selectedItem || null;
+
+        this.modalTitle = 'Редактировать запись';
+        this.modalAction = 'Обновить';
+        this.isModalOpen = true;
+
+        this.cdr.detectChanges();
+
+      } catch (error) {
+        console.error('Ошибка при загрузке данных для связи', error);
+        this.toastService.showError('Ошибка', 'Ошибка при загрузке данных для связи');
+      }
+    } else {
+      this.modalData = { ...item };
       this.modalTitle = 'Редактировать запись';
       this.modalAction = 'Обновить';
       this.isModalOpen = true;
-
       this.cdr.detectChanges();
-      
-    } catch (error) {
-      console.error('Ошибка при загрузке данных для связи', error);
-      this.toastService.showError('Ошибка', 'Ошибка при загрузке данных для связи');
     }
-  } else {
-    this.modalData = { ...item };
-    this.modalTitle = 'Редактировать запись';
-    this.modalAction = 'Обновить';
-    this.isModalOpen = true;
-    this.cdr.detectChanges();
   }
-}
 
 
 
@@ -175,9 +175,9 @@ async openEditModal(currentEndpoint: string, item: any): Promise<void> {
         this.toastService.showSuccess('Успех', 'Запись успешно создана');
       },
       (error) => {
-         const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
-         this.toastService.showError('Ошибка', errorMessage);
-       }
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
+      }
     );
   }
 
@@ -192,9 +192,9 @@ async openEditModal(currentEndpoint: string, item: any): Promise<void> {
         }
       },
       (error) => {
-         const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
-         this.toastService.showError('Ошибка', errorMessage);
-       }
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
+      }
     );
   }
 
@@ -206,9 +206,9 @@ async openEditModal(currentEndpoint: string, item: any): Promise<void> {
         this.toastService.showSuccess('Успех', 'Запись успешно удалена');
       },
       (error) => {
-         const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
-         this.toastService.showError('Ошибка', errorMessage);
-       }
+        const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+        this.toastService.showError('Ошибка', errorMessage);
+      }
     );
   }
 
@@ -239,11 +239,11 @@ async openEditModal(currentEndpoint: string, item: any): Promise<void> {
               reject('Данные не найдены');
             }
           },
-           (error) => {
-              const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
-              this.toastService.showError('Ошибка', errorMessage);
-              reject(error);
-            }
+          (error) => {
+            const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
+            this.toastService.showError('Ошибка', errorMessage);
+            reject(error);
+          }
         );
       } else {
         reject('Конфигурация для связи не найдена');
@@ -255,19 +255,35 @@ async openEditModal(currentEndpoint: string, item: any): Promise<void> {
   selectedReference: any;
   dropdownVisible: boolean = false;
 
-  // При клике на поле ввода отображаем или скрываем список
+  // Метод для закрытия выпадающего списка
+  closeDropdown(): void {
+    this.dropdownVisible = false;
+    this.cdr.detectChanges();
+  }
+
+  // Метод для отображения или скрытия выпадающего списка
   toggleDropdown(): void {
     this.dropdownVisible = !this.dropdownVisible;
+    this.cdr.detectChanges();
   }
 
   // Выбор элемента
   selectReference(item: any): void {
     const field = this.currentConfig.connectionReference.field;
     this.modalData[field] = item.id;
-    this.selectedReference = item; 
-    this.dropdownVisible = false; 
+    this.selectedReference = item;
+    this.dropdownVisible = false;
   }
 
+  // Ловим клики вне выпадающего списка
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    const dropdownElement = document.querySelector('.dropdown-container');
+    if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
+      this.closeDropdown();  
+    }
+  }
+  
   // Получение значения для отображения выбранного элемента
   getSelectedDisplayValue(): string {
     if (this.selectedReference) {

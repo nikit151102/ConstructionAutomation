@@ -9,7 +9,7 @@ import { environment } from '../../../../../../environment';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './reference.component.html',
-  styleUrls: ['./reference.component.scss']
+  styleUrls: ['./reference.component.scss'],
 })
 export class ReferenceComponent {
   @Input() name!: string;
@@ -20,6 +20,7 @@ export class ReferenceComponent {
 
   control = new FormControl('', Validators.required);
   options: any;
+  showDefault: boolean = false;
 
   constructor(private http: HttpClient) { }
 
@@ -27,22 +28,7 @@ export class ReferenceComponent {
     console.log('endpoint', this.endpoint);
     console.log('fields',this.fields)
     if (this.endpoint) {
-      const token = localStorage.getItem('YXV0aFRva2Vu');
-      const headers = new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      });
-
-      this.http.get<{ message: string; status: number; data: any[] }>(
-        `${environment.apiUrl}${this.endpoint}`,
-        { headers }
-      ).subscribe(response => {
-        if (response.data && Array.isArray(response.data)) {
-          this.options = response.data;
-        }
-      }, error => {
-        this.options = [];
-      });
+      this.loadData();
     }
 
     this.control.valueChanges.subscribe(value => {
@@ -53,5 +39,28 @@ export class ReferenceComponent {
   }
 
 
+  loadData(){
+    const token = localStorage.getItem('YXV0aFRva2Vu');
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+
+    this.http.get<{ message: string; status: number; data: any[] }>(
+      `${environment.apiUrl}${this.endpoint}`,
+      { headers }
+    ).subscribe(response => {
+      if (response.data && Array.isArray(response.data)) {
+        if(response.data.length > 0){
+          this.showDefault = false;
+        }else{
+          this.showDefault = true;
+        }
+        this.options = response.data;
+      }
+    }, error => {
+      this.options = [];
+    });
+  }
 
 }
