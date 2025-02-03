@@ -246,6 +246,12 @@ export class HistoryFormingComponent implements OnInit {
           icon: 'pi pi-file-pdf',
           class: 'status-pdf',
           command: () => this.downloadFile('pdf', dataDoc.documentPdfId),
+        },
+        {
+          label: 'Удалить',
+          icon: '',
+          class: 'status-danger',
+          command: () => this.showCancel(dataDoc,'DeleteDocumentGenerate'),
         }
       ],
       3: [
