@@ -7,6 +7,10 @@
     background-color: #fff;
     border-radius: 40px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
 }
 
 .doc-fields {
@@ -36,7 +40,7 @@
 
 }
 
-.btnReload{
+.btnReload {
     width: 30px;
     height: 30px;
     display: flex;
@@ -46,7 +50,7 @@
     justify-content: center;
 }
 
-.btnReload:hover{
+.btnReload:hover {
     background: #3b82f68a;
 }
 

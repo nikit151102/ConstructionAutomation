@@ -79,7 +79,7 @@ export class HistoryFormingComponent implements OnInit {
       console.error('docsContainer not found!');
     }
   }
-  
+
 
   onScroll() {
     const element = this.docsContainer.nativeElement;
@@ -217,7 +217,7 @@ export class HistoryFormingComponent implements OnInit {
           label: 'Отмена',
           icon: '',
           class: 'status-cancel',
-          command: () => this.showCancel(dataDoc,'CancelDocumentGenerate'),
+          command: () => this.showCancel(dataDoc, 'CancelDocumentGenerate'),
         }
       ],
       1: [
@@ -225,7 +225,7 @@ export class HistoryFormingComponent implements OnInit {
           label: 'Удалить',
           icon: '',
           class: 'status-danger',
-          command: () => this.showCancel(dataDoc,'DeleteDocumentGenerate'),
+          command: () => this.showCancel(dataDoc, 'DeleteDocumentGenerate'),
         },
         {
           label: 'Оплатить',
@@ -251,7 +251,7 @@ export class HistoryFormingComponent implements OnInit {
           label: 'Удалить',
           icon: '',
           class: 'status-danger',
-          command: () => this.showCancel(dataDoc,'DeleteDocumentGenerate'),
+          command: () => this.showCancel(dataDoc, 'DeleteDocumentGenerate'),
         }
       ],
       3: [
@@ -259,7 +259,7 @@ export class HistoryFormingComponent implements OnInit {
           label: 'Удалить',
           icon: '',
           class: 'status-danger',
-          command: () => this.showCancel(dataDoc,'DeleteDocumentGenerate'),
+          command: () => this.showCancel(dataDoc, 'DeleteDocumentGenerate'),
         },
       ],
     };
@@ -278,12 +278,17 @@ export class HistoryFormingComponent implements OnInit {
       { label: 'Отмена', onClick: this.onCancel.bind(this) },
     ];
   }
-  
-  showCancel(data:any, endpoint:string){
-    this.historyFormingService.makeCancelDelete(data.id,endpoint).subscribe((response: Response<TransactionResponse>) => {
+
+  showCancel(data: any, endpoint: string) {
+    this.historyFormingService.makeCancelDelete(data.id, endpoint).subscribe((response: Response<TransactionResponse>) => {
       this.visiblePopUpPay = false;
       this.personalAccountService.changeBalance(String(response.data.balance));
       this.currentUserService.updateUserBalance(String(response.data.balance));
+      let historyDocs = this.historyFormingService.getHistoryDocsValue();
+      historyDocs = historyDocs.filter((doc: any) => doc.id !== data.id);
+      this.historyFormingService.clearHistoryDocs();
+      this.historyFormingService.loadHistoryDocs(historyDocs);
+      this.cdr.markForCheck();
     });
   }
 

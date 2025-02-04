@@ -7,6 +7,14 @@
     flex-direction: row;
     gap: 15px;
     width: 100%;
+
+    @media (max-width: 1024px) {
+      flex-direction: column;
+
+      app-history-forming{
+        width: 100% !important;
+      }
+    }
   }
   
   .card {
@@ -97,3 +105,4 @@
     }
   }
   
+
