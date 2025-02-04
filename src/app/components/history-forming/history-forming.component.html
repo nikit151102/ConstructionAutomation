@@ -1,5 +1,5 @@
 <div #docsContainer class="docs-container" >
-    <div>
+    <div class="options">
         <a class="btnReload" (click)="loadData(0)">
             <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width: 24px; fill:#fff">
                 <g id="reload">
@@ -8,18 +8,19 @@
                 </g>
             </svg>
         </a>
-    </div>
-    <div class="multiselect-container">
-        <div class="multiselect-placeholder" (click)="toggleDropdown()">
-            {{ selectedDocsLabel }}
+        <div class="multiselect-container">
+            <div class="multiselect-placeholder" (click)="toggleDropdown()">
+                {{ selectedDocsLabel }}
+            </div>
+            <div class="multiselect-dropdown" *ngIf="dropdownOpen">
+                <label *ngFor="let option of typeDocs" class="multiselect-option">
+                    <input type="checkbox" [checked]="isSelected(option)" (change)="toggleSelection(option)" />
+                    {{ option.name }}
+                </label>
+            </div>
         </div>
-        <div class="multiselect-dropdown" *ngIf="dropdownOpen">
-            <label *ngFor="let option of typeDocs" class="multiselect-option">
-                <input type="checkbox" [checked]="isSelected(option)" (change)="toggleSelection(option)" />
-                {{ option.name }}
-            </label>
-        </div>
     </div>
+    
 
     <!-- Названия полей -->
     <div class="doc-fields">
@@ -39,7 +40,7 @@
     <div *ngFor="let doc of filteredDocs; trackBy: trackById" class="doc-card" [class.not-found]="doc.statusCode === 404"
         (click)="toggleAccordion(doc)">
 
-        <div style="padding-left: 17px;">
+        <div id="status" style="padding-left: 17px;">
 
             <div *ngIf="doc.statusCode === 0" class="status status-loading">
                 <i class="pi pi-spin pi-spinner"></i> Загрузка
@@ -61,14 +62,14 @@
             <div class="skeleton skeleton-file-name"></div>
             <div class="skeleton skeleton-file-size"></div>
         </ng-container>
-        <ng-container *ngIf="doc.statusCode !== 0">
+        <ng-container *ngIf="doc.statusCode !== 0" id="fileDetail">
             <div>{{ doc.fileName }}</div>
-            <div>
+            <div id="fileSize">
                 {{
                 getSizeInMB(doc.fileSize) }} Мб
             </div>
         </ng-container>
-        <div>{{ doc.initDate | date: 'dd-MM-yyyy' }}</div>
+        <div id="initDate">{{ doc.initDate | date: 'dd-MM-yyyy' }}</div>
 
         <i class="pi" [ngClass]="{
                 'pi-angle-down': expandedDoc !== doc,

@@ -82,7 +82,12 @@ export class CurrentUserService {
     return throwError(() => error);
   }
 
-
+getDataUser(){
+  return this.http
+  .get<Response<UserData>>(`${environment.apiUrl}/api/Profile`, {
+    headers: this.getAuthHeaders(),
+  })
+}
   // Получение данных пользователя
   getUserData(): Observable<Response<UserData>> {
     return this.http

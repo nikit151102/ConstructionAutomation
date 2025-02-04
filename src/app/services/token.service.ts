@@ -11,7 +11,7 @@ export class TokenService {
 
   constructor() { }
 
-  private hasToken(): boolean {
+  hasToken(): boolean {
     return !!localStorage.getItem('YXV0aFRva2Vu');
   }
 

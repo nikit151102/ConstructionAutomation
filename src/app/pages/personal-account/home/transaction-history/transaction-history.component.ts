@@ -26,13 +26,11 @@ export class TransactionHistoryComponent {
   constructor(private transactionService: TransactionService) { }
 
   ngOnInit(): void {
-    
-    this.transactionService.transactions$.subscribe({
-      next: (data) => {
+    this.transactionService.transactions$.subscribe(
+      (data) => {
         this.transactions = data;
         this.filteredTransactions = [...this.transactions];
-      }
-    });
+      });
 
     this.filteredTransactions = [...this.transactions];
   }

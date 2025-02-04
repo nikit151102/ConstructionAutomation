@@ -3,12 +3,12 @@
     width: 100%;
     gap: 1rem;
 
-    > div:first-child {
+    >div:first-child {
         flex: 0 0 30%;
         padding: 10px;
     }
 
-    > div:last-child {
+    >div:last-child {
         flex: 1;
         padding: 10px;
         display: flex;
@@ -20,26 +20,44 @@
         flex-direction: column;
         gap: 0;
 
-        > div:first-child {
-            flex: 0 0 100%; 
+        >div:first-child {
+            flex: 0 0 100%;
             padding: 10px;
         }
 
-        > div:last-child {
-            flex: 0 0 100%; 
+        >div:last-child {
+            flex: 0 0 100%;
             padding: 10px;
         }
     }
 
     @media (max-width: 768px) {
-        > div:first-child {
-            flex: 0 0 100%; 
+        >div:first-child {
+            flex: 0 0 100%;
             padding: 8px;
         }
 
-        > div:last-child {
-            flex: 0 0 100%; 
+        >div:last-child {
+            flex: 0 0 100%;
             padding: 8px;
         }
+    }
+}
+
+#phone {
+    display: none;
+}
+
+#desktop {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    #phone {
+        display: block;
+    }
+
+    #desktop {
+        display: none;
     }
 }

@@ -28,5 +28,4 @@ export const routes: Routes = [
         path: ':id', loadChildren: () => import('./pages/personal-account/personal-account.module').then(m => m.PersonalAccountModule)
     },
 
-
 ];

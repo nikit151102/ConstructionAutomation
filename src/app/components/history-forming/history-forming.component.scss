@@ -9,6 +9,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
     @media (max-width: 768px) {
+        min-height: 255px;
         flex-direction: column;
     }
 }
@@ -23,6 +24,10 @@
     top: 0;
     z-index: 10;
     background-color: #fff;
+
+    @media (max-width: 768px) {
+        display: none;
+     }
 }
 
 .doc-card {
@@ -38,6 +43,38 @@
         background-color: #eff2f769;
     }
 
+    @media (max-width: 768px) {
+        grid-template-columns: none;
+
+        #status{
+            order: 3;
+            padding-left: 1px !important;
+            width: fit-content;
+        }
+        #fileDetail{
+            order: 1
+        }
+        #fileSize{
+            display: none;
+        }
+        #initDate{
+            order: 2
+        }
+
+        .pi{
+            order: 4
+        }
+        .card-details{
+            order: 5;
+        }
+    }
+
+}
+.options{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    padding-top: 15px;
 }
 
 .btnReload {

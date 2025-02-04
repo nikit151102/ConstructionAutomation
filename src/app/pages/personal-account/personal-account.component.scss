@@ -36,12 +36,41 @@
         padding-left: 20px;
         color: #8392a5;
         font-size: 18px;
+
+        @media (max-width: 768px) {
+            display: none;
+        }
     }
 
     .balance {
         margin: 0;
         font-size: 15px;
+
+        @media (max-width: 768px) {
+            font-size: 14px;
+        }
     }
+
+    #payment{
+        text-decoration: none;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+        background: #cbc0d3;
+
+        @media (max-width: 768px) {
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+        }
+    }
+
 }
 
 .content {

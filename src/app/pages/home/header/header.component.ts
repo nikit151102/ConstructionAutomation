@@ -1,18 +1,49 @@
-import { Component, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TokenService } from '../../../services/token.service';
+import { CommonModule } from '@angular/common';
+import { CurrentUserService } from '../../../services/current-user.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
   isMenuActive = false;
+  userId: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, public tokenService: TokenService, private currentUserService: CurrentUserService,
+    private cdr: ChangeDetectorRef
+  ) {
+    if (this.currentUserService.hasUser()) {
+      this.setUserId();
+    } else if (this.tokenService.hasToken()) {
+
+      this.currentUserService.getDataUser().subscribe((value: any) => {
+        this.currentUserService.saveUser(value.data)
+        this.setUserId();
+      });
+
+    } else {
+      this.userId = '';
+    }
+
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  private setUserId(): void {
+    this.userId = this.currentUserService.hasUser()
+      ? this.currentUserService.getUser().id
+      : '';
+  }
+
 
   toggleMenu(): void {
     this.isMenuActive = !this.isMenuActive;
@@ -21,7 +52,7 @@ export class HeaderComponent {
   navigateTo(section: string): void {
     const element = document.querySelector(section);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center'});
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     this.isMenuActive = false;
   }
@@ -33,12 +64,21 @@ export class HeaderComponent {
   goToContacts(): void {
     this.router.navigate(['/contacts']);
   }
+
+  goToProfile() {
+    if (this.userId && this.userId.length > 0) {
+      this.router.navigate([`/${this.userId}`]);
+    } else {
+      this.userId = '';
+    }
+  }
+
   @HostListener('document:click', ['$event'])
   closeMenu(event: MouseEvent): void {
     const menuElement = document.querySelector('.menu');
     if (menuElement && !menuElement.contains(event.target as Node)) {
-      this.isMenuActive = false; 
+      this.isMenuActive = false;
     }
   }
-  
+
 }

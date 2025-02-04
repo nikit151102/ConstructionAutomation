@@ -20,7 +20,7 @@ import { ToastService } from '../../services/toast.service';
 })
 export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   menuItems: any[] = [
-    { label: 'Главная', icon: 'pi pi-home', command: () => this.executeCommand('home') },
+    { label: 'Главная', icon: 'pi pi-home', command: () => this.executeHome() },
     { label: 'Профиль', icon: 'pi pi-user', command: () => this.executeCommand('profile') },
     { label: 'Мои документы', icon: 'pi pi-folder', command: () => this.executeCommand('myDocs') },
     {
@@ -30,7 +30,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         { label: 'Спецификация на метериалы', command: () => this.executeDocs('materialSpecification') },
         { label: 'Ведомость объемов работ', command: () => this.executeDocs('workSpecification') },
         { label: 'Акты освидетельствования скрытых работ', command: () => this.executeDocs('actHideWorksRequest') },
-        
+
       ]
     },
     {
@@ -40,7 +40,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         { label: 'Сотрудники', command: () => this.executeReference('161283') },
       ]
     },
-    { label: 'Политика конфиденциальности ', icon: 'pi pi-cog', command: () =>  this.executeLegal(82913) },
+    { label: 'Политика конфиденциальности ', icon: 'pi pi-cog', command: () => this.executeLegal(82913) },
     // { label: 'Настройки', icon: 'pi pi-cog', command: () => this.executeCommand('settings') },
     { label: 'Выйти', icon: 'pi pi-sign-out', command: () => this.executeCommand('exit') },
   ];
@@ -108,7 +108,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sidebarService.fixedSlidebar = false;
       this.sidebarService.closedSidebar();
     }
-    if(isDektopScreen){
+    if (isDektopScreen) {
       this.sidebarService.openedSidebar()
     }
   }
@@ -122,10 +122,10 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  executeLegal(idLegal:number){
-      if (idLegal) {
-        this.router.navigate([`legal/${idLegal}`]);
-      }
+  executeLegal(idLegal: number) {
+    if (idLegal) {
+      this.router.navigate([`legal/${idLegal}`]);
+    }
   }
 
   executeDocs(commandName: string) {
@@ -145,7 +145,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         Object.assign(el.style, { transform: 'rotate(0deg)' });
       });
     }
-    else{
+    else {
       document.querySelectorAll('#nav-header label .pi-chevron-left').forEach((el: any) => {
         Object.assign(el.style, { transform: 'rotate(180deg)' });
       });
@@ -153,7 +153,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  executeReference(type: string){
+  executeReference(type: string) {
     this.activatedRoute.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -169,7 +169,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         Object.assign(el.style, { transform: 'rotate(0deg)' });
       });
     }
-    else{
+    else {
       document.querySelectorAll('#nav-header label .pi-chevron-left').forEach((el: any) => {
         Object.assign(el.style, { transform: 'rotate(180deg)' });
       });
@@ -208,15 +208,19 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         Object.assign(el.style, { transform: 'rotate(0deg)' });
       });
     }
-    else{
+    else {
       document.querySelectorAll('#nav-header label .pi-chevron-left').forEach((el: any) => {
         Object.assign(el.style, { transform: 'rotate(180deg)' });
       });
     }
   }
 
+  executeHome() {
+    this.router.navigate(['']);
+  }
+
   executeCommand(commandName: string): void {
-    
+
     if (commandName === 'exit') {
       localStorage.removeItem('YXV0aFRva2Vu');
       this.currentUserService.removeUser();
@@ -238,7 +242,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         Object.assign(el.style, { transform: 'rotate(0deg)' });
       });
     }
-    else{
+    else {
       document.querySelectorAll('#nav-header label .pi-chevron-left').forEach((el: any) => {
         Object.assign(el.style, { transform: 'rotate(180deg)' });
       });
