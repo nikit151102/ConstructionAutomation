@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../../services/toast.service';
+import { PersonalAccountService } from '../personal-account.service';
 
 @Component({
   selector: 'app-reference-book',
@@ -26,7 +27,8 @@ export class ReferenceBookComponent implements OnInit {
     private route: ActivatedRoute,
     private referenceBookService: ReferenceBookService,
     private toastService: ToastService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private personalAccountService:PersonalAccountService
   ) { }
 
   ngOnInit(): void {
@@ -37,7 +39,7 @@ export class ReferenceBookComponent implements OnInit {
       if (this.currentConfig) {
         this.formFields = this.currentConfig.formFields;
       }
-
+      this.personalAccountService.changeTitle(this.currentConfig.pageTitle )
       this.loadData();
     });
   }

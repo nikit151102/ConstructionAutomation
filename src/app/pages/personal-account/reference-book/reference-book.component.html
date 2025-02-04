@@ -1,5 +1,4 @@
 <div class="container">
-    <h1 class="text-center my-4">{{ currentConfig.pageTitle }}</h1>
 
     <button class="btn btn-primary mb-4" (click)="openCreateModal(currentConfig.endpoint)">Создать запись</button>
 
@@ -10,14 +9,18 @@
             </div>
         </div>
         <div class="list-item" *ngFor="let item of data">
-            <div class="list-item-cell" *ngFor="let column of currentConfig.tableColumns">
-                <span *ngIf="column.field.includes('.')">
-                    {{ getNestedValue(item, column.field) }}
-                </span>
-                <span *ngIf="!column.field.includes('.')">
-                    {{ item[column.field] }}
-                </span>
-            </div>
+            <ng-container *ngFor="let column of currentConfig.tableColumns">
+                <div class="list-item-cell" *ngIf="column.field">
+                    <span class="phoneLabel">{{column.label}} </span>
+                    <span *ngIf="column.field.includes('.')" style="font-size: 14px;">
+                        {{ getNestedValue(item, column.field) }}
+                    </span>
+                    <span *ngIf="!column.field.includes('.')" style="font-size: 14px;">
+                        {{ item[column.field] }}
+                    </span>
+                </div>
+
+            </ng-container>
             <div class="list-item-actions">
                 <button class="btn btn-warning"
                     (click)="openEditModal(currentConfig.endpoint,item)">Редактировать</button>
@@ -54,20 +57,14 @@
                         <div class="dropdown-container">
 
                             <div class="dropdown-input" (click)="toggleDropdown()">
-                                <input 
-                                    type="text" 
-                                    [value]="getSelectedDisplayValue()" 
-                                    placeholder="Выбрать запись" 
-                                    readonly
-                                    class="dropdown-input-field"
-                                />
+                                <input type="text" [value]="getSelectedDisplayValue()" placeholder="Выбрать запись"
+                                    readonly class="dropdown-input-field" />
                             </div>
-                
-                            <div 
-                                class="dropdown-list" 
-                                [ngClass]="{'ng-trigger': dropdownVisible}" 
+
+                            <div class="dropdown-list" [ngClass]="{'ng-trigger': dropdownVisible}"
                                 *ngIf="dropdownVisible">
-                                <div class="dropdown-item" *ngFor="let item of connectionReferenceData" (click)="selectReference(item)">
+                                <div class="dropdown-item" *ngFor="let item of connectionReferenceData"
+                                    (click)="selectReference(item)">
                                     <div *ngFor="let column of connectionReferenceColumns">
                                         <span *ngIf="!column.field.includes('.')">
                                             {{ item[column.field] }}
@@ -79,9 +76,10 @@
 
                     </div>
                 </ng-container>
-                
-                
-                <button (click)="onSubmit(currentConfig.endpoint)" type="submit" class="btn btn-success">{{ modalAction }}</button>
+
+
+                <button (click)="onSubmit(currentConfig.endpoint)" type="submit" class="btn btn-success">{{ modalAction
+                    }}</button>
             </form>
 
         </div>

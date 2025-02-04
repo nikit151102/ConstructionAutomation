@@ -6,6 +6,7 @@ export const referenceConfig = [
         tableColumns: [
             { label: 'Код', field: 'code' },
             { label: 'Наименование', field: 'name' },
+            { label: '', field: '' },
         ],
         formFields: [
             { label: 'Код', field: 'code', type: 'text' },
