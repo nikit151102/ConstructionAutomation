@@ -282,8 +282,6 @@ export class HistoryFormingComponent implements OnInit {
   showCancel(data: any, endpoint: string) {
     this.historyFormingService.makeCancelDelete(data.id, endpoint).subscribe((response: Response<TransactionResponse>) => {
       this.visiblePopUpPay = false;
-      this.personalAccountService.changeBalance(String(response.data.balance));
-      this.currentUserService.updateUserBalance(String(response.data.balance));
       let historyDocs = this.historyFormingService.getHistoryDocsValue();
       historyDocs = historyDocs.filter((doc: any) => doc.id !== data.id);
       this.historyFormingService.clearHistoryDocs();
