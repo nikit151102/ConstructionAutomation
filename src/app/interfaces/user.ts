@@ -6,6 +6,7 @@ export interface UserData {
     email: string;
     inn: string;
     registerNumber: string;
+    registerNumberBuilder: string;
     roles: Role[];
     createDateTime: string;
     changeDateTime: string;

@@ -41,6 +41,7 @@ export class FormUserComponent implements OnInit {
       patronymic: [''],
       inn: [''],
       registerNumber: [''],
+      registerNumberBuilder: [''],
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       tgUserName: [{ value: '@', disabled: true }, [Validators.required]],
       avatar: [null],
@@ -68,6 +69,7 @@ export class FormUserComponent implements OnInit {
       email: userData.email,
       inn: userData.inn,
       registerNumber: userData.registerNumber,
+      registerNumberBuilder: userData.registerNumberBuilder,
       tgUserName: userData.tgUserName ? `@${userData.tgUserName}` : '@',
     });
   }

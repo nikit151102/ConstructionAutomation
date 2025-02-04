@@ -135,24 +135,32 @@ export const formConfig = {
       {
         name: 'registerNumber',
         type: 'text',
-        label: 'Регистрационный номер членства саморегулируемой организации',
+        label: 'СРО по проектированию',
         options: [],
         validators: [Validators.required],
         order: 3
+      },
+      {
+        name: 'registerNumberBuilder',
+        type: 'text',
+        label: 'СРО по строительным работам',
+        options: [],
+        validators: [Validators.required],
+        order: 4
       },
       {
         name: 'beginDateTime',
         type: 'date',
         label: 'Дата начала работ',
         validators: [Validators.required],
-        order: 4
+        order: 5
       },
       {
         name: 'endDateTime',
         type: 'date',
         label: 'Дата окончания работ',
         validators: [Validators.required],
-        order: 5
+        order: 6
       },
       {
         name: 'CustomerBuidingManagerId',
@@ -166,7 +174,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 6
+        order: 7
       },
       {
         name: 'BuiderPersonId',
@@ -180,7 +188,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 7
+        order: 8
       },
       {
         name: 'DocumentWriterId',
@@ -194,7 +202,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 8
+        order: 9
       },
     ],
   },

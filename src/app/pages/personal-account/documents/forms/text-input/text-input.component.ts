@@ -34,6 +34,13 @@ export class TextInputComponent implements AfterViewInit{
           this.control.setValue(currentUserData.registerNumber);
         }
       }
+      else if (this.id === 'registerNumberBuilder') {
+        const currentUserData = this.currentUserService.getUser();
+        if (currentUserData && currentUserData.registerNumberBuilder) {
+          this.control.setValue(currentUserData.registerNumberBuilder);
+        }
+      }
+      
       
     });
   }
