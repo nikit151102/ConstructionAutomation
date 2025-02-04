@@ -346,6 +346,7 @@ export class HistoryFormingComponent implements OnInit {
       this.visiblePopUpPay = false;
       this.personalAccountService.changeBalance(String(response.data.balance));
       this.currentUserService.updateUserBalance(String(response.data.balance));
+      this.cdr.markForCheck();
     });
   }
 
