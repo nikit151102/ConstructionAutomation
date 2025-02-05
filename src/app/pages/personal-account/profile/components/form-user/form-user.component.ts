@@ -107,6 +107,7 @@ export class FormUserComponent implements OnInit {
       patronymic: this.userProfileForm.value.patronymic,
       inn: this.userProfileForm.value.inn,
       registerNumber: this.userProfileForm.value.registerNumber,
+      registerNumberBuilder: this.userProfileForm.value.registerNumberBuilder,
       roleIds: this.getRoleIds()
     };
 
