@@ -218,23 +218,23 @@ export class HistoryFormingComponent implements OnInit {
       0: [
         {
           label: 'Отмена',
-          icon: '',
+          icon: 'pi pi-ban',
           class: 'status-cancel',
           command: () => this.showCancel(dataDoc, 'CancelDocumentGenerate'),
         }
       ],
       1: [
         {
-          label: 'Удалить',
-          icon: '',
-          class: 'status-danger',
-          command: () => this.showCancel(dataDoc, 'DeleteDocumentGenerate'),
-        },
-        {
           label: 'Оплатить',
           icon: 'pi pi-credit-card',
           class: 'status-success',
           command: () => this.showPaymentPopup(dataDoc),
+        },
+        {
+          label: 'Удалить',
+          icon: 'pi pi-trash',
+          class: 'status-danger',
+          command: () => this.showCancel(dataDoc, 'DeleteDocumentGenerate'),
         }
       ],
       2: [
@@ -252,7 +252,7 @@ export class HistoryFormingComponent implements OnInit {
         },
         {
           label: 'Удалить',
-          icon: '',
+          icon: 'pi pi-trash',
           class: 'status-danger',
           command: () => this.showCancel(dataDoc, 'DeleteDocumentGenerate'),
         }
@@ -260,7 +260,7 @@ export class HistoryFormingComponent implements OnInit {
       3: [
         {
           label: 'Удалить',
-          icon: '',
+          icon: 'pi pi-trash',
           class: 'status-danger',
           command: () => this.showCancel(dataDoc, 'DeleteDocumentGenerate'),
         },
