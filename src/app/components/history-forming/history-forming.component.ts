@@ -41,8 +41,9 @@ export class HistoryFormingComponent implements OnInit {
   pdfBlob!: Blob;
   typeDocs: TypeDoc[] = [
     { name: 'Cопоставительная ведомость', code: '1' },
-    { name: 'Спецификация на метериалы', code: '2' },
-    { name: 'Спецификация работ', code: '3' },
+    { name: 'Ведомость объёмов материалов', code: '2' },
+    { name: 'Ведомость объемов работ', code: '3' },
+    { name: 'Акты освидетельствования скрытых работ', code: '4' },
   ];
   fields = [
     { key: 'statusCode', label: 'Статус' },
@@ -151,6 +152,7 @@ export class HistoryFormingComponent implements OnInit {
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
+    this.cdr.markForCheck();
   }
 
   isSelected(option: TypeDoc): boolean {
@@ -164,6 +166,7 @@ export class HistoryFormingComponent implements OnInit {
       this.selectedTypeDocs.push(option);
     }
     this.filterDocsByType();
+    this.cdr.markForCheck();
   }
 
   filterDocsByType(): void {
