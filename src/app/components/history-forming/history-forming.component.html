@@ -69,7 +69,7 @@
                 getSizeInMB(doc.fileSize) }} Мб
             </div>
         </ng-container>
-        <div id="initDate">{{ doc.initDate | date: 'dd-MM-yyyy' }}</div>
+        <div id="initDate">{{ doc.initDate | date: 'dd-MM-yyyy HH:mm' }}</div>
 
         <i class="pi" [ngClass]="{
                 'pi-angle-down': expandedDoc !== doc,
