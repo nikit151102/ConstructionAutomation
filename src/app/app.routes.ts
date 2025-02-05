@@ -24,8 +24,7 @@ export const routes: Routes = [
         path: 'offerInformation', component: OfferInformationComponent
     },
     {
-        // canActivate: [AuthGuard]
-        path: ':id', loadChildren: () => import('./pages/personal-account/personal-account.module').then(m => m.PersonalAccountModule)
+        path: ':id', loadChildren: () => import('./pages/personal-account/personal-account.module').then(m => m.PersonalAccountModule), canActivate: [AuthGuard]
     },
 
 ];

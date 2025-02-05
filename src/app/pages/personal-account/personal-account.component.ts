@@ -60,7 +60,6 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
           userName: `${data.data.lastName ?? ''} ${data.data.firstName ?? ''}`.trim(),
           email: data.data.email
         };
-
         localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', this.utf8ToBase64(JSON.stringify(dataStage)));
         this.cdr.detectChanges();
       });

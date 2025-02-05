@@ -127,5 +127,10 @@ getDataUser(){
       .pipe(catchError(this.handleError));
   }
 
+  public clearAuthData(): void {
+    localStorage.removeItem('YXV0aFRva2Vu');
+    localStorage.removeItem('Y29va2llQ29uc2VudA==');
+    localStorage.removeItem('VXNlcklk');
+  }
 
 }
