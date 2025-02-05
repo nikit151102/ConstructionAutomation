@@ -1,45 +1,48 @@
-<div class="container" [class.sidebar-open]="sidebarService.isSidebarOpen$ | async">
-  <app-sidebar></app-sidebar>
-
-  <div [class.shrink]="sidebarService.isSidebarOpen$ | async" class="content">
-    <div class="header">
-      <div class="btn-menu" *ngIf="!isSidebarOpen && isSmallScreen">
-        <p-button icon="pi pi-bars" [rounded]="true" [text]="true" (click)="toggleSidebar()" />
-      </div>
-
-      <p class="title">
-        {{tabTitle}}
-      </p>
-      
-      <div style="display: flex; gap: 30px; align-items: center">
-        <p class="balance" >
-          Баланс: {{ userBalance }} &#8381;
-        </p>
+<ng-container *ngIf="!isLoading">
+  <div class="container" [class.sidebar-open]="sidebarService.isSidebarOpen$ | async">
+    <app-sidebar></app-sidebar>
   
-        <a (click)="toggleTopUp()" id="payment">Пополнить</a>
-
+    <div [class.shrink]="sidebarService.isSidebarOpen$ | async" class="content">
+      <div class="header">
+        <div class="btn-menu" *ngIf="!isSidebarOpen && isSmallScreen">
+          <p-button icon="pi pi-bars" [rounded]="true" [text]="true" (click)="toggleSidebar()" />
+        </div>
+  
+        <p class="title">
+          {{tabTitle}}
+        </p>
+        
+        <div style="display: flex; gap: 30px; align-items: center">
+          <p class="balance" >
+            Баланс: {{ userBalance }} &#8381;
+          </p>
+    
+          <a (click)="toggleTopUp()" id="payment">Пополнить</a>
+  
+        </div>
+        
+  
       </div>
-      
-
+  
+      <div *ngIf="showTopUp" class="top-up">
+        <input 
+          type="number" 
+          [(ngModel)]="topUpAmount" 
+          placeholder="Введите сумму" 
+          class="top-up-input"
+        />
+        <!-- (click)="confirmTopUp()"  -->
+        <p-button 
+          label="Пополнить" 
+          icon="pi pi-check" 
+  
+          (click)="confirmTopUp()"
+          styleClass="top-up-button"
+        ></p-button>
+      </div>
+      <router-outlet></router-outlet>
     </div>
-
-    <div *ngIf="showTopUp" class="top-up">
-      <input 
-        type="number" 
-        [(ngModel)]="topUpAmount" 
-        placeholder="Введите сумму" 
-        class="top-up-input"
-      />
-      <!-- (click)="confirmTopUp()"  -->
-      <p-button 
-        label="Пополнить" 
-        icon="pi pi-check" 
-
-        (click)="confirmTopUp()"
-        styleClass="top-up-button"
-      ></p-button>
-    </div>
-    <router-outlet></router-outlet>
+  
   </div>
-
-</div>
+  
+</ng-container>

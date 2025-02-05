@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener, ChangeDetectionStrategy } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { ButtonModule } from 'primeng/button';
 import { SidebarService } from '../../components/sidebar/sidebar.service';
@@ -26,6 +26,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   userBalance: any = 0;
   showTopUp: boolean = false;
   topUpAmount: number = 0;
+  isLoading: boolean = true;
 
   private screenSubscription!: Subscription;
 
@@ -34,49 +35,92 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     public personalAccountService: PersonalAccountService,
     private currentUserService: CurrentUserService,
     private transactionService: TransactionService,
-    private toastService: ToastService) { }
-
+    private toastService: ToastService,
+    private route: ActivatedRoute,
+    private router: Router) {
+  }
   ngOnInit(): void {
+    // Подписка на параметры маршрута и загрузка данных пользователя
+    this.loadUserDataFromRouteParams();
+  
+    // Подписка на обновления баланса
+    this.subscribeToBalanceChanges();
+  
+    // Подписка на изменения заголовка вкладки
+    this.subscribeToTabTitleChanges();
+  
+    // Подписка на изменения состояния боковой панели
+    this.subscribeToSidebarStateChanges();
+  
+    // Проверка размера экрана
+    this.checkScreenSize();
+  }
+  
+  private loadUserDataFromRouteParams(): void {
+    this.route.paramMap.subscribe((params) => {
+      const urlId = params.get('id');
+      const userData = this.currentUserService.getUser();
+  
+      if (userData && urlId === userData.id) {
+        this.setUserData(userData);
+      } else {
+        this.fetchUserDataFromService(urlId);
+      }
+    });
+  }
+  
+  private setUserData(userData: any): void {
+    this.userBalance = userData.balance;
+    this.personalAccountService.changeBalance(userData.balance);
+    const dataStage = {
+      userName: `${userData.lastName ?? ''} ${userData.firstName ?? ''}`.trim(),
+      email: userData.email
+    };
+    localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', this.utf8ToBase64(JSON.stringify(dataStage)));
+    this.isLoading = false;
+    this.cdr.detectChanges();
+  }
+  
+  private fetchUserDataFromService(urlId: string | null): void {
+    this.currentUserService.getUserData().subscribe((data: any) => {
+      if (data.data && urlId === data.data.id) {
+        this.setUserData(data.data);
+      } else {
+        this.handleUserDataError();
+      }
+    });
+  }
+  
+  private handleUserDataError(): void {
+    this.toastService.showWarn(
+      'Предупреждение',
+      'Не удалось получить данные профиля. Пожалуйста, убедитесь, что вы вошли в правильный аккаунт и попробуйте снова.'
+    );
+    this.currentUserService.clearAuthData();
+    this.router.navigate(['/login']);
+  }
+  
+  private subscribeToBalanceChanges(): void {
     this.personalAccountService.balance$.subscribe((value: string) => {
       this.userBalance = value;
       this.cdr.detectChanges();
     });
-    const userData = this.currentUserService.getUser();
-
-    if (userData) {
-      this.userBalance = userData.balance;
-      this.personalAccountService.changeBalance(userData.balance);
-      const dataStage = {
-        userName: `${userData.lastName ?? ''} ${userData.firstName ?? ''}`.trim(),
-        email: userData.email
-      };
-      localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', this.utf8ToBase64(JSON.stringify(dataStage)));
-      this.cdr.detectChanges();
-    } else {
-      this.currentUserService.getUserData().subscribe((data: any) => {
-        this.userBalance = data.data.balance;
-        this.personalAccountService.changeBalance(data.data.balance);
-        const dataStage = {
-          userName: `${data.data.lastName ?? ''} ${data.data.firstName ?? ''}`.trim(),
-          email: data.data.email
-        };
-        localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', this.utf8ToBase64(JSON.stringify(dataStage)));
-        this.cdr.detectChanges();
-      });
-    }
-
+  }
+  
+  private subscribeToTabTitleChanges(): void {
     this.personalAccountService.titleTab$.subscribe((title: string) => {
       this.tabTitle = title;
       this.cdr.detectChanges();
     });
-
+  }
+  
+  private subscribeToSidebarStateChanges(): void {
     this.screenSubscription = this.sidebarService.isSidebarOpen$.subscribe((isOpen: boolean) => {
       this.isSidebarOpen = isOpen;
       this.cdr.detectChanges();
     });
-
-    this.checkScreenSize();
   }
+  
 
   private utf8ToBase64(str: string): string {
     const utf8Bytes = new TextEncoder().encode(str);
@@ -159,7 +203,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
             this.personalAccountService.checkoutTransaction(confirmationToken).subscribe((response: any) => {
               let userData = this.currentUserService.getUser();
               if (userData) {
-                userData.balance = response.data.balance; 
+                userData.balance = response.data.balance;
                 this.currentUserService.saveUser(userData);
               }
               const transaction = {

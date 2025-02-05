@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenService } from '../../services/token.service';
 import { ToastService } from '../../services/toast.service';
 import { CurrentUserService } from '../../services/current-user.service';
@@ -40,23 +39,24 @@ export class AuthGuard implements CanActivate {
         return resolve(false);
       }
 
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      });
-
       this.currentUserService.getDataUser().subscribe({
         next: (response) => {
           if (response.data) {
-            localStorage.setItem('VXNlcklk', response.data.id);
-            const dataStage = {
-              userName: `${response.data.lastName ?? ''} ${response.data.firstName ?? ''}`.trim(),
-              email: response.data.email
-            };
-
-            localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', this.utf8ToBase64(JSON.stringify(dataStage)));
-            this.currentUserService.saveUser(response.data);
-            resolve(true);
-
+            if(response.data.id === idUser){
+              localStorage.setItem('VXNlcklk', response.data.id);
+              const dataStage = {
+                userName: `${response.data.lastName ?? ''} ${response.data.firstName ?? ''}`.trim(),
+                email: response.data.email
+              };
+  
+              localStorage.setItem('ZW5jcnlwdGVkRW1haWw=', this.utf8ToBase64(JSON.stringify(dataStage)));
+              this.currentUserService.saveUser(response.data);
+              resolve(true);
+            }else{
+              this.handleUnauthorizedAccess('Не удалось получить данные о пользователе. Попробуйте снова');
+              this.currentUserService.clearAuthData();
+              resolve(false);
+            }
           } else {
             this.handleUnauthorizedAccess('Не удалось получить данные о пользователе. Попробуйте снова');
             this.currentUserService.clearAuthData();
