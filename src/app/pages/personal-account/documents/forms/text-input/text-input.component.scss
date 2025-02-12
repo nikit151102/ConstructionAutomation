@@ -1,20 +1,26 @@
-.p-field {
+.container-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+
+  .p-field {
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
-  
+
     label {
       font-size: 14px;
       font-weight: 600;
       color: #555;
       margin-bottom: 0.5rem;
       transition: color 0.3s ease;
-  
+
       &:hover {
-        color: #007bff; 
+        color: #007bff;
       }
     }
-  
+
     input {
       padding: 0.75rem 1rem;
       font-size: 16px;
@@ -23,16 +29,17 @@
       border: 1px solid #ccc;
       border-radius: 20px;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  
+
       &:focus {
         outline: none;
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
       }
-  
+
       &:hover {
         border-color: #007bff;
       }
     }
   }
-  
+
+}

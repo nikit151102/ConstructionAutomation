@@ -1,4 +1,9 @@
-<div class="p-field">
+<div class="container-field">
+  <div class="p-field">
     <label [for]="id">{{ label }}</label>
     <input [id]="id" type="text" [formControl]="control" />
   </div>
+  <ng-container *ngIf="textTooltip.isVisible">
+    <app-tooltip [text]="textTooltip.text"></app-tooltip>
+  </ng-container>
+</div>

@@ -1,19 +1,26 @@
-<div class="reference-component">
-  <select [formControl]="control" [id]="name" class="reference-select">
-    <option value="" disabled selected>Выбрать</option>
-    <option *ngIf="showDefault" disabled>
-      Список сотрудников пуст.
-    </option>
-
-    <ng-container *ngIf="!showDefault">
-      <option *ngFor="let option of options" [value]="option.id">
-        <ng-container *ngFor="let field of fields">
-          <ng-container *ngIf="option.hasOwnProperty(field)">
-            {{ option[field] }}
-          </ng-container>
-        </ng-container>
+<div class="container-field">
+  <div class="reference-component">
+    <select [formControl]="control" [id]="name" class="reference-select">
+      <option value="" disabled selected>Выбрать</option>
+      <option *ngIf="showDefault" disabled>
+        Список сотрудников пуст.
       </option>
-    </ng-container>
+  
+      <ng-container *ngIf="!showDefault">
+        <option *ngFor="let option of options" [value]="option.id">
+          <ng-container *ngFor="let field of fields">
+            <ng-container *ngIf="option.hasOwnProperty(field)">
+              {{ option[field] }}
+            </ng-container>
+          </ng-container>
+        </option>
+      </ng-container>
+  
+    </select>
+  </div>
 
-  </select>
+  <ng-container *ngIf="textTooltip.isVisible">
+    <app-tooltip [text]="textTooltip.text"></app-tooltip>
+  </ng-container>
+
 </div>

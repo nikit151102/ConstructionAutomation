@@ -3,11 +3,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../../environment';
+import { TooltipComponent } from '../../../../../ui-kit/tooltip/tooltip.component';
 
 @Component({
   selector: 'app-reference',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,TooltipComponent],
   templateUrl: './reference.component.html',
   styleUrls: ['./reference.component.scss'],
 })
@@ -17,6 +18,13 @@ export class ReferenceComponent {
   @Input() endpoint!: string;
   @Input() fields!: string[];
   @Output() selectedId = new EventEmitter<string>();
+  @Input() textTooltip: {
+    isVisible: boolean,
+    text: string
+  } = {
+      isVisible: false,
+      text: ''
+    };
 
   control = new FormControl('', Validators.required);
   options: any;

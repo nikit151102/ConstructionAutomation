@@ -8,6 +8,7 @@ import { DialogModule } from 'primeng/dialog';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { MyDocumentsService } from '../../../my-documents/my-documents.service';
 import { DialogStorageService } from '../../../../../components/dialog-storage/dialog-storage.service';
+import { TooltipComponent } from '../../../../../ui-kit/tooltip/tooltip.component';
 
 @Component({
   selector: 'app-file-input',
@@ -20,7 +21,7 @@ import { DialogStorageService } from '../../../../../components/dialog-storage/d
     FormsModule,
     DialogModule,
     SelectButtonModule,
-
+    TooltipComponent
   ],
   templateUrl: './file-input.component.html',
   styleUrls: ['./file-input.component.scss'],
@@ -32,6 +33,14 @@ export class FileInputComponent implements OnInit, OnDestroy {
   @Input() showSheetSelection = false;
   @Output() onSelect = new EventEmitter<{ event?: FileSelectEvent; file: File; sheetName?: string; fileId: string }>();
   @Output() confirm = new EventEmitter<FileInputComponent>();
+
+  @Input() textTooltip: {
+    isVisible: boolean,
+    text: string
+  } = {
+      isVisible: false,
+      text: ''
+    };
 
   confSelection() {
     this.confirm.emit(this); // Уведомляем родителя о подтверждении

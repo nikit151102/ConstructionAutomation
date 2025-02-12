@@ -38,7 +38,11 @@ export const formConfig = {
         label: 'Локальная смета',
         accept: '.xls, .xlsx',
         validators: [Validators.required],
-        order: 1
+        order: 1,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
       },
       {
         name: 'summaryFile',
@@ -46,7 +50,11 @@ export const formConfig = {
         label: 'КС-2',
         accept: '.xls, .xlsx',
         validators: [Validators.required],
-        order: 2
+        order: 2,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
       },
     ],
   },
@@ -71,7 +79,11 @@ export const formConfig = {
         label: 'КС-2',
         accept: '.xls, .xlsx',
         validators: [Validators.required],
-        order: 1
+        order: 1,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
       },
     ],
   },
@@ -96,8 +108,13 @@ export const formConfig = {
         label: 'КС-2',
         accept: '.xls, .xlsx',
         validators: [Validators.required],
-        order: 1
+        order: 1,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
       },
+      
     ],
   }, 
   actHideWorksRequest: {
@@ -112,7 +129,11 @@ export const formConfig = {
         label: 'КС-2',
         accept: '.xls, .xlsx',
         validators: [Validators.required],
-        order: 1
+        order: 1,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
       },
       {
         name: 'SummaryFileListName',
@@ -130,7 +151,11 @@ export const formConfig = {
         options: [],
         validators: [Validators.required,
           Validators.pattern('^[0-9]+$')],
-        order: 2
+        order: 2,
+        tooltip: {
+          isVisible: true,
+          text: 'Ваш ИНН (10 или 12 цифр) необходим для автоматического заполнения большого количества полей документа, относящихся к Вашему юридическому лицу. Вы можете заполнить это поле в профиле, чтобы оно заполнялось автоматически!'
+        }
       },
       {
         name: 'registerNumber',
@@ -138,7 +163,11 @@ export const formConfig = {
         label: 'СРО по проектированию',
         options: [],
         validators: [Validators.required],
-        order: 3
+        order: 3,
+        tooltip: {
+          isVisible: true,
+          text: 'Регистрационный номер члена в реестре членов саморегулируемой организации - СРО по проектированию. Вы можете заполнить это поле в профиле, чтобы оно заполнялось автоматически!'
+        }
       },
       {
         name: 'registerNumberBuilder',
@@ -146,21 +175,33 @@ export const formConfig = {
         label: 'СРО по строительным работам',
         options: [],
         validators: [Validators.required],
-        order: 4
+        order: 4,
+        tooltip: {
+          isVisible: true,
+          text: 'Регистрационный номер члена в реестре членов саморегулируемой организации - СРО по строительным работам. Вы можете заполнить это поле в профиле, чтобы оно заполнялось автоматически!'
+        }
       },
       {
         name: 'beginDateTime',
         type: 'date',
         label: 'Дата начала работ',
         validators: [Validators.required],
-        order: 5
+        order: 5,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
       },
       {
         name: 'endDateTime',
         type: 'date',
         label: 'Дата окончания работ',
         validators: [Validators.required],
-        order: 6
+        order: 6,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
       },
       {
         name: 'CustomerBuidingManagerId',
@@ -174,7 +215,11 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 7
+        order: 7,
+        tooltip: {
+          isVisible: true,
+          text: 'Представитель добавляется в разделе Справочники - Сотрудники. После создания записи, она появится в выпадающем списке. Также для Сотрудников вы можете добавлять уникальные Должности в соответствующем разделе.'
+        }
       },
       {
         name: 'BuiderPersonId',
@@ -188,7 +233,11 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 8
+        order: 8,
+        tooltip: {
+          isVisible: true,
+          text: 'Представитель добавляется в разделе Справочники - Сотрудники. После создания записи, она появится в выпадающем списке. Также для Сотрудников вы можете добавлять уникальные Должности в соответствующем разделе.'
+        }
       },
       {
         name: 'DocumentWriterId',
@@ -202,7 +251,11 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 9
+        order: 9,
+        tooltip: {
+          isVisible: true,
+          text: 'Представитель добавляется в разделе Справочники - Сотрудники. После создания записи, она появится в выпадающем списке. Также для Сотрудников вы можете добавлять уникальные Должности в соответствующем разделе.'
+        }
       },
     ],
   },

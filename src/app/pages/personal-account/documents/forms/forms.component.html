@@ -3,7 +3,8 @@
     <ng-container [ngSwitch]="control.type">
 
       <!-- Text input -->
-      <app-text-input *ngSwitchCase="'text'" [id]="control.name" [label]="control.label" 
+      <app-text-input *ngSwitchCase="'text'" [id]="control.name" [label]="control.label"
+      [textTooltip]="control.tooltip"
         [control]="getSafeFormControl(form, control.name)"></app-text-input>
 
       <!-- Dropdown -->
@@ -15,14 +16,15 @@
       <!-- File Input with new 'isFileInput'  -->
       <div *ngSwitchCase="'file'" class="file-input-container">
         <label>{{ control.label }}</label>
-        <app-file-input [chooseLabel]="control.label" [chooseIcon]="'pi pi-upload'" [accept]="control.accept"
+        <app-file-input [chooseLabel]="control.label" [chooseIcon]="'pi pi-upload'" 
+        [accept]="control.accept" [textTooltip]="control.tooltip"
           (onSelect)="onFileSelect($event, control.name)" (confirm)="onOpenDialog($event, 'add')"></app-file-input>
       </div>
 
       <div *ngSwitchCase="'reference'" class="file-input-container">
         <label>{{ control.label }}</label>
         <app-reference [label]="control.label" [endpoint]="control.endpoint" [name]="control.name"
-          [fields]="control.fields" (selectedId)="onReferenceSelected(control.name, $event)"></app-reference>
+          [fields]="control.fields" [textTooltip]="control.tooltip" (selectedId)="onReferenceSelected(control.name, $event)"></app-reference>
       </div>
 
       <div *ngSwitchCase="'date'" class="file-input-container">

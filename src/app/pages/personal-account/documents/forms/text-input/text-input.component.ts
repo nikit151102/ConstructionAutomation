@@ -2,23 +2,31 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CurrentUserService } from '../../../../../services/current-user.service';
+import { TooltipComponent } from '../../../../../ui-kit/tooltip/tooltip.component';
 
 @Component({
   selector: 'app-text-input',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, TooltipComponent],
   templateUrl: './text-input.component.html',
   styleUrl: './text-input.component.scss'
 })
-export class TextInputComponent implements AfterViewInit{
+export class TextInputComponent implements AfterViewInit {
 
 
   @Input() id: string = '';
   @Input() label: string = '';
   @Input() control!: FormControl;
   @Input() controlName: string = '';
-  
-  constructor(private currentUserService:CurrentUserService){}
+  @Input() textTooltip: {
+    isVisible: boolean,
+    text: string
+  } = {
+      isVisible: false,
+      text: ''
+    };
+
+  constructor(private currentUserService: CurrentUserService) { }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -40,10 +48,11 @@ export class TextInputComponent implements AfterViewInit{
           this.control.setValue(currentUserData.registerNumberBuilder);
         }
       }
-      
-      
+
+
     });
   }
-  
+
+
 
 }
