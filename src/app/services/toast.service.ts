@@ -13,10 +13,13 @@ export class ToastService {
   }
 
   showError(summary: string, detail: string): void {
-    this.messageService.add({ severity: 'error', summary, detail });
+    const formattedDetail = detail.replace(/\n/g, '<br>');
+    this.messageService.add({ severity: 'error', summary, detail: formattedDetail });
   }
+  
 
   showInfo(summary: string, detail: string): void {
+    const formattedDetail = detail.replace(/\n/g, '<br>');
     this.messageService.add({ severity: 'info', summary, detail });
   }
 

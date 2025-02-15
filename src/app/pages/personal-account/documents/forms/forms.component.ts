@@ -235,7 +235,7 @@ export class FormsComponent {
           this.progressSpinnerService.hide();
           this.cdr.detectChanges();
         }else{
-          const errorMessage = error?.error?.Message || 'Максимум 3 формирования одновременно. Подождите или отмените одно.';
+          const errorMessage = error?.error?.Message || 'Произошла ошибка.';
           this.toastService.showError('Ошибка', errorMessage);
           this.progressSpinnerService.hide();
         }
