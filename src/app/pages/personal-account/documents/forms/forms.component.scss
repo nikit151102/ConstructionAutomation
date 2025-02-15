@@ -40,7 +40,23 @@ p-calendar:focus {
     border-color: #007bff;
 }
 
+.btnsBlock {
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.instruction {
+    color: #fff;
+    background: #007bff;
+    padding: 12px;
+    border-radius: 15px;
+    margin-top: 16px;
+}
+
 button {
+    width: fit-content;
     background-color: #007bff;
     color: white;
     font-size: 16px;
@@ -75,6 +91,13 @@ app-file-input {
         width: 100%;
     }
 }
+
+.ng-star-inserted {
+    &:has(app-file-input) {
+        width: 100%;
+    }
+}
+
 
 @media (max-width: 1024px) {
     form {
