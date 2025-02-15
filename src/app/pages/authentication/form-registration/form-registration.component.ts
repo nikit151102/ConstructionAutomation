@@ -13,6 +13,7 @@ import { PopUpEntryComponent } from '../pop-up-entry/pop-up-entry.component';
 import { ToastService } from '../../../services/toast.service';
 import { CookieConsentService } from '../../../services/cookie-consent.service';
 import { PopUpConfirmEmailService } from '../pop-up-confirm-email/pop-up-confirm-email.service';
+import { ProgressSpinnerService } from '../../../components/progress-spinner/progress-spinner.service';
 
 @Component({
   selector: 'app-form-registration',
@@ -35,7 +36,8 @@ export class FormRegistrationComponent {
     private currentUserService: CurrentUserService,
     private toastService: ToastService,
     private cookieConsentService: CookieConsentService,
-    private popUpConfirmEmailService: PopUpConfirmEmailService) {
+    private popUpConfirmEmailService: PopUpConfirmEmailService,
+    private progressSpinnerService: ProgressSpinnerService) {
     this.SignUpForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email, this.emailAndEnglishLettersValidator()]],
@@ -114,10 +116,11 @@ export class FormRegistrationComponent {
         Email: formData.email,
         Password: formData.password,
         isMailSend: true
-      }; 
-
+      };
+      this.progressSpinnerService.show();
       this.registrationService.signUn(Data).subscribe(
         (response) => {
+          this.progressSpinnerService.hide();
           this.currentUserService.saveUser(response.data);
           this.tokenService.setToken(response.data.token);
           //this.router.navigate([`/${response.data.id}`]);
@@ -131,6 +134,7 @@ export class FormRegistrationComponent {
 
         },
         (error) => {
+          this.progressSpinnerService.hide();
           const errorMessage = error?.error?.Message || 'Произошла неизвестная ошибка';
           this.toastService.showError('Ошибка', errorMessage);
         }
