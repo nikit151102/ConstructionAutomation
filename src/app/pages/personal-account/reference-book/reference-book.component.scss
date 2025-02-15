@@ -380,3 +380,13 @@ button:hover {
         width: 100%;
     }
 }
+
+.dropdown-list {
+    bottom: auto;
+    top: 100%;
+}
+
+.dropdown-list.above {
+    bottom: 100%;
+    top: auto;
+}

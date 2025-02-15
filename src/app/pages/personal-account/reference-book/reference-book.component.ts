@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { referenceConfig } from './conf';
 import { ReferenceBookService } from './reference-book.service';
 import { CommonModule } from '@angular/common';
@@ -28,7 +28,7 @@ export class ReferenceBookComponent implements OnInit {
     private referenceBookService: ReferenceBookService,
     private toastService: ToastService,
     private cdr: ChangeDetectorRef,
-    private personalAccountService:PersonalAccountService
+    private personalAccountService: PersonalAccountService
   ) { }
 
   ngOnInit(): void {
@@ -39,7 +39,7 @@ export class ReferenceBookComponent implements OnInit {
       if (this.currentConfig) {
         this.formFields = this.currentConfig.formFields;
       }
-      this.personalAccountService.changeTitle(this.currentConfig.pageTitle )
+      this.personalAccountService.changeTitle(this.currentConfig.pageTitle)
       this.loadData();
     });
   }
@@ -267,6 +267,7 @@ export class ReferenceBookComponent implements OnInit {
   // Метод для отображения или скрытия выпадающего списка
   toggleDropdown(): void {
     this.dropdownVisible = !this.dropdownVisible;
+    setTimeout(() => this.checkDropdownPosition(), 0);
     this.cdr.detectChanges();
   }
 
@@ -284,10 +285,10 @@ export class ReferenceBookComponent implements OnInit {
   onClickOutside(event: MouseEvent): void {
     const dropdownElement = document.querySelector('.dropdown-container');
     if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
-      this.closeDropdown();  
+      this.closeDropdown();
     }
   }
-  
+
   // Получение значения для отображения выбранного элемента
   getSelectedDisplayValue(): string {
     if (this.selectedReference) {
@@ -297,5 +298,39 @@ export class ReferenceBookComponent implements OnInit {
     }
     return 'Не выбрано';
   }
+
+
+  @ViewChild('dropdown') dropdown!: ElementRef;
+  @ViewChild('dropdownContainer') dropdownContainer!: ElementRef;
+  dropdownAbove: boolean = false;
+
+  /** Проверяем, выходит ли список за границы экрана */
+  checkDropdownPosition(): void {
+    if (!this.dropdownContainer || !this.dropdown) return;
+
+    const rect = this.dropdownContainer.nativeElement.getBoundingClientRect();
+    const dropdownHeight = this.dropdown.nativeElement.offsetHeight;
+    const windowHeight = window.innerHeight;
+
+    this.dropdownAbove = rect.bottom + dropdownHeight > windowHeight;
+  }
+
+  /** Закрытие выпадающего списка при клике вне */
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event): void {
+    if (!this.dropdownContainer?.nativeElement.contains(event.target)) {
+      this.dropdownVisible = false;
+    }
+  }
+
+  /** Пересчитываем позицию при изменении размеров окна */
+  @HostListener('window:resize')
+  onResize(): void {
+    if (this.dropdownVisible) {
+      this.checkDropdownPosition();
+    }
+  }
+
+
 
 }

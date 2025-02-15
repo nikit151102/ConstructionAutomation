@@ -54,14 +54,15 @@
                 <ng-container *ngIf="currentConfig.connectionReference">
                     <div class="form-group">
                         <label>{{ currentConfig.connectionReference.label }}:</label>
-                        <div class="dropdown-container">
+                        <div class="dropdown-container" #dropdownContainer>
 
                             <div class="dropdown-input" (click)="toggleDropdown()">
                                 <input type="text" [value]="getSelectedDisplayValue()" placeholder="Выбрать запись"
-                                    readonly class="dropdown-input-field" />
+                                    readonly class="dropdown-input-field"  />
                             </div>
 
-                            <div class="dropdown-list" [ngClass]="{'ng-trigger': dropdownVisible}"
+                            <div class="dropdown-list" #dropdown
+                                [ngClass]="{'ng-trigger': dropdownVisible, 'above': dropdownAbove}"
                                 *ngIf="dropdownVisible">
                                 <div class="dropdown-item" *ngFor="let item of connectionReferenceData"
                                     (click)="selectReference(item)">
