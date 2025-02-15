@@ -240,4 +240,11 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
 
 
 
+  sanitizeInput(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.topUpAmount = parseInt(inputElement.value.replace(/\D/g, ''), 10);
+  }
+  
+  
+
 }

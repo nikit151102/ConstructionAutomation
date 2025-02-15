@@ -26,11 +26,15 @@
   
       <div *ngIf="showTopUp" class="top-up">
         <input 
-          type="number" 
-          [(ngModel)]="topUpAmount" 
-          placeholder="Введите сумму" 
-          class="top-up-input"
-        />
+        type="number" 
+        [(ngModel)]="topUpAmount" 
+        placeholder="Введите сумму" 
+        class="top-up-input"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        (input)="sanitizeInput($event)"
+      />
+      
         <!-- (click)="confirmTopUp()"  -->
         <p-button 
           label="Пополнить" 
