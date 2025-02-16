@@ -46,6 +46,10 @@ export class FormRegistrationComponent {
     });
   }
 
+ngOnInit(): void {
+
+}
+
   private emailAndEnglishLettersValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;

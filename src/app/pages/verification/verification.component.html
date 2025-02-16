@@ -1,17 +1,18 @@
-<div class="verification-container">
+<div *ngIf="verificationStatus != null" class="verification-container">
 
   <!-- Иконка галочки (при успешной верификации) -->
-  <div *ngIf="verificationStatus" class="wrapper wrapper--check">
-    <svg width="94" height="94" viewBox="0 0 48 48" fill="none">
-      <!-- Круг с фоном (цвет фона rgb(76, 175, 80)) -->
-      <circle cx="24" cy="24" r="22" fill="rgb(76, 175, 80)" />
+  <div *ngIf="verificationStatus == true" class="wrapper wrapper--check">
 
-      <!-- Галочка -->
-      <path id="check" d="M 12,22 L 22,31 L 36,13" fill="none" stroke="white" stroke-width="3" stroke-dasharray="100"
-        stroke-dashoffset="0">
-        <animate attributeName="stroke-dashoffset" from="100" to="0" repeatCount="1" dur="3s" fill="freeze"></animate>
-      </path>
-    </svg>
+      <svg width="94" height="94" viewBox="0 0 48 48" fill="none">
+        <!-- Круг с фоном (цвет фона rgb(76, 175, 80)) -->
+        <circle cx="24" cy="24" r="22" fill="rgb(76, 175, 80)" />
+
+        <!-- Галочка -->
+        <path id="check" d="M 12,22 L 22,31 L 36,13" fill="none" stroke="white" stroke-width="3" stroke-dasharray="100"
+          stroke-dashoffset="0">
+          <animate attributeName="stroke-dashoffset" from="100" to="0" repeatCount="1" dur="3s" fill="freeze"></animate>
+        </path>
+      </svg>
 
     <!-- Текст успешной верификации -->
     <p class="success-text">
@@ -24,9 +25,9 @@
   </div>
 
   <!-- Иконка крестика (при ошибке верификации) -->
-  <div *ngIf="!verificationStatus" class="wrapper wrapper--check">
-    <svg id="svg1" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-      width="94" height="94" viewBox="0 0 47 47">
+  <div class="wrapper wrapper--check">
+    <svg id="svg1" version="1.1" xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink" width="94" height="94" viewBox="0 0 47 47">
       <circle fill="#F44336" cx="24" cy="24" r="21" />
 
       <!-- Крестик -->
@@ -41,7 +42,7 @@
 
     <!-- Текст ошибки верификации -->
     <p class="error-text">
-      Ошибка подтверждения! Возможно, вы уже подтвердили свою почту.
+      {{verificationMessage}}
     </p>
     <div class="signIn">
       <a (click)="goToLogin()">Войти</a>

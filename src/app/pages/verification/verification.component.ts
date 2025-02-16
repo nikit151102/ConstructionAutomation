@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { VerificationService } from './verification.service';
 import { CommonModule } from '@angular/common';
 import { ToastService } from '../../services/toast.service';
+import { ProgressSpinnerService } from '../../components/progress-spinner/progress-spinner.service';
 
 @Component({
   selector: 'app-verification',
@@ -20,10 +21,12 @@ export class VerificationComponent implements OnInit {
     private route: ActivatedRoute,
     private verificationService: VerificationService, // сервис для связи с сервером
     private router: Router,
-    private toastService:ToastService
+    private toastService:ToastService,
+    private progressSpinnerService:ProgressSpinnerService
   ) { }
 
   ngOnInit(): void {
+    this.progressSpinnerService.show();
     this.id = this.route.snapshot.paramMap.get('optionalParam');
 
     if (this.id) {
@@ -40,15 +43,19 @@ export class VerificationComponent implements OnInit {
       (response) => {
         this.verificationMessage = 'Почта успешно подтверждена!';
         this.verificationStatus = true;
+        this.progressSpinnerService.hide();
       },
       (error) => {
         if (error.error.status === 422) {
           this.toastService.showError('Ошибка', error.error.Message);
           this.verificationMessage = 'Вы уже подтвердили свою почту.';
           this.verificationStatus = false;
+          this.progressSpinnerService.hide();
         } else {
           this.toastService.showError('Ошибка', error.error.Message);
-          this.verificationMessage = 'Произошла ошибка. Попробуйте снова позже.';
+          this.verificationMessage = 'Произошла ошибка. Попробуйте повторить позже.';
+          this.verificationStatus = false;
+          this.progressSpinnerService.hide();
         }
       }
     );
