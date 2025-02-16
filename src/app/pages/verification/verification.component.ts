@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VerificationService } from './verification.service';
 import { CommonModule } from '@angular/common';
@@ -18,6 +18,7 @@ export class VerificationComponent implements OnInit {
   verificationStatus: boolean | null = null; // true - почта подтверждена, false - уже подтверждена
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private verificationService: VerificationService, // сервис для связи с сервером
     private router: Router,
@@ -44,19 +45,21 @@ export class VerificationComponent implements OnInit {
         this.verificationMessage = 'Почта успешно подтверждена!';
         this.verificationStatus = true;
         this.progressSpinnerService.hide();
+        this.cdr.detectChanges();
       },
       (error) => {
+        this.progressSpinnerService.hide();
         if (error.error.status === 422) {
           this.toastService.showError('Ошибка', error.error.Message);
           this.verificationMessage = 'Вы уже подтвердили свою почту.';
           this.verificationStatus = false;
-          this.progressSpinnerService.hide();
+          
         } else {
           this.toastService.showError('Ошибка', error.error.Message);
           this.verificationMessage = 'Произошла ошибка. Попробуйте повторить позже.';
           this.verificationStatus = false;
-          this.progressSpinnerService.hide();
         }
+        this.cdr.detectChanges();
       }
     );
   }
