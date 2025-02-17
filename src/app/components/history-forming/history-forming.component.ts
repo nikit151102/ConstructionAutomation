@@ -276,7 +276,7 @@ export class HistoryFormingComponent implements OnInit {
   currentPrice: any;
 
   showPaymentPopup(dataDoc: DocumentQueueItem) {
-    this.currentPrice = dataDoc.price;
+    this.currentPrice = dataDoc.cost;
     this.visiblePopUpPay = true;
     this.buttons = [
       {

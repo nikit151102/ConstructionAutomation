@@ -76,7 +76,7 @@ export class DocumentComponent implements OnInit {
       documentPdfShortId: data.DocumentPdfShortId,
       createDateTime: data.createDateTime,
       changeDateTime: data.changeDateTime,
-      price: data.price
+      cost: data.cost
     });
 
     this.historyFormingService.selectExcel = documentMetadata.fullResultXlsx;
