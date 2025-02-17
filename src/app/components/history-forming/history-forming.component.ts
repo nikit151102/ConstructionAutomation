@@ -273,11 +273,18 @@ export class HistoryFormingComponent implements OnInit {
   }
 
 
+  currentPrice: any;
 
   showPaymentPopup(dataDoc: DocumentQueueItem) {
+    this.currentPrice = dataDoc.price;
     this.visiblePopUpPay = true;
     this.buttons = [
-      { label: 'ОК', onClick: () => this.onOk(dataDoc.id) },
+      {
+        label: 'ОК', onClick: () => {
+          this.currentPrice = null;
+          this.onOk(dataDoc.id)
+        }
+      },
       { label: 'Отмена', onClick: this.onCancel.bind(this) },
     ];
   }
@@ -354,10 +361,12 @@ export class HistoryFormingComponent implements OnInit {
   }
 
   onCancel(): void {
+    this.currentPrice = null;
     this.visiblePopUpPay = false;
   }
 
   onPopupClose(): void {
+    this.currentPrice = null;
     this.visiblePopUpPay = false;
   }
 

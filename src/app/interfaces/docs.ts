@@ -41,6 +41,7 @@ export interface DocumentQueueItem {
     initDate: string;
     statusCode: number;
     statusDescription: string;
+    price?: number;
 }
 
 export interface DocumentQueueResponse {

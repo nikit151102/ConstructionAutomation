@@ -14,6 +14,7 @@ export class PopUpComponent {
   @Input() description: string = '';
   @Input() offerInformation: boolean = true;
   @Input() buttons: { label: string, onClick: () => void }[] = [];
+  @Input() price: any;
   @Output() close = new EventEmitter<void>();
 
   onClose(): void {

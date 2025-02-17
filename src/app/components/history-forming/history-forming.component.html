@@ -112,7 +112,7 @@
 
 <p-toast />
 
-<app-pop-up *ngIf="visiblePopUpPay" [imageSrc]="'svg/pay.svg'" [title]="'Подтверждение оплаты'"
+<app-pop-up *ngIf="visiblePopUpPay" [price]="currentPrice" [imageSrc]="'svg/pay.svg'" [title]="'Подтверждение оплаты'"
     [description]="'Вы уверены, что хотите оплатить?'" [buttons]="buttons" (close)="onPopupClose()">
 </app-pop-up>
 
