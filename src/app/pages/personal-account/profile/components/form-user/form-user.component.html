@@ -68,13 +68,20 @@
             <label for="tgUserName">Телеграм</label>
             <input pInputText id="tgUserName" formControlName="tgUserName" (input)="onTgUserNameInput()" />
             <p-message *ngIf="formControls['tgUserName'].errors?.['required'] && formControls['tgUserName'].touched"
-              severity="error" text="Поле Телеграм обязательно для заполнения."></p-message>
-          </div>
-          <div class="flex flex-column gap-2" style="display: flex; justify-content: flex-end;">
+                severity="error" text="Поле Телеграм обязательно для заполнения."></p-message>
+        </div>
+
+        <div class="flex flex-column gap-2">
+            <label for="hoursOffset">Часовой пояс</label>
+            <p-dropdown id="hoursOffset" formControlName="hoursOffset" [options]="timezones" placeholder="Выберите часовой пояс"></p-dropdown>
+        </div>
+        
+
+        <div class="flex flex-column gap-2" style="display: flex; justify-content: flex-end;">
             <button pButton type="submit" label="Отправить"></button>
-          </div>
-          
+        </div>
+
 
     </div>
-   
+
 </form>

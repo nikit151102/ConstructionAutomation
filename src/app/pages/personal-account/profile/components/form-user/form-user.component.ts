@@ -9,6 +9,7 @@ import { MessagesModule } from 'primeng/messages';
 import { CurrentUserService } from '../../../../../services/current-user.service';
 import { UserData } from '../../../../../interfaces/user';
 import { ToastService } from '../../../../../services/toast.service';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-form-user',
@@ -20,6 +21,7 @@ import { ToastService } from '../../../../../services/toast.service';
     ButtonModule,
     MessagesModule,
     MessageModule,
+    DropdownModule,
   ],
   templateUrl: './form-user.component.html',
   styleUrl: './form-user.component.scss'
@@ -29,6 +31,22 @@ export class FormUserComponent implements OnInit {
   @Input() currentUser:any;
   userProfileForm!: FormGroup;
   avatarPreviewUrl: string | null = null;
+
+
+  timezones = [
+    { label: 'Калининград (UTC+2)', value: 2 },
+    { label: 'Москва, Санкт-Петербург (UTC+3)', value: 3 },
+    { label: 'Самара (UTC+4)', value: 4 },
+    { label: 'Екатеринбург (UTC+5)', value: 5 },
+    { label: 'Омск (UTC+6)', value: 6 },
+    { label: 'Красноярск (UTC+7)', value: 7 },
+    { label: 'Иркутск (UTC+8)', value: 8 },
+    { label: 'Якутск (UTC+9)', value: 9 },
+    { label: 'Владивосток (UTC+10)', value: 10 },
+    { label: 'Магадан (UTC+11)', value: 11 },
+    { label: 'Камчатка, Анадырь (UTC+12)', value: 12 }
+];
+
 
   constructor(private fb: FormBuilder, 
     public currentUserService: CurrentUserService,
@@ -45,6 +63,7 @@ export class FormUserComponent implements OnInit {
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       tgUserName: [{ value: '@', disabled: true }, [Validators.required]],
       avatar: [null],
+      hoursOffset: ['']
     });
 
     if (!this.currentUser) {
@@ -71,6 +90,7 @@ export class FormUserComponent implements OnInit {
       registerNumber: userData.registerNumber,
       registerNumberBuilder: userData.registerNumberBuilder,
       tgUserName: userData.tgUserName ? `@${userData.tgUserName}` : '@',
+      hoursOffset: userData.hoursOffset
     });
   }
 
@@ -108,6 +128,7 @@ export class FormUserComponent implements OnInit {
       inn: this.userProfileForm.value.inn,
       registerNumber: this.userProfileForm.value.registerNumber,
       registerNumberBuilder: this.userProfileForm.value.registerNumberBuilder,
+      hoursOffset: this.userProfileForm.value.hoursOffset,
       roleIds: this.getRoleIds()
     };
 

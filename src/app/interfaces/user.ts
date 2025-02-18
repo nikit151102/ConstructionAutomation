@@ -14,6 +14,7 @@ export interface UserData {
     refreshToken: string;
     storageInfo: StorageInfo;
     tgUserName: string | null;
+    hoursOffset?: string
 }
 
 export interface Role {

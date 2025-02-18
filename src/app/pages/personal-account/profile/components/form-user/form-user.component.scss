@@ -160,3 +160,9 @@ form {
 :host ::ng-deep .p-inputtext{
     border-radius: 20px;
 }
+
+:host ::ng-deep .p-dropdown{
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid #d1d5db;
+}
