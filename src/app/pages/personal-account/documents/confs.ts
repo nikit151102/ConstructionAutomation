@@ -59,7 +59,7 @@ export const formConfig = {
     ],
   },
   materialSpecification: {
-    nameDoc: 'Ведомость объёмов материалов',
+    nameDoc: 'Спецификация на метериалы',
     endpoint: 'MaterialSpecification',
     fileInstruction:'materialSpecification.html',
     price:'1150',
