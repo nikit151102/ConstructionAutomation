@@ -80,8 +80,8 @@ export class PopUpEntryComponent implements AfterViewInit, OnDestroy, OnInit {
 
     if (this.type == 'authorization') {
       Data = {
-        UserName: user.username,
-        TgId: user.id,
+        UserName: String(user.username),
+        TgId: String(user.id),
         Email: '',
         Password: '',
       };
