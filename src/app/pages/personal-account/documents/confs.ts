@@ -402,7 +402,7 @@ export const formConfig = {
       },
 
       {
-        name: 'BuiderPersonId',
+        name: 'BuilderExecutor',
         type: 'reference',
         label: 'Представитель уполномоченного представителя лица, осуществляющего строительство',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
