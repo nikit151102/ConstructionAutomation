@@ -318,7 +318,7 @@ export const formConfig = {
         options: [],
         validators: [Validators.required,
           Validators.pattern('^[0-9]+$')],
-        order: 2,
+        order: 3,
         tooltip: {
           isVisible: true,
           text: 'Ваш ИНН (10 или 12 цифр) необходим для автоматического заполнения большого количества полей документа, относящихся к Вашему юридическому лицу. Вы можете заполнить это поле в профиле, чтобы оно заполнялось автоматически!'
@@ -331,7 +331,7 @@ export const formConfig = {
         options: [],
         validators: [Validators.required,
           Validators.pattern('^[0-9]+$')],
-        order: 2,
+        order: 4,
         tooltip: {
           isVisible: true,
           text: 'Ваш ИНН (10 или 12 цифр) необходим для автоматического заполнения большого количества полей документа, относящихся к Вашему юридическому лицу. Вы можете заполнить это поле в профиле, чтобы оно заполнялось автоматически!'
@@ -364,7 +364,7 @@ export const formConfig = {
         type: 'date',
         label: 'Дата начала работ',
         validators: [Validators.required],
-        order: 5,
+        order: 7,
         tooltip: {
           isVisible: true,
           text: 'tooltip text'
@@ -375,7 +375,7 @@ export const formConfig = {
         type: 'date',
         label: 'Дата окончания работ',
         validators: [Validators.required],
-        order: 6,
+        order: 8,
         tooltip: {
           isVisible: true,
           text: 'tooltip text'
@@ -394,7 +394,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 7,
+        order: 9,
         tooltip: {
           isVisible: true,
           text: 'Id Уполномоченного представителя застройщика'
@@ -413,7 +413,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 8,
+        order: 10,
         tooltip: {
           isVisible: true,
           text: 'Id Уполномоченного представителя лица, осуществляющего строительство'
@@ -431,7 +431,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 9,
+        order: 11,
         tooltip: {
           isVisible: true,
           text: ' Id Уполномоченного представителя застройщика или заказчика по вопросам строительного контроля'
@@ -449,7 +449,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 9,
+        order: 12,
         tooltip: {
           isVisible: true,
           text: 'Id Уполномоченного представителя заказчика'
@@ -467,7 +467,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 9,
+        order: 13,
         tooltip: {
           isVisible: true,
           text: 'Id Уполномоченного представителя лица, осуществляющего строительство по вопросам строительного контроля'
