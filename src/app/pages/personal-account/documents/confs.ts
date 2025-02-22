@@ -117,6 +117,9 @@ export const formConfig = {
       
     ],
   }, 
+
+
+
   actHideWorksRequest: {
     nameDoc: 'Акты освидетельствования скрытых работ',
     endpoint: 'ActHideWorks',
@@ -255,6 +258,219 @@ export const formConfig = {
         tooltip: {
           isVisible: true,
           text: 'Представитель добавляется в разделе Справочники - Сотрудники. После создания записи, она появится в выпадающем списке. Также для Сотрудников вы можете добавлять уникальные Должности в соответствующем разделе.'
+        }
+      },
+    ],
+  },
+
+
+
+
+
+
+
+
+  
+  journalGeneral: {
+    nameDoc: 'Журналы работ',
+    endpoint: 'JournalGeneral',
+    fileInstruction:'ActHideWorks.html',
+    price:'8500',
+    controls: [
+      {
+        name: 'SummaryFile',
+        type: 'file',
+        label: 'КС-2',
+        accept: '.xls, .xlsx',
+        validators: [Validators.required],
+        order: 1,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
+      },
+      {
+        name: 'SummaryFileListName',
+        type: 'dropdown',
+        label: 'Выберите лист',
+        options: [],
+        validators: [Validators.required],
+        isFileInput: true,
+        order: 0
+      },
+      {
+        name: 'Inn',
+        type: 'text',
+        label: 'ИНН',
+        options: [],
+        validators: [Validators.required,
+          Validators.pattern('^[0-9]+$')],
+        order: 2,
+        tooltip: {
+          isVisible: true,
+          text: 'Ваш ИНН (10 или 12 цифр) необходим для автоматического заполнения большого количества полей документа, относящихся к Вашему юридическому лицу. Вы можете заполнить это поле в профиле, чтобы оно заполнялось автоматически!'
+        }
+      },
+      {
+        name: 'InnExecutor',
+        type: 'text',
+        label: 'ИНН организации, осуществляющей работы',
+        options: [],
+        validators: [Validators.required,
+          Validators.pattern('^[0-9]+$')],
+        order: 2,
+        tooltip: {
+          isVisible: true,
+          text: 'Ваш ИНН (10 или 12 цифр) необходим для автоматического заполнения большого количества полей документа, относящихся к Вашему юридическому лицу. Вы можете заполнить это поле в профиле, чтобы оно заполнялось автоматически!'
+        }
+      },
+      {
+        name: 'InnCustomer',
+        type: 'text',
+        label: 'ИНН Заказчика',
+        options: [],
+        validators: [Validators.required,
+          Validators.pattern('^[0-9]+$')],
+        order: 2,
+        tooltip: {
+          isVisible: true,
+          text: 'Ваш ИНН (10 или 12 цифр) необходим для автоматического заполнения большого количества полей документа, относящихся к Вашему юридическому лицу. Вы можете заполнить это поле в профиле, чтобы оно заполнялось автоматически!'
+        }
+      },
+      {
+        name: 'ContractBeginDateTime',
+        type: 'date',
+        label: 'Дата начала периода контракта',
+        validators: [Validators.required],
+        order: 5,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
+      },
+      {
+        name: 'ContractEndDateTime',
+        type: 'date',
+        label: 'Дата окончания периода контракта',
+        validators: [Validators.required],
+        order: 6,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
+      },
+      {
+        name: 'BeginDateTime',
+        type: 'date',
+        label: 'Дата начала работ',
+        validators: [Validators.required],
+        order: 5,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
+      },
+      {
+        name: 'EndDateTime',
+        type: 'date',
+        label: 'Дата окончания работ',
+        validators: [Validators.required],
+        order: 6,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
+      },
+      
+      {
+        name: 'Builder',
+        type: 'reference',
+        label: 'Представитель уполномоченного представителя застройщика',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 7,
+        tooltip: {
+          isVisible: true,
+          text: 'Id Уполномоченного представителя застройщика'
+        }
+      },
+
+      {
+        name: 'BuiderPersonId',
+        type: 'reference',
+        label: 'Представитель уполномоченного представителя лица, осуществляющего строительство',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 8,
+        tooltip: {
+          isVisible: true,
+          text: 'Id Уполномоченного представителя лица, осуществляющего строительство'
+        }
+      },
+      {
+        name: 'BuilderController',
+        type: 'reference',
+        label: 'Представитель уполномоченного представителя застройщика или заказчика по вопросам строительного контроля',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 9,
+        tooltip: {
+          isVisible: true,
+          text: ' Id Уполномоченного представителя застройщика или заказчика по вопросам строительного контроля'
+        }
+      },
+      {
+        name: 'Customer',
+        type: 'reference',
+        label: 'Представитель уполномоченного представителя заказчика',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 9,
+        tooltip: {
+          isVisible: true,
+          text: 'Id Уполномоченного представителя заказчика'
+        }
+      },
+      {
+        name: 'CustomerExecutor',
+        type: 'reference',
+        label: 'Представитель уполномоченного представителя лица, осуществляющего строительство по вопросам строительного контроля',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 9,
+        tooltip: {
+          isVisible: true,
+          text: 'Id Уполномоченного представителя лица, осуществляющего строительство по вопросам строительного контроля'
         }
       },
     ],

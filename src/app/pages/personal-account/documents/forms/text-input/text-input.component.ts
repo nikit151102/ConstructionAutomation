@@ -30,7 +30,7 @@ export class TextInputComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      if (this.id === 'Inn') {
+      if (this.id === 'Inn' || this.id === 'InnExecutor') {
         const currentUserData = this.currentUserService.getUser();
         if (currentUserData && currentUserData.inn) {
           this.control.setValue(currentUserData.inn);
