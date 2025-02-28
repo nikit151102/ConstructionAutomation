@@ -10,6 +10,7 @@ import { CurrentUserService } from '../../../../../services/current-user.service
 import { UserData } from '../../../../../interfaces/user';
 import { ToastService } from '../../../../../services/toast.service';
 import { DropdownModule } from 'primeng/dropdown';
+import { TabMenuService } from '../tab-menu/tab-menu.service';
 
 @Component({
   selector: 'app-form-user',
@@ -28,10 +29,10 @@ import { DropdownModule } from 'primeng/dropdown';
 })
 export class FormUserComponent implements OnInit {
 
-  @Input() currentUser:any;
+  @Input() currentUser: any;
   userProfileForm!: FormGroup;
   avatarPreviewUrl: string | null = null;
-
+  activeTab: string = 'personal';
 
   timezones = [
     { label: 'Калининград (UTC+2)', value: 2 },
@@ -45,14 +46,20 @@ export class FormUserComponent implements OnInit {
     { label: 'Владивосток (UTC+10)', value: 10 },
     { label: 'Магадан (UTC+11)', value: 11 },
     { label: 'Камчатка, Анадырь (UTC+12)', value: 12 }
-];
+  ];
 
 
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
     public currentUserService: CurrentUserService,
-        private toastService:ToastService) { }
+    private toastService: ToastService,
+    private tabMenuService: TabMenuService) { }
 
   ngOnInit(): void {
+
+    this.tabMenuService.activeTab$.subscribe((value:any)=>{
+      this.activeTab = value;
+    })
+
     this.userProfileForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
@@ -63,7 +70,8 @@ export class FormUserComponent implements OnInit {
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       tgUserName: [{ value: '@', disabled: true }, [Validators.required]],
       avatar: [null],
-      hoursOffset: ['']
+      hoursOffset: [''],
+      examinationPassing: ['']
     });
 
     if (!this.currentUser) {
@@ -90,7 +98,8 @@ export class FormUserComponent implements OnInit {
       registerNumber: userData.registerNumber,
       registerNumberBuilder: userData.registerNumberBuilder,
       tgUserName: userData.tgUserName ? `@${userData.tgUserName}` : '@',
-      hoursOffset: userData.hoursOffset
+      hoursOffset: userData.hoursOffset,
+      examinationPassing: userData.examinationPassing
     });
   }
 
@@ -129,6 +138,7 @@ export class FormUserComponent implements OnInit {
       registerNumber: this.userProfileForm.value.registerNumber,
       registerNumberBuilder: this.userProfileForm.value.registerNumberBuilder,
       hoursOffset: this.userProfileForm.value.hoursOffset,
+      examinationPassing: this.userProfileForm.value.examinationPassing,
       roleIds: this.getRoleIds()
     };
 

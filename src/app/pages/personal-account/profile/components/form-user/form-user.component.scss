@@ -67,7 +67,7 @@ form {
             background: none;
             color: #d9534f;
             cursor: pointer;
-            
+
 
             &:hover {
                 color: #c9302c;
@@ -157,12 +157,15 @@ form {
     }
 }
 
-:host ::ng-deep .p-inputtext{
+:host ::ng-deep .p-inputtext {
     border-radius: 20px;
 }
 
-:host ::ng-deep .p-dropdown{
+:host ::ng-deep .p-dropdown {
     width: 100%;
     border-radius: 20px;
     border: 1px solid #d1d5db;
 }
+
+
+

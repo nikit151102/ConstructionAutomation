@@ -1,11 +1,15 @@
 <div class="container">
     <div>
         <app-user-card [currentUser]="currentUser"></app-user-card>
-        <app-transaction-history id="desktop"></app-transaction-history>
+        
     </div>
     <div>
-        <app-form-user [currentUser]="currentUser"></app-form-user>
-        <app-transaction-history id="phone"></app-transaction-history>
-        <app-form-delete></app-form-delete>
+        <app-tab-menu></app-tab-menu>
+        <ng-container *ngIf="activeTab != 'history' && activeTab != 'delete' &&  activeTab !='account'" >
+            <app-form-user  [currentUser]="currentUser"></app-form-user>
+        </ng-container>
+        <app-transaction-history *ngIf="activeTab == 'history'"></app-transaction-history>
+        <!-- <app-transaction-history id="phone" *ngIf="activeTab == 'history'"></app-transaction-history> -->
+        <app-form-delete *ngIf="activeTab == 'account'"></app-form-delete>
     </div>
 </div>

@@ -1,40 +1,13 @@
 <form [formGroup]="userProfileForm" (ngSubmit)="onSubmit()">
-    <!-- <div class="p-field">
-        <label for="avatar">Аватарка</label>
-
-        <div *ngIf="avatarPreviewUrl; else uploadButton" class="avatar-container">
-            <img [src]="avatarPreviewUrl" alt="Avatar" class="avatar-preview" />
-            <button pButton type="button" label="Удалить" icon="pi pi-times" (click)="removeAvatar()"></button>
-        </div>
-
-        <ng-template #uploadButton>
-            <label class="upload-button">
-                <span>Добавить/Изменить</span>
-                <input type="file" (change)="onAvatarUpload($event)" accept="image/*" hidden />
-            </label>
-        </ng-template>
-
-        <p-message *ngIf="formControls['avatar'].errors?.['required'] && formControls['avatar'].touched"
-            severity="error" text="Аватарка обязательна"></p-message>
-    </div> -->
-
-    <div class="fields-container">
+    <div class="fields-container" *ngIf="activeTab === 'personal'">
         <div class="flex flex-column gap-2">
             <label for="firstName">Имя</label>
             <input pInputText id="firstName" formControlName="firstName" />
-            <p-message *ngIf="formControls['firstName'].errors?.['required'] && formControls['firstName'].touched"
-                severity="error" text="Поле 'Имя' обязательно для заполнения"></p-message>
-            <p-message *ngIf="formControls['firstName'].errors?.['minlength'] && formControls['firstName'].touched"
-                severity="error" text="Имя должно содержать не менее 2 символов"></p-message>
         </div>
 
         <div class="flex flex-column gap-2">
             <label for="lastName">Фамилия</label>
             <input pInputText id="lastName" formControlName="lastName" />
-            <p-message *ngIf="formControls['lastName'].errors?.['required'] && formControls['lastName'].touched"
-                severity="error" text="Поле 'Фамилия' обязательно для заполнения"></p-message>
-            <p-message *ngIf="formControls['lastName'].errors?.['minlength'] && formControls['lastName'].touched"
-                severity="error" text="Фамилия должна содержать не менее 2 символов"></p-message>
         </div>
 
         <div class="flex flex-column gap-2">
@@ -43,45 +16,45 @@
         </div>
 
         <div class="flex flex-column gap-2">
-            <label for="patronymic">ИНН</label>
-            <input pInputText id="patronymic" formControlName="inn" />
-        </div>
-        <div class="flex flex-column gap-2">
-            <label for="patronymic">СРО по проектированию</label>
-            <input pInputText id="patronymic" formControlName="registerNumber" />
-        </div>
-        <div class="flex flex-column gap-2">
-            <label for="registerNumberBuilder">СРО по строительным работам</label>
-            <input pInputText id="registerNumberBuilder" formControlName="registerNumberBuilder" />
-        </div>
-        <div class="flex flex-column gap-2">
             <label for="email">Почта</label>
             <input pInputText id="email" formControlName="email" />
-            <p-message *ngIf="formControls['email'].errors?.['required'] && formControls['email'].touched"
-                severity="error" text="Поле 'Почта' обязательно для заполнения."></p-message>
-            <p-message *ngIf="formControls['email'].errors?.['email'] && formControls['email'].touched" severity="error"
-                text="Некорректный формат почты"></p-message>
-
         </div>
 
         <div class="flex flex-column gap-2">
             <label for="tgUserName">Телеграм</label>
-            <input pInputText id="tgUserName" formControlName="tgUserName" (input)="onTgUserNameInput()" />
-            <p-message *ngIf="formControls['tgUserName'].errors?.['required'] && formControls['tgUserName'].touched"
-                severity="error" text="Поле Телеграм обязательно для заполнения."></p-message>
+            <input pInputText id="tgUserName" formControlName="tgUserName" />
         </div>
 
         <div class="flex flex-column gap-2">
             <label for="hoursOffset">Часовой пояс</label>
-            <p-dropdown id="hoursOffset" formControlName="hoursOffset" [options]="timezones" placeholder="Выберите часовой пояс"></p-dropdown>
+            <p-dropdown id="hoursOffset" formControlName="hoursOffset" [options]="timezones"></p-dropdown>
         </div>
-        
+    </div>
 
-        <div class="flex flex-column gap-2" style="display: flex; justify-content: flex-end;">
-            <button pButton type="submit" label="Отправить"></button>
+    <div class="fields-container" *ngIf="activeTab === 'documents'">
+        <div class="flex flex-column gap-2">
+            <label for="inn">ИНН</label>
+            <input pInputText id="inn" formControlName="inn" />
         </div>
 
+        <div class="flex flex-column gap-2">
+            <label for="registerNumber">СРО по проектированию</label>
+            <input pInputText id="registerNumber" formControlName="registerNumber" />
+        </div>
+
+        <div class="flex flex-column gap-2">
+            <label for="registerNumberBuilder">СРО по строительным работам</label>
+            <input pInputText id="registerNumberBuilder" formControlName="registerNumberBuilder" />
+        </div>
+
+        <div class="flex flex-column gap-2">
+            <label for="examinationPassing">Прохождение экспертизы</label>
+            <input pInputText id="examinationPassing" formControlName="examinationPassing" />
+        </div>
 
     </div>
 
+    <div class="submit-container">
+        <button pButton type="submit" label="Отправить"></button>
+    </div>
 </form>

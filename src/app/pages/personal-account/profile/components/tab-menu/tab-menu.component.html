@@ -1,0 +1,6 @@
+<div class="tab-menu">
+    <button [class.active]="activeTab === 'personal'" (click)="setActiveTab('personal')">Личные данные</button>
+    <button [class.active]="activeTab === 'documents'" (click)="setActiveTab('documents')">Документы</button>
+    <button [class.active]="activeTab === 'account'" (click)="setActiveTab('account')">Аккаунт</button>
+    <button [class.active]="activeTab === 'history'" (click)="setActiveTab('history')">Транзакции</button>
+</div>

@@ -275,7 +275,7 @@ export const formConfig = {
     nameDoc: 'Журналы работ',
     endpoint: 'JournalGeneral',
     fileInstruction:'ActHideWorks.html',
-    price:'8500',
+    price:'5700',
     controls: [
       {
         name: 'SummaryFile',
@@ -338,11 +338,23 @@ export const formConfig = {
         }
       },
       {
+        name: 'examinationPassing',
+        type: 'text',
+        label: 'Прохождение экспертизы',
+        options: [],
+        validators: [Validators.required],
+        order: 5,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+      {
         name: 'ContractBeginDateTime',
         type: 'date',
         label: 'Дата начала периода контракта',
         validators: [Validators.required],
-        order: 5,
+        order: 6,
         tooltip: {
           isVisible: true,
           text: 'tooltip text'
@@ -353,7 +365,7 @@ export const formConfig = {
         type: 'date',
         label: 'Дата окончания периода контракта',
         validators: [Validators.required],
-        order: 6,
+        order: 7,
         tooltip: {
           isVisible: true,
           text: 'tooltip text'
@@ -364,7 +376,7 @@ export const formConfig = {
         type: 'date',
         label: 'Дата начала работ',
         validators: [Validators.required],
-        order: 7,
+        order: 8,
         tooltip: {
           isVisible: true,
           text: 'tooltip text'
@@ -375,7 +387,7 @@ export const formConfig = {
         type: 'date',
         label: 'Дата окончания работ',
         validators: [Validators.required],
-        order: 8,
+        order: 9,
         tooltip: {
           isVisible: true,
           text: 'tooltip text'
@@ -394,7 +406,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 9,
+        order: 10,
         tooltip: {
           isVisible: true,
           text: 'Id Уполномоченного представителя застройщика'
@@ -413,7 +425,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 10,
+        order: 11,
         tooltip: {
           isVisible: true,
           text: 'Id Уполномоченного представителя лица, осуществляющего строительство'
@@ -431,7 +443,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 11,
+        order: 12,
         tooltip: {
           isVisible: true,
           text: ' Id Уполномоченного представителя застройщика или заказчика по вопросам строительного контроля'
@@ -449,7 +461,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 12,
+        order: 13,
         tooltip: {
           isVisible: true,
           text: 'Id Уполномоченного представителя заказчика'
@@ -467,7 +479,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 13,
+        order: 14,
         tooltip: {
           isVisible: true,
           text: 'Id Уполномоченного представителя лица, осуществляющего строительство по вопросам строительного контроля'
