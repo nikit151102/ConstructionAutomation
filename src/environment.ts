@@ -1,6 +1,6 @@
 export const environment = {
 
-    apiUrl: 'https://dev.rebuildpro.ru/api',
+    apiUrl: 'https://dev.rebuildpro.ru:5001',
     //apiUrl: 'https://rebuildpro.ru/api',
 
     // apiUrl: 'http://localhost:5182',
