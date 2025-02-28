@@ -58,6 +58,12 @@ export const formConfig = {
       },
     ],
   },
+
+
+
+
+
+
   materialSpecification: {
     nameDoc: 'Спецификация на метериалы',
     endpoint: 'MaterialSpecification',
@@ -87,6 +93,11 @@ export const formConfig = {
       },
     ],
   },
+
+
+
+
+
   workSpecification: {
     nameDoc: 'Ведомость объемов работ',
     endpoint: 'WorkSpecification',
@@ -117,6 +128,10 @@ export const formConfig = {
       
     ],
   }, 
+
+
+
+
 
 
 
@@ -488,101 +503,3 @@ export const formConfig = {
     ],
   },
 };
-
-
-// export const formConfig = {
-//   comparativeStatement: {
-//     nameDoc: 'Cопоставительная ведомост',
-//     endpoint: 'ComparativeStatement',
-//     controls: [
-//       // {
-//       //   name: 'contractorName',
-//       //   type: 'text',
-//       //   label: 'Наименование подрядной организации',
-//       //   validators: [Validators.required],
-//       // },
-//       // {
-//       //   name: 'statementDate',
-//       //   type: 'date',
-//       //   label: 'Дата составления',
-//       //   defaultValue: new Date(),
-//       //   validators: [Validators.required],
-//       // },
-//       // {
-//       //   name: 'system',
-//       //   type: 'text',
-//       //   label: 'Система',
-//       //   validators: [Validators.required],
-//       // },
-
-//       {
-//         name: 'planFileListName',
-//         type: 'dropdown',
-//         label: 'Выберите лист',
-//         options: [],
-//         validators: [Validators.required],
-//       },
-//       {
-//         name: 'summaryFileListName',
-//         type: 'dropdown',
-//         label: 'Выберите лист',
-//         options: [],
-//         validators: [Validators.required],
-//       },
-//     ],
-//     fileInputs: [
-//       {
-//         key: 'planFile',
-//         label: 'Локальная смета',
-//         accept: '.xls, .xlsx',
-//       },
-//       {
-//         key: 'summaryFile',
-//         label: 'КС-2',
-//         accept: '.xls, .xlsx',
-//       },
-//     ],
-//   },
-//   materialSpecification: {
-//     nameDoc: 'Спецификация на метериалы',
-//     endpoint: 'MaterialSpecification',
-//     controls: [
-//       {
-//         name: 'SummaryFileListName',
-//         type: 'dropdown',
-//         label: 'Выберите лист',
-//         options: [],
-//         validators: [Validators.required],
-//       },
-//     ],
-//     fileInputs: [
-//       {
-//         key: 'SummaryFile',
-//         label: 'КС-2',
-//         accept: '.xls, .xlsx',
-//       },
-//     ],
-//   },
-//   workSpecification: {
-//     nameDoc: 'Спецификация работ',
-//     endpoint: 'WorkSpecification',
-//     controls: [
-//       {
-//         name: 'SummaryFileListName',
-//         type: 'dropdown',
-//         label: 'Выберите лист',
-//         options: [],
-//         validators: [Validators.required],
-//       },
-//     ],
-//     fileInputs: [
-//       {
-//         key: 'SummaryFile',
-//         label: 'КС-2',
-//         accept: '.xls, .xlsx',
-//       },
-//     ],
-//   }
-
-
-// };
