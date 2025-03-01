@@ -54,6 +54,7 @@ export class FormsComponent {
     this.cdr.detectChanges();
     this.selectedFolder = `${this._config.nameDoc}`;
     this.fileInstruction = `${this._config.fileInstruction}`
+    this.setReferenceData();
 
   }
 
@@ -104,13 +105,17 @@ export class FormsComponent {
     this.dialogStorageService.setIsVisibleDialog(false);
     this.initForm();
     this.updateSortedControls();
-  
+
+  }
+
+
+  setReferenceData() {
     // Найти первый control с type: 'reference'
     const referenceControl = this._config.controls.find((control: any) => control.type === 'reference');
-  
+
     if (referenceControl) {
       const endpoint = referenceControl.endpoint;
-  
+
       // Проверяем, есть ли уже данные в referenceDataSubject
       this.referenceService.referenceData$.pipe(take(1)).subscribe((data) => {
         if (data.length === 0) {
@@ -123,9 +128,6 @@ export class FormsComponent {
       });
     }
   }
-  
-  
-  
 
   updateSortedControls() {
     this.sortedControls = [...this.config.controls]
