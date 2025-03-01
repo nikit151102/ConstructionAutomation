@@ -45,6 +45,10 @@ export class HistoryFormingComponent implements OnInit {
     { name: 'Ведомость объемов работ', code: '3' },
     { name: 'Акты освидетельствования скрытых работ', code: '4' },
     { name: 'Журналы работ', code: '5' },
+    { name: 'Акт гидравлических испытаний', code: '6' },
+    { name: 'Акт проверки стяжки', code: '7' },
+    { name: 'Акт пролива кровли', code: '8' },
+    { name: 'Акт прочистки магистралей', code: '9' },
   ];
   fields = [
     { key: 'statusCode', label: 'Статус' },

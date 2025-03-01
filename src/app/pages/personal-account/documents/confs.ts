@@ -1,6 +1,6 @@
 import { Validators } from "@angular/forms";
 
-export type ConfigType = 'comparativeStatement' | 'materialSpecification' | 'workSpecification' | 'actHideWorksRequest';
+export type ConfigType = 'comparativeStatement' | 'materialSpecification' | 'workSpecification' | 'actHideWorksRequest' | 'ActHydraTesting' | "ActScreedChecking" | "ActRoofShedding" | "ActClearingHighways";
 
 
 export function getFormConfig(type: keyof typeof formConfig) {
@@ -502,4 +502,340 @@ export const formConfig = {
       },
     ],
   },
+
+
+
+
+
+  
+
+  ActHydraTesting: {
+    nameDoc: 'Акт гидравлических испытаний',
+    endpoint: 'ActHydraTesting',
+    fileInstruction:'workSpecification.html',
+    price:'1150',
+    controls: [
+      {
+        name: 'SummaryFileListName',
+        type: 'dropdown',
+        label: 'Выберите лист',
+        options: [],
+        validators: [Validators.required],
+        isFileInput: true,
+        order: 0
+      },
+      {
+        name: 'SummaryFile',
+        type: 'file',
+        label: 'КС-2',
+        accept: '.xls, .xlsx',
+        validators: [Validators.required],
+        order: 1,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
+      },
+      {
+        name: 'Customer',
+        type: 'reference',
+        label: 'Представитель заказчика',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 2,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+      {
+        name: 'GeneralCustomer',
+        type: 'reference',
+        label: 'Представитель Генподрядчика',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 3,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+      {
+        name: 'Manager',
+        type: 'reference',
+        label: 'Представитель управляющей организации',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 4,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+    ],
+  }, 
+
+
+ 
+
+  
+  ActScreedChecking: {
+    nameDoc: 'Акт проверки стяжки',
+    endpoint: 'ActScreedChecking',
+    fileInstruction:'workSpecification.html',
+    price:'1150',
+    controls: [
+      {
+        name: 'SummaryFileListName',
+        type: 'dropdown',
+        label: 'Выберите лист',
+        options: [],
+        validators: [Validators.required],
+        isFileInput: true,
+        order: 0
+      },
+      {
+        name: 'SummaryFile',
+        type: 'file',
+        label: 'КС-2',
+        accept: '.xls, .xlsx',
+        validators: [Validators.required],
+        order: 1,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
+      },
+      {
+        name: 'Customer',
+        type: 'reference',
+        label: 'Представитель заказчика',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 2,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+      {
+        name: 'GeneralCustomer',
+        type: 'reference',
+        label: 'Представитель Генподрядчика',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 3,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+      {
+        name: 'Manager',
+        type: 'reference',
+        label: 'Представитель управляющей организации',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 4,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+    ],
+  }, 
+
+
+
+
+
+  ActRoofShedding: {
+    nameDoc: 'Акт пролива кровли',
+    endpoint: 'ActRoofShedding',
+    fileInstruction:'workSpecification.html',
+    price:'1150',
+    controls: [
+      {
+        name: 'Customer',
+        type: 'reference',
+        label: 'Представитель заказчика',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 1,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+      {
+        name: 'GeneralCustomer',
+        type: 'reference',
+        label: 'Представитель Генподрядчика',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 2,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+      {
+        name: 'Manager',
+        type: 'reference',
+        label: 'Представитель управляющей организации',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 3,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+    ],
+  }, 
+
+
+
+
+  
+  ActClearingHighways: {
+    nameDoc: 'Акт прочистки магистралей',
+    endpoint: 'ActClearingHighways',
+    fileInstruction:'workSpecification.html',
+    price:'1150',
+    controls: [
+      {
+        name: 'SummaryFileListName',
+        type: 'dropdown',
+        label: 'Выберите лист',
+        options: [],
+        validators: [Validators.required],
+        isFileInput: true,
+        order: 0
+      },
+      {
+        name: 'SummaryFile',
+        type: 'file',
+        label: 'КС-2',
+        accept: '.xls, .xlsx',
+        validators: [Validators.required],
+        order: 1,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
+      },
+      {
+        name: 'Customer',
+        type: 'reference',
+        label: 'Представитель заказчика',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 2,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+      {
+        name: 'GeneralCustomer',
+        type: 'reference',
+        label: 'Представитель Генподрядчика',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 3,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+      {
+        name: 'Manager',
+        type: 'reference',
+        label: 'Представитель управляющей организации',
+        endpoint:'/api/Profile/UserEntities/Organization/Employees',
+        fields:[
+          'lastName',
+          'firstName',
+          'patronymic',
+          'position.name',
+        ],
+        validators: [Validators.required],
+        order: 4,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
+    ],
+  }, 
+
+
+
 };
