@@ -18,6 +18,8 @@ import { ReferenceComponent } from './reference/reference.component';
 import { DateComponent } from './date/date.component';
 import { DocumentsService } from '../documents.service';
 import { environment } from '../../../../../environment';
+import { ReferenceService } from './reference/reference.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-forms',
@@ -93,7 +95,8 @@ export class FormsComponent {
     private cdr: ChangeDetectorRef,
     public dialogStorageService: DialogStorageService,
     public instructionsService: InstructionsService,
-    private documentsService: DocumentsService
+    private documentsService: DocumentsService,
+    private referenceService: ReferenceService
   ) { }
 
   ngOnInit(): void {
@@ -101,7 +104,28 @@ export class FormsComponent {
     this.dialogStorageService.setIsVisibleDialog(false);
     this.initForm();
     this.updateSortedControls();
+  
+    // Найти первый control с type: 'reference'
+    const referenceControl = this._config.controls.find((control: any) => control.type === 'reference');
+  
+    if (referenceControl) {
+      const endpoint = referenceControl.endpoint;
+  
+      // Проверяем, есть ли уже данные в referenceDataSubject
+      this.referenceService.referenceData$.pipe(take(1)).subscribe((data) => {
+        if (data.length === 0) {
+          this.referenceService.loadData(endpoint).subscribe((response: any) => {
+            if (response.data && Array.isArray(response.data)) {
+              this.referenceService.setReferenceData(response.data);
+            }
+          });
+        }
+      });
+    }
   }
+  
+  
+  
 
   updateSortedControls() {
     this.sortedControls = [...this.config.controls]
@@ -234,7 +258,7 @@ export class FormsComponent {
           this.documentsService.showPopupErrorForming = true;
           this.progressSpinnerService.hide();
           this.cdr.detectChanges();
-        }else{
+        } else {
           const errorMessage = error?.error?.Message || 'Произошла ошибка.';
           this.toastService.showError('Ошибка', errorMessage);
           this.progressSpinnerService.hide();
@@ -251,5 +275,6 @@ export class FormsComponent {
 
   ngOnDestroy(): void {
     this.dialogStorageService.setIsVisibleDialog(false);
+    this.referenceService.setReferenceData([])
   }
 }
