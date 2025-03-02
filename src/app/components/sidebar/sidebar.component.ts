@@ -44,6 +44,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       items: [
         { label: 'Должности', command: () => this.executeReference('030521') },
         { label: 'Сотрудники', command: () => this.executeReference('161283') },
+        { label: 'Марки бетона', command: () => this.executeReference('815012') },
       ]
     },
     { label: 'Политика конфиденциальности ', icon: 'pi pi-cog', command: () => this.executeLegal(82913) },
