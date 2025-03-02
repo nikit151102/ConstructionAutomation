@@ -723,6 +723,27 @@ export const formConfig = {
     price:'1150',
     controls: [
       {
+        name: 'SummaryFileListName',
+        type: 'dropdown',
+        label: 'Выберите лист',
+        options: [],
+        validators: [Validators.required],
+        isFileInput: true,
+        order: 0
+      },
+      {
+        name: 'SummaryFile',
+        type: 'file',
+        label: 'КС-2',
+        accept: '.xls, .xlsx',
+        validators: [Validators.required],
+        order: 1,
+        tooltip: {
+          isVisible: true,
+          text: 'tooltip text'
+        }
+      },
+      {
         name: 'Customer',
         type: 'reference',
         typeReference: 'Employees',
@@ -735,7 +756,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 1,
+        order: 2,
         tooltip: {
           isVisible: true,
           text: ''
@@ -754,7 +775,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 2,
+        order: 3,
         tooltip: {
           isVisible: true,
           text: ''
@@ -773,7 +794,7 @@ export const formConfig = {
           'position.name',
         ],
         validators: [Validators.required],
-        order: 3,
+        order: 4,
         tooltip: {
           isVisible: true,
           text: ''
