@@ -224,6 +224,7 @@ export const formConfig = {
       {
         name: 'CustomerBuidingManagerId',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель технического заказчика по вопросам строительного контроля',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -242,6 +243,7 @@ export const formConfig = {
       {
         name: 'BuiderPersonId',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель лица, осуществляющего строительство',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -260,6 +262,7 @@ export const formConfig = {
       {
         name: 'DocumentWriterId',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель лица, осуществляющего подготовку проектной документации',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -412,6 +415,7 @@ export const formConfig = {
       {
         name: 'Builder',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель уполномоченного представителя застройщика',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -431,6 +435,7 @@ export const formConfig = {
       {
         name: 'BuilderExecutor',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель уполномоченного представителя лица, осуществляющего строительство',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -449,6 +454,7 @@ export const formConfig = {
       {
         name: 'BuilderController',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель уполномоченного представителя застройщика или заказчика по вопросам строительного контроля',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -467,6 +473,7 @@ export const formConfig = {
       {
         name: 'Customer',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель уполномоченного представителя заказчика',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -485,6 +492,7 @@ export const formConfig = {
       {
         name: 'CustomerExecutor',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель уполномоченного представителя лица, осуществляющего строительство по вопросам строительного контроля',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -539,6 +547,7 @@ export const formConfig = {
       {
         name: 'Customer',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель заказчика',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -557,6 +566,7 @@ export const formConfig = {
       {
         name: 'GeneralCustomer',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель Генподрядчика',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -575,6 +585,7 @@ export const formConfig = {
       {
         name: 'Manager',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель управляющей организации',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -627,6 +638,7 @@ export const formConfig = {
       {
         name: 'Customer',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель заказчика',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -645,6 +657,7 @@ export const formConfig = {
       {
         name: 'GeneralCustomer',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель Генподрядчика',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -663,6 +676,7 @@ export const formConfig = {
       {
         name: 'Manager',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель управляющей организации',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -678,6 +692,23 @@ export const formConfig = {
           text: ''
         }
       },
+      // {
+      //   name: 'ConcreteMark',
+      //   type: 'reference',
+      //   typeReference: 'ConcreteMark',
+      //   label: 'Марка бетона',
+      //   endpoint:'/api/Profile/UserEntities/Organization/ConcreteMark',
+      //   fields:[
+      //     'code',
+      //     'name',
+      //   ],
+      //   validators: [Validators.required],
+      //   order: 5,
+      //   tooltip: {
+      //     isVisible: true,
+      //     text: ''
+      //   }
+      // },
     ],
   }, 
 
@@ -694,6 +725,7 @@ export const formConfig = {
       {
         name: 'Customer',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель заказчика',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -712,6 +744,7 @@ export const formConfig = {
       {
         name: 'GeneralCustomer',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель Генподрядчика',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -730,6 +763,7 @@ export const formConfig = {
       {
         name: 'Manager',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель управляющей организации',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -782,6 +816,7 @@ export const formConfig = {
       {
         name: 'Customer',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель заказчика',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -800,6 +835,7 @@ export const formConfig = {
       {
         name: 'GeneralCustomer',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель Генподрядчика',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[
@@ -818,6 +854,7 @@ export const formConfig = {
       {
         name: 'Manager',
         type: 'reference',
+        typeReference: 'Employees',
         label: 'Представитель управляющей организации',
         endpoint:'/api/Profile/UserEntities/Organization/Employees',
         fields:[

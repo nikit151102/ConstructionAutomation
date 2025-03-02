@@ -1,10 +1,11 @@
-<div class="container-field">
-  <div class="reference-component">
-    <select [formControl]="control" [id]="name" class="reference-select">
-      <option value="" disabled selected>Выбрать</option>
+<div class="reference-component">
+  <select [formControl]="control" [id]="name" class="reference-select">
+    <option value="" disabled selected>Выбрать</option>
 
+    <ng-container *ngIf="typeReference === 'Employees'">
+      <!-- Используем async pipe для подписки на поток данных, если typeReference = 'Employees' -->
       <ng-container *ngIf="(referenceService.referenceData$ | async) as referenceData">
-
+        
         <!-- Если список пуст -->
         <option *ngIf="showDefault && referenceData.length === 0" disabled>
           Список сотрудников пуст.
@@ -16,9 +17,17 @@
         </option>
 
       </ng-container>
-    </select>
-  </div>
+    </ng-container>
 
-  <!-- Тултип -->
-  <app-tooltip *ngIf="textTooltip.isVisible" [text]="textTooltip.text"></app-tooltip>
+    <ng-container *ngIf="typeReference !== 'Employees'">
+      <!-- Используем локальную переменную referenceData, если typeReference не равен 'Employees' -->
+      <option *ngIf="showDefault && referenceData.length === 0" disabled>
+        Список пуст.
+      </option>
+
+      <option *ngFor="let option of referenceData" [value]="option.id">
+        {{ getOptionLabel(option) }}
+      </option>
+    </ng-container>
+  </select>
 </div>

@@ -5,6 +5,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../../environment';
 import { TooltipComponent } from '../../../../../ui-kit/tooltip/tooltip.component';
 import { ReferenceService } from './reference.service';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-reference',
@@ -16,6 +17,7 @@ import { ReferenceService } from './reference.service';
 export class ReferenceComponent {
   @Input() name!: string;
   @Input() label!: string;
+  @Input() typeReference!: string;
   @Input() endpoint!: string;
   @Input() fields!: string[];
   @Output() selectedId = new EventEmitter<string>();
@@ -33,15 +35,31 @@ export class ReferenceComponent {
   constructor(public referenceService: ReferenceService) { }
 
   ngOnInit(): void {
-    this.referenceService.referenceData$.subscribe((value: any) => {
-      if (value && value > 0) {
+    if(this.typeReference == 'Employees'){
+      console.log('Employees')
+      this.referenceService.referenceData$.subscribe((value: any) => {
+        if (value && value > 0) {
+          this.showDefault = false;
+          this.referenceData = value;
+        } else {
+          this.showDefault = true;
+          this.referenceData = [];
+        }
+      })
+    }else{
+      this.referenceService.loadData(this.endpoint).pipe(
+        catchError((error) => {
+          console.error('Ошибка при загрузке данных:', error);
+          this.referenceData = []; 
+          console.log('referenceData', this.referenceData)
+          this.showDefault = true; 
+          return of([]);  
+        })
+      ).subscribe((value: any) => {
+        this.referenceData = value.data;
         this.showDefault = false;
-        this.referenceData = value;
-      } else {
-        this.showDefault = true;
-        this.referenceData = [];
-      }
-    })
+      });
+    }
 
     this.control.valueChanges.subscribe(value => {
       if (value) {

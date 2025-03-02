@@ -24,6 +24,7 @@
         <label>{{ control.label }}</label>
         <app-reference [label]="control.label" [endpoint]="control.endpoint" [name]="control.name"
           [fields]="control.fields" [textTooltip]="control.tooltip"
+          [typeReference]="control.typeReference"
           (selectedId)="onReferenceSelected(control.name, $event)"></app-reference>
       </div>
 
