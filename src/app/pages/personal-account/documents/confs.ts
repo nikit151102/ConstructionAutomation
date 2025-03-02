@@ -692,23 +692,23 @@ export const formConfig = {
           text: ''
         }
       },
-      // {
-      //   name: 'ConcreteMark',
-      //   type: 'reference',
-      //   typeReference: 'ConcreteMark',
-      //   label: 'Марка бетона',
-      //   endpoint:'/api/Profile/UserEntities/Organization/ConcreteMark',
-      //   fields:[
-      //     'code',
-      //     'name',
-      //   ],
-      //   validators: [Validators.required],
-      //   order: 5,
-      //   tooltip: {
-      //     isVisible: true,
-      //     text: ''
-      //   }
-      // },
+      {
+        name: 'ConcreteMark',
+        type: 'reference',
+        typeReference: 'ConcreteMark',
+        label: 'Марка бетона',
+        endpoint:'/api/Profile/UserEntities/Organization/ConcreteMark',
+        fields:[
+          'code',
+          'name',
+        ],
+        validators: [Validators.required],
+        order: 5,
+        tooltip: {
+          isVisible: true,
+          text: ''
+        }
+      },
     ],
   }, 
 
