@@ -16,7 +16,7 @@ export interface ErrorResponse {
     providedIn: 'root',
 })
 export class GlobalErrorHandlerService implements ErrorHandler {
-    private apiUrl = 'https://rqebuildpro.ru/logs/log-error/angular';
+    private apiUrl = 'https://rebuildpro.ru/logs/log-error/angular';
 
     constructor(private http: HttpClient,
         private currentUserService: CurrentUserService,
