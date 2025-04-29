@@ -13,9 +13,14 @@
         </p>
         
         <div style="display: flex; gap: 30px; align-items: center">
+         <div style="display: flex; flex-direction: column; gap: 5px;">
           <p class="balance" >
             Баланс: {{ userBalance }} &#8381;
           </p>
+          <p class="balance" >
+            Бесплатные формирования: {{ freeGenerating }} шт;
+          </p>
+         </div>
     
           <a (click)="toggleTopUp()" id="payment">Пополнить</a>
   

@@ -16,6 +16,10 @@ export class PersonalAccountService {
   private userBalanceSubject = new BehaviorSubject<string>('');
   balance$ = this.userBalanceSubject.asObservable();
 
+  private userfreeGeneratingSubject = new BehaviorSubject<string>('');
+  freeGenerating$ = this.userfreeGeneratingSubject.asObservable();
+  
+
   getCurrentBalance(): string {
     return this.userBalanceSubject.value;
   }
@@ -23,6 +27,16 @@ export class PersonalAccountService {
   changeBalance(value: any) {
     this.userBalanceSubject.next(value);
   }
+
+
+  getCurrentFreeGenerating(): string {
+    return this.userfreeGeneratingSubject.value;
+  }
+
+  changeFreeGenerating(value: any) {
+    this.userfreeGeneratingSubject.next(value);
+  }
+
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;

@@ -357,9 +357,10 @@ export class HistoryFormingComponent implements OnInit {
 
   onOk(id: string): void {
     this.visiblePopUpPay = false;
-    this.historyFormingService.makeTransaction(id).subscribe((response: Response<TransactionResponse>) => {
+    this.historyFormingService.makeTransaction(id).subscribe((response: Response<any>) => {
       this.visiblePopUpPay = false;
       this.personalAccountService.changeBalance(String(response.data.balance));
+      this.personalAccountService.changeFreeGenerating(String(response.data.freeGenerating));
       this.currentUserService.updateUserBalance(String(response.data.balance));
       this.cdr.markForCheck();
     });

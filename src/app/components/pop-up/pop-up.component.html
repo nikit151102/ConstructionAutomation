@@ -7,7 +7,10 @@
             <h2 style="text-align: center;">{{ title }}</h2>
         </div>
 
-        <span *ngIf="price" style="margin-bottom: 10px;">К оплате: {{price}} ₽</span>
+        <span *ngIf="price" style="margin-bottom: 10px;">
+            <del style="color: #999;">{{price}} ₽</del>
+            <span style="margin-left: 5px; color: #5fe42b">0 ₽</span>
+        </span>
 
         <div class="popup-body">
             <p>{{ description }}</p>
@@ -18,7 +21,9 @@
                 {{ button.label }}
             </button>
         </div>
-        <a  *ngIf="offerInformation" target="_blank" style="text-decoration: none; color: inherit; font-size: 13px; padding-top: 10px;">Совершая оплату, вы соглашаетесь с условиями 
+        <a *ngIf="offerInformation" target="_blank"
+            style="text-decoration: none; color: inherit; font-size: 13px; padding-top: 10px;">Совершая оплату, вы
+            соглашаетесь с условиями
             <a href="https://rebuildpro.ru/offerInformation">Оферты</a> </a>
     </div>
 </div>

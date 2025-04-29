@@ -24,6 +24,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   isSmallScreen = false;
   tabTitle: string = '';
   userBalance: any = 0;
+  freeGenerating: any = 0;
   showTopUp: boolean = false;
   topUpAmount: number = 0;
   isLoading: boolean = true;
@@ -45,6 +46,8 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   
     // Подписка на обновления баланса
     this.subscribeToBalanceChanges();
+
+    this.subscribeToFreeGeneratingChanges();
   
     // Подписка на изменения заголовка вкладки
     this.subscribeToTabTitleChanges();
@@ -72,6 +75,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
   private setUserData(userData: any): void {
     this.userBalance = userData.balance;
     this.personalAccountService.changeBalance(userData.balance);
+    this.personalAccountService.changeFreeGenerating(userData.freeGenerating);
     const dataStage = {
       userName: `${userData.lastName ?? ''} ${userData.firstName ?? ''}`.trim(),
       email: userData.email
@@ -107,6 +111,15 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     });
   }
   
+  private subscribeToFreeGeneratingChanges(): void {
+    this.personalAccountService.freeGenerating$.subscribe((value: string) => {
+      this.freeGenerating = value;
+      this.cdr.detectChanges();
+    });
+  }
+  
+
+
   private subscribeToTabTitleChanges(): void {
     this.personalAccountService.titleTab$.subscribe((title: string) => {
       this.tabTitle = title;
