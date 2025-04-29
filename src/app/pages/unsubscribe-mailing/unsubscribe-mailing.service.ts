@@ -11,6 +11,6 @@ export class UnsubscribeMailingService {
   constructor(private http: HttpClient) { }
 
   verifyEmail(id: string): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/api/Profile/Unsubscribe/${id}`, {});
+    return this.http.get<any>(`${environment.apiUrl}/api/Profile/Unsubscribe/${id}`);
   }
 }
