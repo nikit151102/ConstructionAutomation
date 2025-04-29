@@ -22,7 +22,7 @@ export const routes: Routes = [
         path: 'verification/:optionalParam', loadChildren: () => import('./pages/verification/verification.module').then(m => m.VerificationModule)
     },
     {
-        path: 'unsubscribe/:optionalParam', loadChildren: () => import('./pages/unsubscribe-mailing/unsubscribe-mailing.module').then(m => m.UnsubscribeMailingModulefix)
+        path: 'unsubscribe/:optionalParam', loadChildren: () => import('./pages/unsubscribe-mailing/unsubscribe-mailing.module').then(m => m.UnsubscribeMailingModule)
     },
     {
         path: 'offerInformation', component: OfferInformationComponent
