@@ -1,0 +1,52 @@
+<div *ngIf="verificationStatus != null" class="verification-container">
+
+    <!-- Иконка галочки (при успешной верификации) -->
+    <div *ngIf="verificationStatus == true" class="wrapper wrapper--check">
+  
+        <svg width="94" height="94" viewBox="0 0 48 48" fill="none">
+          <!-- Круг с фоном (цвет фона rgb(76, 175, 80)) -->
+          <circle cx="24" cy="24" r="22" fill="rgb(76, 175, 80)" />
+  
+          <!-- Галочка -->
+          <path id="check" d="M 12,22 L 22,31 L 36,13" fill="none" stroke="white" stroke-width="3" stroke-dasharray="100"
+            stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="100" to="0" repeatCount="1" dur="3s" fill="freeze"></animate>
+          </path>
+        </svg>
+  
+      <!-- Текст успешной верификации -->
+      <p class="success-text">
+        Вы успешно отписались от нашей email-рассылки
+      </p>
+  
+      <div class="signIn">
+        <a href="/">Вернуться на главную</a>
+      </div>
+    </div>
+  
+    <!-- Иконка крестика (при ошибке верификации) -->
+    <div *ngIf="verificationStatus == false" class="wrapper wrapper--check">
+      <svg id="svg1" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink" width="94" height="94" viewBox="0 0 47 47">
+        <circle fill="#F44336" cx="24" cy="24" r="21" />
+  
+        <!-- Крестик -->
+        <path class="path" fill="none" stroke="#FFEBEE" stroke-width="2" stroke-dasharray="60.3" stroke-dashoffset="60.3"
+          d="M 16 16 L 32 32 M 32 16 L 16 32">
+          <animate id="p1" attributeName="stroke-dashoffset" begin="0.2s" values="60.3;0" dur="1.5s" repeatCount="1"
+            fill="freeze" calcMode="paced" restart="whenNotActive" />
+          <animate id="f1" attributeName="fill" begin="p1.end" values="#F44336; #FFEBEE" dur="1.5s" fill="freeze"
+            restart="whenNotActive" />
+        </path>
+      </svg>
+  
+      <!-- Текст ошибки верификации -->
+      <p class="error-text">
+        {{verificationMessage}}
+      </p>
+      <div class="signIn">
+        <a href="/">Вернуться на главную</a>
+      </div>
+  
+    </div>
+  </div>

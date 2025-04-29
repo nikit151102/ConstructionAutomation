@@ -17,8 +17,12 @@ export const routes: Routes = [
         path: 'legal/:optionalParam',
         loadChildren: () => import('./components/legal-information/legal-information.module').then(m => m.LegalInformationModule)
     },
+    
     {
         path: 'verification/:optionalParam', loadChildren: () => import('./pages/verification/verification.module').then(m => m.VerificationModule)
+    },
+    {
+        path: 'unsubscribe/:optionalParam', loadChildren: () => import('./pages/unsubscribe-mailing/unsubscribe-mailing.module').then(m => m.UnsubscribeRoutingModule)
     },
     {
         path: 'offerInformation', component: OfferInformationComponent
