@@ -76,6 +76,7 @@ export class PersonalAccountComponent implements OnInit, OnDestroy {
     this.userBalance = userData.balance;
     this.personalAccountService.changeBalance(userData.balance);
     this.personalAccountService.changeFreeGenerating(userData.freeGenerating);
+    console.log('userData.freeGenerating',userData.freeGenerating)
     const dataStage = {
       userName: `${userData.lastName ?? ''} ${userData.firstName ?? ''}`.trim(),
       email: userData.email

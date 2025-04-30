@@ -8,8 +8,14 @@
         </div>
 
         <span *ngIf="price" style="margin-bottom: 10px;">
-            <del style="color: #999;">{{price}} ₽</del>
-            <span style="margin-left: 5px; color: #5fe42b">0 ₽</span>
+            <ng-container *ngIf="freeGenerating != '0'">
+                <del style="color: #999;">{{price}} ₽</del>
+                <span style="margin-left: 5px; color: #5fe42b">0 ₽</span>
+            </ng-container>
+            <ng-container *ngIf="freeGenerating == '0'">
+                <span>{{price}} ₽</span>
+            </ng-container>
+           
         </span>
 
         <div class="popup-body">
